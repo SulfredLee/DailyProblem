@@ -1,0 +1,41 @@
+############# c++ tag files
+cscope.*
+GPATH
+GRTAGS
+GTAGS
+
+############# c++
+build/
+
+############# latex texmaker
+*.log
+*.out
+*.aux
+*.bcf
+*.pdf
+*.toc
+*.xml
+*.ptc
+*.gz
+
+############# dataset files
+*.hdf5
+datasets/
+*.mat
+
+############# VS project
+Debug/
+Release/
+ipch/
+*.sdf
+.vs/
+x64/
+*.db
+*.opendb
+
+############# python
+__pycache__/
+*.pyc
+pythonEnv/
+python3Env/
+venvpy3/
