@@ -75,19 +75,34 @@ Logger& Logger::GetInstance_ResetSS(LogLevel logLevel, void *logObject, std::str
 
 void Logger::InitComponent(const Logger::LoggerConfig& config)
 {
+#ifdef Use_Linux_Lock
+    DefaultLock lock(m_DefaultMutex);
+#elif Use_Windows_Lock
+#elif Use_Std_Lock
     std::lock_guard<std::mutex> lock(m_mutex);
+#endif
     m_config = config;
 }
 
 Logger::LoggerConfig Logger::GetConfig()
 {
+#ifdef Use_Linux_Lock
+    DefaultLock lock(m_DefaultMutex);
+#elif Use_Windows_Lock
+#elif Use_Std_Lock
     std::lock_guard<std::mutex> lock(m_mutex);
+#endif
     return m_config;
 }
 
 void Logger::Log(LogLevel logLevel, const char* format, ...)
 {
+#ifdef Use_Linux_Lock
+    DefaultLock lock(m_DefaultMutex);
+#elif Use_Windows_Lock
+#elif Use_Std_Lock
     std::lock_guard<std::mutex> lock(m_mutex);
+#endif
     if (logLevel < m_config.logLevel)
     {
         return;
@@ -123,7 +138,12 @@ void Logger::AddClassName(std::string className, void* object)
 
 void Logger::ResetSS(LogLevel logLevel, void *logObject, const std::string& functionName, int lineNumber)
 {
+#ifdef Use_Linux_Lock
+    DefaultLock lock(m_DefaultMutex);
+#elif Use_Windows_Lock
+#elif Use_Std_Lock
     std::lock_guard<std::mutex> lock(m_mutex);
+#endif
 
     m_oneTimeLevel = logLevel;
     if (logLevel < m_config.logLevel)
