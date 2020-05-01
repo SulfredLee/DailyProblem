@@ -4,8 +4,10 @@
 #include <iostream>
 #include <sstream>
 
+#include "Logger.h"
 InputParser::InputParser()
 {
+    LOGMSG_CLASS_NAME("InputParser");
 }
 
 InputParser::~InputParser()
@@ -90,7 +92,7 @@ bool InputParser::IsOptionsExists()
         {
             if (!IsOptionExists(longForm))
             {
-                std::cout << "ERR: Option is needed --" << longForm << std::endl;
+                LOGMSG_MSG_S() << "Option is needed --" << longForm << "\n";
                 return false;
             }
         }
@@ -115,5 +117,5 @@ void InputParser::PrintOptionList()
     {
         ss << " [-" << it.first << "|--" << it.second << "] " << "<" << it.second << ">" << std::endl;
     }
-    std::cout << "ERR: " << ss.str();
+    LOGMSG_MSG_S() << ss.str();
 }

@@ -17,6 +17,8 @@ include_directories(
 
 add_executable(${targetName} ${${folderName}_src})
 
+target_link_libraries(${targetName}
+  ${CMAKE_THREAD_LIBS_INIT})
 # target_link_libraries(${targetName}
 #   utility
 #   ${libpng_LIBRARY_DIR}/libpng16.so
