@@ -39,6 +39,7 @@ void SimpleCase()
 void InheritCase_Print(SmartPointer<BaseClass> p)
 {
     SmartPointer<BaseClass> pp = p;
+    std::cout << "Print from Base ";
     pp->Print();
     std::cout << "Hello from END" << std::endl;
 }
@@ -47,6 +48,8 @@ void InheritCase()
     std::cout << std::endl;
     SmartPointer<BaseClass> base = StaticCast<BaseClass>(MakeSmartPointer<ChildClass>());
     InheritCase_Print(base);
+    SmartPointer<ChildClass> child = DynamicCast<ChildClass>(base);
+    child->Print();
     std::cout << "Hello from END" << std::endl;
 }
 int main (int argc, char *argv[])
