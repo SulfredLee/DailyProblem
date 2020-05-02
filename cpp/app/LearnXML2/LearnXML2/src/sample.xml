@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<story>
+  <storyinfo>
+    <author>John Fleck</author>
+    <datewritten>June 2, 2002</datewritten>
+    <keyword>تخیلی</keyword>
+  </storyinfo>
+  <body>
+    <headline>This is the headline</headline>
+    <para>This is the body text.</para>
+  </body>
+<reference uri="www.w3.org/TR/xslt20/"/></story>
