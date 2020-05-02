@@ -9,7 +9,7 @@
 std::string MCastAddress = "225.1.32.28";
 short MCastPort = 6000;
 std::string SenderIP = "192.168.1.208";
-std::string ReceiverIP = "192.168.1.208";
+std::string ReceiverIP = "";
 void MCastSender()
 {
     std::vector<char> sendData;
