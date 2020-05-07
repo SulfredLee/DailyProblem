@@ -80,7 +80,7 @@ void RunTestMain(std::string msgQName, int inThreadNum, int outThreadNum, int to
 }
 void RunTestMain000(std::string msgQName, int totalTest, int totalMsg)
 {
-    std::vector<int> numThreads = {1, 2, 3, 10};
+    std::vector<int> numThreads = {1, 2, 4, 10};
     for (size_t i = 0; i < numThreads.size(); i++)
     {
         RunTestMain(msgQName, numThreads[i], numThreads[i], totalTest, totalMsg);
@@ -108,11 +108,12 @@ int main(int argc, char* argv[])
     RunTestMain000("MsgQTwoLock_RingBuf_Linux", totalTest, totalMsg);
     RunTestMain000("MsgQOneLock_RingBuf_Std", totalTest, totalMsg);
     RunTestMain000("MsgQTwoLock_RingBuf_Std", totalTest, totalMsg);
-    // RunTestMain000("MsgQOneLock_LinkList_Linux", totalTest, totalMsg);
-    // RunTestMain000("MsgQTwoLock_LinkList_Linux", totalTest, totalMsg);
-    // RunTestMain000("MsgQOneLock_LinkList_Std", totalTest, totalMsg);
-    // RunTestMain000("MsgQTwoLock_LinkList_Std", totalTest, totalMsg);
-    // RunTestMain000("MsgQOneLock_Queue_Linux", totalTest, totalMsg);
-    // RunTestMain000("MsgQOneLock_Queue_Std", totalTest, totalMsg);
+    RunTestMain000("MsgQOneLock_LinkList_Linux", totalTest, totalMsg);
+    RunTestMain000("MsgQTwoLock_LinkList_Linux", totalTest, totalMsg);
+    RunTestMain000("MsgQOneLock_LinkList_Std", totalTest, totalMsg);
+    RunTestMain000("MsgQTwoLock_LinkList_Std", totalTest, totalMsg);
+    RunTestMain000("MsgQOneLock_Queue_Linux", totalTest, totalMsg);
+    RunTestMain000("MsgQOneLock_Queue_Std", totalTest, totalMsg);
+
     return 0;
 }
