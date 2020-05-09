@@ -4,7 +4,13 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include <climits>
 
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(nullptr) { }
+};
 class Solution
 {
 public:
@@ -77,6 +83,37 @@ public:
         }
         return result;
     }
+    // 2.2.5 Remove Duplicates from Sorted List II
+    ListNode *deleteDuplicates(ListNode *head)
+    {
+        ListNode dummy(INT_MIN); dummy.next = head;
+        ListNode *prev = &dummy;
+        ListNode *cur = head;
+        ListNode *next = cur != nullptr ? cur->next : nullptr;
+
+        while (next != nullptr)
+        {
+            bool duplicated = false;
+            while (next && cur->val == next->val)
+            {
+                duplicated = true;
+                prev->next = next;
+                delete cur;
+                cur = next;
+                next = cur != nullptr ? cur->next : nullptr;
+            }
+            if (duplicated)
+            {
+                prev->next = next;
+                delete cur;
+            }
+            else
+                prev = cur;
+            cur = next;
+            next = cur != nullptr ? cur->next : nullptr;
+        }
+        return dummy.next;
+    }
 };
 
 int main(int argc, char *argv[])
@@ -93,6 +130,19 @@ int main(int argc, char *argv[])
     std::cout << "3.12: " << solution.countAndSay(10) << std::endl;
     std::vector<int> vv = {5, 6, 5, 2, 3};
     std::cout << "4.1.3: " << solution.largestRectangleArea(vv);
+    {
+        ListNode dummy(0);
+        ListNode *p = &dummy;
+        int A[7] = {1, 2, 3, 3, 4, 4, 5};
+        for (int i = 0; i < 7; i++)
+        {
+            ListNode *cur = new ListNode(A[i]);
+            p->next = cur;
+            p = cur;
+        }
+        p->next = nullptr;
+        solution.deleteDuplicates(dummy.next);
+    }
 
     return 0;
 }
