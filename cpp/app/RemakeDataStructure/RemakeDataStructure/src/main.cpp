@@ -1,20 +1,38 @@
 #include <iostream>
+#include <vector>
 #include "RM_Array.h"
+#include "RM_Heap.h"
 
-uint32_t RoundUpPowOfTwo(uint32_t x)
+using namespace std;
+
+void TryHeap()
 {
-    if (x == 0) return 1;
+    vector<int> ivec = {0,1,2,3,4,8,9,3,5};
 
-    x--;
-    int count = 0;
-    while (x > 0)
-    {
-        x >>= 1;
-        count++;
-    }
+    RM::MakeHeap(ivec.begin(), ivec.end());
+    for (size_t i = 0; i < ivec.size(); ++i)
+        cout << ivec[i] << " ";
+    cout << endl;
 
-    if (count >= 32) count = 31;
-    return 1 << count;
+    ivec.push_back(7);
+    cout << distance(ivec.begin(), ivec.end()) << " " << distance(ivec.begin(), prev(ivec.end())) << endl;
+    RM::PushHeap(ivec.begin(), ivec.end());
+    for (size_t i = 0; i < ivec.size(); ++i)
+        cout << ivec[i] << " ";
+    cout << endl;
+
+    RM::PopHeap(ivec.begin(), ivec.end());
+    cout << ivec.back() << endl;
+    ivec.pop_back();
+
+    for (size_t i = 0; i < ivec.size(); ++i)
+        cout << ivec[i] << " ";
+    cout << endl;
+
+    RM::SortHeap(ivec.begin(), ivec.end());
+    for (size_t i = 0; i < ivec.size(); ++i)
+        cout << ivec[i] << " ";
+    cout << endl;
 }
 int main(int argc, char *argv[])
 {
@@ -22,7 +40,7 @@ int main(int argc, char *argv[])
     std::cout << numbers.GetSize() << std::endl;
     numbers.Clear();
 
-    std::cout << RoundUpPowOfTwo(0x80000000) << std::endl;
-    std::cout << 0x80000000 << std::endl;
+    TryHeap();
+
     return 0;
 }

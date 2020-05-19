@@ -5,6 +5,9 @@
 #include <vector>
 #include <stack>
 #include <climits>
+#include <unordered_set>
+
+using namespace std;
 
 struct ListNode {
     int val;
@@ -114,6 +117,52 @@ public:
         }
         return dummy.next;
     }
+    vector<string> wordBreak(string s, unordered_set<string>& dict)
+    {
+        vector<string> result;
+        if (s.size() == 0) return result;
+
+        vector<vector<int> > f(s.size(), vector<int>(s.size(), -1));
+        for (size_t l = 1; l <= s.size(); l++)
+        {
+            for (size_t i = 0; i < s.size() - l + 1; i++)
+            {
+                size_t j = i + l - 1;
+                string temp = s.substr(i, l);
+                if (dict.find(s.substr(i, l)) != dict.end())
+                {
+                    f[i][j] = i;
+                }
+                else
+                {
+                    for (size_t k = i; k < j; k++)
+                    {
+                        if (f[i][k] != -1 && f[k+1][j] != -1)
+                        {
+                            f[i][j] = k + 1;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (f[0][s.size() - 1] == -1) return result;
+
+        int i = 0; int j = s.size() - 1;
+        while (i < j)
+        {
+            int k = f[i][j];
+            if (i == k)
+            {
+                result.push_back(s.substr(i, j - i + 1));
+                break;
+            }
+            result.push_back(s.substr(i, k - i));
+            i = k;
+        }
+        return result;
+    }
 };
 
 int main(int argc, char *argv[])
@@ -142,6 +191,17 @@ int main(int argc, char *argv[])
         }
         p->next = nullptr;
         solution.deleteDuplicates(dummy.next);
+    }
+    {
+        cout << endl;
+        unordered_set<string> dict;
+        dict.insert("cat"); dict.insert("cats"); dict.insert("and"); dict.insert("sand"); dict.insert("dog");
+        string words = "catsanddog";
+        for (auto& w : solution.wordBreak(words, dict))
+        {
+            cout << w << " ";
+        }
+        cout << endl;
     }
 
     return 0;
