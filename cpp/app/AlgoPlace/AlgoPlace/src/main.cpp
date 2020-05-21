@@ -6,6 +6,9 @@
 #include <stack>
 #include <climits>
 #include <unordered_set>
+#include <unordered_map>
+#include <list>
+#include <set>
 
 using namespace std;
 
@@ -163,6 +166,90 @@ public:
         }
         return result;
     }
+public:
+    int networkDelayTime(vector<vector<int>>& times, int endPoint, int startPoint)
+    {
+        unordered_map<int, list<GraphNode> > graph = BuildGraph(times); // key: startNode value: neighbours
+        // PrintGraph(graph);
+        vector<int> distCache(endPoint, INT_MAX); distCache[startPoint - 1] = 0;
+        set<pair<int, int> > queue; // pair first: node number, pair second: cost
+
+        queue.insert(make_pair(startPoint, 0));
+        while (!queue.empty())
+        {
+            pair<int, int> curNode = *queue.begin();
+            queue.erase(queue.begin());
+
+            const auto& it = graph.find(curNode.first);
+            if (it == graph.end()) continue;
+
+            for (const GraphNode& neighbour : it->second)
+            {
+                int curDist = distCache[curNode.first - 1] + neighbour.m_weight;
+                if (distCache[neighbour.m_nodeNumber - 1] > curDist)
+                {
+                    const auto& qIT = queue.find(make_pair(neighbour.m_nodeNumber, neighbour.m_weight));
+                    if (qIT != queue.end())
+                        queue.erase(qIT);
+
+                    distCache[neighbour.m_nodeNumber - 1] = curDist;
+                    queue.insert(make_pair(neighbour.m_nodeNumber, neighbour.m_weight));
+                }
+            }
+        }
+        // return result
+        // PrintDistCache(distCache);
+        return distCache[endPoint - 1];
+    }
+private:
+    struct GraphNode
+    {
+        int m_nodeNumber;
+        int m_weight;
+
+        GraphNode(int to, int weight)
+            : m_nodeNumber(to), m_weight(weight)
+        {
+        }
+    };
+    unordered_map<int, list<GraphNode> > BuildGraph(const vector<vector<int> >& times)
+    {
+        unordered_map<int, list<GraphNode> > result;
+        for (const auto& time : times)
+        {
+            int startNode = time[0];
+            int endNode = time[1];
+            int weight = time[2];
+
+            auto it = result.find(startNode);
+            if (it == result.end())
+            {
+                it = result.insert(it, make_pair(startNode, list<GraphNode>()));
+            }
+            it->second.push_back(GraphNode(endNode, weight));
+        }
+
+        return result;
+    }
+    void PrintDistCache(const vector<int>& distCache)
+    {
+        for (const auto& dist : distCache)
+        {
+            cout << dist << endl;
+        }
+    }
+    void PrintGraph(const unordered_map<int, list<GraphNode> >& graph)
+    {
+        for (const auto& node : graph)
+        {
+            cout << node.first << " ---> ";
+            for (const auto& naboNode : node.second)
+            {
+                cout << "(" << naboNode.m_nodeNumber << "," << naboNode.m_weight << "),";
+            }
+            cout << endl;
+        }
+    }
 };
 
 int main(int argc, char *argv[])
@@ -202,6 +289,11 @@ int main(int argc, char *argv[])
             cout << w << " ";
         }
         cout << endl;
+    }
+    {
+        vector<vector<int> > times = {{1,2,4},{1,8,8},{2,3,8},{2,8,11},{3,4,7},{3,9,2},{3,6,4},{4,5,9},{4,6,14},{5,6,10},{6,7,2},{7,8,1},{7,9,6},{8,9,7}};
+        // vector<vector<int> > times = {{2,1,1}, {2,3,1}, {3,4,1}};
+        cout << solution.networkDelayTime(times, 9, 1) << endl;
     }
 
     return 0;
