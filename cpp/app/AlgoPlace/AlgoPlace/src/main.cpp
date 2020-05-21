@@ -180,9 +180,9 @@ public:
             pair<int, int> curNode = *queue.begin();
             queue.erase(queue.begin());
 
-            const auto& it = graph.find(curNode.first);
-            if (it == graph.end()) continue;
+            if (curNode.first == endPoint) break;
 
+            const auto& it = graph.find(curNode.first);
             for (const GraphNode& neighbour : it->second)
             {
                 int curDist = distCache[curNode.first - 1] + neighbour.m_weight;
