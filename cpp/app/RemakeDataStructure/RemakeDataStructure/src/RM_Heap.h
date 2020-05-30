@@ -92,5 +92,24 @@ namespace RM
         typename std::iterator_traits<T>::iterator_category t;
         __MakeHeap(first, last, t);
     }
+
+    template<class T>
+    inline void PartialSort(T first, T middle, T last)
+    {
+        typename std::iterator_traits<T>::iterator_category t;
+        __PartialSort(first, middle, last, t);
+    }
+
+    template <class T>
+        void __PartialSort(T first, T middle, T last, std::random_access_iterator_tag)
+    {
+        MakeHeap(first, middle);
+        for (T i = middle; i < last; ++i)
+        {
+            if (*i < *first)
+                __PopHeap(first, middle, i, *i);
+        }
+        SortHeap(first, middle);
+    }
 };
 #endif
