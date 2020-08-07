@@ -1,0 +1,298 @@
+#####################################################################
+# ubuntu set up 20.04 LTS
+#####################################################################
+############ shell extensions
+gnome-shell-extensions
+gnome-sheel-extension-system-monitor
+gnome-sheel-extension-redshift
+gnome-shell-extension-drawonscreen(From web https://extensions.gnome.org/extension/1683/draw-on-you-screen/) (remember turn it on from Tweaks)
+
+############ emacs spacemacs vim text editor
+### Install emacs and other tools first
+emacs(Latest better than or equal to 26.3) cscope global vim vim-gnome (or vim-gtk)
+### Go to get spacemacs from github https://github.com/syl20bnr/spacemacs
+git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+emacs --insecure
+### Update config spacemacs
+meld temple config and current config
+### Config files update
+Go to commit https://github.com/SulfredLee/spacemacs/commit/050fd5b1e059d147a3f79456211170f850c4e17a and update
+### tern binary for spacemacs
+Go to https://github.com/ternjs/tern under path: ~/.emacs.d/private/tern
+### install omnisharp engine for c# coding
+SPC SPC omnisharp-install-server
+SPC SPC omnisharp-start-omnisharp-server
+
+############ git
+git gitk git-gui
+
+############ install useful libraries
+build-essential cmake ninja-build libboost-all-dev qt5-default qtcreator qt5-doc qt5-doc-html qtbase5-dev-tools qtbase5-examples
+vlc gimp meld playonlinux graphviz texmaker ffmpeg mkvtoolnix mkvtoolnix-gui
+python2 python2-dev python3 python3-dev python3-virtualenv python3-pip
+openssl openssh-client openssh-server
+
+############ install c++ debug
+ddd kgdb kdgb nemiver (under ubunt 20.04, one preferred to use nemiver)
+
+############ Get useful script to Documents/bin
+activeCoreDump.sh  convertAAC2MP3.sh  convertChinese.sh  prepareSpacemacsTags.sh
+
+############ inside .bashrc
+export PATH=$PATH:~/Documents/bin
+export PATH=$PATH:~/.emacs.d/private/tern/bin
+alias openFolder='nautilus'
+
+############ install docker
+sudo apt install docker.io
+sudo systemctl enable --now docker
+docker --version
+############ docker reference link
+https://sulfredlee.blogspot.com/2019/08/install-docker-on-ubuntu-1904.html
+
+############ install Lutris
+Search from web for latest
+
+############ install software center
+GParted PyCharm kolourpaint obs-studio aegisub notepadqq
+Furius ISO Mount
+
+############ install openCC
+https://github.com/BYVoid/OpenCC
+
+############ install plugin in firefox
+In Firefox YouTube Video Downloader/YouTube HD Download
+
+############ install system monitor (19.04)
+git clone https://github.com/paradoxxxzero/gnome-shell-system-monitor-applet.git
+make install
+
+#####################################################################
+# Build leetcode cpp
+#####################################################################
+    sudo apt-get install texlive-lang-chinese (if ctex package is missing)
+    sudo apt-get install texlive-luatex texlive-xetex
+    sudo apt-get install ttf-mscorefonts-installer (if texmaker needed times new roman font)
+    sudo apt-get install font-manager
+    (Download fonts if needed) https://www.fontsmarket.com or https://fontsforyou.com/
+    Get following files from one drive
+    Must:
+        AdobeFangsongStd-Regular.otf
+        AdobeHeitiStd-Regular.otf
+        AdobeKaitiStd-Regular.otf
+        AdobeSongStd-Light.otf
+    May be:
+        PtSansNarrow.ttf
+
+####################################################################
+# MySQL cheat sheet
+####################################################################
+# Create a new user and let remote access possible
+mysql> CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'username'@'localhost' WITH GRANT OPTION;
+mysql> CREATE USER 'username'@'%' IDENTIFIED BY 'password';
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'username'@'%' WITH GRANT OPTION;
+mysql> FLUSH PRIVILEGES;
+#
+# Show user in sql
+# Show all MySQL users:
+mysql> SELECT user FROM mysql.user;
+# List only unique user names:
+mysql> SELECT DISTINCT user FROM mysql.user;
+# Show MySQL users and hosts they are allowed to connect from:
+mysql> SELECT user,host FROM mysql.user;
+# Show MySQL users, their passwords and hosts:
+mysql> SELECT user,host,password FROM mysql.user;
+# in MySQL 5.7 and higher:
+mysql> SELECT host,user,authentication_string FROM mysql.user;
+# select multiple criteria
+SELECT * FROM daily_price INNER JOIN symbol ON symbol.id = daily_price.symbol_id WHERE symbol.ticker IN ("0001.HK", "0002.HK");
+#
+# Remove user
+## Revoke all grants for a mysql user
+mysql> REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'username'@'localhost';
+mysql> DROP USER 'username'@'localhost';
+mysql> FLUSH PRIVILEGES;
+# Clean a table, delete all records
+mysql> DELETE FROM tableName;
+# select / use a database
+mysql> USE databaseName;
+# remove a table
+mysql> DROP TABLE tablename;
+# remove a database
+mysql> DROP DATABASE dbname;
+# login with other user name
+mysql> mysql -h localhost -P 3306 --protocol=tcp -u userName -p
+mysql> mysql -h 127.0.0.1 -P 3306 --protocol=tcp -u userName -p
+mysql> docker exec -it securitiesDB mysql -u root -p
+# export database
+mysqldump -h 127.0.0.1 -u sec_bird -P 3306 -p securities_bird | gzip > db.sql.gz
+# import database
+gunzip < ./db.sql.gz | mysql -u sec_bird -h 127.0.0.1 -P 3306 -p securities_bird
+
+####################################################################
+# docker cheat sheet
+####################################################################
+# list all image
+$ sudo docker image ls
+# list all container
+$ sudo docker ps -a
+$ sudo docker container ls --all
+# remove image
+$ sudo docker rmi IMAGE
+# remove container
+$ sudo docker rm CONTAINER
+# remove all container
+$ sudo docker rm $(sudo docker ps -a -q)
+# Go into running container
+$ sudo docker exec -it <mycontainer> bash
+# build image from Dockerfile
+$ cd Target-folder
+$ ls
+Dockerfile
+$ sudo docker build --no-cache --tag=Name:tag .
+# Stop container
+$ sudo docker stop -t 1 <mycontainer>
+# add xserver for docker
+$ xhost +local:docker
+# run an image
+$ sudo docker run -v /host/directory:/container/directory -it Name:tag
+$ sudo docker run --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v /host/directory:/container/directory -it Name:tag
+# copy file/folder from/to container
+$ sudo docker cp foo.txt mycontainer:/foo.txt
+$ sudo docker cp mycontainer:/foo.txt foo.txt
+
+####################################################################
+# git cheat sheet
+####################################################################
+git rebase -i HEAD~5
+# show all branch
+git branch -a
+# remove remote branch
+git push origin --delete <branchName>
+# show tags
+git tag
+git push origin --tags
+# prunes tracking branches not on the remote
+git remote prune origin
+# git get range of commit based on tag
+git log --pretty=oneline 2020Q1_Patch_002..2020Q1_Patch_004
+# git get commit list from head to latest tag
+git log $(git describe --tags --abbrev=0)..HEAD --oneline
+
+pip3 install mysql-connector
+pip3 install mysqlclient
+
+update CV
+get proof from ust for english
+motivation of study
+essay
+xxxx
+passport
+passport photo
+
+####################################################################
+# linux user group
+####################################################################
+# Add user to group
+sudo usermod -a -G group username
+# Remove user from group
+sudo deluser username groupname
+# Check user group
+getent group
+
+# pdf to image
+pdfimages -j input.pdf outputFile
+
+####################################################################
+# c++ build command example
+####################################################################
+g++ minimal.cpp -std=c++11 -I/usr/include/python2.7 -lpython2.7
+
+####################################################################
+# cmake example
+####################################################################
+cmake ../cpp -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../install
+
+####################################################################
+# add dynamic library
+####################################################################
+# If you cannot edit /etc/ld.so.conf, you may need to add variable
+export LD_LIBRARY_PATH=/usr/local/yourLib/lib
+# edit ld.so.conf
+sudo touch /etc/ld.so.conf.d/user.conf
+sudo echo "/usr/local/yourLib/lib" >> /etc/ld.so.conf
+sudo ldconfig
+# check library to see if adding success
+ldconfig -v | grep mysql
+
+####################################################################
+# activate core dump
+####################################################################
+ulimit -c unlimited
+sudo bash -c 'echo core.%e.%p.%t > /proc/sys/kernel/core_pattern'
+
+####################################################################
+# check core dump
+####################################################################
+gdb ./src/speedTest core.xxxx
+bt
+f 1
+p variable
+l
+
+####################################################################
+# vim cheatsheet
+####################################################################
+:v/target_to_see/d
+:g/target_to_drop/d
+:g/entone_.*DBG/d
+
+####################################################################
+# ssh cheatsheet
+####################################################################
+# in git bash Could not open a connection to your authentication agent.
+eval `ssh-agent -s`
+ssh-add
+
+####################################################################
+# zipline cheatsheet
+####################################################################
+QUANDL_API_KEY=zUDNzgqFt5p9RAAc27dz zipline ingest -b quandl
+
+####################################################################
+# multiple git cheatsheet
+####################################################################
+# search repo github for more information
+
+####################################################################
+# memory leak cheatsheet
+####################################################################
+# learn valgrind
+
+####################################################################
+# ffmpeg cheat sheet
+####################################################################
+# merge video and audio
+ffmpeg -i aa.mp4 -i aa.aac -c:v copy -c:a aac -strict experimental output.mp4
+# cut video by start and end time
+ffmpeg -i inputFile -c copy -ss 00:01:52 -to 09:00:00 outputFile
+# extract audio
+ffmpeg -i input-video.avi -vn -acodec copy output-audio.aac
+# aac to mp3
+ffmpeg -i input.wav -vn -ar 44100 -ac 2 -b:a 192k output.mp3
+
+####################################################################
+# ssh tunnel cheat sheet
+####################################################################
+############ Connect to Google VPS, GARCH Trader
+ssh -Llocalhost:8888:10.128.0.2:3389 -i ~/.ssh/google.garch.trader sflee1112@34.68.33.103 -X
+ssh -Llocalhost:8888:10.128.0.2:3389 -i ~/.ssh/GCP.Garch.Trader sflee1112@34.68.33.103 -X
+############ Connect to ssh proxy from office
+autossh -Llocalhost:22:10.170.0.2:9966 -i ~/.ssh/google.ssh.proxy sflee1112@34.92.190.224 -X
+############ Connect to home from office
+autossh -R9989:localhost:22 sulfred@58.153.83.118 -p 9988 -i ~/.ssh/id_sulfredHome.002 -X
+############ Connect to ssh proxy from home
+autossh -Llocalhost:9999:10.170.0.2:9966 -i ~/.ssh/google.ssh.proxy sflee1112@34.92.190.224 -X
+############ more information
+https://sulfredlee.blogspot.com/2019/06/setup-ssh-reverse-tunnel.html
