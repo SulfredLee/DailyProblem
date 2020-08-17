@@ -296,3 +296,45 @@ autossh -R9989:localhost:22 sulfred@58.153.83.118 -p 9988 -i ~/.ssh/id_sulfredHo
 autossh -Llocalhost:9999:10.170.0.2:9966 -i ~/.ssh/google.ssh.proxy sflee1112@34.92.190.224 -X
 ############ more information
 https://sulfredlee.blogspot.com/2019/06/setup-ssh-reverse-tunnel.html
+
+####################################################################
+# ssh copy cheat sheet
+####################################################################
+############ From local to remote
+scp file.txt remote_username@10.10.0.2:/remote/directory
+############ From remote to local
+scp remote_username@10.10.0.2:/files /local/directory
+
+####################################################################
+# conan cheat sheet
+####################################################################
+######## Start to build (Release)
+conan source .
+conan install .
+conan build . OR make -j8
+
+
+######## Start to build (Debug)
+conan source .
+conan install . -s build_type=Debug
+conan build .
+  OR
+conan -j12 && ctest -V
+
+####################################################################
+# conda cheat sheet
+####################################################################
+`conda env create -f ~/scripts/your_py_env.yml` to import env
+conda activate py_main
+conda deactivate
+
+####################################################################
+# log server
+####################################################################
+rsyslog
+zmq, pulish and subscribe
+29west LBM, fastest, need pay
+# network hardware
+solarflare, kernel bypass
+# hardware decode
+FPGAs
