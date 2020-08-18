@@ -1,0 +1,11 @@
+[Oo]bj/
+.vs/
+bin
+!bin/Debug/PROD/*
+!bin/Debug/UAT/*
+SBE/
+.axoCover
+publish
+TestResults/
+tools
+packages/
