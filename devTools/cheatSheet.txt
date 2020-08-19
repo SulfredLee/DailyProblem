@@ -338,3 +338,27 @@ zmq, pulish and subscribe
 solarflare, kernel bypass
 # hardware decode
 FPGAs
+
+####################################################################
+# vim cheat sheet
+####################################################################
+- Always put installation command to ~/.vimrc
+- Install package
+    - :PlugInstall
+- split view
+    - :sp
+    - :vsp
+
+
+####################################################################
+# Learn c#
+####################################################################
+- https://docs.microsoft.com/en-us/dotnet/framework/wpf/getting-started/
+- Binding xaml and viewmodel
+    - Method 1
+        - Create viewmodel class in xaml.cs file, under constructor, before InitializeComponent()
+    - Method 2
+        - Write inside xaml, <UserControl.DataContext> <viewModel:YourViewModel/> </UserControl.DataContext>
+- Binding datagrid
+    - Method 1
+        - YourDataGrid.ItemsSource = Yourdata which is a list for example (public class YourData<T> : IList<T>, IReadOnlyList<T>, IList, INotifyCollectionChanged)
