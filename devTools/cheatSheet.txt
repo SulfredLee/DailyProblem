@@ -367,3 +367,9 @@ FPGAs
 - Binding datagrid
     - Method 1
         - YourDataGrid.ItemsSource = Yourdata which is a list for example (public class YourData<T> : IList<T>, IReadOnlyList<T>, IList, INotifyCollectionChanged)
+
+####################################################################
+# Learn java
+####################################################################
+- using ide IntelliJ IDEA community
+    - install jdk for it: jdk-8u261-windows-x64.exe
