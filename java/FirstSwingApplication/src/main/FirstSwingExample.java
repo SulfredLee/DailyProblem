@@ -1,3 +1,5 @@
+package main;
+
 import javax.swing.*;
 public class FirstSwingExample {
     public static void main(String[] args) {
@@ -11,5 +13,9 @@ public class FirstSwingExample {
         f.setSize(400,500);//400 width and 500 height
         f.setLayout(null);//using no layout managers
         f.setVisible(true);//making the frame visible
+    }
+
+    public static void foo(int xx) {
+        int y = xx + 1;
     }
 }
