@@ -85,7 +85,12 @@ make install
         PtSansNarrow.ttf
 
 ####################################################################
-# MySQL cheat sheet
+# GUI MySQL, db
+####################################################################
+MySQL workbench
+
+####################################################################
+# MySQL cheat sheet, database, db
 ####################################################################
 # Create a new user and let remote access possible
 mysql> CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
