@@ -184,6 +184,10 @@ git remote prune origin
 git log --pretty=oneline 2020Q1_Patch_002..2020Q1_Patch_004
 # git get commit list from head to latest tag
 git log $(git describe --tags --abbrev=0)..HEAD --oneline
+# create git patch for the first commit
+git format-patch HEAD^
+# apply git patch from file
+git am <patch_file>
 
 pip3 install mysql-connector
 pip3 install mysqlclient
