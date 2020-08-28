@@ -412,3 +412,10 @@ Reliability Monitor
 ####################################################################
 # Check for tags meaning
 https://www.onixs.biz/fix-dictionary/4.2/fields_by_tag.html
+# learn fix protocol
+https://www.ksvali.com/
+
+####################################################################
+# Authentication tool on desktop
+####################################################################
+https://winauth.github.io/winauth/download.html
