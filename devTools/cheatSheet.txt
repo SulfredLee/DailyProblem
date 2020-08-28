@@ -416,6 +416,9 @@ https://www.onixs.biz/fix-dictionary/4.2/fields_by_tag.html
 https://www.ksvali.com/
 
 ####################################################################
-# Authentication tool on desktop
+# Tools list
 ####################################################################
+# Authentication tool on desktop
 https://winauth.github.io/winauth/download.html
+# sshfs on windows
+https://github.com/billziss-gh/sshfs-win
