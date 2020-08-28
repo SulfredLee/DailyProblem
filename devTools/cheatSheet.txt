@@ -382,3 +382,33 @@ FPGAs
 ####################################################################
 - using ide IntelliJ IDEA community
     - install jdk for it: jdk-8u261-windows-x64.exe
+
+####################################################################
+# mount drive / folder through sshfs
+####################################################################
+- Install sshfs
+    - $ sudo apt-ge install sshfs
+- $ mkdir remote_disk
+- $ sshfs NAME@HOST:/path/to/folder remote_disk
+
+####################################################################
+# mount drive / folder from WSL to Windows
+####################################################################
+# mount
+$ sudo mkdir /mnt/d
+$ sudo mount -t drvfs D: /mnt/d
+# unmount
+$ sudo umount /mnt/d
+
+####################################################################
+# Windows checking tool
+####################################################################
+C:\Users\YourName\AppData\CrashDump
+Event Viewer
+Reliability Monitor
+
+####################################################################
+# Fix protocol Related
+####################################################################
+# Check for tags meaning
+https://www.onixs.biz/fix-dictionary/4.2/fields_by_tag.html
