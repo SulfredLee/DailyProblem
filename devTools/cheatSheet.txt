@@ -249,11 +249,24 @@ sudo bash -c 'echo core.%e.%p.%t > /proc/sys/kernel/core_pattern'
 ####################################################################
 # check core dump
 ####################################################################
-gdb ./src/speedTest core.xxxx
+# Read core dump and find where is the crash
+gdb ./path/to/your/binary core.xxxx
+# list call stack
 bt
+# jump to function at call stack 1
 f 1
+# show value of that variable
 p variable
+# list code
 l
+# run with debug
+gdb ./path/to/your/binary
+# Once you are running in debug, Add breakpoint at line 20 in file main.cpp
+b main.cpp:20
+# run gdb with arguments
+gdb --args exe arg1 arg2
+# always break when new thread created
+catch syscall clone
 
 ####################################################################
 # vim cheatsheet
