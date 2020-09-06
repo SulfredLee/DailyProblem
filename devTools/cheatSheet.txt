@@ -435,6 +435,8 @@ https://www.ksvali.com/
 https://winauth.github.io/winauth/download.html
 # sshfs on windows
 https://github.com/billziss-gh/sshfs-win
+# wpf inspector tool, with this tool, user can change the UI dynamically
+https://github.com/snoopwpf/snoopwpf/releases
 
 ####################################################################
 # install kvm on ubuntu
