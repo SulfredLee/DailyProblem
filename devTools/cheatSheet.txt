@@ -435,3 +435,33 @@ https://www.ksvali.com/
 https://winauth.github.io/winauth/download.html
 # sshfs on windows
 https://github.com/billziss-gh/sshfs-win
+
+####################################################################
+# install kvm on ubuntu
+####################################################################
+# Learn from
+https://linuxize.com/post/how-to-install-kvm-on-ubuntu-20-04/
+
+# check if cpu virtualizable, if you machine report a number greater than 0, then you can use kvm
+$ egrep -c '(vmx|svm)' /proc/cpuinfo
+
+# check if VT is enabled, you can go to bios to enable it
+$ sudo apt-get install cpu-checker
+$ kvm-ok
+
+# install things you needed
+$ sudo apt-get install qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virt-manager
+
+# check if the daemon is running
+sudo systemctl is-active libvirtd
+
+# check for user group
+$ id <userName>
+
+# add user to group
+$ sudo adduser <userName> libvirt
+$ sudo adduser <userName> kvm
+
+# Network setup
+# checking
+$ brctl show
