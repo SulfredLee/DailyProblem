@@ -85,11 +85,6 @@ make install
         PtSansNarrow.ttf
 
 ####################################################################
-# GUI MySQL, db
-####################################################################
-MySQL workbench
-
-####################################################################
 # MySQL cheat sheet, database, db
 ####################################################################
 # Create a new user and let remote access possible
@@ -437,6 +432,8 @@ https://winauth.github.io/winauth/download.html
 https://github.com/billziss-gh/sshfs-win
 # wpf inspector tool, with this tool, user can change the UI dynamically
 https://github.com/snoopwpf/snoopwpf/releases
+# DB GUI
+MySQL workbench
 
 ####################################################################
 # install kvm on ubuntu
