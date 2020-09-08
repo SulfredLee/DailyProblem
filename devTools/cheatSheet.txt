@@ -464,3 +464,7 @@ $ sudo adduser <userName> kvm
 # Network setup
 # checking
 $ brctl show
+
+# copy and paste, mouse lag setup
+# install spice-space
+https://www.spice-space.org/download.html
