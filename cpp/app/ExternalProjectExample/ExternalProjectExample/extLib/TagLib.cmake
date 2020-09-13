@@ -1,0 +1,23 @@
+include (ExternalProject)
+
+# Add TagLib
+set (EP_TAGLIB "TagLib")
+ExternalProject_Add (
+  ${EP_TAGLIB}
+
+  PREFIX         ${EP_TAGLIB}
+  GIT_REPOSITORY https://github.com/taglib/taglib
+  GIT_TAG        v1.11.1
+  GIT_SHALLOW    ON
+
+  BUILD_ALWAYS   OFF
+  INSTALL_DIR    ${CMAKE_CURRENT_BINARY_DIR}/ext/${EP_TAGLIB}
+
+  CMAKE_CACHE_ARGS
+  -DBUILD_SHARED_LIBS:BOOL=ON
+  -DENABLE_STATIC_RUNTIME:BOOL=OFF
+  -DBUILD_EXAMPLES:BOOL=ON
+  -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+
+  BUILD_COMMAND     ${CMAKE_COMMAND} --build <BINARY_DIR> --config Release
+  )
