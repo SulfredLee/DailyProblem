@@ -21,3 +21,6 @@ if [ -f "${SSH_ENV}" ]; then
 else
     start_agent;
 fi
+
+# endable cpp core dump
+ulimit -c ulimited
