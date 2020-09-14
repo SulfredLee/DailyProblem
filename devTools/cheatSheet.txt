@@ -130,6 +130,22 @@ mysqldump -h 127.0.0.1 -u sec_bird -P 3306 -p securities_bird | gzip > db.sql.gz
 # import database
 gunzip < ./db.sql.gz | mysql -u sec_bird -h 127.0.0.1 -P 3306 -p securities_bird
 
+# sql example
+SELECT * FROM yourdb.yourtable WHERE working_id not in ('name001', 'name002');
+SELECT * FROM yourdb.yourtable WHERE working_name not like 'catcat';
+
+select  table001.working_code,
+        REPLACE(REPLACE(table001.col002,'Sunday','Sun'),'Monday','Mon') as col002,
+        table001.account_name,
+        table002.exec_worker,
+        sum(abs(table001.numberApple)) as qty
+from    yourdb.yourtable table001
+inner join yourdb002.yourtable002 table002
+on table001.working_id = table002.working_id
+where   table001.working_code not like '%=' and table002.col003 != 'FatCatCat'
+group by table001.working_code, table001.side, table001.account_name, table002.exec_worker
+order by table001.working_code, table001.side, table001.account_name, table002.exec_worker;
+
 ####################################################################
 # docker cheat sheet
 ####################################################################
