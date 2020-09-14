@@ -9,11 +9,9 @@ file(GLOB ${folderName}_inc
 file(GLOB ${folderName}_src
   "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
-ExternalProject_Add_StepDependencies(${Project001} ${targetName})
-
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
-  ${PROJECT_SOURCE_DIR}/${Project001}/lib/PrintHelper
+  ${PROJECT_SOURCE_DIR}/extLib/${Project001}/lib/PrintHelper
   )
   # ${PROJECT_SOURCE_DIR}/lib/utility
   # ${libpng_INCLUDE_DIR}
@@ -22,7 +20,7 @@ include_directories(
 add_executable(${targetName} ${${folderName}_src})
 
 target_link_libraries(${targetName}
-  ${CMAKE_BINARY_DIR}/ext/${Project001}/lib/libPrintHelper.so
+  ${CMAKE_INSTALL_PREFIX}/lib/libPrintHelper.so
   )
 #   utility
 #   ${libpng_LIBRARY_DIR}/libpng16.so

@@ -1,14 +1,12 @@
 include (ExternalProject)
 
-# Add TagLib
-set (EP_TAGLIB "TagLib")
+# Add External ProjectB
+set (Project001 "ProjectB")
 ExternalProject_Add (
-  ${EP_TAGLIB}
+  ${Project001}
 
-  PREFIX         extLib/${EP_TAGLIB}
-  GIT_REPOSITORY https://github.com/taglib/taglib
-  GIT_TAG        v1.11.1
-  GIT_SHALLOW    ON
+  PREFIX extLib/${Project001}
+  SOURCE_DIR ${PROJECT_SOURCE_DIR}/extLib/${Project001}
 
   BUILD_ALWAYS   OFF
   INSTALL_DIR    ${CMAKE_INSTALL_PREFIX}
@@ -20,5 +18,7 @@ ExternalProject_Add (
   -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
   -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
 
-  BUILD_COMMAND     ${CMAKE_COMMAND} --build <BINARY_DIR>
+  BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR>
   )
+
+
