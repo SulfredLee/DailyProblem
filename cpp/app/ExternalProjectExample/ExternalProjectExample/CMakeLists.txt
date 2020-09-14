@@ -1,3 +1,10 @@
+# usage:
+# cd ../build
+# cmake -G Ninja ../ExternalProjectExample -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../install
+# ninja ProjectB
+# ninja TagLib // If you included this file
+# ninja // final build the main project
+
 cmake_minimum_required (VERSION 3.8.2)
 
 # build a CPack driven installer package
