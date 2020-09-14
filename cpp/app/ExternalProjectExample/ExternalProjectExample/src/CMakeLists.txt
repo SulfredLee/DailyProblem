@@ -26,6 +26,11 @@ target_link_libraries(${targetName}
 #   ${libpng_LIBRARY_DIR}/libpng16.so
 #   ${libbmp_LIBRARY_DIR}/libbmp.so)
 
+# https://stackoverflow.com/questions/22735628/force-building-external-project-with-buildtools-before-main-project-with-cmake
+# add_dependencies(${targetName}
+#   ${Project001}
+#   )
+
 # Creates a folder "executables" and adds target
 # project (*.vcproj) under it
 set_property(TARGET ${targetName} PROPERTY FOLDER "executables")
