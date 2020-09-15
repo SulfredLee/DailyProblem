@@ -1,0 +1,3 @@
+set hlsearch " highlight searching
+set relativenumber
+colorscheme desert
