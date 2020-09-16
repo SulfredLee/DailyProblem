@@ -1,3 +1,12 @@
-set hlsearch " highlight searching
-set relativenumber
-colorscheme desert
+" turn relative line numbers on
+:set relativenumber
+:set rnu
+
+" highlight current line
+: set cursorline
+" highlight current column
+" : set cursorcolumn
+" highlight search
+: set hlsearch
+
+: colorscheme desert
