@@ -450,6 +450,8 @@ https://github.com/billziss-gh/sshfs-win
 https://github.com/snoopwpf/snoopwpf/releases
 # DB GUI
 MySQL workbench
+# csv cpp c++ library
+https://github.com/ben-strasser/fast-cpp-csv-parser
 
 ####################################################################
 # install kvm on ubuntu
