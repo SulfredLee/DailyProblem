@@ -23,4 +23,6 @@ else
 fi
 
 # endable cpp core dump
-ulimit -c ulimited
+ulimit -c unlimited
+sudo bash -c 'echo core.%e.%p.%t > /proc/sys/kernel/core_pattern'
+
