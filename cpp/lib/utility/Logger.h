@@ -96,7 +96,9 @@ class Logger
  private:
     Logger();
     Logger(const Logger&) = delete;
-    Logger & operator=(const Logger&) = delete;
+    Logger(const Logger&&) = delete;
+    Logger& operator=(const Logger&) = delete;
+    Logger& operator=(const Logger&&) = delete;
 
     std::string GetCurrentTime();
     std::string GetLogLevelName(LogLevel logLevel);
