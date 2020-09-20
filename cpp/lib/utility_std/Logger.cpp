@@ -132,14 +132,6 @@ std::string Logger::GetCurrentTime()
 
     char currentTime[84] = "";
     sprintf(currentTime, "%s_%03d", buffer, milli);
-    // time compare example
-    // struct timeval tval_before, tval_after, tval_result;
-    // gettimeofday(&tval_before, NULL);
-    // // Some code you want to time, for example:
-    // sleep(1);
-    // gettimeofday(&tval_after, NULL);
-    // timersub(&tval_after, &tval_before, &tval_result);
-    // printf("Time elapsed: %ld.%06ld\n", (long int)tval_result.tv_sec, (long int)tval_result.tv_usec);
     return std::string(currentTime);
 }
 
@@ -176,9 +168,6 @@ bool Logger::OpenLogFile()
         m_config.fileSize = 0;
     }
 
-    // NLFileSys fileSys;
-    // if (!fileSys.IsDirExist(m_config.logPath))
-    //     fileSys.MakePath(m_config.logPath);
     if (!std::filesystem::exists(m_config.logPath))
         std::filesystem::create_directory(m_config.logPath);
 
