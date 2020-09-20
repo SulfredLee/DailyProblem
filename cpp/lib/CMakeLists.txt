@@ -1,1 +1,5 @@
 add_subdirectory(utility)
+add_subdirectory(utility_std)
+add_subdirectory(utility_c)
+add_subdirectory(network)
+add_subdirectory(network_c)
