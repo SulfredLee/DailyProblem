@@ -1,5 +1,6 @@
 /*
  * This Logger can save log to files, cah have different log level, can using << operator thread safe
+ * Very interesting implementation, active lock in constructor, using move() to keep the lock alive between different Logger object
  */
 
 #ifndef LOGGER_H
@@ -78,7 +79,7 @@ class Logger
 class StreamLogger
 {
  public:
-    static std::mutex staticOutLock;
+    // static std::mutex staticOutLock;
     static std::stringstream staticOutStream;
 
     std::unique_lock<std::mutex> m_lock;
@@ -86,8 +87,9 @@ class StreamLogger
     Logger::LogLevel m_level;
  public:
     StreamLogger(std::stringstream& stream, const Logger::LogLevel& logLevel, void *logObject, const std::string& functionName, const int& lineNumber)
-        : m_lock(staticOutLock)
-        , m_stream(&stream)
+        : m_stream(&stream)
+        // : m_lock(staticOutLock)
+        // , m_stream(&stream)
     {
         staticOutStream.str("");
         m_level = logLevel;
@@ -103,8 +105,9 @@ class StreamLogger
     }
 
     StreamLogger(StreamLogger&& other)
-        : m_lock(std::move(other.m_lock))
-        , m_stream(other.m_stream)
+        : m_stream(other.m_stream)
+        // : m_lock(std::move(other.m_lock))
+        // , m_stream(other.m_stream)
     {
         other.m_stream = nullptr;
     }

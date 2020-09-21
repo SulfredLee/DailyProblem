@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <time.h>
 
-std::mutex StreamLogger::staticOutLock{};
+// std::mutex StreamLogger::staticOutLock{};
 std::stringstream StreamLogger::staticOutStream{};
 
 StreamLogger CreateStreamLogger(const Logger::LogLevel& logLevel, void *logObject, const std::string& functionName, const int& lineNumber)
