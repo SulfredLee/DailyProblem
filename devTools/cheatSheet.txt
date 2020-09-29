@@ -454,6 +454,8 @@ MySQL workbench
 https://github.com/ben-strasser/fast-cpp-csv-parser
 # java IDE
 IntelliJ IDEA
+# useful screen capture application
+Greenshot
 
 ####################################################################
 # install kvm on ubuntu
