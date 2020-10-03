@@ -12,11 +12,11 @@
 #include <time.h>
 
 // std::mutex StreamLogger::staticOutLock{};
-std::stringstream StreamLogger::staticOutStream{};
 
 StreamLogger CreateStreamLogger(const Logger::LogLevel& logLevel, void *logObject, const std::string& functionName, const int& lineNumber)
 {
-    return StreamLogger(StreamLogger::staticOutStream, logLevel, logObject, functionName, lineNumber);
+    std::shared_ptr<std::stringstream> outStream = std::make_shared<std::stringstream>();
+    return StreamLogger(outStream, logLevel, logObject, functionName, lineNumber);
 }
 
 Logger::Logger()
@@ -31,7 +31,9 @@ Logger::Logger()
 }
 
 Logger::~Logger()
-{}
+{
+    m_logWorker.StopPool();
+}
 
 Logger& Logger::GetInstance()
 {
@@ -43,6 +45,8 @@ void Logger::InitComponent(const Logger::LoggerConfig& config)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     m_config = config;
+    m_logWorker.InitComponent(1, std::bind(&Logger::PrintLog, this, std::placeholders::_1));
+    m_logWorker.StartPool();
 }
 
 Logger::LoggerConfig Logger::GetConfig()
@@ -69,17 +73,8 @@ void Logger::Log(LogLevel logLevel, const char* format, ...)
 
     std::stringstream ss;
     ss << GetCurrentTime() << " [" << GetLogLevelName(logLevel) << "] " << dest;
-    m_config.fileSize += ss.str().length();
 
-    if (m_config.isToFile && OpenLogFile())
-    {
-        m_outFH << ss.str();
-    }
-
-    if (m_config.isToConsole)
-    {
-        std::cout << ss.str();
-    }
+    m_logWorker.PushJob(std::make_shared<std::string>(ss.str()));
 }
 
 void Logger::Log(LogLevel logLevel, const std::string& logMsg)
@@ -90,17 +85,8 @@ void Logger::Log(LogLevel logLevel, const std::string& logMsg)
 
     std::stringstream ss;
     ss << GetCurrentTime() << " [" << GetLogLevelName(logLevel) << "] " << logMsg;
-    m_config.fileSize += ss.str().length();
 
-    if (m_config.isToFile && OpenLogFile())
-    {
-        m_outFH << ss.str();
-    }
-
-    if (m_config.isToConsole)
-    {
-        std::cout << ss.str();
-    }
+    m_logWorker.PushJob(std::make_shared<std::string>(ss.str()));
 }
 
 void Logger::AddClassName(std::string className, void* object)
@@ -205,16 +191,22 @@ void Logger::LogImplement(char dest[], int size, LogLevel logLevel, bool useTime
            << std::setw(6) << std::setfill(' ') << syscall(SYS_gettid) << ",";
     if (size != 0)
         ss << dest;
-    m_config.fileSize += ss.str().length();
+
+    m_logWorker.PushJob(std::make_shared<std::string>(ss.str()));
+}
+
+void Logger::PrintLog(const std::shared_ptr<std::string>& logStr)
+{
+    m_config.fileSize += logStr->length();
 
     if (m_config.isToFile && OpenLogFile())
     {
-        m_outFH << ss.str();
+        m_outFH << *logStr;
     }
 
     if (m_config.isToConsole)
     {
-        std::cout << ss.str();
+        std::cout << *logStr;
     }
 }
 

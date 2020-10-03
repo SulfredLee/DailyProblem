@@ -13,11 +13,14 @@
 #include <map>
 #include <thread>
 #include <mutex>
+#include <memory>
 
 #include <unistd.h>
 #include <sys/syscall.h>
 #include <sys/time.h>
-// using endl_type = decltype( std::endl ); //This is the key: std::endl is a template function, and this is the signature of that function (For std::ostream).
+
+#include <ThreadPool.h>
+
 class Logger
 {
  public:
@@ -62,6 +65,7 @@ class Logger
     std::mutex m_mutex;
     LogLevel m_oneTimeLevel;
     std::map<void*, std::string> m_classNameMap; // key: object address, object class name
+    ThreadPool<std::shared_ptr<std::string> > m_logWorker;
  private:
     Logger();
     Logger(const Logger&) = delete;
@@ -74,24 +78,24 @@ class Logger
     std::string _GetClassName(const std::string& prettyFunction);
     bool OpenLogFile();
     void LogImplement(char dest[], int size, LogLevel logLevel, bool useTimeStamp, bool printLogLocation, void *logObject);
+    void PrintLog(const std::shared_ptr<std::string>& logStr);
 };
 
 class StreamLogger
 {
  public:
-    // static std::mutex staticOutLock;
-    static std::stringstream staticOutStream;
+    // static std::mutex staticOutLock; // the original usage is the activate this lock in the constructor
 
     std::unique_lock<std::mutex> m_lock;
-    std::stringstream* m_stream; // can't make this reference so we can move
+    std::shared_ptr<std::stringstream> m_stream; // can't make this reference so we can move
     Logger::LogLevel m_level;
  public:
-    StreamLogger(std::stringstream& stream, const Logger::LogLevel& logLevel, void *logObject, const std::string& functionName, const int& lineNumber)
-        : m_stream(&stream)
+    StreamLogger(std::shared_ptr<std::stringstream> stream, const Logger::LogLevel& logLevel, void *logObject, const std::string& functionName, const int& lineNumber)
+        : m_stream(stream)
         // : m_lock(staticOutLock)
         // , m_stream(&stream)
     {
-        staticOutStream.str("");
+        m_stream->str("");
         m_level = logLevel;
         if (logObject)
             *m_stream << std::setw(25) << std::setfill(' ') << Logger::GetInstance().GetClassName(logObject, __PRETTY_FUNCTION__) << "::";
