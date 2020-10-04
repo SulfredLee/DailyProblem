@@ -1,4 +1,4 @@
-set(targetName "templateProject")
+set(targetName "ThreadPoolExample")
 get_filename_component(folderName ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 string(REPLACE " " "_" folderName ${folderName})
 
@@ -17,8 +17,8 @@ include_directories(
 
 add_executable(${targetName} ${${folderName}_src})
 
-# target_link_libraries(${targetName}
-#   ${CMAKE_THREAD_LIBS_INIT}
+target_link_libraries(${targetName}
+  ${CMAKE_THREAD_LIBS_INIT})
 #   utility
 #   ${libpng_LIBRARY_DIR}/libpng16.so
 #   ${libbmp_LIBRARY_DIR}/libbmp.so)

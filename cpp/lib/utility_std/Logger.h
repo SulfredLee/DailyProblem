@@ -35,7 +35,7 @@ class Logger
             fileSize = 0;
             fileSizeLimit = 4 * 1024 * 1024; // 4 MByte
             isToConsole = true;
-            isToFile = true;
+            isToFile = false;
         };
         ~LoggerConfig() {};
     public:

@@ -28,6 +28,9 @@ Logger::Logger()
     m_config.fileSizeLimit = 4 * 1024 * 1024; // 4 MByte
     m_config.isToConsole = true;
     m_config.isToFile = false;
+
+    m_logWorker.InitComponent(1, std::bind(&Logger::PrintLog, this, std::placeholders::_1));
+    m_logWorker.StartPool();
 }
 
 Logger::~Logger()
@@ -45,8 +48,6 @@ void Logger::InitComponent(const Logger::LoggerConfig& config)
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     m_config = config;
-    m_logWorker.InitComponent(1, std::bind(&Logger::PrintLog, this, std::placeholders::_1));
-    m_logWorker.StartPool();
 }
 
 Logger::LoggerConfig Logger::GetConfig()
