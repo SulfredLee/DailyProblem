@@ -91,7 +91,7 @@ class StreamLogger
     Logger::LogLevel m_level;
  public:
     StreamLogger(std::shared_ptr<std::stringstream> stream, const Logger::LogLevel& logLevel, void *logObject, const std::string& functionName, const int& lineNumber)
-        : m_stream(stream)
+        : m_stream(std::move(stream))
         // : m_lock(staticOutLock)
         // , m_stream(&stream)
     {
@@ -109,11 +109,11 @@ class StreamLogger
     }
 
     StreamLogger(StreamLogger&& other)
-        : m_stream(other.m_stream)
+        : m_stream(std::move(other.m_stream))
         // : m_lock(std::move(other.m_lock))
         // , m_stream(other.m_stream)
     {
-        other.m_stream = nullptr;
+        // other.m_stream = nullptr;
     }
 
     friend StreamLogger&& operator << (StreamLogger&& s, std::stringstream& (*arg)(std::stringstream&))
