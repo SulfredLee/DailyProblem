@@ -168,7 +168,7 @@ StreamLogger CreateStreamLogger(const Logger::LogLevel& logLevel, void *logObjec
 #define LOGMSG_MSG_S_C() CreateStreamLogger(Logger::LogLevel::INFO, NULL, __FUNCTION__, __LINE__)
 #define LOGMSG_WRN_S_C() CreateStreamLogger(Logger::LogLevel::WARN, NULL, __FUNCTION__, __LINE__)
 #define LOGMSG_ERR_S_C() CreateStreamLogger(Logger::LogLevel::ERR, NULL, __FUNCTION__, __LINE__)
-#define LOGMSG_ERRCLASS_NAME(className) Logger::GetInstance().AddClassName(className, this)
+#define LOGMSG_CLASS_NAME(className) Logger::GetInstance().AddClassName(className, this)
 #define LOGMSG_INIT(config) Logger::GetInstance().InitComponent(config)
 
 #endif
