@@ -20,6 +20,7 @@ class ThreadPool
     void PushJob(const T& job);
     void StartPool();
     void StopPool();
+    void ForceDoAllJobs();
 
  private:
     bool GetJob(T& job);
@@ -88,6 +89,16 @@ void ThreadPool<T>::StopPool()
 {
     m_isRun.store(false);
     m_cond.notify_all();
+}
+
+template <class T>
+void ThreadPool<T>::ForceDoAllJobs()
+{
+    while (m_jobQ.size())
+    {
+        m_fn(m_jobQ.front());
+        m_jobQ.pop();
+    }
 }
 
 template <class T>

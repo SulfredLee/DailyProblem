@@ -36,6 +36,7 @@ Logger::Logger()
 Logger::~Logger()
 {
     m_logWorker.StopPool();
+    m_logWorker.ForceDoAllJobs();
 }
 
 Logger& Logger::GetInstance()
