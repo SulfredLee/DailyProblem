@@ -456,6 +456,24 @@ https://github.com/ben-strasser/fast-cpp-csv-parser
 IntelliJ IDEA
 # useful screen capture application
 Greenshot
+# ssh on windows
+MobaXterm
+
+####################################################################
+# Useful links
+####################################################################
+# Hash table compare
+https://tessil.github.io/2016/08/29/benchmark-hopscotch-map.html
+# Design and implement hash table
+https://medium.com/@fchern/%E8%A8%AD%E8%A8%88%E9%AB%98%E6%95%88%E8%83%BD%E7%9A%84hash-table-%E4%BA%8C-9b5dc744219f
+
+####################################################################
+# excel cheatsheet
+####################################################################
+# Way to convert one column to n column on every n rows
+1. Place you data to A1
+2. Place this formula to C1, for example you want to convert evey 3 rows to 3 columns: =INDEX($A:$A,ROW(A1)*3-3+COLUMN(A1))
+3. drag the selection range to finish the convertion
 
 ####################################################################
 # install kvm on ubuntu
