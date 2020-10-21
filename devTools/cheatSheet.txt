@@ -443,7 +443,7 @@ https://www.onixs.biz/fix-dictionary/4.2/fields_by_tag.html
 https://www.ksvali.com/
 
 ####################################################################
-# Tools list
+# Useful Tools list
 ####################################################################
 # Authentication tool on desktop
 https://winauth.github.io/winauth/download.html
@@ -461,11 +461,14 @@ IntelliJ IDEA
 Greenshot
 # ssh on windows
 MobaXterm
+# system monitoring tool
+zabbix
 
 ####################################################################
 # Useful command
 ####################################################################
 ps -T -p `pidof yourApp`
+netstat -tulpn | grep "port you want to check"
 
 ####################################################################
 # Useful links
