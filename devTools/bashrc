@@ -27,5 +27,6 @@ ulimit -c unlimited
 sudo bash -c 'echo core.%e.%p.%t > /proc/sys/kernel/core_pattern'
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+export PATH=$PATH:~/Documents/bin
 
 alias openFolder='nautilus'
