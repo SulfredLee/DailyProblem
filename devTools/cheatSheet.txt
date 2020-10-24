@@ -29,7 +29,7 @@ git gitk git-gui
 ############ install useful libraries
 build-essential cmake ninja-build libboost-all-dev qt5-default qtcreator qt5-doc qt5-doc-html qtbase5-dev-tools qtbase5-examples
 vlc gimp meld playonlinux graphviz texmaker ffmpeg mkvtoolnix mkvtoolnix-gui
-python2 python2-dev python3 python3-dev python3-virtualenv python3-pip python3-pdb
+python2 python2-dev python3 python3-dev python3-virtualenv python3-pip
 openssl openssh-client openssh-server
 flameshot
 
@@ -263,8 +263,6 @@ sudo bash -c 'echo core.%e.%p.%t > /proc/sys/kernel/core_pattern'
 ####################################################################
 # debug python, cpp
 ####################################################################
-# install tool
-sudo apt-get intsll python-pdb
 # use case
 python3 -m pdb <your script>
 3 similar to c++, doc: https://docs.python.org/3/library/pdb.html
