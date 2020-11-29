@@ -10,6 +10,15 @@ namespace ListExample
 {
     class MainWindowViewModel : BindableBase
     {
+        public class ContextMenuItemNode : BindableBase
+        {
+            private string _menuName;
+            public string MenuName
+            {
+                get => _menuName;
+                set => SetProperty(ref _menuName, value);
+            }
+        }
         public class ServiceNode : BindableBase
         {
             private string _serviceName;
@@ -30,13 +39,23 @@ namespace ListExample
                 get => _state;
                 set => SetProperty(ref _state, value);
             }
+            private ObservableCollection<ContextMenuItemNode> _contextMenuList = new ObservableCollection<ContextMenuItemNode>();
+            public ObservableCollection<ContextMenuItemNode> ContextMenuList
+            {
+                get => _contextMenuList;
+                set => SetProperty(ref _contextMenuList, value);
+            }
         }
         public ObservableCollection<ServiceNode> ServiceObjects { get; } = new ObservableCollection<ServiceNode>();
+        
         public MainWindowViewModel()
         {
             for (int i = 0; i < 10; i++)
             {
-                ServiceObjects.Add(new ServiceNode { InstanceName = "apple", ServiceName = "AP", State = "Normal" });
+                ObservableCollection<ContextMenuItemNode> menuList = new ObservableCollection<ContextMenuItemNode>();
+                menuList.Add(new ContextMenuItemNode { MenuName = "ABC Item" });
+                menuList.Add(new ContextMenuItemNode { MenuName = "EFG Item" });
+                ServiceObjects.Add(new ServiceNode { InstanceName = "apple", ServiceName = "AP", State = "Normal", ContextMenuList = menuList });
             }
             for (int i = 0; i < 10; i++)
             {

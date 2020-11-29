@@ -62,6 +62,13 @@
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
+                            <TextBlock.ContextMenu>
+                                <ContextMenu ItemsSource="{Binding ContextMenuList}">
+                                    <DataTemplate>
+                                        <MenuItem Header="{Binding MenuName}"/>
+                                    </DataTemplate>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
                         </TextBlock>
                     </Grid>
                 </DataTemplate>
