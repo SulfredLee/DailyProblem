@@ -1,16 +1,18 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ListExample
 {
     class MainWindowViewModel : BindableBase
     {
-        public class ContextMenuItemNode : BindableBase
+        public class MenuNode : BindableBase
         {
             private string _menuName;
             public string MenuName
@@ -39,12 +41,7 @@ namespace ListExample
                 get => _state;
                 set => SetProperty(ref _state, value);
             }
-            private ObservableCollection<ContextMenuItemNode> _contextMenuList = new ObservableCollection<ContextMenuItemNode>();
-            public ObservableCollection<ContextMenuItemNode> ContextMenuList
-            {
-                get => _contextMenuList;
-                set => SetProperty(ref _contextMenuList, value);
-            }
+            public ObservableCollection<MenuNode> ContextMenuList { get; } = new ObservableCollection<MenuNode>();
         }
         public ObservableCollection<ServiceNode> ServiceObjects { get; } = new ObservableCollection<ServiceNode>();
         
@@ -52,10 +49,11 @@ namespace ListExample
         {
             for (int i = 0; i < 10; i++)
             {
-                ObservableCollection<ContextMenuItemNode> menuList = new ObservableCollection<ContextMenuItemNode>();
-                menuList.Add(new ContextMenuItemNode { MenuName = "ABC Item" });
-                menuList.Add(new ContextMenuItemNode { MenuName = "EFG Item" });
-                ServiceObjects.Add(new ServiceNode { InstanceName = "apple", ServiceName = "AP", State = "Normal", ContextMenuList = menuList });
+                ServiceNode tempNode = new ServiceNode { InstanceName = "apple", ServiceName = "AP", State = "Normal" };
+                tempNode.ContextMenuList.Add(new MenuNode { MenuName = "A Item" });
+                tempNode.ContextMenuList.Add(new MenuNode { MenuName = "B Item" });
+                tempNode.ContextMenuList.Add(new MenuNode { MenuName = "C Item" });
+                ServiceObjects.Add(tempNode);
             }
             for (int i = 0; i < 10; i++)
             {
@@ -65,6 +63,13 @@ namespace ListExample
             {
                 ServiceObjects.Add(new ServiceNode { InstanceName = "banana", ServiceName = "BA", State = "Down" });
             }
+            ConfirmButtonCommand = new DelegateCommand(HandleConfirmButtonCommand);
+        }
+        public ICommand ConfirmButtonCommand { get; }
+
+        private void HandleConfirmButtonCommand()
+        {
+            
         }
     }
 }

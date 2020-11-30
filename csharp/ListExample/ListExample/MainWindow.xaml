@@ -64,9 +64,11 @@
                             </TextBlock.Style>
                             <TextBlock.ContextMenu>
                                 <ContextMenu ItemsSource="{Binding ContextMenuList}">
-                                    <DataTemplate>
-                                        <MenuItem Header="{Binding MenuName}"/>
-                                    </DataTemplate>
+                                    <ContextMenu.ItemTemplate>
+                                        <HierarchicalDataTemplate>
+                                            <MenuItem Header="{Binding MenuName}"/>
+                                        </HierarchicalDataTemplate>
+                                    </ContextMenu.ItemTemplate>
                                 </ContextMenu>
                             </TextBlock.ContextMenu>
                         </TextBlock>
@@ -91,6 +93,15 @@
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
+                            <TextBlock.ContextMenu>
+                                <ContextMenu ItemsSource="{Binding ContextMenuList}">
+                                    <ContextMenu.ItemTemplate>
+                                        <HierarchicalDataTemplate>
+                                            <MenuItem Header="{Binding MenuName}"/>
+                                        </HierarchicalDataTemplate>
+                                    </ContextMenu.ItemTemplate>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
                         </TextBlock>
                     </Grid>
                 </DataTemplate>
@@ -113,6 +124,15 @@
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
+                            <TextBlock.ContextMenu>
+                                <ContextMenu ItemsSource="{Binding ContextMenuList}">
+                                    <ContextMenu.ItemTemplate>
+                                        <HierarchicalDataTemplate>
+                                            <MenuItem Header="{Binding MenuName}" Command="Binding CloseCommand"/>
+                                        </HierarchicalDataTemplate>
+                                    </ContextMenu.ItemTemplate>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
                         </TextBlock>
                     </Grid>
                 </DataTemplate>
