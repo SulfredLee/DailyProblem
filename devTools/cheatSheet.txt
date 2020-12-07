@@ -88,6 +88,14 @@ make install
         PtSansNarrow.ttf
 
 ####################################################################
+# PostgreSQL cheat sheet, database, db
+####################################################################
+### Export a postgreSQL database dump, https://axiomq.com/blog/backup-and-restore-a-postgresql-database/
+pg_dump -U db_user -W -F t db_name > /path/to/your/file/dump_name.tar
+### Restore a database with psql
+psql -U db_user db_name < dump_name.sql
+
+####################################################################
 # MySQL cheat sheet, database, db
 ####################################################################
 # Create a new user and let remote access possible
@@ -202,6 +210,10 @@ git log $(git describe --tags --abbrev=0)..HEAD --oneline
 git format-patch HEAD^
 # apply git patch from file
 git am <patch_file>
+# check file permission in git
+git ls-files -s
+# change file permission in git
+git update-index --chmod=+x path/to/file
 
 pip3 install mysql-connector
 pip3 install mysqlclient
@@ -526,3 +538,9 @@ $ brctl show
 # copy and paste, mouse lag setup
 # install spice-space
 https://www.spice-space.org/download.html
+
+####################################################################
+# check used space
+####################################################################
+du -kh .
+du -h -d 1
