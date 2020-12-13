@@ -44,7 +44,13 @@ namespace ListExample
             public ObservableCollection<MenuNode> ContextMenuList { get; } = new ObservableCollection<MenuNode>();
         }
         public ObservableCollection<ServiceNode> ServiceObjects { get; } = new ObservableCollection<ServiceNode>();
-        
+        private string _curRegion = "AP-HK";
+        public string CurRegion
+        {
+            get => _curRegion;
+            set => SetProperty(ref _curRegion, value);
+        }
+
         public MainWindowViewModel()
         {
             for (int i = 0; i < 10; i++)
@@ -64,12 +70,24 @@ namespace ListExample
                 ServiceObjects.Add(new ServiceNode { InstanceName = "banana", ServiceName = "BA", State = "Down" });
             }
             ConfirmButtonCommand = new DelegateCommand(HandleConfirmButtonCommand);
+            SwitchToAPHKCommand = new DelegateCommand(HandleSwitchToAPHKCommand);
+            SwitchToAPEUCommand = new DelegateCommand(HandleSwitchToAPEUCommand);
         }
         public ICommand ConfirmButtonCommand { get; }
+        public ICommand SwitchToAPHKCommand { get; }
+        public ICommand SwitchToAPEUCommand { get; }
 
         private void HandleConfirmButtonCommand()
         {
             
+        }
+        private void HandleSwitchToAPHKCommand()
+        {
+            int i = 0;
+        }
+        private void HandleSwitchToAPEUCommand()
+        {
+            int i = 0;
         }
     }
 }

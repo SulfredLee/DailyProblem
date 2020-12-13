@@ -39,6 +39,7 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <UserControl>
             <UserControl.Resources>
@@ -128,7 +129,7 @@
                                 <ContextMenu ItemsSource="{Binding ContextMenuList}">
                                     <ContextMenu.ItemTemplate>
                                         <HierarchicalDataTemplate>
-                                            <MenuItem Header="{Binding MenuName}" Command="Binding CloseCommand"/>
+                                            <MenuItem Header="{Binding MenuName}" Command="{Binding CloseCommand}"/>
                                         </HierarchicalDataTemplate>
                                     </ContextMenu.ItemTemplate>
                                 </ContextMenu>
@@ -138,5 +139,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <local:XXPanel Grid.Row="3"></local:XXPanel>
     </Grid>
 </Window>

@@ -24,5 +24,9 @@ namespace ListExample
         {
             InitializeComponent();
         }
+        private void SwitchToAPHK(object sender, RoutedEventArgs e)
+        {
+            int i = 0;
+        }
     }
 }
