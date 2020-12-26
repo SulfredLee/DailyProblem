@@ -82,6 +82,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="tempDialog.xaml.cs">
+      <DependentUpon>tempDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="tempDialogViewModel.cs" />
+    <Compile Include="treeDatagrid.xaml.cs">
+      <DependentUpon>treeDatagrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="treeDatagridViewModel.cs" />
     <Compile Include="XXPanel.xaml.cs">
       <DependentUpon>XXPanel.xaml</DependentUpon>
     </Compile>
@@ -97,6 +105,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="tempDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="treeDatagrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="XXPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

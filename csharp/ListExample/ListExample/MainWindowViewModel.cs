@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ListExample
@@ -87,7 +88,11 @@ namespace ListExample
         }
         private void HandleSwitchToAPEUCommand()
         {
-            int i = 0;
+            tempDialog hostnameDialog = new tempDialog();
+            hostnameDialog.Show();
+
+            treeDatagrid secondDialog = new treeDatagrid();
+            secondDialog.Show();
         }
     }
 }
