@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
+using PrismOutlook.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PrismOutlook.Modules.Contacts.ViewModels
 {
-    public class ViewAViewModel : BindableBase
+    public class ViewAViewModel : ViewModelBase
     {
         private string _message;
         public string Message

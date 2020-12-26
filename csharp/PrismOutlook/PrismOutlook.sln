@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrismOutlook.Modules.Calend
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrismOutlook.Core", "PrismOutlook.Core\PrismOutlook.Core.csproj", "{05601656-5740-4DE8-9776-059A6415C977}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrismOutlook.Bussiness", "PrismOutlook.Bussiness\PrismOutlook.Bussiness.csproj", "{12875819-51E0-4814-8187-B6D172BC5875}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{05601656-5740-4DE8-9776-059A6415C977}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05601656-5740-4DE8-9776-059A6415C977}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05601656-5740-4DE8-9776-059A6415C977}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12875819-51E0-4814-8187-B6D172BC5875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12875819-51E0-4814-8187-B6D172BC5875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12875819-51E0-4814-8187-B6D172BC5875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12875819-51E0-4814-8187-B6D172BC5875}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 ﻿using Infragistics.Windows.OutlookBar;
+using PrismOutlook.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,12 @@ namespace PrismOutlook.Modules.Contacts.Menus
     /// <summary>
     /// Interaction logic for ContactsGroup.xaml
     /// </summary>
-    public partial class ContactsGroup : OutlookBarGroup
+    public partial class ContactsGroup : OutlookBarGroup, IOutlookBarGroup
     {
         public ContactsGroup()
         {
             InitializeComponent();
         }
+        public string DefaultNavigationPath => "ViewA";
     }
 }
