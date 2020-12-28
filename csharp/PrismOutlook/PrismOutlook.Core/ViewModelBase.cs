@@ -18,7 +18,7 @@ namespace PrismOutlook.Core
 
         public virtual bool IsNavigationTarget(NavigationContext navigationContext)
         {
-            return true;
+            return true; // return true so that prism will reuse the view instance by default
         }
 
         public virtual void OnNavigatedFrom(NavigationContext navigationContext)

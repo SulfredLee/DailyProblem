@@ -128,6 +128,10 @@
       <Project>{05601656-5740-4de8-9776-059a6415c977}</Project>
       <Name>PrismOutlook.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PrismOutlook.Services.Interfaces\PrismOutlook.Services.Interfaces.csproj">
+      <Project>{1ee5f0bb-56e3-483b-a02c-eebe901fe308}</Project>
+      <Name>PrismOutlook.Services.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
