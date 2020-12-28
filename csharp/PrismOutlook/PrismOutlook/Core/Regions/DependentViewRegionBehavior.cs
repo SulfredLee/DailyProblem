@@ -52,6 +52,7 @@ namespace PrismOutlook.Core.Regions
 
                             if (info.View is ISupportDataContext infoDC && newView is ISupportDataContext viewDC)
                             {
+                                // assign the same datacontext from content region to ribbon tab region
                                 infoDC.DataContext = viewDC.DataContext;
                             }
                             dependentViews.Add(info);
