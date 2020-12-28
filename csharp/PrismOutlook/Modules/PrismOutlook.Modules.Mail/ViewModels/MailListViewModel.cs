@@ -16,6 +16,14 @@ namespace PrismOutlook.Modules.Mail.ViewModels
             get { return _title; }
             set { SetProperty(ref _title, value); }
         }
+        private DelegateCommand _testCommand;
+        public DelegateCommand TestCommand =>
+            _testCommand ?? (_testCommand = new DelegateCommand(ExecuteTestCommand));
+
+        void ExecuteTestCommand()
+        {
+            System.Windows.MessageBox.Show("blah");
+        }
         public MailListViewModel()
         {
 

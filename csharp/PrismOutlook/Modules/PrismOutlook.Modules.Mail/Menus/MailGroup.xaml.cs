@@ -1,5 +1,6 @@
 ﻿using Infragistics.Controls.Menus;
 using Infragistics.Windows.OutlookBar;
+using Infragistics.Windows.Ribbon;
 using PrismOutlook.Bussiness;
 using PrismOutlook.Core;
 using System;
@@ -36,7 +37,7 @@ namespace PrismOutlook.Modules.Mail.Menus
                 if (item != null)
                     return ((NavigationItem)item.Data).NavigationPath;
 
-                return "MailList";
+                return "MailList?id=Default";
             }
         }
     }

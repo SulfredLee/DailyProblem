@@ -16,7 +16,6 @@ namespace PrismOutlook.Views
         public MainWindow(IApplicationCommands applicationCommands)
         {
             InitializeComponent();
-
             Infragistics.Themes.ThemeManager.ApplicationTheme = new Office2013Theme();
             _applicationCommands = applicationCommands;
         }
