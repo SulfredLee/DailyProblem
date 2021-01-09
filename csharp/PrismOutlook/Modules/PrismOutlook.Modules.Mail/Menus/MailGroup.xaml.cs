@@ -1,7 +1,7 @@
 ﻿using Infragistics.Controls.Menus;
 using Infragistics.Windows.OutlookBar;
 using Infragistics.Windows.Ribbon;
-using PrismOutlook.Bussiness;
+using PrismOutlook.Business;
 using PrismOutlook.Core;
 using PrismOutlook.Modules.Mail.ViewModels;
 using System;
@@ -47,6 +47,7 @@ namespace PrismOutlook.Modules.Mail.Menus
 
         private void DataTree_Loaded(object sender, RoutedEventArgs e)
         {
+            // select the first row by default
             _dataTree.Loaded -= DataTree_Loaded;
 
             var parentNode = _dataTree.Nodes[0];

@@ -10,6 +10,8 @@ using Infragistics.Windows.Ribbon;
 using PrismOutlook.Modules.Contacts;
 using PrismOutlook.Core;
 using Infragistics.Themes;
+using PrismOutlook.Core.Dialogs;
+using Prism.Services.Dialogs;
 
 namespace PrismOutlook
 {
@@ -25,7 +27,9 @@ namespace PrismOutlook
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<IDialogService, MyDialogService>();
             containerRegistry.RegisterSingleton<IApplicationCommands, ApplicationCommands>();
+            containerRegistry.RegisterDialogWindow<RibbonWindow>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

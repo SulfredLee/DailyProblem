@@ -1,6 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
-using PrismOutlook.Bussiness;
+using PrismOutlook.Business;
 using PrismOutlook.Core;
 using System;
 using System.Collections.Generic;

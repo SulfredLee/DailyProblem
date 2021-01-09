@@ -1,4 +1,5 @@
-﻿using PrismOutlook.Bussiness;
+﻿using PrismOutlook.Business;
+using PrismOutlook.Services.Data;
 using PrismOutlook.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,33 +14,35 @@ namespace PrismOutlook.Services
         {
             new MailMessage()
             {
-                 Id = 1,
-                 From = "blagunas@infragistics.com",
-                 To = new ObservableCollection<string>(){ "jane@doe.com", "john@doe.com" },
-                 Subject = "This is a test email",
-                 Body = "This is the body of an email",
-                 DateSent = DateTime.Now
+                Id = 1,
+                From = "blagunas@infragistics.com",
+                To = new ObservableCollection<string>(){ "jane@doe.com", "john@doe.com" },
+                Subject = "This is a test email",
+                Body = Resources.DavidSmit_SampleCoverLetterEmail,
+                DateSent = DateTime.Now
             },
             new MailMessage()
             {
-                 Id = 2,
-                 From = "blagunas@infragistics.com",
-                 To = new ObservableCollection<string>(){ "jane@doe.com", "john@doe.com" },
-                 Subject = "This is a test email 2",
-                 Body = "This is the body of an email",
-                 DateSent = DateTime.Now.AddDays(-1)
+                Id = 2,
+                From = "blagunas@infragistics.com",
+                To = new ObservableCollection<string>(){ "jane@doe.com", "john@doe.com" },
+                Subject = "This is a test email 2",
+                Body = Resources.Barbara_Bailey_RE_GraphicDesignerCoverLetter,
+                DateSent = DateTime.Now.AddDays(-1)
             },
             new MailMessage()
             {
-                 Id = 3,
-                 From = "blagunas@infragistics.com",
-                 To = new ObservableCollection<string>(){ "jane@doe.com", "john@doe.com" },
-                 Subject = "This is a test email 3",
-                 Body = "This is the body of an email",
-                 DateSent = DateTime.Now.AddDays(-5)
+                Id = 3,
+                From = "blagunas@infragistics.com",
+                To = new ObservableCollection<string>(){ "jane@doe.com", "john@doe.com" },
+                Subject = "This is a test email 3",
+                Body = Resources.MargaretJones_RE_GraphicDesignerCoverLetter,
+                DateSent = DateTime.Now.AddDays(-5)
             },
         };
+
         static List<MailMessage> SentItems = new List<MailMessage>();
+
         static List<MailMessage> DeletedItems = new List<MailMessage>();
 
         public IList<MailMessage> GetDeletedItems()

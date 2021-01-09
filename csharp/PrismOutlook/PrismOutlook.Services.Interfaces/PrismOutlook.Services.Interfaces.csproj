@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PrismOutlook.Bussiness\PrismOutlook.Bussiness.csproj" />
+    <ProjectReference Include="..\PrismOutlook.Bussiness\PrismOutlook.Business.csproj" />
   </ItemGroup>
 
 </Project>

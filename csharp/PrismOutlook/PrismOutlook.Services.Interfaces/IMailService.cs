@@ -1,4 +1,4 @@
-﻿using PrismOutlook.Bussiness;
+﻿using PrismOutlook.Business;
 using System.Collections.Generic;
 
 namespace PrismOutlook.Services.Interfaces

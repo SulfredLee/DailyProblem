@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PrismOutlook.Bussiness
+namespace PrismOutlook.Business
 {
     public class BusinessBase : BindableBase
     {

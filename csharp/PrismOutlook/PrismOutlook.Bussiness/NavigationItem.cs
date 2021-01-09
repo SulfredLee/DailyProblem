@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace PrismOutlook.Bussiness
+namespace PrismOutlook.Business
 {
     public class NavigationItem
     {
