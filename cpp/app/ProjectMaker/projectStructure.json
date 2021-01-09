@@ -1,0 +1,9 @@
+{
+    "Main Project Name": "StartProject",
+    "Sub Project List": [
+        {
+            "Project Name": "ProjectA",
+            "Libraries": []
+        }
+    ]
+}
