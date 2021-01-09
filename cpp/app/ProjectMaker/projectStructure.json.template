@@ -3,11 +3,18 @@
     "Sub Project List": [
         {
             "Project Name": "ProjectA",
-            "Libraries": ["libA", "libB"]
+            "Libraries": ["libA", "libB"],
+            "Depends On": ["ProjectB", "ProjectC"]
         },
         {
             "Project Name": "ProjectB",
-            "Libraries": ["libA", "libB"]
+            "Libraries": ["libA", "libB"],
+            "Depends On": ["ProjectC"]
+        },
+        {
+            "Project Name": "ProjectC",
+            "Libraries": ["libA", "libB"],
+            "Depends On": []
         }
     ]
 }

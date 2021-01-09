@@ -20,6 +20,7 @@ class JsonConfigReader(ConfigReaderBase):
                 tempData = SubProjectConfig()
                 tempData.ProjectName = subPro["Project Name"]
                 tempData.LibList = subPro["Libraries"]
+                tempData.DependsOnList = subPro["Depends On"]
 
                 resultConfig.SubProjectList.append(tempData)
 

@@ -94,9 +94,21 @@ class CppCMakeCreater(ProjectCreaterBase):
             content.append("include ({}.cmake)".format(subProject.ProjectName))
         content.append("")
         content.append("# Handle dependencies")
-        content.append("# ExternalProject_Add_StepDependencies(ProjectA build")
-        content.append("#   ProjectB")
-        content.append("#   )")
+        isHasDependency = False
+        for subProject in self._config.SubProjectList:
+            if not len(subProject.DependsOnList) == 0:
+                isHasDependency = True
+                content.append("ExternalProject_Add_StepDependencies({} build)".format(subProject.ProjectName))
+
+                for dependedProjectName in subProject.DependsOnList:
+                    content.append("  {}".format(dependedProjectName))
+
+                content.append("  )")
+        if not isHasDependency:
+            content.append("# ExternalProject_Add_StepDependencies(ProjectA build")
+            content.append("#   ProjectB")
+            content.append("#   )")
+
         content.append("")
         content.append("")
         content.append("# Problem 001")

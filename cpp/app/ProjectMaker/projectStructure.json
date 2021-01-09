@@ -3,7 +3,8 @@
     "Sub Project List": [
         {
             "Project Name": "ProjectA",
-            "Libraries": []
+            "Libraries": ["libA", "libB"],
+            "Depends On": []
         }
     ]
 }
