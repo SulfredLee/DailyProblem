@@ -32,12 +32,18 @@ class CppCMakeCreater(ProjectCreaterBase):
             oFH.write("# Usage:\n")
             oFH.write("cmake -G Ninja ../{} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=../{}\n".format(self._ProjectFolderName, self._InstallFolderName))
             oFH.write("ninja\n")
+            oFH.write("\n")
+            oFH.write("Before run you may need to locate those libraries\n")
+            oFH.write("export LD_LIBRARY_PATH=/usr/local/yourLib/lib\n")
 
         # handle release folder
         with open(self._config.MainProjectName + "/Release/readme.txt", 'w') as oFH:
             oFH.write("# Usage:\n")
             oFH.write("cmake -G Ninja ../{} -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../{}\n".format(self._ProjectFolderName, self._InstallFolderName))
             oFH.write("ninja\n")
+            oFH.write("\n")
+            oFH.write("Before run you may need to locate those libraries\n")
+            oFH.write("export LD_LIBRARY_PATH=/usr/local/yourLib/lib\n")
 
         self.__Handle_3_Layer_Projects()
 
