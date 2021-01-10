@@ -104,7 +104,7 @@ class CppCMakeCreater(ProjectCreaterBase):
         for subProject in self._config.SubProjectList:
             if not len(subProject.DependsOnList) == 0:
                 isHasDependency = True
-                content.append("ExternalProject_Add_StepDependencies({} build)".format(subProject.ProjectName))
+                content.append("ExternalProject_Add_StepDependencies({} build".format(subProject.ProjectName))
 
                 for dependedProjectName in subProject.DependsOnList:
                     content.append("  {}".format(dependedProjectName))
