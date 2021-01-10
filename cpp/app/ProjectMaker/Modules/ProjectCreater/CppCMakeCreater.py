@@ -183,6 +183,7 @@ class CppCMakeCreater(ProjectCreaterBase):
                    , "project({})".format(subProject.ProjectName)
                    , ""
         ]
+        content.extend(self.__GetCommonCMakeProjectSetting())
         content.append("# Sub-directories where more CMakeLists.txt exist")
         content.append("add_subdirectory(src)")
         if len(subProject.LibList) == 0:
