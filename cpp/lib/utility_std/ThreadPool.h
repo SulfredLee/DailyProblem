@@ -94,6 +94,7 @@ void ThreadPool<T>::StopPool()
 template <class T>
 void ThreadPool<T>::ForceDoAllJobs()
 {
+    std::lock_guard<std::mutex> lock(m_mutex);
     while (m_jobQ.size())
     {
         m_fn(m_jobQ.front());
