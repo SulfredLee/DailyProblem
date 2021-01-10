@@ -3,7 +3,16 @@
     "Sub Project List": [
         {
             "Project Name": "ProjectA",
-            "Libraries": ["libA", "libB"],
+            "Libraries": [
+                {
+                    "LibName": "libA",
+                    "LibType": "shared"
+                },
+                {
+                    "LibName": "libB",
+                    "LibType": "static"
+                }
+            ],
             "Depends On": []
         }
     ]

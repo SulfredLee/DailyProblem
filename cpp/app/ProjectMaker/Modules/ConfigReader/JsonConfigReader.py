@@ -19,7 +19,14 @@ class JsonConfigReader(ConfigReaderBase):
             for subPro in data["Sub Project List"]:
                 tempData = SubProjectConfig()
                 tempData.ProjectName = subPro["Project Name"]
-                tempData.LibList = subPro["Libraries"]
+
+                for lib in subPro["Libraries"]:
+                    tempLibConfig = LibConfig()
+                    tempLibConfig.LibName = lib["LibName"]
+                    tempLibConfig.LibType = lib["LibType"]
+
+                    tempData.LibList.append(tempLibConfig)
+
                 tempData.DependsOnList = subPro["Depends On"]
 
                 resultConfig.SubProjectList.append(tempData)
