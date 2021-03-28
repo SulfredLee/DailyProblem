@@ -66,11 +66,16 @@ if (UNIX)
 else ()
   add_definitions(-DWINDOWS -DWIN32 \"/EHsc\")
 endif ()
-message(STATUS \"Info - CMAKE_THREAD_LIBS_INIT: ${CMAKE_THREAD_LIBS_INIT}\")
+message(STATUS \"Info - CMAKE_THREAD_LIBS_INIT: \${CMAKE_THREAD_LIBS_INIT}\")
+
+# Add package
+find_package(GTest CONFIG REQUIRED)
+message(STATUS \"Gtest include: \" \${GTEST_INCLUDE_DIRS})
 
 # Sub-directories where more CMakeLists.txt exist
 add_subdirectory(app)
-add_subdirectory(lib)
+# add_subdirectory(lib)
+# add_subdirectory(test)
 " > ${outputFile}
 }
 
@@ -131,11 +136,99 @@ ExternalProject_Add (
   -DBUILD_EXAMPLES:BOOL=ON
   -DCMAKE_BUILD_TYPE:STRING=\${CMAKE_BUILD_TYPE}
   -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+  -DCMAKE_TOOLCHAIN_FILE:FILE=\${CMAKE_TOOLCHAIN_FILE}
 
   BUILD_COMMAND \${CMAKE_COMMAND} --build <BINARY_DIR>
   )
 " >> ${outputFile}
 }
+
+function PrepareTestCMakeFile {
+    local outputFile=$1
+
+    echo "set(targetName \"unitTest\")
+get_filename_component(folderName \${CMAKE_CURRENT_SOURCE_DIR} NAME)
+string(REPLACE \" \" \"_\" folderName \${folderName})
+
+set(CMAKE_CXX_FLAGS \"\${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations\")
+
+file(GLOB ${folderName}_inc
+  \"\${CMAKE_CURRENT_SOURCE_DIR}/*.h\")
+file(GLOB \${folderName}_src
+  \"\${CMAKE_CURRENT_SOURCE_DIR}/*.cpp\")
+
+include_directories(
+  \${CMAKE_CURRENT_SOURCE_DIR}
+  \${GTEST_INCLUDE_DIRS}
+  )
+  # \${PROJECT_SOURCE_DIR}/../ProjectB/lib/PrintHelper
+  # \${PROJECT_SOURCE_DIR}/lib/utility
+  # \${libpng_INCLUDE_DIR}
+  # \${libbmp_INCLUDE_DIR})
+
+add_executable(\${targetName} \${\${folderName}_src})
+
+target_link_libraries(
+  \${targetName}
+  GTest::gmock GTest::gtest GTest::gmock_main GTest::gtest_main
+  )
+#   \${CMAKE_INSTALL_PREFIX}/lib/libPrintHelper.so
+#   \${CMAKE_THREAD_LIBS_INIT}
+#   utility
+#   \${libpng_LIBRARY_DIR}/libpng16.so
+#   \${libbmp_LIBRARY_DIR}/libbmp.so)
+
+add_test(NAME \${targetName} COMMAND \${targetName})
+if (\${CMAKE_BUILD_TYPE} STREQUAL \"Debug\")
+  add_custom_command(
+    TARGET \${targetName}
+    POST_BUILD
+    COMMAND \${targetName}
+    )
+endif()
+
+# Creates a folder \"executables\" and adds target
+# project (*.vcproj) under it
+set_property(TARGET \${targetName} PROPERTY FOLDER \"executables\")
+
+# Adds logic to INSTALL.vcproj to copy *.exe to destination directory
+install (TARGETS \${targetName} DESTINATION bin)
+" > ${outputFile}
+}
+
+function PrepareTestMainFile {
+    local outputFile=$1
+
+    echo "#include \"gtest/gtest.h\"
+
+int main(int argc, char *argv[])
+{
+    ::testing::InitGoogleTest(&argc, argv);
+    int ret = RUN_ALL_TESTS();
+    return ret;
+}
+" > ${outputFile}
+}
+
+function PrepareTestDirectory {
+    local outputFolder=$1
+
+    PrepareTestCMakeFile ${outputFolder}/CMakeLists.txt
+    PrepareTestMainFile ${outputFolder}/main.cpp
+}
+
+function PrepareRunBuildFile {
+    local buildType=$1
+    local outputFile=$2
+
+    echo "#!/bin/bash
+toolChainFile=\$1
+cmake -G Ninja ../Projects -DCMAKE_BUILD_TYPE=${buildType} -DCMAKE_INSTALL_PREFIX=../Install -DCMAKE_TOOLCHAIN_FILE=\${toolChainFile}
+" > ${outputFile}
+
+    chmod +x ${outputFile}
+}
+
 function PrepareMainProject {
     local projectName=$1
     echo "Prepare project: ${projectName}"
@@ -159,8 +252,11 @@ function PrepareMainProject {
     PrepareRootCMakeFile ${projectsPath}/CMakeLists.txt
     PrepareExternalCMakeFile "Local" ${projectName} ${projectsPath}/${projectName}.cmake
     PrepareMainProjectCMakeFile ${mainProjectPath}/CMakeLists.txt
+    PrepareTestDirectory ${mainProjectPath}/test
     PrepareReadmeFile "Debug" ${debugPath}/readme.txt
     PrepareReadmeFile "Release" ${releasePath}/readme.txt
+    PrepareRunBuildFile "Debug" ${debugPath}/runBuild.sh
+    PrepareRunBuildFile "Release" ${releasePath}/runBuild.sh
 }
 
 function PrepareApp {
@@ -264,6 +360,52 @@ install (TARGETS \${targetName} DESTINATION lib)
 install (FILES \${\${folderName}_inc} DESTINATION include)" >> ./${libName}/CMakeLists.txt
 }
 
+function PrepareTest {
+    local testName=$1
+    local h_file="${testName}Test.h"
+    local cpp_file="${testName}Test.cpp"
+    local upperCaseName=${testName^^}
+
+    echo "#ifndef ${upperCaseName}_TEST_H
+#define ${upperCaseName}_TEST_H
+
+#include \"gtest/gtest.h\"
+
+class ${testName}Test : public ::testing::Test {
+
+ protected:
+
+    // You can do set-up work for each test here.
+    ${testName}Test() {}
+
+    // You can do clean-up work that doesn't throw exceptions here.
+    virtual ~${testName}Test() {}
+
+    // If the constructor and destructor are not enough for setting up
+    // and cleaning up each test, you can define the following methods:
+
+    // Code here will be called immediately after the constructor (right
+    // before each test).
+    virtual void SetUp() {}
+
+    // Code here will be called immediately after each test (right
+    // before the destructor).
+    virtual void TearDown() {}
+};
+
+#endif
+" > ${h_file}
+
+    echo "#include \"${testName}Test.h\"
+
+TEST_F(${testName}Test, Test001)
+{
+    EXPECT_EQ(true, true);
+}
+" > ${cpp_file}
+
+}
+
 # Main
 if [ "$#" -ne 2 ]; then
     echo "Usage: $0 --[project|static_library|dynamic_library|app_name] (name)"
@@ -276,6 +418,7 @@ MAIN_PROJECT_NAME=""
 STATIC_LIBRARY=""
 DYNAMIC_LIBRARY=""
 APP_NAME=""
+TEST_NAME=""
 while [[ $# -gt 0 ]]
 do
     key="$1"
@@ -306,6 +449,11 @@ do
             shift # past argument
             shift # past value
             ;;
+        -t|--test_name)
+            TEST_NAME="$2"
+            shift # past argument
+            shift # past value
+            ;;
         --default)
             DEFAULT=YES
             shift # past argument
@@ -328,4 +476,6 @@ elif [[ ${DYNAMIC_LIBRARY} != "" ]]; then
     PrepareLib "dynamic" ${DYNAMIC_LIBRARY}
 elif [[ ${APP_NAME} != "" ]]; then
     PrepareApp ${APP_NAME}
+elif [[ ${TEST_NAME} != "" ]]; then
+    PrepareTest ${TEST_NAME}
 fi
