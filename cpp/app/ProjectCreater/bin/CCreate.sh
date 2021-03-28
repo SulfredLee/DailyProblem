@@ -57,6 +57,17 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_CXX_FLAGS \"-Wall -fPIC -std=c++2a -g\")
 message(STATUS \"Root - cxx Flags: \" \${CMAKE_CXX_FLAGS})
 
+# Handle Preprocess Flags
+if (UNIX)
+  add_definitions(-DUNIX)
+  find_package(
+    Threads
+  ) # include pthread in linux enviroment
+else ()
+  add_definitions(-DWINDOWS -DWIN32 \"/EHsc\")
+endif ()
+message(STATUS \"Info - CMAKE_THREAD_LIBS_INIT: ${CMAKE_THREAD_LIBS_INIT}\")
+
 # Sub-directories where more CMakeLists.txt exist
 add_subdirectory(app)
 add_subdirectory(lib)
@@ -182,7 +193,8 @@ include_directories(
 
 add_executable(\${targetName} \${\${folderName}_src})
 
-# target_link_libraries(\${targetName}
+# target_link_libraries(
+#   \${targetName}
 #   \${CMAKE_INSTALL_PREFIX}/lib/libPrintHelper.so
 #   \${CMAKE_THREAD_LIBS_INIT}
 #   utility
@@ -223,18 +235,26 @@ file(GLOB \${folderName}_inc
 file(GLOB \${folderName}_src
   \"\${CMAKE_CURRENT_SOURCE_DIR}/*.cpp\")
 
-include_directories(\${CMAKE_CURRENT_SOURCE_DIR}
-  \${Boost_INCLUDE_DIR})
+include_directories(
+  \${CMAKE_CURRENT_SOURCE_DIR}
+  # \${Boost_INCLUDE_DIR}
+  )
 
 # state that this project is a library" > ./${libName}/CMakeLists.txt
     if [[ "static" == ${libType} ]]; then
-        echo "add_library(\${targetName} \${\${folderName}_src}) # static library" >> ./${libName}/CMakeLists.txt
+        echo "add_library(\${targetName} STATIC \${\${folderName}_src}) # static library" >> ./${libName}/CMakeLists.txt
     else
         echo "add_library(\${targetName} SHARED \${\${folderName}_src}) # dynamic library" >> ./${libName}/CMakeLists.txt
     fi
 
-    echo "# target_link_libraries(\${targetName}
-#   \${CMAKE_THREAD_LIBS_INIT})
+    echo "
+if (UNIX)
+#   target_link_libraries(
+#     \${targetName}
+#     \${CMAKE_THREAD_LIBS_INIT}
+#     )
+else ()
+endif ()
 
 # Creates a folder \"libraries\" and adds target project (*.vcproj) under it
 set_property(TARGET \${targetName} PROPERTY FOLDER \"libraries\")
