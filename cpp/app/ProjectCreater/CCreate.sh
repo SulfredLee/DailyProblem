@@ -36,6 +36,7 @@ include (${projectName}.cmake)
 
 function PrepareMainProjectCMakeFile {
     local outputFile=$1
+    local qtEnable=$2
 
     echo "cmake_minimum_required (VERSION 3.8.2)
 
@@ -68,7 +69,33 @@ else ()
 endif ()
 message(STATUS \"Info - CMAKE_THREAD_LIBS_INIT: \${CMAKE_THREAD_LIBS_INIT}\")
 
-# Add package
+include(\"~/Documents/cppEnv/DCEnv/vcpkg/scripts/buildsystems/vcpkg.cmake\")" > ${outputFile}
+
+    if [[ "Y" == ${qtEnable} ]]; then
+        echo "
+# Handle QT
+if (UNIX)
+else ()
+  # Handle QT on windows
+  set(QT_ROOT \"C:\\\\Qt\\\\5.6.2\\\\5.6\\\\msvc2013_64\\\\\")
+  set(QT_INCLUDE_DIR \"\${QT_ROOT}include\")
+  set(QT_LIBRARY_DIR \"\${QT_ROOT}lib\")
+  set(CMAKE_PREFIX_PATH \${QT_ROOT})
+endif ()
+# Handle QT libraries
+find_package(
+  Qt5
+  REQUIRED Core Gui Widgets
+  )
+message(STATUS \"Info - QT library status:\")
+message(STATUS \"Info -     version: \${Qt5Widgets_VERSION}\")
+message(STATUS \"Info -     libraries: \${Qt5Widgets_LIBRARIES} \${Qt5Core_LIBRARIES} \${Qt5Core_QTMAIN_LIBRARIES} \${Qt5Gui_LIBRARIES}\")
+message(STATUS \"Info -     include path: \${Qt5Widgets_INCLUDE_DIRS}\")
+" >> ${outputFile}
+    fi
+
+    echo "
+# Handle GTest
 find_package(GTest CONFIG REQUIRED)
 message(STATUS \"Gtest include: \" \${GTEST_INCLUDE_DIRS})
 
@@ -76,7 +103,7 @@ message(STATUS \"Gtest include: \" \${GTEST_INCLUDE_DIRS})
 add_subdirectory(app)
 # add_subdirectory(lib)
 # add_subdirectory(test)
-" > ${outputFile}
+" >> ${outputFile}
 }
 
 function PrepareReadmeFile {
@@ -222,8 +249,9 @@ function PrepareRunBuildFile {
     local outputFile=$2
 
     echo "#!/bin/bash
-toolChainFile=\$1
-cmake -G Ninja ../Projects -DCMAKE_BUILD_TYPE=${buildType} -DCMAKE_INSTALL_PREFIX=../Install -DCMAKE_TOOLCHAIN_FILE=\${toolChainFile}
+toolChainFolder=\$1
+# cmake -G Ninja ../Projects -DCMAKE_BUILD_TYPE=${buildType} -DCMAKE_INSTALL_PREFIX=../Install -DCMAKE_TOOLCHAIN_FILE=\${toolChainFolder}/vcpkg/scripts/buildsystems/vcpkg.cmake
+cmake -G Ninja ../Projects -DCMAKE_BUILD_TYPE=${buildType} -DCMAKE_INSTALL_PREFIX=../Install
 " > ${outputFile}
 
     chmod +x ${outputFile}
@@ -231,6 +259,7 @@ cmake -G Ninja ../Projects -DCMAKE_BUILD_TYPE=${buildType} -DCMAKE_INSTALL_PREFI
 
 function PrepareMainProject {
     local projectName=$1
+    local qtEnable=$2
     echo "Prepare project: ${projectName}"
 
     local debugPath="./${projectName}/Debug"
@@ -251,7 +280,7 @@ function PrepareMainProject {
     # Prepare files
     PrepareRootCMakeFile ${projectsPath}/CMakeLists.txt
     PrepareExternalCMakeFile "Local" ${projectName} ${projectsPath}/${projectName}.cmake
-    PrepareMainProjectCMakeFile ${mainProjectPath}/CMakeLists.txt
+    PrepareMainProjectCMakeFile ${mainProjectPath}/CMakeLists.txt ${qtEnable}
     PrepareTestDirectory ${mainProjectPath}/test
     PrepareReadmeFile "Debug" ${debugPath}/readme.txt
     PrepareReadmeFile "Release" ${releasePath}/readme.txt
@@ -295,7 +324,12 @@ add_executable(\${targetName} \${\${folderName}_src})
 #   \${CMAKE_THREAD_LIBS_INIT}
 #   utility
 #   \${libpng_LIBRARY_DIR}/libpng16.so
-#   \${libbmp_LIBRARY_DIR}/libbmp.so)
+#   \${libbmp_LIBRARY_DIR}/libbmp.so
+#   \${Qt5Core_LIBRARIES}
+#   \${Qt5Core_QTMAIN_LIBRARIES}
+#   \${Qt5Gui_LIBRARIES}
+#   \${Qt5Widgets_LIBRARIES}
+#   )
 
 # Creates a folder \"executables\" and adds target
 # project (*.vcproj) under it
@@ -312,15 +346,10 @@ int main (int argc, char *argv[])
 }" > ./${appName}/main.cpp
 }
 
-function PrepareLib {
+function PrepareLibNonQT {
     local libType=$1
     local libName=$2
 
-    echo "Prepare ${libType} library: ${libName}"
-    mkdir -p ./${libName}
-
-    # lib root CMake file
-    grep -qxF "add_subdirectory(${libName})" CMakeLists.txt || echo "add_subdirectory(${libName})" >> CMakeLists.txt
     # lib CMake file
     echo "set(targetName \"${libName}\")
 get_filename_component(folderName \${CMAKE_CURRENT_SOURCE_DIR} NAME)
@@ -358,6 +387,106 @@ set_property(TARGET \${targetName} PROPERTY FOLDER \"libraries\")
 # Adds logic to INSTALL.vcproj to copy *.a to destination directory
 install (TARGETS \${targetName} DESTINATION lib)
 install (FILES \${\${folderName}_inc} DESTINATION include)" >> ./${libName}/CMakeLists.txt
+}
+
+function PrepareLibQT {
+    local libType=$1
+    local libName=$2
+
+    echo "set(targetName \"${libName}\")
+get_filename_component(folderName \${CMAKE_CURRENT_SOURCE_DIR} NAME)
+string(REPLACE \" \" \"_\" folderName \${folderName})
+
+# Handle QT libraries
+file(GLOB \${folderName}_src \"\${CMAKE_CURRENT_SOURCE_DIR}/*.cpp\")
+file(GLOB \${folderName}_hdr \"\${CMAKE_CURRENT_SOURCE_DIR}/*.h\")
+file(GLOB \${folderName}_ui \"\${CMAKE_CURRENT_SOURCE_DIR}/*.ui\")
+# set(\${folderName}_rcc \${CMAKE_CURRENT_SOURCE_DIR}/resource.qrc)
+qt5_wrap_cpp(\${folderName}_hdr_moc \${\${folderName}_hdr})
+# qt5_wrap_ui (\${folderName}_ui_moc  \${\${folderName}_src} \${\${folderName}_ui})
+qt5_wrap_ui (\${folderName}_ui_moc  \${\${folderName}_ui})
+# qt5_add_resources(\${folderName}_rcc_moc \${\${folderName}_rcc})
+
+# handle other resource
+# file(GLOB PlayerEngine_inc
+#   \"\${PROJECT_SOURCE_DIR}/BackEnd/PlayerEngine/*.h\")
+# file(GLOB PlayerEngine_src
+#   \"\${PROJECT_SOURCE_DIR}/BackEnd/PlayerEngine/*.cpp\")
+
+include_directories(
+  \${QT_INCLUDE_DIR}
+  \${QT_INCLUDE_DIR}/QtWidgets
+  \${CMAKE_CURRENT_SOURCE_DIR}
+  \${PROJECT_BINARY_DIR}/lib/\${folderName}
+  # \${libpcap_INCLUDE_DIR}
+  # \${PROJECT_SOURCE_DIR}/BackEnd/PlayerEngine
+  )
+
+if (UNIX)
+  # handle library files for installation
+  file(GLOB libqt_libFile \"\${QT_LIBRARY_DIR}/*so*\")
+else ()
+endif ()
+
+message(STATUS \"qt include: \" \${QT_INCLUDE_DIR})
+message(STATUS \"binary folder: \" \${PROJECT_BINARY_DIR}/\${folderName})
+message(STATUS \"cmake current dir: \" \${CMAKE_CURRENT_SOURCE_DIR})
+message(STATUS \"source file: \" \${\${folderName}_ui_moc})" > ./${libName}/CMakeLists.txt
+
+    if [[ "static" == ${libType} ]]; then
+        echo "add_library(
+  \${targetName} STATIC
+  \${\${folderName}_src}
+  \${\${folderName}_hdr}
+  \${\${folderName}_hdr_moc}
+  \${\${folderName}_ui_moc}
+  # \${\${folderName}_rcc_moc}
+  # \${PlayerEngine_src}
+  ) # static library" >> ./${libName}/CMakeLists.txt
+    else
+        echo "add_library(
+  \${targetName} SHARED
+  \${\${folderName}_src}
+  \${\${folderName}_hdr}
+  \${\${folderName}_hdr_moc}
+  \${\${folderName}_ui_moc}
+  # \${\${folderName}_rcc_moc}
+  # \${PlayerEngine_src}
+  ) # dynamic library" >> ./${libName}/CMakeLists.txt
+    fi
+
+    echo "
+target_link_libraries(
+  \${targetName}
+  \${Qt5Widgets_LIBRARIES}
+  )
+
+# Creates a folder \"libraries\" and adds target project (*.vcproj) under it
+set_property(TARGET \${targetName} PROPERTY FOLDER \"libraries\")
+
+# Adds logic to INSTALL.vcproj to copy *.lib to destination directory
+install (TARGETS \${targetName} DESTINATION lib)
+install (FILES \${\${folderName}_hdr_proxy} DESTINATION include)
+install (FILES \${libqt_libFile} DESTINATION lib)
+" >> ./${libName}/CMakeLists.txt
+}
+
+function PrepareLib {
+    local libType=$1
+    local libName=$2
+    local qtEnable=$3
+
+    echo "Prepare ${libType} library: ${libName} qtEnable: ${qtEnable}"
+    mkdir -p ./${libName}
+
+    # lib root CMake file
+    grep -qxF "add_subdirectory(${libName})" CMakeLists.txt || echo "add_subdirectory(${libName})" >> CMakeLists.txt
+
+    if [[ "Y" == ${qtEnable} ]]; then
+        PrepareLibQT ${libType} ${libName}
+    else
+        PrepareLibNonQT ${libType} ${libName}
+    fi
 }
 
 function PrepareTest {
@@ -407,7 +536,7 @@ TEST_F(${testName}Test, Test001)
 }
 
 # Main
-if [ "$#" -ne 2 ]; then
+if (( "$#" < 2 )); then
     echo "Usage: $0 --[project|static_library|dynamic_library|app_name] (name)"
     exit
 fi
@@ -419,6 +548,7 @@ STATIC_LIBRARY=""
 DYNAMIC_LIBRARY=""
 APP_NAME=""
 TEST_NAME=""
+QT_ENABLE="N"
 while [[ $# -gt 0 ]]
 do
     key="$1"
@@ -428,6 +558,10 @@ do
             MAIN_PROJECT_NAME="$2"
             shift # past argument
             shift # past value
+            ;;
+        -q|--qt_enable)
+            QT_ENABLE="Y"
+            shift # past argument
             ;;
         -e|--external_project)
             EXTERNAL_PROJECT_NAME="$2"
@@ -467,13 +601,13 @@ done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
 if [[ ${MAIN_PROJECT_NAME} != "" ]]; then
-    PrepareMainProject ${MAIN_PROJECT_NAME}
+    PrepareMainProject ${MAIN_PROJECT_NAME} ${QT_ENABLE}
 elif [[ ${EXTERNAL_PROJECT_NAME} != "" ]]; then
     PrepareExternalCMakeFile "Git" ${EXTERNAL_PROJECT_NAME} ./${EXTERNAL_PROJECT_NAME}.cmake
 elif [[ ${STATIC_LIBRARY} != "" ]]; then
-    PrepareLib "static" ${STATIC_LIBRARY}
+    PrepareLib "static" ${STATIC_LIBRARY} ${QT_ENABLE}
 elif [[ ${DYNAMIC_LIBRARY} != "" ]]; then
-    PrepareLib "dynamic" ${DYNAMIC_LIBRARY}
+    PrepareLib "dynamic" ${DYNAMIC_LIBRARY} ${QT_ENABLE}
 elif [[ ${APP_NAME} != "" ]]; then
     PrepareApp ${APP_NAME}
 elif [[ ${TEST_NAME} != "" ]]; then
