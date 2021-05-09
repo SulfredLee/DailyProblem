@@ -249,9 +249,13 @@ function PrepareRunBuildFile {
     local outputFile=$2
 
     echo "#!/bin/bash
+# example folder: /home/<user>/Documents/cppEnv/DCEnv/vcpkg/scripts/buildsystems/vcpkg.cmake
 toolChainFolder=\$1
-# cmake -G Ninja ../Projects -DCMAKE_BUILD_TYPE=${buildType} -DCMAKE_INSTALL_PREFIX=../Install -DCMAKE_TOOLCHAIN_FILE=\${toolChainFolder}/vcpkg/scripts/buildsystems/vcpkg.cmake
-cmake -G Ninja ../Projects -DCMAKE_BUILD_TYPE=${buildType} -DCMAKE_INSTALL_PREFIX=../Install
+if [[ -z \${toolChainFolder} ]]; then
+    cmake -G Ninja ../Projects -DCMAKE_BUILD_TYPE=${buildType} -DCMAKE_INSTALL_PREFIX=../Install
+else
+    cmake -G Ninja ../Projects -DCMAKE_BUILD_TYPE=${buildType} -DCMAKE_INSTALL_PREFIX=../Install -DCMAKE_TOOLCHAIN_FILE=\${toolChainFolder}/vcpkg/scripts/buildsystems/vcpkg.cmake
+fi
 " > ${outputFile}
 
     chmod +x ${outputFile}
@@ -290,7 +294,8 @@ function PrepareMainProject {
 
 function PrepareApp {
     local appName=$1
-    echo "Prepare app: ${appName}"
+    local qtEnable=$2
+    echo "Prepare app: ${appName} ${qtEnable}"
 
     mkdir -p ./${appName}
 
@@ -338,12 +343,27 @@ set_property(TARGET \${targetName} PROPERTY FOLDER \"executables\")
 # Adds logic to INSTALL.vcproj to copy *.exe to destination directory
 install (TARGETS \${targetName} DESTINATION bin)" > ./${appName}/CMakeLists.txt
     # app main file
-    echo "#include <iostream>
+    if [[ "Y" == ${qtEnable} ]]; then
+        echo "#include <iostream>
+
+int main (int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+
+    MainWindow MW;
+    MW.show();
+    bool bRTN = app.exec();
+
+    return bRTN;
+}" > ./${appName}/main.cpp
+    else
+        echo "#include <iostream>
 
 int main (int argc, char *argv[])
 {
     return 0;
 }" > ./${appName}/main.cpp
+    fi
 }
 
 function PrepareLibNonQT {
@@ -609,7 +629,7 @@ elif [[ ${STATIC_LIBRARY} != "" ]]; then
 elif [[ ${DYNAMIC_LIBRARY} != "" ]]; then
     PrepareLib "dynamic" ${DYNAMIC_LIBRARY} ${QT_ENABLE}
 elif [[ ${APP_NAME} != "" ]]; then
-    PrepareApp ${APP_NAME}
+    PrepareApp ${APP_NAME} ${QT_ENABLE}
 elif [[ ${TEST_NAME} != "" ]]; then
     PrepareTest ${TEST_NAME}
 fi
