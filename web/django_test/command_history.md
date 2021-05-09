@@ -19,3 +19,21 @@ python manage.py runserver
 # Step 1: Django Local Library example
 You can get the source code from here
 - [github](https://github.com/mdn/django-locallibrary-tutorial)
+
+# Step 2: Create the skeleton
+```
+django-admin startproject locallibrary
+cd locallibrary
+python manage.py startapp catalog
+```
+## Update timezone
+- search for list of tz database time zones
+- update it in settings.py
+
+## Prepare the urls.py in application - catalog
+
+## Migration database
+```
+python manage.py makemigrations
+python manage.py migrate
+```
