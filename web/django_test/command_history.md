@@ -37,3 +37,9 @@ python manage.py startapp catalog
 python manage.py makemigrations
 python manage.py migrate
 ```
+# Step 3: Models
+- Create models in models.py
+```
+python manage.py makemigrations
+python manage.py migrate
+```
