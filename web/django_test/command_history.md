@@ -43,3 +43,14 @@ python manage.py migrate
 python manage.py makemigrations
 python manage.py migrate
 ```
+
+# Step 4: Django admin site
+- Registering models to admin.py
+- Create superuser
+ - User: lib_root
+ - pw: 1234
+ - email: lib_root@test.com
+```
+python manage.py createsuperuser
+```
+- You can use listview to adjust the display content in the admin page
