@@ -37,6 +37,7 @@ include (${projectName}.cmake)
 function PrepareMainProjectCMakeFile {
     local outputFile=$1
     local qtEnable=$2
+    local vcpkgPath=$3
 
     echo "cmake_minimum_required (VERSION 3.8.2)
 
@@ -69,7 +70,7 @@ else ()
 endif ()
 message(STATUS \"Info - CMAKE_THREAD_LIBS_INIT: \${CMAKE_THREAD_LIBS_INIT}\")
 
-include(\"~/Documents/cppEnv/DCEnv/vcpkg/scripts/buildsystems/vcpkg.cmake\")" > ${outputFile}
+include(\"${vcpkgPath}/vcpkg/scripts/buildsystems/vcpkg.cmake\")" > ${outputFile}
 
     if [[ "Y" == ${qtEnable} ]]; then
         echo "
@@ -264,7 +265,8 @@ fi
 function PrepareMainProject {
     local projectName=$1
     local qtEnable=$2
-    echo "Prepare project: ${projectName}"
+    local vcpkgPath=$3
+    echo "Prepare project: ${projectName} qtEnable: ${qtEnable} vcpkgPath: ${vcpkgPath}"
 
     local debugPath="./${projectName}/Debug"
     local releasePath="./${projectName}/Release"
@@ -284,7 +286,7 @@ function PrepareMainProject {
     # Prepare files
     PrepareRootCMakeFile ${projectsPath}/CMakeLists.txt
     PrepareExternalCMakeFile "Local" ${projectName} ${projectsPath}/${projectName}.cmake
-    PrepareMainProjectCMakeFile ${mainProjectPath}/CMakeLists.txt ${qtEnable}
+    PrepareMainProjectCMakeFile ${mainProjectPath}/CMakeLists.txt ${qtEnable} ${vcpkgPath}
     PrepareTestDirectory ${mainProjectPath}/test
     PrepareReadmeFile "Debug" ${debugPath}/readme.txt
     PrepareReadmeFile "Release" ${releasePath}/readme.txt
@@ -295,7 +297,7 @@ function PrepareMainProject {
 function PrepareApp {
     local appName=$1
     local qtEnable=$2
-    echo "Prepare app: ${appName} ${qtEnable}"
+    echo "Prepare app: ${appName} qtEnable: ${qtEnable}"
 
     mkdir -p ./${appName}
 
@@ -361,6 +363,7 @@ int main (int argc, char *argv[])
 
 int main (int argc, char *argv[])
 {
+    std::cout << \"Hello World\" << std::endl;
     return 0;
 }" > ./${appName}/main.cpp
     fi
@@ -569,6 +572,7 @@ DYNAMIC_LIBRARY=""
 APP_NAME=""
 TEST_NAME=""
 QT_ENABLE="N"
+VCPKG_PATH="~/Documents/cppEnv/DCEnv"
 while [[ $# -gt 0 ]]
 do
     key="$1"
@@ -582,6 +586,11 @@ do
         -q|--qt_enable)
             QT_ENABLE="Y"
             shift # past argument
+            ;;
+        -v|--vcpkg_path)
+            VCPKG_PATH="$2"
+            shift # past argument
+            shift # past value
             ;;
         -e|--external_project)
             EXTERNAL_PROJECT_NAME="$2"
@@ -621,7 +630,7 @@ done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
 if [[ ${MAIN_PROJECT_NAME} != "" ]]; then
-    PrepareMainProject ${MAIN_PROJECT_NAME} ${QT_ENABLE}
+    PrepareMainProject ${MAIN_PROJECT_NAME} ${QT_ENABLE} ${VCPKG_PATH}
 elif [[ ${EXTERNAL_PROJECT_NAME} != "" ]]; then
     PrepareExternalCMakeFile "Git" ${EXTERNAL_PROJECT_NAME} ./${EXTERNAL_PROJECT_NAME}.cmake
 elif [[ ${STATIC_LIBRARY} != "" ]]; then
