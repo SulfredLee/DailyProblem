@@ -617,13 +617,14 @@ function PrintHelp {
     echo "Usage:"
     echo "# Create main project"
     echo "\$ $0 --main_project <YourProjectName>"
+    echo "\$ $0 --main_project <YourProjectName> --qt_enable"
+    echo "\$ $0 --main_project <YourProjectName> --vcpkg_path <ThePath>"
 
     echo ""
     echo "# Create app"
     echo "\$ cd ./<YourProjectName>/app"
     echo "\$ $0 --app_name <YourApp>"
     echo "\$ $0 --app_name <YourApp> --qt_enable"
-    echo "\$ $0 --app_name <YourApp> --vcpkg_path <ThePath>"
 
     echo ""
     echo "# Create static library"
