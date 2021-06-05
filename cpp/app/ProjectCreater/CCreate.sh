@@ -346,7 +346,7 @@ function PrepareMainProject {
     PrepareMainProjectCMakeFile ${mainProjectPath}/CMakeLists.txt ${qtEnable} ${vcpkgPath}
     PrepareTestDirectory ${mainProjectPath}/test
     PrepareCCMakeFile ${projectsPath} "CCMake.sh"
-    PrepareReadmeFile "Debug" ${mainProjectPath}/readme.txt
+    PrepareReadmeFile "Debug" ${projectsPath}/readme.txt
 }
 
 function PrepareApp {
@@ -402,6 +402,8 @@ install (TARGETS \${targetName} DESTINATION bin)" > ./${appName}/CMakeLists.txt
     # app main file
     if [[ "Y" == ${qtEnable} ]]; then
         echo "#include <iostream>
+#include <QApplication>
+#include \"mainwindow.h\"
 
 int main (int argc, char *argv[])
 {
