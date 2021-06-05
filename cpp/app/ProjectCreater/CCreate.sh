@@ -613,9 +613,39 @@ TEST_F(${testName}Test, Test001)
 
 }
 
+function PrintHelp {
+    echo "Usage:"
+    echo "# Create main project"
+    echo "\$ $0 --main_project <YourProjectName>"
+
+    echo ""
+    echo "# Create app"
+    echo "\$ cd ./<YourProjectName>/app"
+    echo "\$ $0 --app_name <YourApp>"
+    echo "\$ $0 --app_name <YourApp> --qt_enable"
+    echo "\$ $0 --app_name <YourApp> --vcpkg_path <ThePath>"
+
+    echo ""
+    echo "# Create static library"
+    echo "\$ cd ./<YourProjectName>/lib"
+    echo "\$ $0 --static_library <YourLibName>"
+    echo "\$ $0 --static_library <YourLibName> --qt_enable"
+
+    echo ""
+    echo "# Create dynamic library"
+    echo "\$ cd ./<YourProjectName>/lib"
+    echo "\$ $0 --dynamic_library <YourLibName>"
+    echo "\$ $0 --dynamic_library <YourLibName> --qt_enable"
+
+    echo ""
+    echo "# Create test sub project"
+    echo "\$ cd ./<YourProjectName/test"
+    echo "\$ $0 --test_name <TestName>"
+}
+
 # Main
 if (( "$#" < 2 )); then
-    echo "Usage: $0 --[project|static_library|dynamic_library|app_name] (name)"
+    PrintHelp
     exit
 fi
 
@@ -634,6 +664,10 @@ do
     key="$1"
 
     case $key in
+        -h|--help)
+            PrintHelp
+            shift # past argument
+            ;;
         -p|--main_project)
             MAIN_PROJECT_NAME="$2"
             shift # past argument
