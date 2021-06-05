@@ -137,11 +137,11 @@ function PrepareExternalCMakeFile {
     echo "include (ExternalProject)
 
 # Add External ${projectName}
-set (${projectName} \"${projectName}\")
+set (thisProject \"${projectName}\")
 ExternalProject_Add (
-  \${${projectName}}
+  \${thisProject}
 
-  PREFIX Projects/\${${projectName}}
+  PREFIX Projects/\${thisProject}
 " > ${outputFile}
 
     if [[ "Git" == ${projectType} ]]; then
@@ -151,7 +151,7 @@ ExternalProject_Add (
   GIT_SHALLOW    ON
 " >> ${outputFile}
     elif [[ "Local" == ${projectType} ]]; then
-        echo "  SOURCE_DIR \${PROJECT_SOURCE_DIR}/\${${projectName}}
+        echo "  SOURCE_DIR \${PROJECT_SOURCE_DIR}/\${thisProject}
 " >> ${outputFile}
     fi
 
@@ -566,6 +566,7 @@ fi
 
 POSITIONAL=()
 EXTERNAL_PROJECT_NAME=""
+LOCAL_PROJECT_NAME=""
 MAIN_PROJECT_NAME=""
 STATIC_LIBRARY=""
 DYNAMIC_LIBRARY=""
@@ -594,6 +595,11 @@ do
             ;;
         -e|--external_project)
             EXTERNAL_PROJECT_NAME="$2"
+            shift # past argument
+            shift # past value
+            ;;
+        -e|--local_project)
+            LOCAL_PROJECT_NAME="$2"
             shift # past argument
             shift # past value
             ;;
@@ -633,6 +639,8 @@ if [[ ${MAIN_PROJECT_NAME} != "" ]]; then
     PrepareMainProject ${MAIN_PROJECT_NAME} ${QT_ENABLE} ${VCPKG_PATH}
 elif [[ ${EXTERNAL_PROJECT_NAME} != "" ]]; then
     PrepareExternalCMakeFile "Git" ${EXTERNAL_PROJECT_NAME} ./${EXTERNAL_PROJECT_NAME}.cmake
+elif [[ ${LOCAL_PROJECT_NAME} != "" ]]; then
+    PrepareExternalCMakeFile "Local" ${EXTERNAL_PROJECT_NAME} ./${EXTERNAL_PROJECT_NAME}.cmake
 elif [[ ${STATIC_LIBRARY} != "" ]]; then
     PrepareLib "static" ${STATIC_LIBRARY} ${QT_ENABLE}
 elif [[ ${DYNAMIC_LIBRARY} != "" ]]; then
