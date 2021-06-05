@@ -134,6 +134,7 @@ function PrepareExternalCMakeFile {
     local projectName=$2
     local outputFile=$3
 
+    echo "PrepareExternalCMakeFile projectType: ${projectType} projectName: ${projectName} outputFile: ${outputFile}"
     echo "include (ExternalProject)
 
 # Add External ${projectName}
@@ -245,17 +246,80 @@ function PrepareTestDirectory {
     PrepareTestMainFile ${outputFolder}/main.cpp
 }
 
-function PrepareRunBuildFile {
-    local buildType=$1
-    local outputFile=$2
+function PrepareCCMakeFile {
+    local projectsPath=$1
+    local makeFileName=$2
+    local outputFile=${projectsPath}/${makeFileName}
 
-    echo "#!/bin/bash
-# example folder: /home/<user>/Documents/cppEnv/DCEnv/vcpkg/scripts/buildsystems/vcpkg.cmake
-toolChainFolder=\$1
-if [[ -z \${toolChainFolder} ]]; then
-    cmake -G Ninja ../Projects -DCMAKE_BUILD_TYPE=${buildType} -DCMAKE_INSTALL_PREFIX=../Install
-else
-    cmake -G Ninja ../Projects -DCMAKE_BUILD_TYPE=${buildType} -DCMAKE_INSTALL_PREFIX=../Install -DCMAKE_TOOLCHAIN_FILE=\${toolChainFolder}/vcpkg/scripts/buildsystems/vcpkg.cmake
+    echo "
+function PrepareRunBuildFile {
+    local buildType=\$1
+    local outputFile=\$2
+
+    echo \"#!/bin/bash
+    # example folder: /home/<user>/Documents/cppEnv/DCEnv/vcpkg/scripts/buildsystems/vcpkg.cmake
+    toolChainFolder=\\\$1
+    if [[ -z \\\${toolChainFolder} ]]; then
+        cmake -G Ninja ../ -DCMAKE_BUILD_TYPE=\${buildType} -DCMAKE_INSTALL_PREFIX=../install
+    else
+        cmake -G Ninja ../ -DCMAKE_BUILD_TYPE=\${buildType} -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_TOOLCHAIN_FILE=\\\${toolChainFolder}/vcpkg/scripts/buildsystems/vcpkg.cmake
+    fi
+    \" > \${outputFile}
+
+    chmod +x \${outputFile}
+}
+
+function PrepareDebugBuild {
+    local folderPath=\"debug\"
+
+    echo \"Prepare Debug Folder\"
+
+    mkdir \${folderPath}
+    mkdir -p install
+    PrepareRunBuildFile \"Debug\" \${folderPath}/\"CCMake.sh\"
+}
+
+function PrepareReleaseBuild {
+    local folderPath=\"release\"
+
+    echo \"Prepare Release Folder\"
+
+    mkdir \${folderPath}
+    mkdir -p install
+    PrepareRunBuildFile \"release\" \${folderPath}/\"CCMake.sh\"
+}
+
+POSITIONAL=()
+BUILD_TYPE=\"\"
+while [[ \$# -gt 0 ]]
+do
+    key=\"\$1\"
+
+    case \$key in
+        -t|--build_type)
+            BUILD_TYPE=\"\$2\"
+            shift # past argument
+            shift # past value
+            ;;
+        --default)
+            DEFAULT=YES
+            shift # past argument
+            ;;
+        *)    # unknown option
+            POSITIONAL+=(\"\$1\") # save it in an array for later
+            shift # past argument
+            ;;
+    esac
+done
+set -- \"\${POSITIONAL[@]}\" # restore positional parameters
+
+if [[ \${BUILD_TYPE} == \"debug\" ]]; then
+    PrepareDebugBuild
+elif [[ \${BUILD_TYPE} == \"release\" ]]; then
+    PrepareReleaseBuild
+elif [[ \${BUILD_TYPE} == \"\" ]]; then
+    PrepareDebugBuild
+    PrepareReleaseBuild
 fi
 " > ${outputFile}
 
@@ -268,17 +332,10 @@ function PrepareMainProject {
     local vcpkgPath=$3
     echo "Prepare project: ${projectName} qtEnable: ${qtEnable} vcpkgPath: ${vcpkgPath}"
 
-    local debugPath="./${projectName}/Debug"
-    local releasePath="./${projectName}/Release"
-    local installPath="./${projectName}/Install"
-    local projectsPath="./${projectName}/Projects"
-    local mainProjectPath="./${projectName}/Projects/${projectName}"
+    local projectsPath="./${projectName}"
+    local mainProjectPath="./${projectName}/${projectName}"
 
     # Prepare directories
-    mkdir -p ${debugPath}
-    mkdir -p ${releasePath}
-    mkdir -p ${installPath}
-    mkdir -p ${projectsPath}
     mkdir -p ${mainProjectPath}/app
     mkdir -p ${mainProjectPath}/lib
     mkdir -p ${mainProjectPath}/test
@@ -288,10 +345,8 @@ function PrepareMainProject {
     PrepareExternalCMakeFile "Local" ${projectName} ${projectsPath}/${projectName}.cmake
     PrepareMainProjectCMakeFile ${mainProjectPath}/CMakeLists.txt ${qtEnable} ${vcpkgPath}
     PrepareTestDirectory ${mainProjectPath}/test
-    PrepareReadmeFile "Debug" ${debugPath}/readme.txt
-    PrepareReadmeFile "Release" ${releasePath}/readme.txt
-    PrepareRunBuildFile "Debug" ${debugPath}/runBuild.sh
-    PrepareRunBuildFile "Release" ${releasePath}/runBuild.sh
+    PrepareCCMakeFile ${projectsPath} "CCMake.sh"
+    PrepareReadmeFile "Debug" ${mainProjectPath}/readme.txt
 }
 
 function PrepareApp {
@@ -598,7 +653,7 @@ do
             shift # past argument
             shift # past value
             ;;
-        -e|--local_project)
+        -l|--local_project)
             LOCAL_PROJECT_NAME="$2"
             shift # past argument
             shift # past value
@@ -640,7 +695,7 @@ if [[ ${MAIN_PROJECT_NAME} != "" ]]; then
 elif [[ ${EXTERNAL_PROJECT_NAME} != "" ]]; then
     PrepareExternalCMakeFile "Git" ${EXTERNAL_PROJECT_NAME} ./${EXTERNAL_PROJECT_NAME}.cmake
 elif [[ ${LOCAL_PROJECT_NAME} != "" ]]; then
-    PrepareExternalCMakeFile "Local" ${EXTERNAL_PROJECT_NAME} ./${EXTERNAL_PROJECT_NAME}.cmake
+    PrepareExternalCMakeFile "Local" ${LOCAL_PROJECT_NAME} ./${LOCAL_PROJECT_NAME}.cmake
 elif [[ ${STATIC_LIBRARY} != "" ]]; then
     PrepareLib "static" ${STATIC_LIBRARY} ${QT_ENABLE}
 elif [[ ${DYNAMIC_LIBRARY} != "" ]]; then
