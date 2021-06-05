@@ -28,3 +28,22 @@ $ /home/sulfred/Documents/bin/CCreate.sh --dynamic_library <YourLibName> --qt_en
 $ cd ./<YourProjectName/test
 $ /home/sulfred/Documents/bin/CCreate.sh --test_name <TestName>
 ```
+
+## QT Example
+```Bash
+$ /home/sulfred/Documents/bin/CCreate.sh --main_project <YourProjectName> --qt_enable
+
+# Create app
+$ cd ./<YourProjectName/app
+$ /home/sulfred/Documents/bin/CCreate.sh --app_name <YourApp> --qt_enable
+
+# Create lib
+$ cd ./<YourProjectName>/lib
+$ /home/sulfred/Documents/bin/CCreate.sh --static_library <YourLibName> --qt_enable
+# Use QT creater to create a mainwindow class or dialog class to your lib folder
+YourLibName/
+├── CMakeLists.txt
+├── mainwindow.cpp
+├── mainwindow.h
+└── mainwindow.ui
+```
