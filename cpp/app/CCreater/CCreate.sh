@@ -2,6 +2,7 @@
 
 function PrepareRootCMakeFile {
     local outputFile=$1
+    local appPath=$2
 
     echo "cmake_minimum_required (VERSION 3.8.2)
 
@@ -25,7 +26,7 @@ set(CMAKE_CXX_FLAGS \"-Wall -fPIC -std=c++2a -g\")
 message(STATUS \"Root - cxx Flags: \" \${CMAKE_CXX_FLAGS})
 
 # Add External Project
-include (${projectName}.cmake)
+include (${appPath}/YourProject.cmake)
 
 # Handle dependencies
 # ExternalProject_Add_StepDependencies(${projectName} build
@@ -37,7 +38,6 @@ include (${projectName}.cmake)
 function PrepareMainProjectCMakeFile {
     local outputFile=$1
     local qtEnable=$2
-    local vcpkgPath=$3
 
     echo "cmake_minimum_required (VERSION 3.8.2)
 
@@ -70,7 +70,7 @@ else ()
 endif ()
 message(STATUS \"Info - CMAKE_THREAD_LIBS_INIT: \${CMAKE_THREAD_LIBS_INIT}\")
 
-include(\"${vcpkgPath}/vcpkg/scripts/buildsystems/vcpkg.cmake\")" > ${outputFile}
+include(\"./vcpkg/scripts/buildsystems/vcpkg.cmake\")" > ${outputFile}
 
     if [[ "Y" == ${qtEnable} ]]; then
         echo "
@@ -101,9 +101,9 @@ find_package(GTest CONFIG REQUIRED)
 message(STATUS \"Gtest include: \" \${GTEST_INCLUDE_DIRS})
 
 # Sub-directories where more CMakeLists.txt exist
-add_subdirectory(app)
+add_subdirectory(src)
 # add_subdirectory(lib)
-# add_subdirectory(test)
+add_subdirectory(test)
 " >> ${outputFile}
 }
 
@@ -152,7 +152,7 @@ ExternalProject_Add (
   GIT_SHALLOW    ON
 " >> ${outputFile}
     elif [[ "Local" == ${projectType} ]]; then
-        echo "  SOURCE_DIR \${PROJECT_SOURCE_DIR}/\${thisProject}
+        echo "  SOURCE_DIR \${CMAKE_CURRENT_LIST_DIR}/\${thisProject}
 " >> ${outputFile}
     fi
 
@@ -332,33 +332,52 @@ function PrepareMainProject {
     local vcpkgPath=$3
     echo "Prepare project: ${projectName} qtEnable: ${qtEnable} vcpkgPath: ${vcpkgPath}"
 
-    local projectsPath="./${projectName}"
-    local mainProjectPath="./${projectName}/${projectName}"
-
     # Prepare directories
-    mkdir -p ${mainProjectPath}/app
-    mkdir -p ${mainProjectPath}/lib
-    mkdir -p ${mainProjectPath}/test
+    mkdir -p ${projectName}/app
+    mkdir -p ${projectName}/lib
 
     # Prepare files
-    PrepareRootCMakeFile ${projectsPath}/CMakeLists.txt
-    PrepareExternalCMakeFile "Local" ${projectName} ${projectsPath}/${projectName}.cmake
-    PrepareMainProjectCMakeFile ${mainProjectPath}/CMakeLists.txt ${qtEnable} ${vcpkgPath}
-    PrepareTestDirectory ${mainProjectPath}/test
-    PrepareCCMakeFile ${projectsPath} "CCMake.sh"
-    PrepareReadmeFile "Debug" ${projectsPath}/readme.txt
+    PrepareRootCMakeFile ${projectName}/CMakeLists.txt "app"
+    PrepareCCMakeFile ${projectName} "CCMake.sh"
+    PrepareReadmeFile "Debug" ${projectName}/readme.txt
 }
 
-function PrepareApp {
+function PrepareAppMainFile {
     local appName=$1
     local qtEnable=$2
-    echo "Prepare app: ${appName} qtEnable: ${qtEnable}"
+    local outputPath=$3
 
-    mkdir -p ./${appName}
+    if [[ "Y" == ${qtEnable} ]]; then
+        echo "#include <iostream>
+#include <QApplication>
+#include \"mainwindow.h\"
 
-    # app root CMake file
-    grep -qxF "add_subdirectory(${appName})" CMakeLists.txt || echo "add_subdirectory(${appName})" >> CMakeLists.txt
-    # app CMake file
+int main (int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+
+    MainWindow MW;
+    MW.show();
+    bool bRTN = app.exec();
+
+    return bRTN;
+}" > ./${outputPath}/main.cpp
+    else
+        echo "#include <iostream>
+
+int main (int argc, char *argv[])
+{
+    std::cout << \"Hello World\" << std::endl;
+    return 0;
+}" > ./${outputPath}/main.cpp
+    fi
+}
+
+function PrepareAppCMakeFile {
+    local appName=$1
+    local qtEnable=$2
+    local outputPath=$3
+
     echo "set(targetName \"${appName}\")
 get_filename_component(folderName \${CMAKE_CURRENT_SOURCE_DIR} NAME)
 string(REPLACE \" \" \"_\" folderName \${folderName})
@@ -398,32 +417,23 @@ add_executable(\${targetName} \${\${folderName}_src})
 set_property(TARGET \${targetName} PROPERTY FOLDER \"executables\")
 
 # Adds logic to INSTALL.vcproj to copy *.exe to destination directory
-install (TARGETS \${targetName} DESTINATION bin)" > ./${appName}/CMakeLists.txt
-    # app main file
-    if [[ "Y" == ${qtEnable} ]]; then
-        echo "#include <iostream>
-#include <QApplication>
-#include \"mainwindow.h\"
+install (TARGETS \${targetName} DESTINATION bin)" > ./${outputPath}/CMakeLists.txt
+}
 
-int main (int argc, char *argv[])
-{
-    QApplication app(argc, argv);
+function PrepareApp {
+    local appName=$1
+    local qtEnable=$2
+    echo "Prepare app: ${appName} qtEnable: ${qtEnable}"
 
-    MainWindow MW;
-    MW.show();
-    bool bRTN = app.exec();
+    mkdir -p ./${appName}
+    mkdir -p ./${appName}/src
+    mkdir -p ./${appName}/test
 
-    return bRTN;
-}" > ./${appName}/main.cpp
-    else
-        echo "#include <iostream>
-
-int main (int argc, char *argv[])
-{
-    std::cout << \"Hello World\" << std::endl;
-    return 0;
-}" > ./${appName}/main.cpp
-    fi
+    PrepareExternalCMakeFile "Local" ${appName} ${appName}.cmake
+    PrepareMainProjectCMakeFile ${appName}/CMakeLists.txt ${qtEnable}
+    PrepareAppCMakeFile ${appName} ${qtEnable} ${appName}/src
+    PrepareAppMainFile ${appName} ${qtEnable} ${appName}/src
+    PrepareTestDirectory ${appName}/test
 }
 
 function PrepareLibNonQT {
