@@ -1,5 +1,6 @@
 # Table of Contents
-1. [CCreate Cheat Sheet](#ccreate-cheat-sheet)
+- [CCreate Cheat Sheet](#ccreate-cheat-sheet)
+- [vcpkg Cheat Sheet](#vcpkg-cheat-sheet)
 
 # CCreate Cheat Sheet
 ``` Bash
@@ -46,4 +47,17 @@ YourLibName/
 ├── mainwindow.cpp
 ├── mainwindow.h
 └── mainwindow.ui
+```
+
+# VCPKG Cheat Sheet
+
+```Bash
+# Install vcpkg
+git clone https://github.com/microsoft/vcpkg
+./bootstrap-vcpkg.sh
+
+# Manage package
+./vcpkg list
+./vcpkg search | grep json
+./vcpkg install xxx
 ```
