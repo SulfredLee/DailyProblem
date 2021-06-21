@@ -439,6 +439,7 @@ function PrepareApp {
 function PrepareLibNonQT {
     local libType=$1
     local libName=$2
+    local outputPath=$3
 
     # lib CMake file
     echo "set(targetName \"${libName}\")
@@ -455,11 +456,11 @@ include_directories(
   # \${Boost_INCLUDE_DIR}
   )
 
-# state that this project is a library" > ./${libName}/CMakeLists.txt
+# state that this project is a library" > ./${outputPath}/CMakeLists.txt
     if [[ "static" == ${libType} ]]; then
-        echo "add_library(\${targetName} STATIC \${\${folderName}_src}) # static library" >> ./${libName}/CMakeLists.txt
+        echo "add_library(\${targetName} STATIC \${\${folderName}_src}) # static library" >> ./${outputPath}/CMakeLists.txt
     else
-        echo "add_library(\${targetName} SHARED \${\${folderName}_src}) # dynamic library" >> ./${libName}/CMakeLists.txt
+        echo "add_library(\${targetName} SHARED \${\${folderName}_src}) # dynamic library" >> ./${outputPath}/CMakeLists.txt
     fi
 
     echo "
@@ -476,12 +477,13 @@ set_property(TARGET \${targetName} PROPERTY FOLDER \"libraries\")
 
 # Adds logic to INSTALL.vcproj to copy *.a to destination directory
 install (TARGETS \${targetName} DESTINATION lib)
-install (FILES \${\${folderName}_inc} DESTINATION include)" >> ./${libName}/CMakeLists.txt
+install (FILES \${\${folderName}_inc} DESTINATION include)" >> ./${outputPath}/CMakeLists.txt
 }
 
 function PrepareLibQT {
     local libType=$1
     local libName=$2
+    local outputPath=$3
 
     echo "set(targetName \"${libName}\")
 get_filename_component(folderName \${CMAKE_CURRENT_SOURCE_DIR} NAME)
@@ -521,7 +523,7 @@ endif ()
 message(STATUS \"qt include: \" \${QT_INCLUDE_DIR})
 message(STATUS \"binary folder: \" \${PROJECT_BINARY_DIR}/\${folderName})
 message(STATUS \"cmake current dir: \" \${CMAKE_CURRENT_SOURCE_DIR})
-message(STATUS \"source file: \" \${\${folderName}_ui_moc})" > ./${libName}/CMakeLists.txt
+message(STATUS \"source file: \" \${\${folderName}_ui_moc})" > ./${outputPath}/CMakeLists.txt
 
     if [[ "static" == ${libType} ]]; then
         echo "add_library(
@@ -532,7 +534,7 @@ message(STATUS \"source file: \" \${\${folderName}_ui_moc})" > ./${libName}/CMak
   \${\${folderName}_ui_moc}
   # \${\${folderName}_rcc_moc}
   # \${PlayerEngine_src}
-  ) # static library" >> ./${libName}/CMakeLists.txt
+  ) # static library" >> ./${outputPath}/CMakeLists.txt
     else
         echo "add_library(
   \${targetName} SHARED
@@ -542,7 +544,7 @@ message(STATUS \"source file: \" \${\${folderName}_ui_moc})" > ./${libName}/CMak
   \${\${folderName}_ui_moc}
   # \${\${folderName}_rcc_moc}
   # \${PlayerEngine_src}
-  ) # dynamic library" >> ./${libName}/CMakeLists.txt
+  ) # dynamic library" >> ./${outputPath}/CMakeLists.txt
     fi
 
     echo "
@@ -558,7 +560,7 @@ set_property(TARGET \${targetName} PROPERTY FOLDER \"libraries\")
 install (TARGETS \${targetName} DESTINATION lib)
 install (FILES \${\${folderName}_hdr_proxy} DESTINATION include)
 install (FILES \${libqt_libFile} DESTINATION lib)
-" >> ./${libName}/CMakeLists.txt
+" >> ./${outputPath}/CMakeLists.txt
 }
 
 function PrepareLib {
@@ -568,14 +570,16 @@ function PrepareLib {
 
     echo "Prepare ${libType} library: ${libName} qtEnable: ${qtEnable}"
     mkdir -p ./${libName}
+    mkdir -p ./${libName}/src
+    mkdir -p ./${libName}/test
 
-    # lib root CMake file
-    grep -qxF "add_subdirectory(${libName})" CMakeLists.txt || echo "add_subdirectory(${libName})" >> CMakeLists.txt
-
+    PrepareExternalCMakeFile "Local" ${libName} ${libName}.cmake
+    PrepareMainProjectCMakeFile ${libName}/CMakeLists.txt ${qtEnable}
+    PrepareTestDirectory ${libName}/test
     if [[ "Y" == ${qtEnable} ]]; then
-        PrepareLibQT ${libType} ${libName}
+        PrepareLibQT ${libType} ${libName} ${libName}/src
     else
-        PrepareLibNonQT ${libType} ${libName}
+        PrepareLibNonQT ${libType} ${libName} ${libName}/src
     fi
 }
 
