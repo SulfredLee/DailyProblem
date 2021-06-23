@@ -38,12 +38,19 @@ include (${appPath}/YourProject.cmake)
 function PrepareMainProjectCMakeFile {
     local outputFile=$1
     local qtEnable=$2
+    local projectName=$3
 
     echo "cmake_minimum_required (VERSION 3.8.2)
 
 # build a CPack driven installer package
+include (\"cmake/HunterGate.cmake\")
 include (InstallRequiredSystemLibraries)
 include (CPack)
+
+HunterGate (
+  URL \"https://github.com/cpp-pm/hunter/archive/v0.23.297.tar.gz\"
+  SHA1 \"3319fe6a3b08090df7df98dee75134d68e2ef5a3\"
+)
 
 # Maps to a solution filed (*.sln). The solution will
 # have all targets (exe, lib, dll) as projects (.vcproj)
@@ -70,7 +77,7 @@ else ()
 endif ()
 message(STATUS \"Info - CMAKE_THREAD_LIBS_INIT: \${CMAKE_THREAD_LIBS_INIT}\")
 
-include(\"./vcpkg/scripts/buildsystems/vcpkg.cmake\")" > ${outputFile}
+# include(\"./vcpkg/scripts/buildsystems/vcpkg.cmake\")" > ${outputFile}
 
     if [[ "Y" == ${qtEnable} ]]; then
         echo "
@@ -97,6 +104,7 @@ message(STATUS \"Info -     include path: \${Qt5Widgets_INCLUDE_DIRS}\")
 
     echo "
 # Handle GTest
+hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 message(STATUS \"Gtest include: \" \${GTEST_INCLUDE_DIRS})
 
@@ -420,6 +428,13 @@ set_property(TARGET \${targetName} PROPERTY FOLDER \"executables\")
 install (TARGETS \${targetName} DESTINATION bin)" > ./${outputPath}/CMakeLists.txt
 }
 
+function DownloadHunter {
+    local workPath=$1
+
+    mkdir ${workPath}/cmake
+    wget https://raw.githubusercontent.com/cpp-pm/gate/master/cmake/HunterGate.cmake -O ${workPath}/cmake/HunterGate.cmake
+}
+
 function PrepareApp {
     local appName=$1
     local qtEnable=$2
@@ -430,7 +445,8 @@ function PrepareApp {
     mkdir -p ./${appName}/test
 
     PrepareExternalCMakeFile "Local" ${appName} ${appName}.cmake
-    PrepareMainProjectCMakeFile ${appName}/CMakeLists.txt ${qtEnable}
+    PrepareMainProjectCMakeFile ${appName}/CMakeLists.txt ${qtEnable} ${appName}
+    DownloadHunter ${appName}
     PrepareAppCMakeFile ${appName} ${qtEnable} ${appName}/src
     PrepareAppMainFile ${appName} ${qtEnable} ${appName}/src
     PrepareTestDirectory ${appName}/test
@@ -574,7 +590,8 @@ function PrepareLib {
     mkdir -p ./${libName}/test
 
     PrepareExternalCMakeFile "Local" ${libName} ${libName}.cmake
-    PrepareMainProjectCMakeFile ${libName}/CMakeLists.txt ${qtEnable}
+    PrepareMainProjectCMakeFile ${libName}/CMakeLists.txt ${qtEnable} ${libName}
+    DownloadHunter ${appName}
     PrepareTestDirectory ${libName}/test
     if [[ "Y" == ${qtEnable} ]]; then
         PrepareLibQT ${libType} ${libName} ${libName}/src
