@@ -44,12 +44,13 @@ function PrepareMainProjectCMakeFile {
 
 # build a CPack driven installer package
 include (\"cmake/HunterGate.cmake\")
+# include (\"./vcpkg/scripts/buildsystems/vcpkg.cmake\")
 include (InstallRequiredSystemLibraries)
 include (CPack)
 
 HunterGate (
-  URL \"https://github.com/cpp-pm/hunter/archive/v0.23.297.tar.gz\"
-  SHA1 \"3319fe6a3b08090df7df98dee75134d68e2ef5a3\"
+  URL \"https://github.com/cpp-pm/hunter/archive/v0.23.304.tar.gz\"
+  SHA1 \"cae9026e69d7d8333897663688a11f4232fb8826\"
 )
 
 # Maps to a solution filed (*.sln). The solution will
@@ -76,8 +77,7 @@ else ()
   add_definitions(-DWINDOWS -DWIN32 \"/EHsc\")
 endif ()
 message(STATUS \"Info - CMAKE_THREAD_LIBS_INIT: \${CMAKE_THREAD_LIBS_INIT}\")
-
-# include(\"./vcpkg/scripts/buildsystems/vcpkg.cmake\")" > ${outputFile}
+" > ${outputFile}
 
     if [[ "Y" == ${qtEnable} ]]; then
         echo "
@@ -435,6 +435,17 @@ function DownloadHunter {
     wget https://raw.githubusercontent.com/cpp-pm/gate/master/cmake/HunterGate.cmake -O ${workPath}/cmake/HunterGate.cmake
 }
 
+function PrepareVCPKGFile {
+    local workPath=$1
+    local outputFile=${workPath}/Preparevcpkg.sh
+
+    echo "git clone https://github.com/microsoft/vcpkg
+cd ./vcpkg
+./bootstrap-vcpkg.sh" > ${outputFile}
+
+    chmod +x ${outputFile}
+}
+
 function PrepareApp {
     local appName=$1
     local qtEnable=$2
@@ -447,6 +458,7 @@ function PrepareApp {
     PrepareExternalCMakeFile "Local" ${appName} ${appName}.cmake
     PrepareMainProjectCMakeFile ${appName}/CMakeLists.txt ${qtEnable} ${appName}
     DownloadHunter ${appName}
+    PrepareVCPKGFile ${appName}
     PrepareAppCMakeFile ${appName} ${qtEnable} ${appName}/src
     PrepareAppMainFile ${appName} ${qtEnable} ${appName}/src
     PrepareTestDirectory ${appName}/test
@@ -591,7 +603,8 @@ function PrepareLib {
 
     PrepareExternalCMakeFile "Local" ${libName} ${libName}.cmake
     PrepareMainProjectCMakeFile ${libName}/CMakeLists.txt ${qtEnable} ${libName}
-    DownloadHunter ${appName}
+    DownloadHunter ${libName}
+    PrepareVCPKGFile ${libName}
     PrepareTestDirectory ${libName}/test
     if [[ "Y" == ${qtEnable} ]]; then
         PrepareLibQT ${libType} ${libName} ${libName}/src
