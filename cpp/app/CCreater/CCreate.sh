@@ -39,6 +39,7 @@ function PrepareMainProjectCMakeFile {
     local outputFile=$1
     local qtEnable=$2
     local projectName=$3
+    local srcFolder=$4
 
     echo "cmake_minimum_required (VERSION 3.8.2)
 
@@ -109,7 +110,7 @@ find_package(GTest CONFIG REQUIRED)
 message(STATUS \"Gtest include: \" \${GTEST_INCLUDE_DIRS})
 
 # Sub-directories where more CMakeLists.txt exist
-add_subdirectory(src)
+add_subdirectory(${srcFolder})
 # add_subdirectory(lib)
 add_subdirectory(test)
 " >> ${outputFile}
@@ -452,15 +453,16 @@ function PrepareApp {
     echo "Prepare app: ${appName} qtEnable: ${qtEnable}"
 
     mkdir -p ./${appName}
-    mkdir -p ./${appName}/src
+    mkdir -p ./${appName}/app
+    mkdir -p ./${appName}/lib
     mkdir -p ./${appName}/test
 
     PrepareExternalCMakeFile "Local" ${appName} ${appName}.cmake
-    PrepareMainProjectCMakeFile ${appName}/CMakeLists.txt ${qtEnable} ${appName}
+    PrepareMainProjectCMakeFile ${appName}/CMakeLists.txt ${qtEnable} ${appName} "app"
     DownloadHunter ${appName}
     PrepareVCPKGFile ${appName}
-    PrepareAppCMakeFile ${appName} ${qtEnable} ${appName}/src
-    PrepareAppMainFile ${appName} ${qtEnable} ${appName}/src
+    PrepareAppCMakeFile ${appName} ${qtEnable} ${appName}/app
+    PrepareAppMainFile ${appName} ${qtEnable} ${appName}/app
     PrepareTestDirectory ${appName}/test
 }
 
@@ -601,8 +603,32 @@ function PrepareLib {
     mkdir -p ./${libName}/src
     mkdir -p ./${libName}/test
 
+    # lib root CMake file
+    grep -qxF "add_subdirectory(${libName})" CMakeLists.txt || echo "add_subdirectory(${libName})" >> CMakeLists.txt
+
+    echo "add_subdirectory(src)" > ./${libName}/CMakeLists.txt
+    echo "add_subdirectory(test)" >> ./${libName}/CMakeLists.txt
+
+    PrepareTestDirectory ${libName}/test
+    if [[ "Y" == ${qtEnable} ]]; then
+        PrepareLibQT ${libType} ${libName} ${libName}/src
+    else
+        PrepareLibNonQT ${libType} ${libName} ${libName}/src
+    fi
+}
+
+function PrepareLibProject {
+    local libType=$1
+    local libName=$2
+    local qtEnable=$3
+
+    echo "Prepare ${libType} library: ${libName} qtEnable: ${qtEnable}"
+    mkdir -p ./${libName}
+    mkdir -p ./${libName}/src
+    mkdir -p ./${libName}/test
+
     PrepareExternalCMakeFile "Local" ${libName} ${libName}.cmake
-    PrepareMainProjectCMakeFile ${libName}/CMakeLists.txt ${qtEnable} ${libName}
+    PrepareMainProjectCMakeFile ${libName}/CMakeLists.txt ${qtEnable} ${libName} "src"
     DownloadHunter ${libName}
     PrepareVCPKGFile ${libName}
     PrepareTestDirectory ${libName}/test
@@ -669,8 +695,20 @@ function PrintHelp {
     echo ""
     echo "# Create app"
     echo "\$ cd ./<YourProjectName>/app"
-    echo "\$ $0 --app_name <YourApp>"
-    echo "\$ $0 --app_name <YourApp> --qt_enable"
+    echo "\$ $0 --app_project <YourApp>"
+    echo "\$ $0 --app_project <YourApp> --qt_enable"
+
+    echo ""
+    echo "# Create static library project"
+    echo "\$ cd ./<YourProjectName>/lib"
+    echo "\$ $0 --static_library_project <YourLibName>"
+    echo "\$ $0 --static_library_project <YourLibName> --qt_enable"
+
+    echo ""
+    echo "# Create dynamic library project"
+    echo "\$ cd ./<YourProjectName>/lib"
+    echo "\$ $0 --dynamic_library_project <YourLibName>"
+    echo "\$ $0 --dynamic_library_project <YourLibName> --qt_enable"
 
     echo ""
     echo "# Create static library"
@@ -700,9 +738,11 @@ POSITIONAL=()
 EXTERNAL_PROJECT_NAME=""
 LOCAL_PROJECT_NAME=""
 MAIN_PROJECT_NAME=""
+STATIC_LIBRARY_PROJECT=""
+DYNAMIC_LIBRARY_PROJECT=""
 STATIC_LIBRARY=""
 DYNAMIC_LIBRARY=""
-APP_NAME=""
+APP_PROJECT=""
 TEST_NAME=""
 QT_ENABLE="N"
 VCPKG_PATH="~/Documents/cppEnv/DCEnv"
@@ -739,6 +779,16 @@ do
             shift # past argument
             shift # past value
             ;;
+        -sp|--static_library_project)
+            STATIC_LIBRARY_PROJECT="$2"
+            shift # past argument
+            shift # past value
+            ;;
+        -dp|--dynamic_library_project)
+            DYNAMIC_LIBRARY_PROJECT="$2"
+            shift # past argument
+            shift # past value
+            ;;
         -s|--static_library)
             STATIC_LIBRARY="$2"
             shift # past argument
@@ -749,8 +799,8 @@ do
             shift # past argument
             shift # past value
             ;;
-        -a|--app_name)
-            APP_NAME="$2"
+        -a|--app_project)
+            APP_PROJECT="$2"
             shift # past argument
             shift # past value
             ;;
@@ -777,12 +827,16 @@ elif [[ ${EXTERNAL_PROJECT_NAME} != "" ]]; then
     PrepareExternalCMakeFile "Git" ${EXTERNAL_PROJECT_NAME} ./${EXTERNAL_PROJECT_NAME}.cmake
 elif [[ ${LOCAL_PROJECT_NAME} != "" ]]; then
     PrepareExternalCMakeFile "Local" ${LOCAL_PROJECT_NAME} ./${LOCAL_PROJECT_NAME}.cmake
+elif [[ ${STATIC_LIBRARY_PROJECT} != "" ]]; then
+    PrepareLibProject "static" ${STATIC_LIBRARY_PROJECT} ${QT_ENABLE}
+elif [[ ${DYNAMIC_LIBRARY_PROJECT} != "" ]]; then
+    PrepareLibProject "dynamic" ${DYNAMIC_LIBRARY_PROJECT} ${QT_ENABLE}
 elif [[ ${STATIC_LIBRARY} != "" ]]; then
     PrepareLib "static" ${STATIC_LIBRARY} ${QT_ENABLE}
 elif [[ ${DYNAMIC_LIBRARY} != "" ]]; then
     PrepareLib "dynamic" ${DYNAMIC_LIBRARY} ${QT_ENABLE}
-elif [[ ${APP_NAME} != "" ]]; then
-    PrepareApp ${APP_NAME} ${QT_ENABLE}
+elif [[ ${APP_PROJECT} != "" ]]; then
+    PrepareApp ${APP_PROJECT} ${QT_ENABLE}
 elif [[ ${TEST_NAME} != "" ]]; then
     PrepareTest ${TEST_NAME}
 fi
