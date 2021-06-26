@@ -338,8 +338,7 @@ fi
 function PrepareMainProject {
     local projectName=$1
     local qtEnable=$2
-    local vcpkgPath=$3
-    echo "Prepare project: ${projectName} qtEnable: ${qtEnable} vcpkgPath: ${vcpkgPath}"
+    echo "Prepare project: ${projectName} qtEnable: ${qtEnable}"
 
     # Prepare directories
     mkdir -p ${projectName}/app
@@ -745,7 +744,6 @@ DYNAMIC_LIBRARY=""
 APP_PROJECT=""
 TEST_NAME=""
 QT_ENABLE="N"
-VCPKG_PATH="~/Documents/cppEnv/DCEnv"
 while [[ $# -gt 0 ]]
 do
     key="$1"
@@ -763,11 +761,6 @@ do
         -q|--qt_enable)
             QT_ENABLE="Y"
             shift # past argument
-            ;;
-        -v|--vcpkg_path)
-            VCPKG_PATH="$2"
-            shift # past argument
-            shift # past value
             ;;
         -e|--external_project)
             EXTERNAL_PROJECT_NAME="$2"
@@ -822,7 +815,7 @@ done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
 if [[ ${MAIN_PROJECT_NAME} != "" ]]; then
-    PrepareMainProject ${MAIN_PROJECT_NAME} ${QT_ENABLE} ${VCPKG_PATH}
+    PrepareMainProject ${MAIN_PROJECT_NAME} ${QT_ENABLE}
 elif [[ ${EXTERNAL_PROJECT_NAME} != "" ]]; then
     PrepareExternalCMakeFile "Git" ${EXTERNAL_PROJECT_NAME} ./${EXTERNAL_PROJECT_NAME}.cmake
 elif [[ ${LOCAL_PROJECT_NAME} != "" ]]; then
