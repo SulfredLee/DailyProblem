@@ -35,17 +35,67 @@ include (${appPath}/YourProject.cmake)
 " > ${outputFile}
 }
 
+function PrepareHunterCommonCMakeFile {
+    local outputFolder=$1
+    local outputFile=${outputFolder}/hunterCommon.cmake
+
+    echo "# Copyright (c) 2013, 2015 Ruslan Baratov
+# All rights reserved.
+
+cmake_minimum_required(VERSION 3.0)
+
+### Include HunterGate module from git submodule
+set(gate_dir \"\${CMAKE_CURRENT_LIST_DIR}/../gate\")
+set(gate_module \"\${gate_dir}/cmake/HunterGate.cmake\")
+
+get_filename_component(gate_module \"\${gate_module}\" ABSOLUTE)
+if(NOT EXISTS \"\${gate_module}\")
+  message(
+      FATAL_ERROR
+      \"\${gate_module} module not found (update git submodule needed?)\"
+  )
+endif()
+
+message(\"Including HunterGate: \${gate_module}\")
+include(\"\${gate_module}\")
+
+### Check testing variables are set
+string(COMPARE EQUAL \"\${TESTING_URL}\" \"\" url_is_empty)
+string(COMPARE EQUAL \"\${TESTING_SHA1}\" \"\" sha1_is_empty)
+string(COMPARE EQUAL \"\${HUNTER_ROOT}\" \"\" hunter_root_is_empty)
+
+if(NOT url_is_empty AND NOT sha1_is_empty AND NOT hunter_root_is_empty)
+  get_filename_component(TESTING_URL \"\${TESTING_URL}\" ABSOLUTE)
+
+  ### HunterGate module
+  HunterGate(URL \"\${TESTING_URL}\" SHA1 \"\${TESTING_SHA1}\" \${TESTING_CONFIG_OPT})
+else()
+  get_filename_component(HUNTER_ROOT \"\${CMAKE_CURRENT_LIST_DIR}/..\" ABSOLUTE)
+  HunterGate(URL \"x\" SHA1 \"xxxxxxxx\" \${TESTING_CONFIG_OPT})
+endif()" > ${outputFile}
+
+}
+
 function PrepareMainProjectCMakeFile {
     local outputFile=$1
     local qtEnable=$2
     local projectName=$3
     local srcFolder=$4
 
+    # PrepareHunterCommonCMakeFile ${projectName}
+
     echo "cmake_minimum_required (VERSION 3.8.2)
 
-# build a CPack driven installer package
+# Prepare Package manager
+# look for GTestTargets.cmake under ~/.hunter for more information about usefule variable
 include (\"cmake/HunterGate.cmake\")
+
+# Usable variables can be found from files <package>-config.cmake
+# look for set_target_properties()
+# set(CMAKE_HOST_SYSTEM_PROCESSOR \"x86_64\")
 # include (\"./vcpkg/scripts/buildsystems/vcpkg.cmake\")
+
+# build a CPack driven installer package
 include (InstallRequiredSystemLibraries)
 include (CPack)
 
@@ -107,6 +157,7 @@ message(STATUS \"Info -     include path: \${Qt5Widgets_INCLUDE_DIRS}\")
 # Handle GTest
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
+get_target_property(GTEST_INCLUDE_DIRS GTest::gtest INTERFACE_INCLUDE_DIRECTORIES)
 message(STATUS \"Gtest include: \" \${GTEST_INCLUDE_DIRS})
 
 # Sub-directories where more CMakeLists.txt exist
@@ -198,6 +249,7 @@ file(GLOB \${folderName}_src
 
 include_directories(
   \${CMAKE_CURRENT_SOURCE_DIR}
+  \${PROJECT_SOURCE_DIR}/src
   \${GTEST_INCLUDE_DIRS}
   )
   # \${PROJECT_SOURCE_DIR}/../ProjectB/lib/PrintHelper
@@ -210,6 +262,7 @@ add_executable(\${targetName} \${\${folderName}_src})
 target_link_libraries(
   \${targetName}
   GTest::gmock GTest::gtest GTest::gmock_main GTest::gtest_main
+  ${projectName}
   )
 #   \${CMAKE_INSTALL_PREFIX}/lib/libPrintHelper.so
 #   \${CMAKE_THREAD_LIBS_INIT}
@@ -239,6 +292,7 @@ function PrepareTestMainFile {
     local outputFile=$1
 
     echo "#include \"gtest/gtest.h\"
+#include \"gmock/gmock.h\"
 
 int main(int argc, char *argv[])
 {
@@ -249,12 +303,43 @@ int main(int argc, char *argv[])
 " > ${outputFile}
 }
 
+function PrepareTestClassFile {
+    local projectName=${2}
+    local outputHeaderFile=${1}/Test${projectName}.h
+    local outputSrcFile=${1}/Test${projectName}.cpp
+
+    echo "#ifndef TEST_${projectName}_H
+#define TEST_${projectName}_H
+#include \"gtest/gtest.h\"
+#include \"gmock/gmock.h\"
+
+class Test${projectName} : public testing::Test
+{
+ public:
+    virtual void SetUp() {}
+    virtual void TearDown() {}
+};
+
+#endif
+" > ${outputHeaderFile}
+
+    echo "#include \"Test${projectName}.h\"
+
+TEST_F(Test${projectName}, Test001)
+{
+    EXPECT_EQ(true, true);
+}
+" > ${outputSrcFile}
+
+}
+
 function PrepareTestDirectory {
     local projectName=${1}
     local outputFolder=${projectName}/test
 
     PrepareTestCMakeFile ${projectName} ${outputFolder}/CMakeLists.txt
     PrepareTestMainFile ${outputFolder}/main.cpp
+    PrepareTestClassFile ${outputFolder} ${projectName}
 }
 
 function PrepareCCMakeFile {
