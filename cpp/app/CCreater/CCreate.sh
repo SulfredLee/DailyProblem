@@ -182,9 +182,10 @@ ExternalProject_Add (
 }
 
 function PrepareTestCMakeFile {
-    local outputFile=$1
+    local projectName=test_${1}
+    local outputFile=$2
 
-    echo "set(targetName \"unitTest\")
+    echo "set(targetName \"${projectName}\")
 get_filename_component(folderName \${CMAKE_CURRENT_SOURCE_DIR} NAME)
 string(REPLACE \" \" \"_\" folderName \${folderName})
 
@@ -249,9 +250,10 @@ int main(int argc, char *argv[])
 }
 
 function PrepareTestDirectory {
-    local outputFolder=$1
+    local projectName=${1}
+    local outputFolder=${projectName}/test
 
-    PrepareTestCMakeFile ${outputFolder}/CMakeLists.txt
+    PrepareTestCMakeFile ${projectName} ${outputFolder}/CMakeLists.txt
     PrepareTestMainFile ${outputFolder}/main.cpp
 }
 
@@ -462,7 +464,7 @@ function PrepareApp {
     PrepareVCPKGFile ${appName}
     PrepareAppCMakeFile ${appName} ${qtEnable} ${appName}/app
     PrepareAppMainFile ${appName} ${qtEnable} ${appName}/app
-    PrepareTestDirectory ${appName}/test
+    PrepareTestDirectory ${appName}
 }
 
 function PrepareLibNonQT {
@@ -608,7 +610,7 @@ function PrepareLib {
     echo "add_subdirectory(src)" > ./${libName}/CMakeLists.txt
     echo "add_subdirectory(test)" >> ./${libName}/CMakeLists.txt
 
-    PrepareTestDirectory ${libName}/test
+    PrepareTestDirectory ${libName}
     if [[ "Y" == ${qtEnable} ]]; then
         PrepareLibQT ${libType} ${libName} ${libName}/src
     else
@@ -630,7 +632,7 @@ function PrepareLibProject {
     PrepareMainProjectCMakeFile ${libName}/CMakeLists.txt ${qtEnable} ${libName} "src"
     DownloadHunter ${libName}
     PrepareVCPKGFile ${libName}
-    PrepareTestDirectory ${libName}/test
+    PrepareTestDirectory ${libName}
     if [[ "Y" == ${qtEnable} ]]; then
         PrepareLibQT ${libType} ${libName} ${libName}/src
     else
