@@ -431,6 +431,19 @@ fi
     chmod +x ${outputFile}
 }
 
+function PrepareGitIgnoreFile {
+    local outputFolder=$1
+    local outputFile=${outputFolder}/.gitignore
+
+    echo "debug/
+release/
+install/
+vcpkg/
+
+G*
+cscope.*" > ${outputFile}
+}
+
 function PrepareMainProject {
     local projectName=$1
     local qtEnable=$2
@@ -444,6 +457,7 @@ function PrepareMainProject {
     PrepareRootCMakeFile ${projectName}/CMakeLists.txt "app"
     PrepareCCMakeFile ${projectName} "CCMake.sh"
     PrepareReadmeFile "Debug" ${projectName}/readme.txt
+    PrepareGitIgnoreFile ${projectName}
 }
 
 function PrepareAppMainFile {
