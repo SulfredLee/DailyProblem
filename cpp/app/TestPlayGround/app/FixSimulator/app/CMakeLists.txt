@@ -11,6 +11,7 @@ file(GLOB ${folderName}_src
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
+  ${QUICKFIX_INCLUDE_DIRS}
   )
   # ${PROJECT_SOURCE_DIR}/../ProjectB/lib/PrintHelper
   # ${PROJECT_SOURCE_DIR}/lib/utility
