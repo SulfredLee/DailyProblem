@@ -3,6 +3,7 @@
 #include <condition_variable>
 #include <thread>
 #include <chrono>
+#include <atomic>
 
 class StdCond
 {
@@ -16,6 +17,7 @@ class StdCond
  private:
     std::condition_variable m_cond;
     std::mutex m_mutex;
+    std::atomic<bool> m_getSignal;
 };
 
 #endif
