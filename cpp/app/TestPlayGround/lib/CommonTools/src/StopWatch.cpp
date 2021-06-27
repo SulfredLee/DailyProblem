@@ -1,21 +1,21 @@
-#include "CountTimer.h"
+#include "StopWatch.h"
 
-CountTimer::CountTimer()
+StopWatch::StopWatch()
 {
     m_started = false;
 }
 
-CountTimer::~CountTimer()
+StopWatch::~StopWatch()
 {}
 
-void CountTimer::Start()
+void StopWatch::Start()
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     m_start = std::chrono::high_resolution_clock::now();
     m_started = true;
 }
 
-void CountTimer::Stop()
+void StopWatch::Stop()
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_started)
@@ -26,34 +26,34 @@ void CountTimer::Stop()
     }
 }
 
-void CountTimer::MovingStop()
+void StopWatch::MovingStop()
 {
     std::lock_guard<std::mutex> lock(m_mutex);
     m_end = std::chrono::high_resolution_clock::now();
     m_elapsed_seconds = m_end - m_start;
 }
 
-double CountTimer::GetSecondDouble() const
+double StopWatch::GetSecondDouble() const
 {
     return m_elapsed_seconds.count();
 }
 
-uint64_t CountTimer::GetSecond() const
+uint64_t StopWatch::GetSecond() const
 {
     return static_cast<uint64_t>(m_elapsed_seconds.count() + 0.5);
 }
 
-uint64_t CountTimer::GetMSecond() const
+uint64_t StopWatch::GetMSecond() const
 {
     return static_cast<uint64_t>(m_elapsed_seconds.count() * 1000 + 0.5);
 }
 
-uint64_t CountTimer::GetNSecond() const
+uint64_t StopWatch::GetNSecond() const
 {
     return static_cast<uint64_t>(m_elapsed_seconds.count() * 1000 * 1000 + 0.5);
 }
 
-std::string CountTimer::ToStringStartTime(bool isGMT, std::string format) const
+std::string StopWatch::ToStringStartTime(bool isGMT, std::string format) const
 {
     std::time_t tempTimeT = std::chrono::high_resolution_clock::to_time_t(m_start);
     tm tempTimeTM;
@@ -66,7 +66,7 @@ std::string CountTimer::ToStringStartTime(bool isGMT, std::string format) const
     return std::string(buff);
 }
 
-std::string CountTimer::ToStringStopTime(bool isGMT, std::string format) const
+std::string StopWatch::ToStringStopTime(bool isGMT, std::string format) const
 {
     std::time_t tempTimeT = std::chrono::high_resolution_clock::to_time_t(m_end);
     tm tempTimeTM;

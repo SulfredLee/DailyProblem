@@ -1,7 +1,7 @@
 #include "TestCommonTools.h"
 #include "StdClassWithThread.h"
 #include "StdCond.h"
-#include "CountTimer.h"
+#include "StopWatch.h"
 
 /*
 EXPECT_EQ(val1,val2);, val1 == val2
@@ -26,7 +26,7 @@ TEST_F(TestCommonTools, ClassWithThread_Create_Test)
 TEST_F(TestCommonTools, StdCond_WaitWithTime_Test)
 {
     StdCond cond;
-    CountTimer timer;
+    StopWatch timer;
 
     timer.Start();
     cond.WaitWithTime(10);
@@ -37,7 +37,7 @@ TEST_F(TestCommonTools, StdCond_WaitWithTime_Test)
 TEST_F(TestCommonTools, StdCond_WaitAndSignal_Test)
 {
     StdCond cond;
-    CountTimer timer;
+    StopWatch timer;
 
     timer.Start();
     std::thread tt([&]
@@ -52,9 +52,9 @@ TEST_F(TestCommonTools, StdCond_WaitAndSignal_Test)
     EXPECT_LE(0.01, timer.GetSecondDouble());
 }
 
-TEST_F(TestCommonTools, CountTimer_SimpleSleep_Test)
+TEST_F(TestCommonTools, StopWatch_SimpleSleep_Test)
 {
-    CountTimer timer;
+    StopWatch timer;
 
     timer.Start();
     std::this_thread::sleep_for(10ms);
@@ -62,9 +62,9 @@ TEST_F(TestCommonTools, CountTimer_SimpleSleep_Test)
     EXPECT_LE(0.01, timer.GetSecondDouble());
 }
 
-TEST_F(TestCommonTools, CountTimer_MovingSleep_Test)
+TEST_F(TestCommonTools, StopWatch_MovingSleep_Test)
 {
-    CountTimer timer;
+    StopWatch timer;
 
     timer.Start();
     for (int i = 0; i < 10; i++)
