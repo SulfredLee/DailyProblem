@@ -9,6 +9,7 @@ file(GLOB ${folderName}_src
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
+  ${QUICKFIX_INCLUDE_DIRS}
   # ${Boost_INCLUDE_DIR}
   )
 
@@ -16,8 +17,10 @@ include_directories(
 add_library(${targetName} STATIC ${${folderName}_src}) # static library
 
 if (UNIX)
-#   target_link_libraries(
-#     ${targetName}
+  target_link_libraries(
+    ${targetName}
+    PRIVATE quickfix
+    )
 #     ${CMAKE_THREAD_LIBS_INIT}
 #     )
 else ()

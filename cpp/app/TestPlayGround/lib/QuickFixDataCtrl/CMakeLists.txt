@@ -6,8 +6,8 @@ include ("cmake/HunterGate.cmake")
 
 # Usable variables can be found from files <package>-config.cmake
 # look for set_target_properties()
-# set(CMAKE_HOST_SYSTEM_PROCESSOR "x86_64")
-# include ("./vcpkg/scripts/buildsystems/vcpkg.cmake")
+set(CMAKE_HOST_SYSTEM_PROCESSOR "x86_64")
+include ("./vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 # build a CPack driven installer package
 include (InstallRequiredSystemLibraries)
@@ -49,6 +49,11 @@ hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 get_target_property(GTEST_INCLUDE_DIRS GTest::gtest INTERFACE_INCLUDE_DIRECTORIES)
 message(STATUS "Gtest include: " ${GTEST_INCLUDE_DIRS})
+
+# Handle QuickFix
+find_package(quickfix CONFIG REQUIRED)
+get_target_property(QUICKFIX_INCLUDE_DIRS quickfix INTERFACE_INCLUDE_DIRECTORIES)
+message(STATUS "QuickFix include: " ${QUICKFIX_INCLUDE_DIRS})
 
 # Sub-directories where more CMakeLists.txt exist
 add_subdirectory(src)
