@@ -22,9 +22,10 @@ message(STATUS "Root - cxx Flags: " ${CMAKE_CXX_FLAGS})
 # Add External Project
 include (app/FixSimulator.cmake)
 include (lib/CommonTools.cmake)
+include (lib/quickfixLocal.cmake)
 
 # Handle dependencies
-# ExternalProject_Add_StepDependencies(TestPlayGround build
-#   ProjectB
-#   )
+ExternalProject_Add_StepDependencies(FixSimulator build
+  quickfixLocal
+  )
 

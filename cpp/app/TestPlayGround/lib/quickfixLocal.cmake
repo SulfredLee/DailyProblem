@@ -1,13 +1,15 @@
 include (ExternalProject)
 
-# Add External QuickFixDataCtrl
-set (thisProject "QuickFixDataCtrl")
+# Add External quickfixLocal
+set (thisProject "quickfixLocal")
 ExternalProject_Add (
   ${thisProject}
 
   PREFIX Projects/${thisProject}
 
-  SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/${thisProject}
+
+  GIT_REPOSITORY https://github.com/quickfix/quickfix.git
+  GIT_SHALLOW    ON
 
   BUILD_ALWAYS   ON
   INSTALL_DIR    ${CMAKE_INSTALL_PREFIX}

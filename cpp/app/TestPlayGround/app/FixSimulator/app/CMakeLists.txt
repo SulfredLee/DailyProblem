@@ -11,7 +11,7 @@ file(GLOB ${folderName}_src
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
-  ${QUICKFIX_INCLUDE_DIRS}
+  ${CMAKE_INSTALL_PREFIX}/include
   )
   # ${PROJECT_SOURCE_DIR}/../ProjectB/lib/PrintHelper
   # ${PROJECT_SOURCE_DIR}/lib/utility
@@ -22,7 +22,7 @@ add_executable(${targetName} ${${folderName}_src})
 
 target_link_libraries(
   ${targetName}
-  PRIVATE quickfix
+  PRIVATE ${CMAKE_INSTALL_PREFIX}/lib/libquickfix.so
   )
 #   ${CMAKE_INSTALL_PREFIX}/lib/libPrintHelper.so
 #   ${CMAKE_THREAD_LIBS_INIT}
