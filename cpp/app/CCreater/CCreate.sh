@@ -832,6 +832,11 @@ function PrintHelp {
     echo "\$ $0 --dynamic_library <YourLibName> --qt_enable"
 
     echo ""
+    echo "# Create External project"
+    echo "\$ cd ./<YourProjectName>/lib"
+    echo "\$ $0 --external_project <YourExternalProjectName>"
+
+    echo ""
     echo "# Create test sub project"
     echo "\$ cd ./<YourProjectName/test"
     echo "\$ $0 --test_name <TestName>"
