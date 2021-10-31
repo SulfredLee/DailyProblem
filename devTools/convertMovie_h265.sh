@@ -24,7 +24,7 @@ do
             shift # past value
             ;;
         -i|--input_video)
-            INTPUT_VIDEO="$2"
+            INPUT_VIDEO="$2"
             shift # past argument
             shift # past value
             ;;
@@ -39,9 +39,9 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 
 
 if [ "$ACTION" = "convert" ]; then
-    local OUTPUT_VIDEO="converted_" + ${INPUT_VIDEO}
+    OUTPUT_VIDEO="converted_${INPUT_VIDEO}"
     echo "ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v hevc_nvenc ${OUTPUT_VIDEO}"
-    # ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v hevc_nvenc ${OUTPUT_VIDEO}
+    ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v hevc_nvenc ${OUTPUT_VIDEO}
 elif [ "$ACTION" = "check_status" ]; then
     ffprob ${INPUT_VIDEO}
 elif [ "$ACTION" = "gpu_usage" ]; then
