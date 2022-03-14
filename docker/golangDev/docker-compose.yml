@@ -1,0 +1,10 @@
+version: "3.3"
+services:
+  golang_dev_env:
+    build: .
+    volumes:
+      - .:/src
+    stdin_open: true # docker run -i
+    tty: true # docker run -t
+    # user: "${UID}:${GID}"
+    # user: "1000:1000"
