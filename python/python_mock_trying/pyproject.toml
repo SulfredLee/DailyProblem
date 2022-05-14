@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "python_mock_trying"
+version = "0.1.0"
+description = ""
+authors = ["SulfredLee <sflee1112@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+unittest = "^0.0"
+mock-alchemy = "^0.2.5"
+Flask = "^2.1.2"
+Flask-GraphQL = "^2.0.1"
+graphene = "^2.1.8"
+SQLAlchemy = "^1.4.36"
+psycopg2-binary = "^2.9.3"
+loguru = "^0.6.0"
+elastic-apm = "^6.9.1"
+ecs-logging = "^1.1.0"
+nanoid = "^2.0.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

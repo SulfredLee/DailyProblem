@@ -1,0 +1,61 @@
+version: '3.7'
+services:
+  pg-0:
+    image: bitnami/postgresql:${POSTGRESQL_VERSION:-14.2.0}
+    restart: always
+    environment:
+      POSTGRESQL_REPLICATION_MODE: master
+      POSTGRESQL_REPLICATION_USER: ${POSTGRESQL_REPLICATION_USER:-repl_user}
+      POSTGRESQL_REPLICATION_PASSWORD: ${POSTGRESQL_REPLICATION_PASSWORD:-repl_password}
+      POSTGRES_USERNAME: ${POSTGRESQL_MASTER_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRESQL_MASTER_PASSWORD:-postgres}
+      POSTGRESQL_SYNCHRONOUS_COMMIT_MODE: "on"
+      POSTGRESQL_NUM_SYNCHRONOUS_REPLICAS: 1
+    ports:
+      - '${POSTGRESQL_MASTER_PORT:-25432}:5432'
+    volumes:
+      - '${POSTGRESQL_MASTER_PERSISTENCE_PATH:-pg-0}:/bitnami/postgresql'
+    networks:
+      - postgres-network
+
+  pgadmin:
+    image: dpage/pgadmin4:6
+    depends_on:
+      - pg-0
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "pg_tester@testmail.com"
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - '${POSTGRESQL_ADMIN_PORT:-25480}:80'
+    networks:
+      - postgres-network
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+  
+  pg-1:
+    image: bitnami/postgresql:${POSTGRESQL_VERSION:-14.2.0}
+    depends_on:
+      - pg-0
+    ports:
+      - '${POSTGRESQL_REPLICATION_PORT:-25433}:5432'
+    environment:
+      POSTGRESQL_REPLICATION_MODE: slave
+      POSTGRESQL_REPLICATION_USER: ${POSTGRESQL_REPLICATION_USER:-repl_user}
+      POSTGRESQL_REPLICATION_PASSWORD: ${POSTGRESQL_REPLICATION_PASSWORD:-repl_password}
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_SLAVE_PASSWORD:-postgres}
+      POSTGRESQL_MASTER_PORT_NUMBER: 5432
+      POSTGRESQL_MASTER_HOST: pg-0
+    volumes:
+      - '${POSTGRESQL_SLAVE_PERSISTENCE_PATH:-pg-1}:/bitnami/postgresql'
+    networks:
+      - postgres-network
+
+volumes:
+  pg-0:
+  pg-1:
+  pgadmin:
+
+networks:
+  postgres-network:
+    driver: bridge

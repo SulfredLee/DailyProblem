@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  mock_web_test:
+    container_name: mock_web_test
+    image: ${IMAGE_NAME_TAG}
+    env_file:
+      - .env
+    restart: always
+    volumes:
+      - evc_mock_web_test_v:/app/logs:rw
+    ports:
+      - 18500:18500
+    logging:
+      driver: gelf
+      options:
+        gelf-address: ${GELF_ADDRESS}
+        tag: "evc_mock_web_test"
+
+volumes:
+  evc_mock_web_test_v:
