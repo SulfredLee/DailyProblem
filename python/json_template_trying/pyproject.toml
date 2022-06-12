@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "json_template_trying"
+version = "0.1.0"
+description = ""
+authors = ["SulfredLee <sflee1112@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+jsonschema = "^4.6.0"
+jschon = "^0.8.5"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

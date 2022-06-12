@@ -1,0 +1,87 @@
+{
+   "meta":{
+      "lastUpdated":"2022-02-04T09:04:02.193Z",
+      "asOf":"2022-06-12T10:04:25.905Z",
+      "node":"eu-west-1",
+      "release":"xp2.12.0.304",
+      "type":"https://api.ultumus.com/apps/v1/docs/schemas/reference-api-doc.json"
+   },
+   "data":[
+      {
+         "shortName":"HANG SENG SEP2",
+         "fullName":"Hong Kong Futures Exchange Hang Seng Index Future",
+         "lastDeliveryDate":"2022-09-29",
+         "lastTradingDay":"2022-09-29",
+         "methodOfDelivery":"CASH",
+         "periodicity":"Monthly",
+         "tickSize":1,
+         "tickValue":50,
+         "contractSize":50,
+         "listingDate":"2022-01-28",
+         "maturityDate":"2022-09-29",
+         "CFICode":"fficsx",
+         "currency":"HKD",
+         "underlyingAssetClass":"IDX",
+         "bbgSecurityType":"Physical index future.",
+         "bbgSecurityType2":"Future",
+         "identifiers":{
+            "RIC":[
+               "HSIU2"
+            ],
+            "FIGI":[
+               "BBG014YQXV64"
+            ],
+            "ULTID":[
+               "300000000037377696"
+            ],
+            "RefListingId":[
+               "L000A13KJSB"
+            ],
+            "BBG":[
+               "HIU2 Index"
+            ],
+            "Ticker":[
+               "HSI"
+            ]
+         },
+         "exchange":{
+            "identifiers":{
+               "Reuters":[
+                  "HFE"
+               ],
+               "MIC":[
+                  "XHKF"
+               ],
+               "OperatingMIC":[
+                  "XHKF"
+               ]
+            },
+            "fullName":"HONG KONG FUTURES EXCHANGE LTD.",
+            "mtf":true,
+            "country":"HK"
+         },
+         "status":"LIS",
+         "underlyingIdentifiers":{
+            "RIC":[
+               ".HSI"
+            ],
+            "ISIN":[
+               "HK0000004322"
+            ],
+            "ULTID":[
+               "300000000001372744"
+            ],
+            "RefListingId":[
+               "L0000A19SLI"
+            ]
+         },
+         "isContinuationListing":false,
+         "thirtyDayAverageVolume":490.43333333,
+         "oneEightyDayAverageVolume":179.26666667,
+         "officialClosePrice":{
+            "amount":21486.0,
+            "currency":"HKD"
+         }
+      }
+   ]
+}
