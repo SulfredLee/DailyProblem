@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "sfdevtools"
+version = "0.2.0"
+description = ""
+authors = ["SulfredLee <sflee1112@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+logging-json = "^0.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
