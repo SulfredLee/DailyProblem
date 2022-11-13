@@ -1,6 +1,7 @@
 import argparse
 import projectmanager.internal.observability.log_helper as lh
 import projectmanager.internal.projectCreator.pythonCreator as pc
+import projectmanager.internal.projectCreator.cppCreator as cc
 import projectmanager.internal.projectCreator.projectCreatorBase as pcb
 import logging
 
@@ -24,7 +25,9 @@ def create_project(args: argparse.Namespace, logger: logging.Logger) -> None:
                                            , project_path=args.projectPath
                                            , logger=logger)
     elif args.lang == "Cpp":
-        pass
+        project_creator = cc.cppCreator(project_name=args.projectName
+                                        , project_path=args.projectPath
+                                        , logger=logger)
     else:
         raise ValueError(f"Not support language: {args.lang}")
 

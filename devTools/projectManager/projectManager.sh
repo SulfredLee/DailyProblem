@@ -9,9 +9,9 @@ updateLanguageTypes=("Cpp")
 
 ## create project selection
 pythonProjectType=("Python Web Project" "Python General Project")
-cppProjectType=("Cpp Project" "Cpp Static Lib Project" "Cpp Dynamic Lib Project" "Cpp QT Project" "Cpp QT Static Lib Project" "Cpp QT Dynamic Lib Project")
+cppProjectType=("Cpp General Project" "Cpp QT Project")
 ## udpate project selection
-cppProjectUpdateType=("Add Thrid Party Project" "Add Sub Folder")
+cppProjectUpdateType=("Add External Project" "Add Static Library" "Add Dynamic Library")
 
 # functions
 selectionResult=""
