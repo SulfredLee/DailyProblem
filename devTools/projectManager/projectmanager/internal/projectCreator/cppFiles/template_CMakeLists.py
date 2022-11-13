@@ -44,7 +44,6 @@ message(STATUS "Gtest include: " ${GTEST_INCLUDE_DIRS})
 
 # Sub-directories where more CMakeLists.txt exist
 add_subdirectory(app)
-# add_subdirectory(internal)
 add_subdirectory(test)
 
 """

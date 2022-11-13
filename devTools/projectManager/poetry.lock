@@ -31,10 +31,29 @@ category = "main"
 optional = false
 python-versions = ">=3.7"
 
+[[package]]
+name = "parse-cmake"
+version = "0.4.1"
+description = "Parser for CMakeLists.txt files"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+pyPEG2 = "*"
+
+[[package]]
+name = "pypeg2"
+version = "2.15.2"
+description = "An intrinsic PEG Parser-Interpreter for Python"
+category = "main"
+optional = false
+python-versions = "*"
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "f20915e813a5a1d9b4b868a89e28ecf9dba24e1f63c846555da34b4a4210aa0c"
+content-hash = "f6402a2bf6ef770c145161c9752fc4254e572fad88a53836d0ae5f71e45a323e"
 
 [metadata.files]
 jinja2 = [
@@ -86,4 +105,10 @@ markupsafe = [
     {file = "MarkupSafe-2.1.1-cp39-cp39-win32.whl", hash = "sha256:d4306c36ca495956b6d568d276ac11fdd9c30a36f1b6eb928070dc5360b22e1c"},
     {file = "MarkupSafe-2.1.1-cp39-cp39-win_amd64.whl", hash = "sha256:46d00d6cfecdde84d40e572d63735ef81423ad31184100411e6e3388d405e247"},
     {file = "MarkupSafe-2.1.1.tar.gz", hash = "sha256:7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b"},
+]
+parse-cmake = [
+    {file = "parse_cmake-0.4.1.tar.gz", hash = "sha256:fcb3c2f2205008f8fcf856adcfc2cf67c1b7a34e1853b95b3c3b57e6cbdc02b2"},
+]
+pypeg2 = [
+    {file = "pyPEG2-2.15.2.tar.gz", hash = "sha256:2b2d4f80d8e1a9370b2a91f4a25f4abf7f69b85c8da84cd23ec36451958a1f6d"},
 ]
