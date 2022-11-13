@@ -3,6 +3,8 @@ import projectmanager.internal.observability.log_helper as lh
 import projectmanager.internal.projectCreator.pythonCreator as pc
 import projectmanager.internal.projectCreator.cppCreator as cc
 import projectmanager.internal.projectCreator.projectCreatorBase as pcb
+import projectmanager.internal.projectUpdater.cppUpdater as cu
+import projectmanager.internal.projectUpdater.projectUpdaterBase as pub
 import logging
 
 def init_argparse() -> argparse.Namespace:
@@ -11,6 +13,7 @@ def init_argparse() -> argparse.Namespace:
     parser.add_argument("-l", "--lang", required=True)
     parser.add_argument("-pt", "--projectType", required=True)
     parser.add_argument("-pn", "--projectName", default="")
+    parser.add_argument("-mn", "--moduleName", default="")
     parser.add_argument("-pp", "--projectPath", required=True)
     return parser.parse_args()
 
@@ -34,7 +37,19 @@ def create_project(args: argparse.Namespace, logger: logging.Logger) -> None:
     project_creator.create_project(project_type=args.projectType)
 
 def update_project(args: argparse.Namespace, logger: logging.Logger) -> None:
-    pass
+    # validation
+    if args.moduleName == "":
+        raise ValueError("Please provide module name when you want to update a project")
+
+    project_updater: pub.projectUpdaterBase = None
+    if args.lang == "Cpp":
+        project_updater = cu.cppUpdater(module_name=args.moduleName
+                                        , project_path=args.projectPath
+                                        , logger=logger)
+    else:
+        raise ValueError(f"Not support language: {args.lang}")
+
+    project_updater.update_project(project_type=args.projectType)
 
 def main():
     logger = lh.init_logger(logger_name="project_manager", is_json_output=False)

@@ -85,6 +85,8 @@ elif [[ ${actionSelection} == "Update Project" ]]; then
     if [[ ${languageSelection} == "Cpp" ]]; then
         getUserSelection "${selectionTitle}" "${cppProjectUpdateType[@]}"
         projectSelection=${selectionResult}
+        read -p "Module Name: " moduleName
+        echo "New module name: ${moduleName}"
     else
         echo "Wrong languageSelection: ${languageSelection}"
         exit 0
@@ -98,8 +100,8 @@ echo "Action: ${actionSelection}"
 echo "Language: ${languageSelection}"
 echo "Project: ${projectSelection}"
 
-initial_path=`pwd`
-echo "user call script from: ${initial_path}"
+initialPath=`pwd`
+echo "user call script from: ${initialPath}"
 
 cd ${SCRIPT_DIR}
 poetry update
@@ -112,9 +114,14 @@ if [[ ${actionSelection} == "Create Project" ]]; then
            --lang "${languageSelection}"\
            --projectType "${projectSelection}"\
            --projectName "${projectName}"\
-           --projectPath "${initial_path}"
+           --projectPath "${initialPath}"
 elif [[ ${actionSelection} == "Update Project" ]]; then
-    poetry run python ${SCRIPT_DIR}/projectmanager/app/main.py --action "${actionSelection}" --lang "${languageSelection}" --projectType "${projectSelection}"
+    poetry run python ${SCRIPT_DIR}/projectmanager/app/main.py\
+           --action "${actionSelection}"\
+           --lang "${languageSelection}"\
+           --projectType "${projectSelection}"\
+           --projectPath "${initialPath}"\
+           --moduleName "${moduleName}"
 fi
 
 cd -
