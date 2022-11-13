@@ -1,9 +1,8 @@
 from projectmanager.internal.projectCreator.projectCreatorBase import *
 import projectmanager.internal.projectCreator.pythonFiles.template_main as tm
 import projectmanager.internal.projectCreator.pythonFiles.template_test as tt
+import projectmanager.internal.commonConst as cc
 import subprocess
-import jinja2
-import shutil
 
 class pythonCreator(projectCreatorBase):
     def __init__(self, project_name: str, project_path: str, logger: logging.Logger):
@@ -11,9 +10,9 @@ class pythonCreator(projectCreatorBase):
 
     # virtual
     def create_project(self, project_type: str):
-        if "Python Web Project" == project_type:
+        if cc.py_web_project == project_type:
             self.__create_web_project()
-        elif "Python General Project" == project_type:
+        elif cc.py_general_project == project_type:
             self.__create_general_project()
         else:
             raise ValueError(f"Not support project type: {project_type}")

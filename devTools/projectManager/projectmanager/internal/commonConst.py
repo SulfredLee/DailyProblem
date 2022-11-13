@@ -1,0 +1,7 @@
+py_web_project = "Python Web Project"
+py_general_project = "Python General Project"
+cpp_general_project = "Cpp General Project"
+cpp_qt_project = "Cpp QT Project"
+cpp_add_external_project = "Add External Project"
+cpp_add_static_lib = "Add Static Library"
+cpp_add_dynamic_lib = "Add Dynamic Library"
