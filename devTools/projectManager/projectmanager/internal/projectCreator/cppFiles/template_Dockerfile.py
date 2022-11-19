@@ -10,5 +10,10 @@ RUN apt-get -y install vim
 FROM runner AS builder
 RUN apt-get -y install build-essential vim ninja-build cmake doxygen git gdb curl zip pkg-config
 
+# init cpp package manager
+WORKDIR /cpp/
+COPY Preparevcpkg.sh /cpp/
+RUN chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh
+
 WORKDIR /cpp/project/
 """
