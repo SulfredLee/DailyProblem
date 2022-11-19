@@ -5,6 +5,7 @@ import shutil
 import jinja2
 import os
 import stat
+import pwd
 
 class projectCreatorBase(ABC):
     def __init__(self, project_name: str, project_path: str, logger: logging.Logger):
