@@ -1,0 +1,21 @@
+[[package]]
+name = "logging-json"
+version = "0.2.1"
+description = "JSON formatter for python logging"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+testing = ["pytest-cov (>=3.0.0,<4.0.0)"]
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.8"
+content-hash = "373e12280d894bb7b420f701b812aafd0bf63c0c0bcd0bfb80879e153f47a49e"
+
+[metadata.files]
+logging-json = [
+    {file = "logging_json-0.2.1-py3-none-any.whl", hash = "sha256:6bae032e137c27b36193518edd9e51051d210f77746e4be76fe6aaf18f9fdc5b"},
+    {file = "logging_json-0.2.1.tar.gz", hash = "sha256:303245cf11cbc0fc44a2c949e590db775b756dea07c147395f6f0e814950fcd5"},
+]
