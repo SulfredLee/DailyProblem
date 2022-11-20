@@ -63,7 +63,7 @@ class cppCreator(projectCreatorBase):
         # handle normal tempalte files
         j_env = jinja2.Environment()
         # handle special tempalte files
-        for template_obj in [[Path.joinpath(project_root, "readme.md"), tr.content_st]
+        for template_obj in [[Path.joinpath(project_root, "README.md"), tr.content_st]
                              , [Path.joinpath(project_root, ".gitignore"), tg.content_st]
                              , [Path.joinpath(project_root, "Preparevcpkg.sh"), tp.content_st]
                              , [Path.joinpath(project_root, "debug", "CCMake.sh"), dtc.content_st]
@@ -84,6 +84,7 @@ class cppCreator(projectCreatorBase):
                              , [Path.joinpath(project_root, "dockerEnv", "uat", "docker-compose.yml"), utdc.content_st]
                              , [Path.joinpath(project_root, "dockerEnv", "prod", ".env"), pte.content_st]
                              , [Path.joinpath(project_root, "dockerEnv", "prod", "docker-compose.yml"), ptdc.content_st]
+                             , [Path.joinpath(project_root, "dockerEnv", "dev", ".env"), dte.content_st]
                              , [Path.joinpath(project_root, "dockerEnv", "dev", "start_dev_container.sh"), dtsdc.content_st]
                              ]:
             with open(template_obj[0], "w") as w_FH:

@@ -28,9 +28,11 @@ stages:          # List of stages for jobs, and their order of execution
   - deploy
 
 variables:
-  DOCKER_IMAGE_NAME_BUILDER: ${CI_REGISTRY_IMAGE}:builder_1.0.0
+  DOCKER_BUILDER_VERSION: builder_1.0.0
+  DOCKER_RUNNER_VERSION: runner_1.0.0
+  DOCKER_IMAGE_NAME_BUILDER: ${CI_REGISTRY_IMAGE}:${DOCKER_BUILDER_VERSION}
   CONTAINER_NAME_BUILDER: ${CI_PROJECT_NAME}_builder
-  DOCKER_IMAGE_NAME_RUNNER: ${CI_REGISTRY_IMAGE}:runner_1.0.0
+  DOCKER_IMAGE_NAME_RUNNER: ${CI_REGISTRY_IMAGE}:${DOCKER_RUNNER_VERSION}
   CONTAINER_NAME_RUNNER: ${CI_PROJECT_NAME}_runner
   TEST_APP_NAME: ${CI_PROJECT_NAME}_Test
   RELEASE_NAME: ${CI_PROJECT_NAME}_Release
@@ -59,6 +61,9 @@ build-dev-image:
 
 build-run-image:
   stage: build-image
+  image: docker:latest
+  services:
+    - docker:20.10.12-dind
   script:
     - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker build --target runner -t $DOCKER_IMAGE_NAME_RUNNER .
@@ -74,7 +79,7 @@ build-test-app:       # This job runs in the build stage, which runs first.
   stage: build-test
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
-    - chmod +x ./Preparevcpkg.sh && ./Preparevcpkg.sh # prepare package manager
+    - ln -s /cpp/vcpkg . # prepare package manager
     - cd release && chmod +x ./CCMake.sh && ./CCMake.sh # build application
     - ninja
     - ./test/$TEST_APP_NAME # test application
@@ -88,7 +93,7 @@ uat-build-package-app:
   stage: build-package
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
-    - chmod +x ./Preparevcpkg.sh && ./Preparevcpkg.sh # prepare package manager
+    - ln -s /cpp/vcpkg . # prepare package manager
     - cd release && chmod +x ./CCMake.sh && ./CCMake.sh # build application
     - ninja install
     - cd ..
@@ -106,7 +111,7 @@ prod-build-package-app:
   stage: build-package
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
-    - chmod +x ./Preparevcpkg.sh && ./Preparevcpkg.sh # prepare package manager
+    - ln -s /cpp/vcpkg . # prepare package manager
     - cd release && chmod +x ./CCMake.sh && ./CCMake.sh # build application
     - ninja install
     - cd ..
