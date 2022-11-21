@@ -5,10 +5,10 @@ GRTAGS
 GTAGS
 
 ############# c++
-build/
-install/
-debug/
-release/
+# build/
+# install/
+# debug/
+# release/
 
 ############# latex texmaker
 *.log
