@@ -80,6 +80,7 @@ build-test-app:       # This job runs in the build stage, which runs first.
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
     - ln -s /cpp/vcpkg . # prepare package manager
+    - chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh # duplicate prepare package
     - cd release && chmod +x ./CCMake.sh && ./CCMake.sh # build application
     - ninja
     - ./test/$TEST_APP_NAME # test application
@@ -94,6 +95,7 @@ uat-build-package-app:
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
     - ln -s /cpp/vcpkg . # prepare package manager
+    - chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh # duplicate prepare package
     - cd release && chmod +x ./CCMake.sh && ./CCMake.sh # build application
     - ninja install
     - cd ..
@@ -112,6 +114,7 @@ prod-build-package-app:
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
     - ln -s /cpp/vcpkg . # prepare package manager
+    - chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh # duplicate prepare package
     - cd release && chmod +x ./CCMake.sh && ./CCMake.sh # build application
     - ninja install
     - cd ..

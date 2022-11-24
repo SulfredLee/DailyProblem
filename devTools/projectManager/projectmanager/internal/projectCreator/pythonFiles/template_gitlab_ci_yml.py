@@ -81,6 +81,7 @@ build-test-app:       # This job runs in the build stage, which runs first.
   stage: build-test
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
+    - /root/.local/bin/poetry install # duplicate prepare package
     - /root/.local/bin/poetry run python -m unittest discover tests # test application
   needs: []
   rules:
