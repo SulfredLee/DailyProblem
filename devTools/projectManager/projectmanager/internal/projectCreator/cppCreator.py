@@ -8,10 +8,12 @@ import projectmanager.internal.projectCreator.cppFiles.release.template_CCMake a
 import projectmanager.internal.projectCreator.cppFiles.install.template_gitkeep as tgk
 import projectmanager.internal.projectCreator.cppFiles.app.template_main as tm
 import projectmanager.internal.projectCreator.cppFiles.app.template_CMakeLists as atc
+import projectmanager.internal.projectCreator.cppFiles.app.template_Mainpage as tmd
 import projectmanager.internal.projectCreator.cppFiles.test.template_test_h as tth
 import projectmanager.internal.projectCreator.cppFiles.test.template_test_cpp as ttc
 import projectmanager.internal.projectCreator.cppFiles.test.template_CMakeLists as ttcm
 import projectmanager.internal.projectCreator.cppFiles.template_Dockerfile as td
+import projectmanager.internal.projectCreator.cppFiles.template_Doxyfile as tdf
 import projectmanager.internal.projectCreator.cppFiles.template_gitlab_ci_yml as tgcy
 import projectmanager.internal.projectCreator.cppFiles.dockerEnv.template_BuildImageRunner_sh as tbir
 import projectmanager.internal.projectCreator.cppFiles.dockerEnv.template_BuildImageBuilder_sh as tbib
@@ -77,6 +79,8 @@ class cppCreator(projectCreatorBase):
                              , [Path.joinpath(project_root, "test", f"{self._project_name}_Test.h"), tth.content_st]
                              , [Path.joinpath(project_root, "test", f"{self._project_name}_Test.cpp"), ttc.content_st]
                              , [Path.joinpath(project_root, "Dockerfile"), td.content_st]
+                             , [Path.joinpath(project_root, "Doxyfile"), tdf.content_st]
+                             , [Path.joinpath(project_root, "app", "Mainpage.dox"), tmd.content_st]
                              , [Path.joinpath(project_root, ".gitlab-ci.yml"), tgcy.content_st]
                              , [Path.joinpath(project_root, "dockerEnv", "BuildImageRunner.sh"), tbir.content_st]
                              , [Path.joinpath(project_root, "dockerEnv", "BuildImageBuilder.sh"), tbib.content_st]

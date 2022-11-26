@@ -31,4 +31,9 @@ content_st = """
 *.exe
 *.out
 *.app
+
+# build folders
+build_debug/
+build_release/
+install/
 """

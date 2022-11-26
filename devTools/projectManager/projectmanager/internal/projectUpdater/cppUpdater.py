@@ -57,8 +57,8 @@ class cppUpdater(projectUpdaterBase):
                 # insert command in a better place
                 cmake_file_parsed.insert(idx, cmpr.Command("include"
                                                            , [cmpr.Arg(f"external/external_{self._module_name}.cmake")]))
-                cmake_file_parsed.insert(idx, cm_line)
-                del cmake_file_parsed[idx + 2]
+                # cmake_file_parsed.insert(idx, cm_line)
+                # del cmake_file_parsed[idx + 2]
 
                 # output cmake file
                 self.__write_cmake_file(cmake_file_name, cmake_file_parsed)

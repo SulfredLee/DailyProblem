@@ -9,4 +9,9 @@ content_st = """
 {
 }
 
+double {{ module_name }}::GetLength(const double& xx)
+{
+    return 10;
+}
+
 """

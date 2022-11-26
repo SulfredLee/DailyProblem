@@ -10,7 +10,7 @@ RUN apt-get -y install vim
 WORKDIR /cpp/project/
 
 FROM runner AS builder
-RUN apt-get -y install build-essential vim ninja-build cmake doxygen git gdb curl zip pkg-config
+RUN apt-get -y install build-essential vim ninja-build cmake doxygen git gdb curl zip pkg-config doxygen graphviz
 
 # init cpp package manager
 WORKDIR /cpp/

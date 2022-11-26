@@ -81,7 +81,7 @@ build-test-app:       # This job runs in the build stage, which runs first.
   script:
     - ln -s /cpp/vcpkg . # prepare package manager
     - chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh # duplicate prepare package
-    - cd release && chmod +x ./CCMake.sh && ./CCMake.sh # build application
+    - cd release && chmod +x ./CCMake.sh && ./CCMake.sh && cd ../build_release/ # build application
     - ninja
     - ./test/$TEST_APP_NAME # test application
   needs: []
@@ -96,7 +96,7 @@ uat-build-package-app:
   script:
     - ln -s /cpp/vcpkg . # prepare package manager
     - chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh # duplicate prepare package
-    - cd release && chmod +x ./CCMake.sh && ./CCMake.sh # build application
+    - cd release && chmod +x ./CCMake.sh && ./CCMake.sh && cd ../build_release/ # build application
     - ninja install
     - cd ..
     - echo $PACKAGE_NAME_UAT
@@ -115,7 +115,7 @@ prod-build-package-app:
   script:
     - ln -s /cpp/vcpkg . # prepare package manager
     - chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh # duplicate prepare package
-    - cd release && chmod +x ./CCMake.sh && ./CCMake.sh # build application
+    - cd release && chmod +x ./CCMake.sh && ./CCMake.sh && cd ../build_release/ # build application
     - ninja install
     - cd ..
     - tar -zcvf $PACKAGE_NAME ./install
@@ -135,6 +135,20 @@ release-app:
       release-cli create --name "Release $CI_PROJECT_NAME $PACKAGE_VERSION" --tag-name $PACKAGE_VERSION \\
         --assets-link "{\\"name\\":\\"$PACKAGE_NAME\\",\\"url\\":\\"${PACKAGE_REGISTRY_URL}/$PACKAGE_NAME\\"}"
   needs: ["prod-build-package-app"]
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: always
+    - when: never
+
+pages:
+  stage: deploy
+  image: $DOCKER_IMAGE_NAME_BUILDER
+  script:
+    - doxygen
+    - mv doxygen_doc/html/ public/
+  artifacts:
+    paths:
+      - public
   rules:
     - if: $CI_COMMIT_TAG
       when: always
