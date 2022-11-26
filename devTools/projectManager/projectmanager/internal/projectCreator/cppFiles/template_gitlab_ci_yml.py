@@ -144,6 +144,7 @@ pages:
   stage: deploy
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
+    - export PROJECT_VERSION=${CI_COMMIT_TAG:-latest}
     - doxygen
     - mv doxygen_doc/html/ public/
   artifacts:
