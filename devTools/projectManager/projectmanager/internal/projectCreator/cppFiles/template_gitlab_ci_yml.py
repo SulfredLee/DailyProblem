@@ -80,9 +80,10 @@ build-test-app:       # This job runs in the build stage, which runs first.
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
     - ln -s /cpp/vcpkg . # prepare package manager
+    - cd ./script
     - chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh # duplicate prepare package
-    - cd release && chmod +x ./CCMake.sh && ./CCMake.sh && cd ../build_release/ # build application
-    - ninja
+    - chmod +x ./CCMake_Release.sh && ./CCMake_Release.sh && cd ../build_release/
+    - ninja # build application
     - ./test/$TEST_APP_NAME # test application
   needs: []
   rules:
@@ -95,9 +96,10 @@ uat-build-package-app:
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
     - ln -s /cpp/vcpkg . # prepare package manager
+    - cd ./script
     - chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh # duplicate prepare package
-    - cd release && chmod +x ./CCMake.sh && ./CCMake.sh && cd ../build_release/ # build application
-    - ninja install
+    - chmod +x ./CCMake_Release.sh && ./CCMake_Release.sh && cd ../build_release/
+    - ninja install # build and install
     - cd ..
     - echo $PACKAGE_NAME_UAT
     - tar -zcvf $PACKAGE_NAME_UAT ./install
@@ -114,9 +116,10 @@ prod-build-package-app:
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
     - ln -s /cpp/vcpkg . # prepare package manager
+    - cd ./script
     - chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh # duplicate prepare package
-    - cd release && chmod +x ./CCMake.sh && ./CCMake.sh && cd ../build_release/ # build application
-    - ninja install
+    - chmod +x ./CCMake_Release.sh && ./CCMake_Release.sh && cd ../build_release/
+    - ninja install # build and install
     - cd ..
     - tar -zcvf $PACKAGE_NAME ./install
     - |
@@ -150,6 +153,7 @@ pages:
   artifacts:
     paths:
       - public
+    expire_in: 1 week
   rules:
     - if: $CI_COMMIT_TAG
       when: always

@@ -1,10 +1,12 @@
 from projectmanager.internal.projectCreator.projectCreatorBase import *
 import projectmanager.internal.projectCreator.cppFiles.template_CMakeLists as tc
-import projectmanager.internal.projectCreator.cppFiles.template_Preparevcpkg as tp
+import projectmanager.internal.projectCreator.cppFiles.script.template_Preparevcpkg as tp
+import projectmanager.internal.projectCreator.cppFiles.script.template_CCMake_Debug as dtc
+import projectmanager.internal.projectCreator.cppFiles.script.template_CCMake_Release as rtc
+import projectmanager.internal.projectCreator.cppFiles.script.template_BuildImageRunner_sh as tbir
+import projectmanager.internal.projectCreator.cppFiles.script.template_BuildImageBuilder_sh as tbib
 import projectmanager.internal.projectCreator.cppFiles.template_readme as tr
 import projectmanager.internal.projectCreator.cppFiles.template_gitignore as tg
-import projectmanager.internal.projectCreator.cppFiles.debug.template_CCMake as dtc
-import projectmanager.internal.projectCreator.cppFiles.release.template_CCMake as rtc
 import projectmanager.internal.projectCreator.cppFiles.install.template_gitkeep as tgk
 import projectmanager.internal.projectCreator.cppFiles.app.template_main as tm
 import projectmanager.internal.projectCreator.cppFiles.app.template_CMakeLists as atc
@@ -15,8 +17,6 @@ import projectmanager.internal.projectCreator.cppFiles.test.template_CMakeLists 
 import projectmanager.internal.projectCreator.cppFiles.template_Dockerfile as td
 import projectmanager.internal.projectCreator.cppFiles.template_Doxyfile as tdf
 import projectmanager.internal.projectCreator.cppFiles.template_gitlab_ci_yml as tgcy
-import projectmanager.internal.projectCreator.cppFiles.dockerEnv.template_BuildImageRunner_sh as tbir
-import projectmanager.internal.projectCreator.cppFiles.dockerEnv.template_BuildImageBuilder_sh as tbib
 import projectmanager.internal.projectCreator.cppFiles.dockerEnv.uat.template_env as ute
 import projectmanager.internal.projectCreator.cppFiles.dockerEnv.uat.template_docker_compose_yml as utdc
 import projectmanager.internal.projectCreator.cppFiles.dockerEnv.prod.template_env as pte
@@ -48,9 +48,10 @@ class cppCreator(projectCreatorBase):
         # create folders
         project_root = Path.joinpath(self._project_path, self._project_name)
         project_root.mkdir(parents=True, exist_ok=True)
-        for path_name in [Path.joinpath(project_root, "release")
-                          , Path.joinpath(project_root, "debug")
-                          , Path.joinpath(project_root, "install")
+        for path_name in [# Path.joinpath(project_root, "release")
+                          # , Path.joinpath(project_root, "debug")
+                          # , Path.joinpath(project_root, "install")
+                          Path.joinpath(project_root, "script")
                           , Path.joinpath(project_root, "app")
                           , Path.joinpath(project_root, "internal")
                           , Path.joinpath(project_root, "external")
@@ -67,10 +68,12 @@ class cppCreator(projectCreatorBase):
         # handle special tempalte files
         for template_obj in [[Path.joinpath(project_root, "README.md"), tr.content_st]
                              , [Path.joinpath(project_root, ".gitignore"), tg.content_st]
-                             , [Path.joinpath(project_root, "Preparevcpkg.sh"), tp.content_st]
-                             , [Path.joinpath(project_root, "debug", "CCMake.sh"), dtc.content_st]
-                             , [Path.joinpath(project_root, "release", "CCMake.sh"), rtc.content_st]
-                             , [Path.joinpath(project_root, "install", ".gitkeep"), tgk.content_st]
+                             , [Path.joinpath(project_root, "script", "Preparevcpkg.sh"), tp.content_st]
+                             , [Path.joinpath(project_root, "script", "CCMake_Debug.sh"), dtc.content_st]
+                             , [Path.joinpath(project_root, "script", "CCMake_Release.sh"), rtc.content_st]
+                             , [Path.joinpath(project_root, "script", "BuildImageRunner.sh"), tbir.content_st]
+                             , [Path.joinpath(project_root, "script", "BuildImageBuilder.sh"), tbib.content_st]
+                             # , [Path.joinpath(project_root, "install", ".gitkeep"), tgk.content_st]
                              , [Path.joinpath(project_root, "external", ".gitkeep"), tgk.content_st]
                              , [Path.joinpath(project_root, "CMakeLists.txt"), tc.content_st]
                              , [Path.joinpath(project_root, "app", "main.cpp"), tm.content_st]
@@ -82,8 +85,6 @@ class cppCreator(projectCreatorBase):
                              , [Path.joinpath(project_root, "Doxyfile"), tdf.content_st]
                              , [Path.joinpath(project_root, "app", "Mainpage.dox"), tmd.content_st]
                              , [Path.joinpath(project_root, ".gitlab-ci.yml"), tgcy.content_st]
-                             , [Path.joinpath(project_root, "dockerEnv", "BuildImageRunner.sh"), tbir.content_st]
-                             , [Path.joinpath(project_root, "dockerEnv", "BuildImageBuilder.sh"), tbib.content_st]
                              , [Path.joinpath(project_root, "dockerEnv", "uat", ".env"), ute.content_st]
                              , [Path.joinpath(project_root, "dockerEnv", "uat", "docker-compose.yml"), utdc.content_st]
                              , [Path.joinpath(project_root, "dockerEnv", "prod", ".env"), pte.content_st]
@@ -97,11 +98,11 @@ class cppCreator(projectCreatorBase):
                                                                      , cur_gid=pwd.getpwuid(os.getuid()).pw_gid))
 
         # enable execution
-        for file_name in [Path.joinpath(project_root, "Preparevcpkg.sh")
-                          , Path.joinpath(project_root, "debug", "CCMake.sh")
-                          , Path.joinpath(project_root, "release", "CCMake.sh")
-                          , Path.joinpath(project_root, "dockerEnv", "BuildImageRunner.sh")
-                          , Path.joinpath(project_root, "dockerEnv", "BuildImageBuilder.sh")
+        for file_name in [Path.joinpath(project_root, "script", "Preparevcpkg.sh")
+                          , Path.joinpath(project_root, "script", "CCMake_Debug.sh")
+                          , Path.joinpath(project_root, "script", "CCMake_Release.sh")
+                          , Path.joinpath(project_root, "script", "BuildImageRunner.sh")
+                          , Path.joinpath(project_root, "script", "BuildImageBuilder.sh")
                           , Path.joinpath(project_root, "dockerEnv", "dev", "start_dev_container.sh")
                           ]:
             st = os.stat(file_name)

@@ -32,8 +32,10 @@ content_st = """
 *.out
 *.app
 
-# build folders
+# framework files
 build_debug/
 build_release/
 install/
+vcpkg/
+vcpkg
 """
