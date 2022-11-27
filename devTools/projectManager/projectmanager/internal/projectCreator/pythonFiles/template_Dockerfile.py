@@ -11,6 +11,6 @@ COPY . /python/project
 RUN /root/.local/bin/poetry install
 
 FROM runner AS builder
-RUN apt-get -y install git zip
+RUN apt-get -y install git zip doxygen graphviz
 
 """

@@ -3,9 +3,11 @@ import projectmanager.internal.projectCreator.pythonFiles.template_main as tm
 import projectmanager.internal.projectCreator.pythonFiles.template_RestoreUserGroup_sh as trug
 import projectmanager.internal.projectCreator.pythonFiles.template_test as tt
 import projectmanager.internal.projectCreator.pythonFiles.template_gitignore as tg
+import projectmanager.internal.projectCreator.pythonFiles.template_Mainpage as tmp
 import projectmanager.internal.projectCreator.pythonFiles.template_readme_md as trm
 import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile as td
 import projectmanager.internal.projectCreator.pythonFiles.template_gitlab_ci_yml as tgcy
+import projectmanager.internal.projectCreator.pythonFiles.template_Doxyfile as tdf
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.template_BuildImageBuilder_sh as tbbs
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.template_BuildImageRunner_sh as tbrs
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.dev.template_env as dte
@@ -66,11 +68,13 @@ class pythonCreator(projectCreatorBase):
         # create template file
         j_env = jinja2.Environment()
         for template_obj in [[Path.joinpath(project_action_path, "app", "main.py"), tm.content_st]
+                             , [Path.joinpath(project_action_path, "app", "Mainpage.dox"), tmp.content_st]
                              , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
                              , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
                              , [Path.joinpath(project_root_path, "Dockerfile"), td.content_st]
                              , [Path.joinpath(project_root_path, "RestoreUserGroup.sh"), trug.content_st]
                              , [Path.joinpath(project_root_path, ".gitlab-ci.yml"), tgcy.content_st]
+                             , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
                              , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
                              , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh"), tbbs.content_st]
                              , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]

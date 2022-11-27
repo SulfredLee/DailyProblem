@@ -120,11 +120,28 @@ release-app:
   image: python:3.8
   script:
     - pip install poetry twine
+    - poetry version ${CI_COMMIT_TAG}
     - poetry build
     - export TWINE_PASSWORD=${CI_JOB_TOKEN}
     - export TWINE_USERNAME=gitlab-ci-token
     - python -m twine upload --verbose --repository-url $PYTHON_RELEASE_PATH dist/*
   needs: ["prod-build-package-app"]
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: always
+    - when: never
+
+pages:
+  stage: deploy
+  image: $DOCKER_IMAGE_NAME_BUILDER
+  script:
+    - export PROJECT_VERSION=${CI_COMMIT_TAG:-latest}
+    - doxygen
+    - mv doxygen_doc/html/ public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 week
   rules:
     - if: $CI_COMMIT_TAG
       when: always
