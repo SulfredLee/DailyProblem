@@ -1,6 +1,7 @@
 from projectmanager.internal.projectCreator.projectCreatorBase import *
 import projectmanager.internal.projectCreator.pythonFiles.template_main as tm
 import projectmanager.internal.projectCreator.pythonFiles.template_RestoreUserGroup_sh as trug
+import projectmanager.internal.projectCreator.pythonFiles.template_Export_Python_Env_sh as tepe
 import projectmanager.internal.projectCreator.pythonFiles.template_test as tt
 import projectmanager.internal.projectCreator.pythonFiles.template_gitignore as tg
 import projectmanager.internal.projectCreator.pythonFiles.template_Mainpage as tmp
@@ -72,7 +73,8 @@ class pythonCreator(projectCreatorBase):
                              , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
                              , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
                              , [Path.joinpath(project_root_path, "Dockerfile"), td.content_st]
-                             , [Path.joinpath(project_root_path, "RestoreUserGroup.sh"), trug.content_st]
+                             # , [Path.joinpath(project_root_path, "RestoreUserGroup.sh"), trug.content_st]
+                             , [Path.joinpath(project_root_path, "ExportPythonEnv.sh"), tepe.content_st]
                              , [Path.joinpath(project_root_path, ".gitlab-ci.yml"), tgcy.content_st]
                              , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
                              , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
@@ -96,7 +98,8 @@ class pythonCreator(projectCreatorBase):
         for file_name in [Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh")
                           , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
                           , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
-                          , Path.joinpath(project_root_path, "RestoreUserGroup.sh")
+                          # , Path.joinpath(project_root_path, "RestoreUserGroup.sh")
+                          , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
                           ]:
             st = os.stat(file_name)
             os.chmod(file_name, st.st_mode | stat.S_IEXEC)
