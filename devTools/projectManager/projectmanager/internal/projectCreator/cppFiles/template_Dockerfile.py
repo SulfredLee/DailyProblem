@@ -18,4 +18,12 @@ COPY ./script/Preparevcpkg.sh /cpp/script/
 RUN chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh
 
 WORKDIR /cpp/project/
+
+# create user to avoid using root
+ARG DOCKER_GID
+ARG DOCKER_UID
+
+# Create a group and user
+RUN [ $DOCKER_UID = "root" ] && echo "No need to create root again" || ( groupadd $DOCKER_GID && useradd $DOCKER_UID -m -g $DOCKER_GID)
+
 """

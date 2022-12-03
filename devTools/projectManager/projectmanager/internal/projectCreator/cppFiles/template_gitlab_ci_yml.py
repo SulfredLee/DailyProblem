@@ -50,7 +50,8 @@ build-dev-image:
     - docker:20.10.12-dind
   script:
     - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --target builder -t $DOCKER_IMAGE_NAME_BUILDER .
+    - docker pull $DOCKER_IMAGE_NAME_BUILDER || true # use the cached image if possible
+    - docker build --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --target builder -t $DOCKER_IMAGE_NAME_BUILDER .
     - docker push $DOCKER_IMAGE_NAME_BUILDER
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -66,7 +67,8 @@ build-run-image:
     - docker:20.10.12-dind
   script:
     - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build --target runner -t $DOCKER_IMAGE_NAME_RUNNER .
+    - docker pull $DOCKER_IMAGE_NAME_RUNNER || true # use the cached image if possible
+    - docker build --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --target runner -t $DOCKER_IMAGE_NAME_RUNNER .
     - docker push $DOCKER_IMAGE_NAME_RUNNER
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
