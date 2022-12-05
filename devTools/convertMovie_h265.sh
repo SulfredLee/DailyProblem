@@ -41,6 +41,7 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 if [ "$ACTION" = "convert" ]; then
     OUTPUT_VIDEO="converted_${INPUT_VIDEO}"
     echo "ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v hevc_nvenc ${OUTPUT_VIDEO}"
+    # echo "ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v h264_nvenc -b:v 5M ${OUTPUT_VIDEO}" # h264
     ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v hevc_nvenc ${OUTPUT_VIDEO}
 elif [ "$ACTION" = "check_status" ]; then
     ffprob ${INPUT_VIDEO}
