@@ -51,7 +51,7 @@ build-dev-image:
   script:
     - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker pull $DOCKER_IMAGE_NAME_BUILDER || true # use the cached image if possible
-    - docker build --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --target builder -t $DOCKER_IMAGE_NAME_BUILDER .
+    - docker build --build-arg DOCKER_UID=$(id -u) --build-arg DOCKER_GID=$(id -g) --build-arg DOCKER_GNAME=$(whoami) DOCKER_UNAME=$(whoami) --target builder -t $DOCKER_IMAGE_NAME_BUILDER .
     - docker push $DOCKER_IMAGE_NAME_BUILDER
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -68,7 +68,7 @@ build-run-image:
   script:
     - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker pull $DOCKER_IMAGE_NAME_RUNNER || true # use the cached image if possible
-    - docker build --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --target runner -t $DOCKER_IMAGE_NAME_RUNNER .
+    - docker build --build-arg DOCKER_UID=$(id -u) --build-arg DOCKER_GID=$(id -g) --build-arg DOCKER_GNAME=$(whoami) DOCKER_UNAME=$(whoami)  --target runner -t $DOCKER_IMAGE_NAME_RUNNER .
     - docker push $DOCKER_IMAGE_NAME_RUNNER
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
