@@ -11,7 +11,7 @@ def init_logger(logger_name: str = "default_logger"
     logger = logging.getLogger(logger_name)
     logger.setLevel(log_level)
 
-    formatter = logging.Formatter('%(asctime)s [%(levelname)s] [%(name)s] [%(filename)s:%(funcName)s:%(lineno)d] [%(threadName)s] %(message)s')
+    formatter = logging.Formatter('%(asctime)s [%(levelname)s] [%(name)s] [%(filename)s:%(funcName)s:%(lineno)d] [%(threadName)s:%(process)d] %(message)s')
     if is_json_output:
         formatter = logging_json.JSONFormatter(fields={
             "log_time": "asctime"
@@ -21,6 +21,7 @@ def init_logger(logger_name: str = "default_logger"
             , "func_name": "funcName"
             , "line_no": "lineno"
             , "thread_name": "threadName"
+            , "process_name": "process"
            })
 
     if is_print_to_file:
