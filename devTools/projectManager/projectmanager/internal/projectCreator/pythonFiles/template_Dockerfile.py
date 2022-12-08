@@ -1,5 +1,9 @@
 content_st = """
-FROM python:3.12-rc-bullseye AS runner
+# FROM python:3.12-rc-bullseye AS runner
+# FROM python:3.11.1-bullseye AS runner
+FROM python:3.10.9-bullseye AS runner
+# FROM python:3.9.15-bullseye AS runner
+# FROM python:3.8.16-bullseye AS runner
 
 ARG DOCKER_GID
 ARG DOCKER_UID
