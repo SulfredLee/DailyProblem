@@ -34,10 +34,15 @@ ARG DOCKER_GID
 ARG DOCKER_UID
 ARG DOCKER_GNAME
 ARG DOCKER_UNAME
+ARG VSCODE_FLAG
 
 # prepare python env for development
 RUN mkdir -p /home/$DOCKER_UNAME/.cache/pypoetry/virtualenvs_mount
 
 USER root
 RUN apt-get -y install git zip doxygen graphviz
+# install vscode
+RUN [ $VSCODE_FLAG = "no_vscode" ] && echo "No need to install vscode server" || ( chmod +x scripts/install.vscode.sh && ./scripts/install.vscode.sh )
+USER $DOCKER_UNAME
+RUN [ $VSCODE_FLAG = "no_vscode" ] && echo "No need to install vscode server" || code --install-extension ms-python.python ms-python.vscode-pylance
 """
