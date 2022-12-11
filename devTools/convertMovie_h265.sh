@@ -54,7 +54,7 @@ elif [ "$ACTION" = "check_status" ]; then
 elif [ "$ACTION" = "gpu_usage" ]; then
     nvidia-smi -l 2
 elif [ "$ACTION" = "convert_recursive" ]; then
-    readarray -d '' movie_list < <(find $initialPath -type f -name *.mp4 -print0)
+    readarray -d '' movie_list < <(find "$initialPath" -type f -name *.mp4 -print0)
     for i in "${!movie_list[@]}"; do
         echo "conversion progress: ${i}/${#movie_list[@]}"
         if [[ ${movie_list[$i]} == *"converted_"* || ${movie_list[$i]} == *"h265_"* ]]; then
