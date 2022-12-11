@@ -1,6 +1,12 @@
+#!/bin/bash
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+initialPath=`pwd`
+echo "user call script from: ${initialPath}"
+
 function PrintHelp {
     echo "Usage:"
-    echo "\$ $0 --action <convert|check_status|gpu_usage> --input_video <video>"
+    echo "\$ $0 --action <convert|check_status|gpu_usage|convert_recursive> --input_video <video>"
 }
 
 POSITIONAL=()
@@ -42,11 +48,28 @@ if [ "$ACTION" = "convert" ]; then
     OUTPUT_VIDEO="converted_${INPUT_VIDEO}"
     echo "ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v hevc_nvenc ${OUTPUT_VIDEO}"
     # echo "ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v h264_nvenc -b:v 5M ${OUTPUT_VIDEO}" # h264
-    ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v hevc_nvenc ${OUTPUT_VIDEO}
+    ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v hevc_nvenc ${OUTPUT_VIDEO}
 elif [ "$ACTION" = "check_status" ]; then
     ffprob ${INPUT_VIDEO}
 elif [ "$ACTION" = "gpu_usage" ]; then
     nvidia-smi -l 2
+elif [ "$ACTION" = "convert_recursive" ]; then
+    readarray -d '' movie_list < <(find $initialPath -type f -name *.mp4 -print0)
+    for i in "${!movie_list[@]}"; do
+        if [[ ${movie_list[$i]} == *"converted_"* ]]; then
+           echo "skip this movie, this is already converted: ${movie_list[$i]}"
+        else
+           INPUT_VIDEO="$(basename "${movie_list[$i]}")"
+           VIDEO_PATH="$(dirname "${movie_list[$i]}")"
+           OUTPUT_VIDEO="$VIDEO_PATH/converted_${INPUT_VIDEO}"
+           echo "going to convert movie:"
+           echo ${movie_list[$i]}
+           echo $INPUT_VIDEO
+           echo $VIDEO_PATH
+           echo $OUTPUT_VIDEO
+           ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i "${movie_list[$i]}" -c:a copy -c:v hevc_nvenc "${OUTPUT_VIDEO}"
+        fi
+    done
 else
     echo "Action : ${ACTION} not recognized"
     PrintHelp
