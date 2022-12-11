@@ -45,7 +45,7 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 
 
 if [ "$ACTION" = "convert" ]; then
-    OUTPUT_VIDEO="converted_${INPUT_VIDEO}"
+    OUTPUT_VIDEO="h265_${INPUT_VIDEO}"
     echo "ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v hevc_nvenc ${OUTPUT_VIDEO}"
     # echo "ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v h264_nvenc -b:v 5M ${OUTPUT_VIDEO}" # h264
     ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v hevc_nvenc ${OUTPUT_VIDEO}
@@ -56,18 +56,27 @@ elif [ "$ACTION" = "gpu_usage" ]; then
 elif [ "$ACTION" = "convert_recursive" ]; then
     readarray -d '' movie_list < <(find $initialPath -type f -name *.mp4 -print0)
     for i in "${!movie_list[@]}"; do
-        if [[ ${movie_list[$i]} == *"converted_"* ]]; then
-           echo "skip this movie, this is already converted: ${movie_list[$i]}"
+        echo "conversion progress: ${i}/${#movie_list[@]}"
+        if [[ ${movie_list[$i]} == *"converted_"* || ${movie_list[$i]} == *"h265_"* ]]; then
+           echo "conversion skip this is already converted: ${movie_list[$i]}"
         else
            INPUT_VIDEO="$(basename "${movie_list[$i]}")"
            VIDEO_PATH="$(dirname "${movie_list[$i]}")"
-           OUTPUT_VIDEO="$VIDEO_PATH/converted_${INPUT_VIDEO}"
-           echo "going to convert movie:"
+           OUTPUT_VIDEO="$VIDEO_PATH/h265_${INPUT_VIDEO}"
+           echo "conversion start: $VIDEO_PATH"
            echo ${movie_list[$i]}
            echo $INPUT_VIDEO
            echo $VIDEO_PATH
            echo $OUTPUT_VIDEO
+
+           start_time=`date +%s`
            ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i "${movie_list[$i]}" -c:a copy -c:v hevc_nvenc "${OUTPUT_VIDEO}"
+           end_time=`date +%s`
+           run_time=$(( end_time - start_time ))
+
+           run_time_human_readable=$(date -d@$run_time -u +%H:%M:%S) # convert second to Hour Minute Second
+           echo "conversion done: $VIDEO_PATH, $run_time_human_readable"
+           mv "${movie_list[$i]}" "${initialPath}"
         fi
     done
 else
