@@ -53,7 +53,7 @@ build-dev-image:
   script:
     - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker pull $DOCKER_IMAGE_NAME_BUILDER || true # use the cached image if possible
-    - docker build --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --target builder -t $DOCKER_IMAGE_NAME_BUILDER .
+    - docker build --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --build-arg VSCODE_FLAG="no_vscode" --target builder -t $DOCKER_IMAGE_NAME_BUILDER .
     - docker push $DOCKER_IMAGE_NAME_BUILDER
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
