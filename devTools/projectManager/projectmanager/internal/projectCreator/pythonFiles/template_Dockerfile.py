@@ -1,9 +1,9 @@
 content_st = """
 # FROM python:3.12-rc-bullseye AS runner
 # FROM python:3.11.1-bullseye AS runner
-FROM python:3.10.9-bullseye AS runner
+# FROM python:3.10.9-bullseye AS runner
 # FROM python:3.9.15-bullseye AS runner
-# FROM python:3.8.16-bullseye AS runner
+FROM python:3.8.16-bullseye AS runner
 
 ARG DOCKER_GID
 ARG DOCKER_UID
@@ -36,13 +36,13 @@ ARG DOCKER_GNAME
 ARG DOCKER_UNAME
 ARG VSCODE_FLAG
 
-# prepare python env for development
-RUN mkdir -p /home/$DOCKER_UNAME/.cache/pypoetry/virtualenvs_mount
-
 USER root
+# install package for documentation
 RUN apt-get -y install git zip doxygen graphviz
-# install vscode
+
+# install vscode server
 RUN [ $VSCODE_FLAG = "no_vscode" ] && echo "No need to install vscode server" || ( chmod +x scripts/install.vscode.sh && ./scripts/install.vscode.sh )
+# install vscode package
 USER $DOCKER_UNAME
-RUN [ $VSCODE_FLAG = "no_vscode" ] && echo "No need to install vscode server" || code --install-extension ms-python.python ms-python.vscode-pylance
+RUN [ $VSCODE_FLAG = "no_vscode" ] && echo "No need to install vscode server" || code --install-extension ms-python.python ms-python.vscode-pylance && cp -rf ~/.vscode ~/.vscode-server
 """

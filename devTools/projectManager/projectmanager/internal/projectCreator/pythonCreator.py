@@ -9,6 +9,7 @@ import projectmanager.internal.projectCreator.pythonFiles.template_readme_md as 
 import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile as td
 import projectmanager.internal.projectCreator.pythonFiles.template_gitlab_ci_yml as tgcy
 import projectmanager.internal.projectCreator.pythonFiles.template_Doxyfile as tdf
+import projectmanager.internal.projectCreator.pythonFiles.scripts.template_install_vscode_sh as tiv
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.template_BuildImageBuilder_sh as tbbs
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.template_BuildImageRunner_sh as tbrs
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.dev.template_env as dte
@@ -59,6 +60,7 @@ class pythonCreator(projectCreatorBase):
                          , [Path.joinpath(project_root_path, "dockerEnv", "uat"), False]
                          , [Path.joinpath(project_root_path, "dockerEnv", "dev"), False]
                          , [Path.joinpath(project_root_path, "dockerEnv", "prod"), False]
+                         , [Path.joinpath(project_root_path, "scripts"), False]
                          ]:
             # create folder
             the_path[0].mkdir(parents=True, exist_ok=True)
@@ -86,6 +88,7 @@ class pythonCreator(projectCreatorBase):
                              , [Path.joinpath(project_root_path, "dockerEnv", "prod", ".env"), pte.content_st]
                              , [Path.joinpath(project_root_path, "dockerEnv", "prod", "docker-compose.yml"), ptdcy.content_st]
                              , [Path.joinpath(project_root_path, "tests", f"test_{self._project_name}.py"), tt.content_st]
+                             , [Path.joinpath(project_root_path, "scripts", "install.vscode.sh"), tiv.content_st]
                              ]:
             with open(template_obj[0], "w") as w_FH:
                 w_FH.write(j_env.from_string(template_obj[1]).render(project_name=self._project_name
@@ -100,6 +103,7 @@ class pythonCreator(projectCreatorBase):
                           , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
                           # , Path.joinpath(project_root_path, "RestoreUserGroup.sh")
                           , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
+                          , Path.joinpath(project_root_path, "scripts", "install.vscode.sh")
                           ]:
             st = os.stat(file_name)
             os.chmod(file_name, st.st_mode | stat.S_IEXEC)
