@@ -56,7 +56,7 @@ elif [ "$ACTION" = "gpu_usage" ]; then
 elif [ "$ACTION" = "convert_recursive" ]; then
     readarray -d '' movie_list < <(find "$initialPath" -type f -name *.mp4 -print0)
     for i in "${!movie_list[@]}"; do
-        echo "conversion progress: ${i}/${#movie_list[@]}"
+        echo "conversion progress: $(( i + 1 ))/${#movie_list[@]}"
         if [[ ${movie_list[$i]} == *"converted_"* || ${movie_list[$i]} == *"h265_"* ]]; then
            echo "conversion skip this is already converted: ${movie_list[$i]}"
         else
