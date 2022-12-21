@@ -1,5 +1,12 @@
 from projectmanager.internal.projectCreator.projectCreatorBase import *
 import projectmanager.internal.projectCreator.pythonFiles.template_main as tm
+import projectmanager.internal.projectCreator.pythonFiles.template_app as ta
+import projectmanager.internal.projectCreator.pythonFiles.template_flask_env as tfe
+import projectmanager.internal.projectCreator.pythonFiles.template_db as tdb
+import projectmanager.internal.projectCreator.pythonFiles.template_item as tit
+import projectmanager.internal.projectCreator.pythonFiles.template_store as tst
+import projectmanager.internal.projectCreator.pythonFiles.template_schemas as tsch
+import projectmanager.internal.projectCreator.pythonFiles.template_main_manager as tmm
 import projectmanager.internal.projectCreator.pythonFiles.template_RestoreUserGroup_sh as trug
 import projectmanager.internal.projectCreator.pythonFiles.template_Export_Python_Env_sh as tepe
 import projectmanager.internal.projectCreator.pythonFiles.template_test as tt
@@ -27,24 +34,23 @@ class pythonCreator(projectCreatorBase):
 
     # virtual
     def create_project(self, project_type: str):
-        if cc.py_web_project == project_type:
-            self.__create_web_project()
-        elif cc.py_general_project == project_type:
-            self.__create_general_project()
-        else:
+        # check project type
+        if not cc.py_restful_api_project == project_type\
+           and not cc.py_general_project == project_type:
             raise ValueError(f"Not support project type: {project_type}")
 
-    def __create_web_project(self):
-        self._logger.info("Here")
-
-    def __create_general_project(self):
+        # start project create
         self._logger.info(f"Creating project in folder: {self._project_path}")
 
+        # get paths
         project_root_path = Path.joinpath(self._project_path, self._project_name)
         project_action_path = Path.joinpath(self._project_path
                                             , self._project_name
                                             , self._project_name)
+
         if project_root_path.is_dir():
+            # create project if folder already exist
+            # we have this case when we initial the project from gitlab/github
             temp_project_root_path = Path.joinpath(self._project_path, "temp_project_python")
             temp_project_root_path.mkdir(parents=True, exist_ok=True)
             subprocess.run(["poetry", "new", f"{self._project_name}"], cwd=temp_project_root_path)
@@ -54,63 +60,15 @@ class pythonCreator(projectCreatorBase):
             # create project by poetry
             subprocess.run(["poetry", "new", f"{self._project_name}"], cwd=self._project_path)
 
-        for the_path in [[Path.joinpath(project_action_path, "app"), True]
-                         , [Path.joinpath(project_action_path, "internal"), True]
-                         , [Path.joinpath(project_root_path, "dockerEnv"), False]
-                         , [Path.joinpath(project_root_path, "dockerEnv", "uat"), False]
-                         , [Path.joinpath(project_root_path, "dockerEnv", "dev"), False]
-                         , [Path.joinpath(project_root_path, "dockerEnv", "prod"), False]
-                         , [Path.joinpath(project_root_path, "scripts"), False]
-                         ]:
-            # create folder
-            the_path[0].mkdir(parents=True, exist_ok=True)
-            if the_path[1]:
-                # create __init__.py
-                Path.joinpath(the_path[0], "__init__.py").touch()
-
-        # create template file
-        j_env = jinja2.Environment()
-        for template_obj in [[Path.joinpath(project_action_path, "app", "main.py"), tm.content_st]
-                             , [Path.joinpath(project_action_path, "app", "Mainpage.dox"), tmp.content_st]
-                             , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
-                             , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
-                             , [Path.joinpath(project_root_path, "Dockerfile"), td.content_st]
-                             # , [Path.joinpath(project_root_path, "RestoreUserGroup.sh"), trug.content_st]
-                             , [Path.joinpath(project_root_path, "ExportPythonEnv.sh"), tepe.content_st]
-                             , [Path.joinpath(project_root_path, ".gitlab-ci.yml"), tgcy.content_st]
-                             , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
-                             , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
-                             , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh"), tbbs.content_st]
-                             , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
-                             , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
-                             , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]
-                             , [Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh"), dtsdc.content_st]
-                             , [Path.joinpath(project_root_path, "dockerEnv", "prod", ".env"), pte.content_st]
-                             , [Path.joinpath(project_root_path, "dockerEnv", "prod", "docker-compose.yml"), ptdcy.content_st]
-                             , [Path.joinpath(project_root_path, "tests", f"test_{self._project_name}.py"), tt.content_st]
-                             , [Path.joinpath(project_root_path, "scripts", "install.vscode.sh"), tiv.content_st]
-                             ]:
-            with open(template_obj[0], "w") as w_FH:
-                w_FH.write(j_env.from_string(template_obj[1]).render(project_name=self._project_name
-                                                                     , description=f"{self._project_name} Inputs"
-                                                                     , cur_uid=pwd.getpwuid(os.getuid()).pw_uid
-                                                                     , cur_gid=pwd.getpwuid(os.getuid()).pw_gid
-                                                                     ))
-
-        # enable execution
-        for file_name in [Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh")
-                          , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
-                          , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
-                          # , Path.joinpath(project_root_path, "RestoreUserGroup.sh")
-                          , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
-                          , Path.joinpath(project_root_path, "scripts", "install.vscode.sh")
-                          ]:
-            st = os.stat(file_name)
-            os.chmod(file_name, st.st_mode | stat.S_IEXEC)
-
-        # add observability module
-        subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
-        subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
+        # start to create different projects
+        if cc.py_restful_api_project == project_type:
+            self.__create_restful_api_project(project_root_path=project_root_path
+                                              , project_action_path=project_action_path)
+        elif cc.py_general_project == project_type:
+            self.__create_general_project(project_root_path=project_root_path
+                                          , project_action_path=project_action_path)
+        else:
+            raise ValueError(f"Not support project type: {project_type}")
 
         is_copy_directly = False
         if is_copy_directly:
@@ -118,3 +76,172 @@ class pythonCreator(projectCreatorBase):
                             , Path.joinpath(project_action_path
                                             , "internal"
                                             , "observability"))
+
+    def __create_restful_api_project(self, project_root_path: str, project_action_path: str):
+        # create python folders
+        self.__create_python_folders(project_root_path=project_root_path
+                                     , project_action_path=project_action_path
+                                     , project_type=cc.py_restful_api_project
+                                     , path_list=[
+                                         [Path.joinpath(project_action_path, "app"), True]
+                                         , [Path.joinpath(project_action_path, "internal"), True]
+                                         , [Path.joinpath(project_action_path, "internal", "schemas"), True]
+                                         , [Path.joinpath(project_action_path, "internal", "resources"), True]
+                                         , [Path.joinpath(project_action_path, "internal", "db"), True]
+                                         , [Path.joinpath(project_root_path, "dockerEnv"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv", "dev"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv", "prod"), False]
+                                         , [Path.joinpath(project_root_path, "scripts"), False]
+                                     ])
+
+        # create project files
+        self.__create_project_files(project_root_path=project_root_path
+                                    , project_action_path=project_action_path
+                                    , project_type=cc.py_restful_api_project
+                                    , file_list=[
+                                        [Path.joinpath(project_action_path, "app", "app.py"), ta.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "main_manager.py"), tmm.content_st]
+                                        , [Path.joinpath(project_action_path, "app", ".flaskenv"), tfe.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "Mainpage.dox"), tmp.content_st]
+                                        , [Path.joinpath(project_action_path, "internal", "db", "db.py"), tdb.content_st]
+                                        , [Path.joinpath(project_action_path, "internal", "schemas", "schemas.py"), tsch.content_st]
+                                        , [Path.joinpath(project_action_path, "internal", "resources", "store.py"), tst.content_st]
+                                        , [Path.joinpath(project_action_path, "internal", "resources", "item.py"), tit.content_st]
+                                        , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
+                                        , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
+                                        , [Path.joinpath(project_root_path, "Dockerfile"), td.content_st]
+                                        # , [Path.joinpath(project_root_path, "RestoreUserGroup.sh"), trug.content_st]
+                                        , [Path.joinpath(project_root_path, "ExportPythonEnv.sh"), tepe.content_st]
+                                        , [Path.joinpath(project_root_path, ".gitlab-ci.yml"), tgcy.content_st]
+                                        , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh"), tbbs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh"), dtsdc.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "prod", ".env"), pte.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "prod", "docker-compose.yml"), ptdcy.content_st]
+                                        , [Path.joinpath(project_root_path, "tests", f"test_{self._project_name}.py"), tt.content_st]
+                                        , [Path.joinpath(project_root_path, "scripts", "install.vscode.sh"), tiv.content_st]
+                                    ])
+
+        # enable execution
+        self.__enable_execution(project_root_path=project_root_path
+                                , project_action_path=project_action_path
+                                , project_type=cc.py_restful_api_project
+                                , file_list=[
+                                    Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh")
+                                    , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
+                                    , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
+                                    , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
+                                    , Path.joinpath(project_root_path, "scripts", "install.vscode.sh")
+                                ])
+
+        # add observability module
+        subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "flask"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "flask-smorest"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "python-dotenv"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "marshmallow"], cwd=Path.joinpath(self._project_path, self._project_name))
+
+
+    def __create_general_project(self, project_root_path: str, project_action_path: str):
+        # create python folders
+        self.__create_python_folders(project_root_path=project_root_path
+                                     , project_action_path=project_action_path
+                                     , project_type=cc.py_general_project
+                                     , path_list=[
+                                         [Path.joinpath(project_action_path, "app"), True]
+                                         , [Path.joinpath(project_action_path, "internal"), True]
+                                         , [Path.joinpath(project_root_path, "dockerEnv"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv", "dev"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv", "prod"), False]
+                                         , [Path.joinpath(project_root_path, "scripts"), False]
+                                         ])
+
+        # create project files
+        self.__create_project_files(project_root_path=project_root_path
+                                    , project_action_path=project_action_path
+                                    , project_type=cc.py_general_project
+                                    , file_list=[
+                                        [Path.joinpath(project_action_path, "app", "main.py"), tm.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "Mainpage.dox"), tmp.content_st]
+                                        , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
+                                        , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
+                                        , [Path.joinpath(project_root_path, "Dockerfile"), td.content_st]
+                                        # , [Path.joinpath(project_root_path, "RestoreUserGroup.sh"), trug.content_st]
+                                        , [Path.joinpath(project_root_path, "ExportPythonEnv.sh"), tepe.content_st]
+                                        , [Path.joinpath(project_root_path, ".gitlab-ci.yml"), tgcy.content_st]
+                                        , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh"), tbbs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh"), dtsdc.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "prod", ".env"), pte.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "prod", "docker-compose.yml"), ptdcy.content_st]
+                                        , [Path.joinpath(project_root_path, "tests", f"test_{self._project_name}.py"), tt.content_st]
+                                        , [Path.joinpath(project_root_path, "scripts", "install.vscode.sh"), tiv.content_st]
+                                    ])
+
+        # enable execution
+        self.__enable_execution(project_root_path=project_root_path
+                                , project_action_path=project_action_path
+                                , project_type=cc.py_general_project
+                                , file_list=[
+                                    Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh")
+                                    , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
+                                    , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
+                                    , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
+                                    , Path.joinpath(project_root_path, "scripts", "install.vscode.sh")
+                                ])
+
+        # add observability module
+        subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
+
+    def __create_python_folders(self
+                                , project_root_path: str
+                                , project_action_path: str
+                                , path_list: list
+                                , project_type: str):
+        for the_path in path_list:
+            # create folder
+            the_path[0].mkdir(parents=True, exist_ok=True)
+            if the_path[1]:
+                # create __init__.py
+                Path.joinpath(the_path[0], "__init__.py").touch()
+
+    def __create_project_files(self
+                               , project_root_path: str
+                               , project_action_path: str
+                               , file_list: list
+                               , project_type: str):
+        # handle port mapping cases
+        is_need_port_mapping = False
+        if project_type == cc.py_restful_api_project:
+            is_need_port_mapping = True
+
+        j_env = jinja2.Environment()
+        for template_obj in file_list:
+            with open(template_obj[0], "w") as w_FH:
+                w_FH.write(j_env.from_string(template_obj[1]).render(project_name=self._project_name
+                                                                     , description=f"{self._project_name} Inputs"
+                                                                     , cur_uid=pwd.getpwuid(os.getuid()).pw_uid
+                                                                     , cur_gid=pwd.getpwuid(os.getuid()).pw_gid
+                                                                     , is_need_port_mapping=is_need_port_mapping
+                                                                     ))
+
+    def __enable_execution(self
+                           , project_root_path: str
+                           , project_action_path: str
+                           , file_list: list
+                           , project_type: str):
+        for file_name in file_list:
+            st = os.stat(file_name)
+            os.chmod(file_name, st.st_mode | stat.S_IEXEC)

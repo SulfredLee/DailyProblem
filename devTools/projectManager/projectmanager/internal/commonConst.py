@@ -1,4 +1,4 @@
-py_web_project = "Python Web Project"
+py_restful_api_project = "Python Restful API Project"
 py_general_project = "Python General Project"
 cpp_general_project = "Cpp General Project"
 cpp_qt_project = "Cpp QT Project"

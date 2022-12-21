@@ -12,4 +12,5 @@ echo "$ cd ./dev"
 # echo "$ docker-compose run {{ project_name }} bash" # old way
 echo "$ ./start_dev_container.sh"
 echo "poetry --version"
+echo "For flask web app: poetry run flask run --host 0.0.0.0"
 """

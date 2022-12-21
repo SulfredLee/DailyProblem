@@ -2,6 +2,7 @@ content_st = """
 #!/bin/bash
 
 DOCKER_VERSION=$(grep "DOCKER_BUILDER_VERSION:" ../../.gitlab-ci.yml | cut -c 27-)
+DOCKER_FLASK_SERVER_PORT=$(grep "DOCKER_FLASK_SERVER_PORT:" ../../.gitlab-ci.yml | cut -c 29-)
 rm -rf ${PWD}/../../virtualenvs/ || true
 mkdir -p ${PWD}/../../virtualenvs/
 
@@ -19,8 +20,15 @@ if [[ $? == 0 ]]; then
     fi
     docker exec -it $CONTAINER_ID bash
 else
+    {% if is_need_port_mapping %}
+    docker run -it -v "${PWD}/../../:/python/project:rw"\
+                   -v "${PWD}/../../virtualenvs/:/home/$(whoami)/.cache/pypoetry/virtualenvs_mount/"\
+                   -p "${DOCKER_FLASK_SERVER_PORT}:5000"\
+                   --env-file ./.env -u $(id -u):$(id -g) {{ project_name }}:${DOCKER_VERSION}_$(whoami) bash -c "cp -rfL /home/$(whoami)/.cache/pypoetry/virtualenvs/* /home/$(whoami)/.cache/pypoetry/virtualenvs_mount/; bash"
+    {% else %}
     docker run -it -v "${PWD}/../../:/python/project:rw"\
                    -v "${PWD}/../../virtualenvs/:/home/$(whoami)/.cache/pypoetry/virtualenvs_mount/"\
                    --env-file ./.env -u $(id -u):$(id -g) {{ project_name }}:${DOCKER_VERSION}_$(whoami) bash -c "cp -rfL /home/$(whoami)/.cache/pypoetry/virtualenvs/* /home/$(whoami)/.cache/pypoetry/virtualenvs_mount/; bash"
+    {% endif %}
 fi
 """
