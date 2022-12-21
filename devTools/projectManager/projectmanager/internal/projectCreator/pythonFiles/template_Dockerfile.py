@@ -44,5 +44,5 @@ RUN apt-get -y install git zip doxygen graphviz
 RUN [ $VSCODE_FLAG = "no_vscode" ] && echo "No need to install vscode server" || ( chmod +x scripts/install.vscode.sh && ./scripts/install.vscode.sh )
 # install vscode package
 USER $DOCKER_UNAME
-RUN [ $VSCODE_FLAG = "no_vscode" ] && echo "No need to install vscode server" || code --install-extension ms-python.python ms-python.vscode-pylance && cp -rf ~/.vscode ~/.vscode-server
+RUN [ $VSCODE_FLAG = "no_vscode" ] && echo "No need to install vscode server" || code --install-extension ms-python.python ms-python.vscode-pylance
 """
