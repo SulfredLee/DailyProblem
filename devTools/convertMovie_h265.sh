@@ -55,6 +55,7 @@ elif [ "$ACTION" = "gpu_usage" ]; then
     nvidia-smi -l 2
 elif [ "$ACTION" = "convert_recursive" ]; then
     readarray -d '' movie_list < <(find "$initialPath" -type f -name *.mp4 -print0)
+    ERROR_LOG_FILE="${initialPath}/convert_failed.log"
     for i in "${!movie_list[@]}"; do
         echo "conversion progress: $(( i + 1 ))/${#movie_list[@]}"
         if [[ ${movie_list[$i]} == *"converted_"* || ${movie_list[$i]} == *"h265_"* ]]; then
@@ -71,12 +72,17 @@ elif [ "$ACTION" = "convert_recursive" ]; then
 
            start_time=`date +%s`
            ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i "${movie_list[$i]}" -c:a copy -c:v hevc_nvenc "${OUTPUT_VIDEO}"
-           end_time=`date +%s`
-           run_time=$(( end_time - start_time ))
+           if [[ $? -ne 0 ]]; then
+               echo "Error found. Failed to convert ${movie_list[$i]}"
+               echo "Error found. Failed to convert ${movie_list[$i]}" >> "${ERROR_LOG_FILE}"
+           else
+               end_time=`date +%s`
+               run_time=$(( end_time - start_time ))
 
-           run_time_human_readable=$(date -d@$run_time -u +%H:%M:%S) # convert second to Hour Minute Second
-           echo "conversion done: $VIDEO_PATH, $run_time_human_readable"
-           mv "${movie_list[$i]}" "${initialPath}"
+               run_time_human_readable=$(date -d@$run_time -u +%H:%M:%S) # convert second to Hour Minute Second
+               echo "conversion done: $VIDEO_PATH, $run_time_human_readable"
+               mv "${movie_list[$i]}" "${initialPath}"
+           fi
         fi
     done
 else
