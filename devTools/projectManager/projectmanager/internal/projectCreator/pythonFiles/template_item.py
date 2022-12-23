@@ -4,7 +4,7 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from typing import List, Dict, Tuple
 
-from {{ project_name }}.internal.schemas.schemas import ItemSchema, ItemUpdateSchema
+from {{ project_name }}.app.schemas.schemas import ItemSchema, ItemUpdateSchema
 from {{ project_name }}.internal.db.db import items
 from {{ project_name }}.app.main_manager import MainManager as mm
 

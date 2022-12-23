@@ -5,8 +5,8 @@ from flask import Flask
 from flask_smorest import Api
 import sfdevtools.observability.log_helper as lh
 
-from {{ project_name }}.internal.resources.item import blp as ItemBlueprint
-from {{ project_name }}.internal.resources.store import blp as StoreBlueprint
+from {{ project_name }}.app.routes.item import blp as ItemBlueprint
+from {{ project_name }}.app.routes.store import blp as StoreBlueprint
 from {{ project_name }}.app.main_manager import MainManager as mm
 
 class Config:
