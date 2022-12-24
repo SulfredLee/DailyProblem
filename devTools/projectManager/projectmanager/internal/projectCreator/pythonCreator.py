@@ -1,12 +1,18 @@
 from projectmanager.internal.projectCreator.projectCreatorBase import *
 import projectmanager.internal.projectCreator.pythonFiles.template_main as tm
 import projectmanager.internal.projectCreator.pythonFiles.template_app as ta
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_app as twsa
 import projectmanager.internal.projectCreator.pythonFiles.template_flask_env as tfe
 import projectmanager.internal.projectCreator.pythonFiles.template_db as tdb
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_db as twsdb
 import projectmanager.internal.projectCreator.pythonFiles.template_item as tit
 import projectmanager.internal.projectCreator.pythonFiles.template_store as tst
 import projectmanager.internal.projectCreator.pythonFiles.template_schemas as tsch
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_schemas as twssch
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_authen as twsau
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_home as twsh
 import projectmanager.internal.projectCreator.pythonFiles.template_main_manager as tmm
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_main_manager as twsmm
 import projectmanager.internal.projectCreator.pythonFiles.template_RestoreUserGroup_sh as trug
 import projectmanager.internal.projectCreator.pythonFiles.template_Export_Python_Env_sh as tepe
 import projectmanager.internal.projectCreator.pythonFiles.template_test as tt
@@ -16,6 +22,13 @@ import projectmanager.internal.projectCreator.pythonFiles.template_readme_md as 
 import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile as td
 import projectmanager.internal.projectCreator.pythonFiles.template_gitlab_ci_yml as tgcy
 import projectmanager.internal.projectCreator.pythonFiles.template_Doxyfile as tdf
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_logo as twslo
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_styles as twsst
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_base as twsb
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_home_html as twshm
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_login as twslg
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_protected as twsp
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_signup as twsu
 import projectmanager.internal.projectCreator.pythonFiles.scripts.template_install_vscode_sh as tiv
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.template_BuildImageBuilder_sh as tbbs
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.template_BuildImageRunner_sh as tbrs
@@ -36,7 +49,8 @@ class pythonCreator(projectCreatorBase):
     def create_project(self, project_type: str):
         # check project type
         if not cc.py_restful_api_project == project_type\
-           and not cc.py_general_project == project_type:
+           and not cc.py_general_project == project_type\
+           and not cc.py_web_site_project == project_type:
             raise ValueError(f"Not support project type: {project_type}")
 
         # start project create
@@ -67,6 +81,9 @@ class pythonCreator(projectCreatorBase):
         elif cc.py_general_project == project_type:
             self.__create_general_project(project_root_path=project_root_path
                                           , project_action_path=project_action_path)
+        elif cc.py_web_site_project == project_type:
+            self.__create_web_site_project(project_root_path=project_root_path
+                                           , project_action_path=project_action_path)
         else:
             raise ValueError(f"Not support project type: {project_type}")
 
@@ -76,6 +93,96 @@ class pythonCreator(projectCreatorBase):
                             , Path.joinpath(project_action_path
                                             , "internal"
                                             , "observability"))
+
+    def __create_web_site_project(self, project_root_path: str, project_action_path: str):
+        # create python folders
+        self.__create_python_folders(project_root_path=project_root_path
+                                     , project_action_path=project_action_path
+                                     , project_type=cc.py_web_site_project
+                                     , path_list=[
+                                         [Path.joinpath(project_action_path, "app"), True]
+                                         , [Path.joinpath(project_action_path, "app", "schemas"), True]
+                                         , [Path.joinpath(project_action_path, "app", "routes"), True]
+                                         , [Path.joinpath(project_action_path, "internal"), True]
+                                         , [Path.joinpath(project_action_path, "internal", "db"), True]
+                                         , [Path.joinpath(project_action_path, "app", "static"), False]
+                                         , [Path.joinpath(project_action_path, "app", "static", "css"), False]
+                                         , [Path.joinpath(project_action_path, "app", "templates"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv", "dev"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv", "prod"), False]
+                                         , [Path.joinpath(project_root_path, "scripts"), False]
+                                     ])
+
+        # create project files
+        self.__create_project_files(project_root_path=project_root_path
+                                    , project_action_path=project_action_path
+                                    , project_type=cc.py_web_site_project
+                                    , file_list=[
+                                        [Path.joinpath(project_action_path, "app", "app.py"), twsa.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "main_manager.py"), twsmm.content_st]
+                                        , [Path.joinpath(project_action_path, "app", ".flaskenv"), tfe.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "Mainpage.dox"), tmp.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "schemas", "schemas.py"), twssch.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "routes", "authen.py"), twsau.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "routes", "home.py"), twsh.content_st]
+                                        , [Path.joinpath(project_action_path, "internal", "db", "db.py"), twsdb.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "static", "logo.svg"), twslo.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "static", "css", "styles.css"), twsst.content_st]
+                                        , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
+                                        , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
+                                        , [Path.joinpath(project_root_path, "Dockerfile"), td.content_st]
+                                        # , [Path.joinpath(project_root_path, "RestoreUserGroup.sh"), trug.content_st]
+                                        , [Path.joinpath(project_root_path, "ExportPythonEnv.sh"), tepe.content_st]
+                                        , [Path.joinpath(project_root_path, ".gitlab-ci.yml"), tgcy.content_st]
+                                        , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh"), tbbs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh"), dtsdc.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "prod", ".env"), pte.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "prod", "docker-compose.yml"), ptdcy.content_st]
+                                        , [Path.joinpath(project_root_path, "tests", f"test_{self._project_name}.py"), tt.content_st]
+                                        , [Path.joinpath(project_root_path, "scripts", "install.vscode.sh"), tiv.content_st]
+                                    ])
+
+        # create project files without jinja2
+        self.__copy_project_files(project_root_path=project_root_path
+                                  , project_action_path=project_action_path
+                                  , project_type=cc.py_web_site_project
+                                  , file_list=[
+                                      [Path.joinpath(project_action_path, "app", "templates", "base.html"), twsb.content_st]
+                                      , [Path.joinpath(project_action_path, "app", "templates", "home.html"), twshm.content_st]
+                                      , [Path.joinpath(project_action_path, "app", "templates", "login.html"), twslg.content_st]
+                                      , [Path.joinpath(project_action_path, "app", "templates", "protected.html"), twsp.content_st]
+                                      , [Path.joinpath(project_action_path, "app", "templates", "signup.html"), twsu.content_st]
+                                  ])
+
+        # enable execution
+        self.__enable_execution(project_root_path=project_root_path
+                                , project_action_path=project_action_path
+                                , project_type=cc.py_web_site_project
+                                , file_list=[
+                                    Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh")
+                                    , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
+                                    , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
+                                    , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
+                                    , Path.joinpath(project_root_path, "scripts", "install.vscode.sh")
+                                ])
+
+        # add observability module
+        subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "flask"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "flask-smorest"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "python-dotenv"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "marshmallow"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "pymongo"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "flask-wtf"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "passlib"], cwd=Path.joinpath(self._project_path, self._project_name))
 
     def __create_restful_api_project(self, project_root_path: str, project_action_path: str):
         # create python folders
@@ -217,6 +324,15 @@ class pythonCreator(projectCreatorBase):
                 # create __init__.py
                 Path.joinpath(the_path[0], "__init__.py").touch()
 
+    def __copy_project_files(self
+                             , project_root_path: str
+                             , project_action_path: str
+                             , file_list: list
+                             , project_type: str):
+        for template_obj in file_list:
+            with open(template_obj[0], "w") as w_FH:
+                w_FH.write(template_obj[1])
+
     def __create_project_files(self
                                , project_root_path: str
                                , project_action_path: str
@@ -226,6 +342,10 @@ class pythonCreator(projectCreatorBase):
         is_need_port_mapping = False
         if project_type == cc.py_restful_api_project:
             is_need_port_mapping = True
+        elif project_type == cc.py_web_site_project:
+            is_need_port_mapping = True
+        else:
+            is_need_port_mapping = False
 
         j_env = jinja2.Environment()
         for template_obj in file_list:

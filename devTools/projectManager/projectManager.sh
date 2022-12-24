@@ -8,7 +8,7 @@ createLanguageTypes=("Python" "Cpp")
 updateLanguageTypes=("Cpp")
 
 ## create project selection
-pythonProjectType=("Python Restful API Project" "Python General Project")
+pythonProjectType=("Python Restful API Project" "Python General Project" "Python Web Site Project")
 cppProjectType=("Cpp General Project" "Cpp QT Project")
 ## udpate project selection
 cppProjectUpdateType=("Add External Project" "Add Static Library" "Add Dynamic Library")
