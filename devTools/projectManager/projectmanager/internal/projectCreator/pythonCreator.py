@@ -11,6 +11,7 @@ import projectmanager.internal.projectCreator.pythonFiles.template_schemas as ts
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_schemas as twssch
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_authen as twsau
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_home as twsh
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_bootstrap_example as twsbt
 import projectmanager.internal.projectCreator.pythonFiles.template_main_manager as tmm
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_main_manager as twsmm
 import projectmanager.internal.projectCreator.pythonFiles.template_RestoreUserGroup_sh as trug
@@ -26,6 +27,7 @@ import projectmanager.internal.projectCreator.pythonFiles.template_web_site_logo
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_styles as twsst
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_base as twsb
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_home_html as twshm
+import projectmanager.internal.projectCreator.pythonFiles.template_web_site_bootstrap_example_html as twsbth
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_login as twslg
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_protected as twsp
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_signup as twsu
@@ -127,6 +129,7 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_action_path, "app", "schemas", "schemas.py"), twssch.content_st]
                                         , [Path.joinpath(project_action_path, "app", "routes", "authen.py"), twsau.content_st]
                                         , [Path.joinpath(project_action_path, "app", "routes", "home.py"), twsh.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "routes", "bootstrap_example.py"), twsbt.content_st]
                                         , [Path.joinpath(project_action_path, "internal", "db", "db.py"), twsdb.content_st]
                                         , [Path.joinpath(project_action_path, "app", "static", "logo.svg"), twslo.content_st]
                                         , [Path.joinpath(project_action_path, "app", "static", "css", "styles.css"), twsst.content_st]
@@ -159,6 +162,7 @@ class pythonCreator(projectCreatorBase):
                                       , [Path.joinpath(project_action_path, "app", "templates", "login.html"), twslg.content_st]
                                       , [Path.joinpath(project_action_path, "app", "templates", "protected.html"), twsp.content_st]
                                       , [Path.joinpath(project_action_path, "app", "templates", "signup.html"), twsu.content_st]
+                                      , [Path.joinpath(project_action_path, "app", "templates", "bootstrap_example.html"), twsbth.content_st]
                                   ])
 
         # enable execution
@@ -183,6 +187,7 @@ class pythonCreator(projectCreatorBase):
         subprocess.run(["poetry", "add", "pymongo"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "flask-wtf"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "passlib"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "flask_bootstrap"], cwd=Path.joinpath(self._project_path, self._project_name))
 
     def __create_restful_api_project(self, project_root_path: str, project_action_path: str):
         # create python folders
