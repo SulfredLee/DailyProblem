@@ -54,7 +54,7 @@ elif [ "$ACTION" = "check_status" ]; then
 elif [ "$ACTION" = "gpu_usage" ]; then
     nvidia-smi -l 2
 elif [ "$ACTION" = "convert_recursive" ]; then
-    readarray -d '' movie_list < <(find "$initialPath" -type f ! \( -name "*.mp4" -o -name "*.wnv" \) -size +1G -print0)
+    readarray -d '' movie_list < <(find "$initialPath" -type f \( -name "*.mp4" -o -name "*.wmv" -o -name "*.mkv" \) -size +1G -print0)
     ERROR_LOG_FILE="${initialPath}/convert_failed.log"
     for i in "${!movie_list[@]}"; do
         echo "conversion progress: $(( i + 1 ))/${#movie_list[@]}"
@@ -72,7 +72,7 @@ elif [ "$ACTION" = "convert_recursive" ]; then
 
            start_time=`date +%s`
            # ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i "${movie_list[$i]}" -c:a copy -c:v hevc_nvenc "${OUTPUT_VIDEO}"
-	   ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i "${movie_list[$i]}" -c:v hevc_nvenc "${OUTPUT_VIDEO}"
+	   ffmpeg -y -vsync 0 -hwaccel_output_format cuda -i "${movie_list[$i]}" -c:v hevc_nvenc "${OUTPUT_VIDEO}"
            if [[ $? -ne 0 ]]; then
                echo "Error found. Failed to convert ${movie_list[$i]}"
                echo "Error found. Failed to convert ${movie_list[$i]}" >> "${ERROR_LOG_FILE}"
