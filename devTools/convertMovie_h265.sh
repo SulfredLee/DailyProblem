@@ -64,6 +64,9 @@ elif [ "$ACTION" = "convert_recursive" ]; then
            INPUT_VIDEO="$(basename "${movie_list[$i]}")"
            VIDEO_PATH="$(dirname "${movie_list[$i]}")"
            OUTPUT_VIDEO="$VIDEO_PATH/h265_${INPUT_VIDEO}"
+           if [[ ${INPUT_VIDEO} == *".wmv" ]]; then
+              OUTPUT_VIDEO="$VIDEO_PATH/h265_${INPUT_VIDEO}.mp4"
+           fi
            echo "conversion start: $VIDEO_PATH"
            echo ${movie_list[$i]}
            echo $INPUT_VIDEO
