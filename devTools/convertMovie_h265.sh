@@ -9,6 +9,29 @@ function PrintHelp {
     echo "\$ $0 --action <convert|check_status|gpu_usage|convert_recursive> --input_video <video>"
 }
 
+IS_LOW_QUALITY=0
+function IsLowQuality {
+    FILE_NAME=$1
+
+    echo "IsLowQuality: $FILE_NAME"
+
+    # get width
+    MOVIE_WIDTH=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=s=x:p=0 "$FILE_NAME")
+
+    # get height
+    MOVIE_HEIGHT=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=s=x:p=0 "$FILE_NAME")
+
+    echo "Movie size: $MOVIE_WIDTH x $MOVIE_HEIGHT"
+
+    if (( $MOVIE_WIDTH < 1280 )); then
+        IS_LOW_QUALITY=1
+    elif (( $MOVIE_HEIGHT < 1080 )); then
+        IS_LOW_QUALITY=1
+    else
+        IS_LOW_QUALITY=0
+    fi
+}
+
 POSITIONAL=()
 ACTION=""
 CURRENT_DATE=`date +%Y%m%d`
@@ -58,8 +81,11 @@ elif [ "$ACTION" = "convert_recursive" ]; then
     ERROR_LOG_FILE="${initialPath}/convert_failed.log"
     for i in "${!movie_list[@]}"; do
         echo "conversion progress: $(( i + 1 ))/${#movie_list[@]}"
+        IsLowQuality "${movie_list[$i]}"
         if [[ ${movie_list[$i]} == *"converted_"* || ${movie_list[$i]} == *"h265_"* ]]; then
            echo "conversion skip this is already converted: ${movie_list[$i]}"
+        elif (( $IS_LOW_QUALITY == 1 )); then
+           echo "Quality of the movie is too low, no need to convert"
         else
            INPUT_VIDEO="$(basename "${movie_list[$i]}")"
            VIDEO_PATH="$(dirname "${movie_list[$i]}")"
