@@ -24,11 +24,11 @@ content_st = """
 stages:          # List of stages for jobs, and their order of execution
   - build-image
   - build-test
-  - build-package
   - tag-release
   - deploy
 
 variables:
+  QC_VERSION_FILE: "sdk_version.py"
   DOCKER_BUILDER_VERSION: builder_1.0.0
   DOCKER_RUNNER_VERSION: runner_1.0.0
   DOCKER_IMAGE_NAME_BUILDER: ${CI_REGISTRY_IMAGE}:${DOCKER_BUILDER_VERSION}
@@ -65,23 +65,6 @@ build-dev-image:
         - Dockerfile
     - when: never
 
-build-run-image:
-  stage: build-image
-  image: docker:latest
-  services:
-    - docker:20.10.12-dind
-  script:
-    - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker pull $DOCKER_IMAGE_NAME_RUNNER || true # use the cached image if possible
-    - docker build --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --build-arg DOCKER_UNAME=$(whoami) --build-arg DOCKER_GNAME=$(whoami) --target runner -t $DOCKER_IMAGE_NAME_RUNNER .
-    - docker push $DOCKER_IMAGE_NAME_RUNNER
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: manual
-      changes:
-        - Dockerfile
-    - when: never
-
 build-test-app:       # This job runs in the build stage, which runs first.
   stage: build-test
   image: $DOCKER_IMAGE_NAME_BUILDER
@@ -94,43 +77,12 @@ build-test-app:       # This job runs in the build stage, which runs first.
       when: manual
     - when: never
 
-uat-build-package-app:
-  stage: build-package
-  image: $DOCKER_IMAGE_NAME_BUILDER
-  script:
-    - tar -zcvf $PACKAGE_NAME_UAT ./*
-    - |
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file ./$PACKAGE_NAME_UAT ${PACKAGE_REGISTRY_URL_UAT}/$PACKAGE_NAME_UAT
-  needs: []
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: manual
-    - when: never
-
-prod-build-package-app:
-  stage: build-package
-  image: $DOCKER_IMAGE_NAME_BUILDER
-  script:
-    - tar -zcvf $PACKAGE_NAME ./*
-    - |
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file ./$PACKAGE_NAME ${PACKAGE_REGISTRY_URL}/$PACKAGE_NAME
-  needs: []
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: always
-    - when: never
-
 release-app:
   stage: tag-release
   image: python:3.8
   script:
-    - pip install poetry twine
-    - poetry version ${CI_COMMIT_TAG}
-    - poetry build
-    - export TWINE_PASSWORD=${CI_JOB_TOKEN}
-    - export TWINE_USERNAME=gitlab-ci-token
-    - python -m twine upload --verbose --repository-url $PYTHON_RELEASE_PATH dist/*
-  needs: ["prod-build-package-app"]
+    - echo "empty step"
+  needs: []
   rules:
     - if: $CI_COMMIT_TAG
       when: always
@@ -154,9 +106,16 @@ pages:
 
 uat-deploy:
   stage: deploy
+  image: $DOCKER_IMAGE_NAME_BUILDER
   script:
     - echo "deploy to uat from branch $CI_COMMIT_REF_NAME"
-  needs: ["uat-build-package-app"]
+    - /root/.local/bin/poetry install # duplicate prepare package
+    - cd {{ project_name }}
+    - echo "# SDK Version - $CI_COMMIT_REF_NAME" > $QC_VERSION_FILE
+    - /root/.local/bin/poetry run lean login --user-id "$QC_ID" --api-token "$QC_TOKEN"
+    - /root/.local/bin/poetry run lean cloud push
+    - /root/.local/bin/poetry run lean logout
+  needs: []
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
@@ -164,9 +123,16 @@ uat-deploy:
 
 prod-deploy:
   stage: deploy
+  image: $DOCKER_IMAGE_NAME_BUILDER
   script:
     - echo "deploy to prod from tag $CI_COMMIT_TAG"
-  needs: ["prod-build-package-app"]
+    - /root/.local/bin/poetry install # duplicate prepare package
+    - cd {{ project_name }}
+    - echo "# SDK Version - $CI_COMMIT_TAG" > $QC_VERSION_FILE
+    - /root/.local/bin/poetry run lean login --user-id "$QC_ID" --api-token "$QC_TOKEN"
+    - /root/.local/bin/poetry run lean cloud push
+    - /root/.local/bin/poetry run lean logout
+  needs: []
   rules:
     - if: $CI_COMMIT_TAG
       when: manual

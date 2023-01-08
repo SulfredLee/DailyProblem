@@ -1,6 +1,7 @@
 py_restful_api_project = "Python Restful API Project"
 py_general_project = "Python General Project"
 py_web_site_project = "Python Web Site Project"
+py_qc_project = "Python QC Project"
 cpp_general_project = "Cpp General Project"
 cpp_qt_project = "Cpp QT Project"
 cpp_add_external_project = "Add External Project"

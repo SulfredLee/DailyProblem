@@ -8,7 +8,7 @@ createLanguageTypes=("Python" "Cpp")
 updateLanguageTypes=("Cpp")
 
 ## create project selection
-pythonProjectType=("Python Restful API Project" "Python General Project" "Python Web Site Project")
+pythonProjectType=("Python Restful API Project" "Python General Project" "Python Web Site Project" "Python QC Project")
 cppProjectType=("Cpp General Project" "Cpp QT Project")
 ## udpate project selection
 cppProjectUpdateType=("Add External Project" "Add Static Library" "Add Dynamic Library")
@@ -58,6 +58,7 @@ if [[ ${actionSelection} == "Create Project" ]]; then
     getUserSelection "${selectionTitle}" "${createLanguageTypes[@]}"
     languageSelection=${selectionResult}
     read -p "Project Name: " projectName
+    projectName="${projectName,,}"
     echo "New project name: ${projectName}"
 elif [[ ${actionSelection} == "Update Project" ]]; then
     getUserSelection "${selectionTitle}" "${updateLanguageTypes[@]}"

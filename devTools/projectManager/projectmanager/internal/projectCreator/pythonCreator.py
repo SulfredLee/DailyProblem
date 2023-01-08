@@ -22,6 +22,7 @@ import projectmanager.internal.projectCreator.pythonFiles.template_Mainpage as t
 import projectmanager.internal.projectCreator.pythonFiles.template_readme_md as trm
 import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile as td
 import projectmanager.internal.projectCreator.pythonFiles.template_gitlab_ci_yml as tgcy
+import projectmanager.internal.projectCreator.pythonFiles.template_gitlab_ci_yml_qc as tgcyqc
 import projectmanager.internal.projectCreator.pythonFiles.template_Doxyfile as tdf
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_logo as twslo
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_styles as twsst
@@ -52,6 +53,7 @@ class pythonCreator(projectCreatorBase):
         # check project type
         if not cc.py_restful_api_project == project_type\
            and not cc.py_general_project == project_type\
+           and not cc.py_qc_project == project_type\
            and not cc.py_web_site_project == project_type:
             raise ValueError(f"Not support project type: {project_type}")
 
@@ -83,6 +85,9 @@ class pythonCreator(projectCreatorBase):
         elif cc.py_general_project == project_type:
             self.__create_general_project(project_root_path=project_root_path
                                           , project_action_path=project_action_path)
+        elif cc.py_qc_project == project_type:
+            self.__create_qc_project(project_root_path=project_root_path
+                                     , project_action_path=project_action_path)
         elif cc.py_web_site_project == project_type:
             self.__create_web_site_project(project_root_path=project_root_path
                                            , project_action_path=project_action_path)
@@ -259,6 +264,61 @@ class pythonCreator(projectCreatorBase):
         subprocess.run(["poetry", "add", "python-dotenv"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "marshmallow"], cwd=Path.joinpath(self._project_path, self._project_name))
 
+
+    def __create_qc_project(self, project_root_path: str, project_action_path: str):
+        # create python folders
+        self.__create_python_folders(project_root_path=project_root_path
+                                     , project_action_path=project_action_path
+                                     , project_type=cc.py_qc_project
+                                     , path_list=[
+                                         [Path.joinpath(project_action_path), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv", "dev"), False]
+                                         , [Path.joinpath(project_root_path, "dockerEnv", "prod"), False]
+                                         , [Path.joinpath(project_root_path, "scripts"), False]
+                                         ])
+
+        # create project files
+        self.__create_project_files(project_root_path=project_root_path
+                                    , project_action_path=project_action_path
+                                    , project_type=cc.py_qc_project
+                                    , file_list=[
+                                        [Path.joinpath(project_action_path, "Mainpage.dox"), tmp.content_st]
+                                        , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
+                                        , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
+                                        , [Path.joinpath(project_root_path, "Dockerfile"), td.content_st]
+                                        , [Path.joinpath(project_root_path, "ExportPythonEnv.sh"), tepe.content_st]
+                                        , [Path.joinpath(project_root_path, ".gitlab-ci.yml"), tgcyqc.content_st]
+                                        , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh"), tbbs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh"), dtsdc.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "prod", ".env"), pte.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "prod", "docker-compose.yml"), ptdcy.content_st]
+                                        , [Path.joinpath(project_root_path, "tests", f"test_{self._project_name}.py"), tt.content_st]
+                                        , [Path.joinpath(project_root_path, "scripts", "install.vscode.sh"), tiv.content_st]
+                                    ])
+
+        # enable execution
+        self.__enable_execution(project_root_path=project_root_path
+                                , project_action_path=project_action_path
+                                , project_type=cc.py_qc_project
+                                , file_list=[
+                                    Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh")
+                                    , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
+                                    , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
+                                    , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
+                                    , Path.joinpath(project_root_path, "scripts", "install.vscode.sh")
+                                ])
+
+        # add observability module
+        subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "lean"], cwd=Path.joinpath(self._project_path, self._project_name))
 
     def __create_general_project(self, project_root_path: str, project_action_path: str):
         # create python folders

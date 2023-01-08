@@ -162,4 +162,8 @@ cython_debug/
 
 # SF framework
 virtualenvs/
+
+# QC project
+data/
+sdk_version.py
 """
