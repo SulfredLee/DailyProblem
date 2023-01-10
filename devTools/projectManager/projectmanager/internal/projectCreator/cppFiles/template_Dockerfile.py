@@ -1,15 +1,15 @@
 content_st = """
-# FROM ubuntu:16.04 AS runner
-# FROM ubuntu:18.04 AS runner
-# FROM ubuntu:20.04 AS runner
-FROM ubuntu:22.04 AS runner
+# FROM ubuntu:16.04 AS builder
+# FROM ubuntu:18.04 AS builder
+# FROM ubuntu:20.04 AS builder
+FROM ubuntu:22.04 AS builder
 
 RUN apt-get update
 RUN apt-get -y install vim
 
 WORKDIR /cpp/project/
 
-FROM runner AS builder
+FROM builder AS dev
 RUN apt-get -y install build-essential vim ninja-build cmake doxygen git gdb curl zip pkg-config doxygen graphviz
 
 # init cpp package manager

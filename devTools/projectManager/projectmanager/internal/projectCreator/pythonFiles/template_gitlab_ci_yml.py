@@ -56,13 +56,14 @@ build-dev-image:
   script:
     - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker pull $DOCKER_IMAGE_NAME_BUILDER || true # use the cached image if possible
-    - docker build --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --build-arg DOCKER_UNAME=$(whoami) --build-arg DOCKER_GNAME=$(whoami) --build-arg VSCODE_FLAG="no_vscode" --target builder -t $DOCKER_IMAGE_NAME_BUILDER .
+    - cd dockerEnv
+    - docker build --file Dockerfile.Dev --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --build-arg DOCKER_UNAME=$(whoami) --build-arg DOCKER_GNAME=$(whoami) --build-arg VSCODE_FLAG="no_vscode" --target dev -t $DOCKER_IMAGE_NAME_BUILDER ..
     - docker push $DOCKER_IMAGE_NAME_BUILDER
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
       changes:
-        - Dockerfile
+        - dockerEnv/Dockerfile.Dev
     - when: never
 
 build-run-image:
@@ -73,13 +74,14 @@ build-run-image:
   script:
     - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker pull $DOCKER_IMAGE_NAME_RUNNER || true # use the cached image if possible
-    - docker build --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --build-arg DOCKER_UNAME=$(whoami) --build-arg DOCKER_GNAME=$(whoami) --target runner -t $DOCKER_IMAGE_NAME_RUNNER .
+    - cd dockerEnv
+    - docker build --file Dockerfile.Run --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --build-arg DOCKER_UNAME=$(whoami) --build-arg DOCKER_GNAME=$(whoami) --target runner -t $DOCKER_IMAGE_NAME_RUNNER ..
     - docker push $DOCKER_IMAGE_NAME_RUNNER
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
       changes:
-        - Dockerfile
+        - dockerEnv/Dockerfile.Run
     - when: never
 
 build-test-app:       # This job runs in the build stage, which runs first.

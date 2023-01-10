@@ -1,9 +1,9 @@
 content_st = """
-# FROM python:3.12-rc-bullseye AS runner
-# FROM python:3.11.1-bullseye AS runner
-# FROM python:3.10.9-bullseye AS runner
-# FROM python:3.9.15-bullseye AS runner
-FROM python:3.8.16-bullseye AS runner
+# FROM python:3.12-rc-bullseye AS builder
+# FROM python:3.11.1-bullseye AS builder
+# FROM python:3.10.9-bullseye AS builder
+# FROM python:3.9.15-bullseye AS builder
+FROM python:3.8.16-bullseye AS builder
 
 ARG DOCKER_GID
 ARG DOCKER_UID
@@ -28,7 +28,7 @@ WORKDIR /python/project/
 COPY . /python/project
 RUN poetry install
 
-FROM runner AS builder
+FROM builder AS dev
 # need to redefine for different layers
 ARG DOCKER_GID
 ARG DOCKER_UID

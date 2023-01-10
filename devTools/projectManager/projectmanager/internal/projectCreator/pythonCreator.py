@@ -21,6 +21,7 @@ import projectmanager.internal.projectCreator.pythonFiles.template_gitignore as 
 import projectmanager.internal.projectCreator.pythonFiles.template_Mainpage as tmp
 import projectmanager.internal.projectCreator.pythonFiles.template_readme_md as trm
 import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile as td
+import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile_Runner as tdr
 import projectmanager.internal.projectCreator.pythonFiles.template_gitlab_ci_yml as tgcy
 import projectmanager.internal.projectCreator.pythonFiles.template_gitlab_ci_yml_qc as tgcyqc
 import projectmanager.internal.projectCreator.pythonFiles.template_Doxyfile as tdf
@@ -140,13 +141,14 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_action_path, "app", "static", "css", "styles.css"), twsst.content_st]
                                         , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
                                         , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
-                                        , [Path.joinpath(project_root_path, "Dockerfile"), td.content_st]
                                         # , [Path.joinpath(project_root_path, "RestoreUserGroup.sh"), trug.content_st]
                                         , [Path.joinpath(project_root_path, "ExportPythonEnv.sh"), tepe.content_st]
                                         , [Path.joinpath(project_root_path, ".gitlab-ci.yml"), tgcy.content_st]
                                         , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Dev"), td.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Run"), tdr.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
-                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh"), tbbs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh"), tbbs.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]
@@ -175,7 +177,7 @@ class pythonCreator(projectCreatorBase):
                                 , project_action_path=project_action_path
                                 , project_type=cc.py_web_site_project
                                 , file_list=[
-                                    Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh")
+                                    Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
                                     , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
@@ -227,13 +229,14 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_action_path, "internal", "db", "db.py"), tdb.content_st]
                                         , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
                                         , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
-                                        , [Path.joinpath(project_root_path, "Dockerfile"), td.content_st]
                                         # , [Path.joinpath(project_root_path, "RestoreUserGroup.sh"), trug.content_st]
                                         , [Path.joinpath(project_root_path, "ExportPythonEnv.sh"), tepe.content_st]
                                         , [Path.joinpath(project_root_path, ".gitlab-ci.yml"), tgcy.content_st]
                                         , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Dev"), td.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Run"), tdr.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
-                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh"), tbbs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh"), tbbs.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]
@@ -249,7 +252,7 @@ class pythonCreator(projectCreatorBase):
                                 , project_action_path=project_action_path
                                 , project_type=cc.py_restful_api_project
                                 , file_list=[
-                                    Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh")
+                                    Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
                                     , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
@@ -287,12 +290,13 @@ class pythonCreator(projectCreatorBase):
                                         [Path.joinpath(project_action_path, "Mainpage.dox"), tmp.content_st]
                                         , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
                                         , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
-                                        , [Path.joinpath(project_root_path, "Dockerfile"), td.content_st]
                                         , [Path.joinpath(project_root_path, "ExportPythonEnv.sh"), tepe.content_st]
                                         , [Path.joinpath(project_root_path, ".gitlab-ci.yml"), tgcyqc.content_st]
                                         , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Dev"), td.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Run"), tdr.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
-                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh"), tbbs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh"), tbbs.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]
@@ -308,7 +312,7 @@ class pythonCreator(projectCreatorBase):
                                 , project_action_path=project_action_path
                                 , project_type=cc.py_qc_project
                                 , file_list=[
-                                    Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh")
+                                    Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
                                     , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
@@ -344,13 +348,14 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_action_path, "app", "Mainpage.dox"), tmp.content_st]
                                         , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
                                         , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
-                                        , [Path.joinpath(project_root_path, "Dockerfile"), td.content_st]
                                         # , [Path.joinpath(project_root_path, "RestoreUserGroup.sh"), trug.content_st]
                                         , [Path.joinpath(project_root_path, "ExportPythonEnv.sh"), tepe.content_st]
                                         , [Path.joinpath(project_root_path, ".gitlab-ci.yml"), tgcy.content_st]
                                         , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Dev"), td.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Run"), tdr.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
-                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh"), tbbs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh"), tbbs.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]
@@ -366,7 +371,7 @@ class pythonCreator(projectCreatorBase):
                                 , project_action_path=project_action_path
                                 , project_type=cc.py_general_project
                                 , file_list=[
-                                    Path.joinpath(project_root_path, "dockerEnv", "BuildImageBuilder.sh")
+                                    Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
                                     , Path.joinpath(project_root_path, "ExportPythonEnv.sh")

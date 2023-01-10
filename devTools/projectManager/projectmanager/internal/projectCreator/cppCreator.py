@@ -15,6 +15,7 @@ import projectmanager.internal.projectCreator.cppFiles.test.template_test_h as t
 import projectmanager.internal.projectCreator.cppFiles.test.template_test_cpp as ttc
 import projectmanager.internal.projectCreator.cppFiles.test.template_CMakeLists as ttcm
 import projectmanager.internal.projectCreator.cppFiles.template_Dockerfile as td
+import projectmanager.internal.projectCreator.cppFiles.template_Dockerfile_Run as tdr
 import projectmanager.internal.projectCreator.cppFiles.template_Doxyfile as tdf
 import projectmanager.internal.projectCreator.cppFiles.template_gitlab_ci_yml as tgcy
 import projectmanager.internal.projectCreator.cppFiles.dockerEnv.uat.template_env as ute
@@ -72,7 +73,9 @@ class cppCreator(projectCreatorBase):
                              , [Path.joinpath(project_root, "script", "CCMake_Debug.sh"), dtc.content_st]
                              , [Path.joinpath(project_root, "script", "CCMake_Release.sh"), rtc.content_st]
                              , [Path.joinpath(project_root, "script", "BuildImageRunner.sh"), tbir.content_st]
-                             , [Path.joinpath(project_root, "script", "BuildImageBuilder.sh"), tbib.content_st]
+                             , [Path.joinpath(project_root, "script", "BuildImageDev.sh"), tbib.content_st]
+                             , [Path.joinpath(project_root, "script", "Dockerfile.Dev"), td.content_st]
+                             , [Path.joinpath(project_root, "script", "Dockerfile.Run"), tdr.content_st]
                              # , [Path.joinpath(project_root, "install", ".gitkeep"), tgk.content_st]
                              , [Path.joinpath(project_root, "external", ".gitkeep"), tgk.content_st]
                              , [Path.joinpath(project_root, "CMakeLists.txt"), tc.content_st]
@@ -81,7 +84,6 @@ class cppCreator(projectCreatorBase):
                              , [Path.joinpath(project_root, "test", "CMakeLists.txt"), ttcm.content_st]
                              , [Path.joinpath(project_root, "test", f"{self._project_name}_Test.h"), tth.content_st]
                              , [Path.joinpath(project_root, "test", f"{self._project_name}_Test.cpp"), ttc.content_st]
-                             , [Path.joinpath(project_root, "Dockerfile"), td.content_st]
                              , [Path.joinpath(project_root, "Doxyfile"), tdf.content_st]
                              , [Path.joinpath(project_root, "app", "Mainpage.dox"), tmd.content_st]
                              , [Path.joinpath(project_root, ".gitlab-ci.yml"), tgcy.content_st]
@@ -102,7 +104,7 @@ class cppCreator(projectCreatorBase):
                           , Path.joinpath(project_root, "script", "CCMake_Debug.sh")
                           , Path.joinpath(project_root, "script", "CCMake_Release.sh")
                           , Path.joinpath(project_root, "script", "BuildImageRunner.sh")
-                          , Path.joinpath(project_root, "script", "BuildImageBuilder.sh")
+                          , Path.joinpath(project_root, "script", "BuildImageDev.sh")
                           , Path.joinpath(project_root, "dockerEnv", "dev", "start_dev_container.sh")
                           ]:
             st = os.stat(file_name)
