@@ -36,6 +36,9 @@ $ helm upgrade mysql-svc --values=myvalues.yaml ./mysql
 
 # Generate yaml from charts --- this command will consolidate all your custom values but not installing the environment
 $ helm template mysql-svc ./mysql --values=./mysql/myvalues.yaml > mysql-stack.yaml
+
+# Create helm chart
+$ helm create <your project name>
 ```
 
 ## kubectl
