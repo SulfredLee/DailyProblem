@@ -1,5 +1,7 @@
 import logging
 import logging_json
+from sfdevtools.observability.PyLogstash.handler_tcp import TCPLogstashHandler
+from sfdevtools.observability.PyLogstash.handler_udp import UDPLogstashHandler, LogstashHandler
 from logging.handlers import TimedRotatingFileHandler
 
 def init_logger(logger_name: str = "default_logger"
@@ -7,7 +9,11 @@ def init_logger(logger_name: str = "default_logger"
                 , is_print_to_file: bool = False
                 , log_file_root: str = "./"
                 , is_print_to_console: bool = True
-                , is_json_output: bool = True) -> logging.Logger:
+                , is_json_output: bool = True
+                , is_print_to_logstash: bool = False
+                , logstash_host: str = None
+                , logstash_port: int = None
+                , logstash_user_tags: list = None) -> logging.Logger:
     logger = logging.getLogger(logger_name)
     logger.setLevel(log_level)
 
@@ -41,6 +47,8 @@ def init_logger(logger_name: str = "default_logger"
         ch.setLevel(logging.DEBUG)
         ch.setFormatter(formatter)
         logger.addHandler(ch)
+    if is_print_to_logstash:
+        logger.addHandler(TCPLogstashHandler(logstash_host, logstash_port, tags=logstash_user_tags, version=1))
 
     return logger
 
