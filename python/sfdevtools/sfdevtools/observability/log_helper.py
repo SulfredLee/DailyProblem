@@ -1,7 +1,7 @@
 import logging
 import logging_json
-from sfdevtools.observability.PyLogstash.handler_tcp import TCPLogstashHandler
-from sfdevtools.observability.PyLogstash.handler_udp import UDPLogstashHandler, LogstashHandler
+from sfdevtools.observability.logstash.handler_tcp import TCPLogstashHandler
+from sfdevtools.observability.logstash.handler_udp import UDPLogstashHandler, LogstashHandler
 from logging.handlers import TimedRotatingFileHandler
 
 def init_logger(logger_name: str = "default_logger"

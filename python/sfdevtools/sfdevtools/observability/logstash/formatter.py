@@ -105,7 +105,7 @@ class LogstashFormatterVersion0(LogstashFormatterBase):
         }
 
         # Add extra fields
-        message['@fields'].update(self.get_extra_fields(record))
+        # message['@fields'].update(self.get_extra_fields(record))
 
         # If exception, add debug info
         if record.exc_info:
@@ -130,10 +130,15 @@ class LogstashFormatterVersion1(LogstashFormatterBase):
             # Extra Fields
             'level': record.levelname,
             'logger_name': record.name,
+            'lineno': record.lineno,
+            'process': record.process,
+            'thread_name': record.threadName,
+            'filename': record.filename,
+            'module': record.module,
         }
 
         # Add extra fields
-        message.update(self.get_extra_fields(record))
+        # message.update(self.get_extra_fields(record))
 
         # If exception, add debug info
         if record.exc_info:

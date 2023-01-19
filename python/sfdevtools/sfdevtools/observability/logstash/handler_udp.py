@@ -1,6 +1,6 @@
 from logging.handlers import DatagramHandler, SocketHandler
-from logstash.handler_tcp import TCPLogstashHandler
-from logstash import formatter
+from .handler_tcp import TCPLogstashHandler
+from . import formatter
 
 
 class UDPLogstashHandler(TCPLogstashHandler, DatagramHandler):
