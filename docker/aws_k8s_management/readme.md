@@ -12,4 +12,5 @@ $ docker tag aws-k8s-mm-local:1.0.0 sulfredlee/aws-k8s-management:tagname
 $ docker login
 # push
 $ docker push sulfredlee/aws-k8s-management:tagname
+$ docker push sulfredlee/aws-k8s-management:latest
 ```
