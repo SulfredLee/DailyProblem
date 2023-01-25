@@ -39,9 +39,9 @@ variables:
   DOCKER_BUILDER_VERSION: builder_1.0.0
   DOCKER_RUNNER_VERSION: runner_1.0.0
   DOCKER_DEPLOYER_VERSION: deployer_1.0.0
-  {% if is_need_port_mapping %}
+  {%- if is_need_port_mapping -%}
   DOCKER_FLASK_SERVER_PORT: 5000
-  {% endif %}
+  {%- endif %}
   DOCKER_IMAGE_NAME_BUILDER: ${CI_REGISTRY_IMAGE}:${DOCKER_BUILDER_VERSION}
   CONTAINER_NAME_BUILDER: ${CI_PROJECT_NAME}_builder
   DOCKER_IMAGE_NAME_RUNNER: ${CI_REGISTRY_IMAGE}:${DOCKER_RUNNER_VERSION}
