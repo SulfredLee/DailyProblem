@@ -4,12 +4,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # config
 rootActions=("Create Project" "Update Project")
-createLanguageTypes=("Python" "Cpp")
+createLanguageTypes=("Python" "Cpp" "Kubernetes")
 updateLanguageTypes=("Cpp")
 
 ## create project selection
 pythonProjectType=("Python Restful API Project" "Python General Project" "Python Web Site Project" "Python QC Project")
 cppProjectType=("Cpp General Project" "Cpp QT Project")
+k8sProjectType=("General Infra Project")
 ## udpate project selection
 cppProjectUpdateType=("Add External Project" "Add Static Library" "Add Dynamic Library")
 
@@ -77,6 +78,9 @@ if [[ ${actionSelection} == "Create Project" ]]; then
         projectSelection=${selectionResult}
     elif [[ ${languageSelection} == "Cpp" ]]; then
         getUserSelection "${selectionTitle}" "${cppProjectType[@]}"
+        projectSelection=${selectionResult}
+    elif [[ ${languageSelection} == "Kubernetes" ]]; then
+        getUserSelection "${selectionTitle}" "${k8sProjectType[@]}"
         projectSelection=${selectionResult}
     else
         echo "Wrong languageSelection: ${languageSelection}"

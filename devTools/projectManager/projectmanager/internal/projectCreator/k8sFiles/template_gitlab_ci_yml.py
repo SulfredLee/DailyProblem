@@ -30,22 +30,11 @@ content_st = """
 
 stages:          # List of stages for jobs, and their order of execution
   - build-image
-  - build-test
-  - build-package
-  - tag-release
+  - manage-k8s-cluster
   - deploy
 
 variables:
-  DOCKER_BUILDER_VERSION: builder_1.0.0
-  DOCKER_RUNNER_VERSION: runner_1.0.0
   DOCKER_DEPLOYER_VERSION: deployer_1.0.0
-  {% if is_need_port_mapping %}
-  DOCKER_FLASK_SERVER_PORT: 5000
-  {% endif %}
-  DOCKER_IMAGE_NAME_BUILDER: ${CI_REGISTRY_IMAGE}:${DOCKER_BUILDER_VERSION}
-  CONTAINER_NAME_BUILDER: ${CI_PROJECT_NAME}_builder
-  DOCKER_IMAGE_NAME_RUNNER: ${CI_REGISTRY_IMAGE}:${DOCKER_RUNNER_VERSION}
-  CONTAINER_NAME_RUNNER: ${CI_PROJECT_NAME}_runner
   DOCKER_IMAGE_NAME_DEPLOYER: ${CI_REGISTRY_IMAGE}:${DOCKER_DEPLOYER_VERSION}
   CONTAINER_NAME_DEPLOYER: ${CI_PROJECT_NAME}_deployer
   TEST_APP_NAME: ${CI_PROJECT_NAME}_Test
@@ -57,42 +46,6 @@ variables:
   PACKAGE_REGISTRY_URL_UAT: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${RELEASE_NAME}/${PACKAGE_VERSION_UAT}"
   PACKAGE_NAME_UAT: "install_${PACKAGE_VERSION_UAT}.tar.gz"
   PYTHON_RELEASE_PATH: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi
-
-build-dev-image:
-  stage: build-image
-  image: docker:latest
-  services:
-    - docker:20.10.12-dind
-  script:
-    - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker pull $DOCKER_IMAGE_NAME_BUILDER || true # use the cached image if possible
-    - cd dockerEnv
-    - docker build --file Dockerfile.Dev --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --build-arg DOCKER_UNAME=$(whoami) --build-arg DOCKER_GNAME=$(whoami) --build-arg VSCODE_FLAG="no_vscode" --target dev -t $DOCKER_IMAGE_NAME_BUILDER ..
-    - docker push $DOCKER_IMAGE_NAME_BUILDER
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: manual
-      changes:
-        - dockerEnv/Dockerfile.Dev
-    - when: never
-
-build-run-image:
-  stage: build-image
-  image: docker:latest
-  services:
-    - docker:20.10.12-dind
-  script:
-    - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker pull $DOCKER_IMAGE_NAME_RUNNER || true # use the cached image if possible
-    - cd dockerEnv
-    - docker build --file Dockerfile.Run --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --build-arg DOCKER_UNAME=$(whoami) --build-arg DOCKER_GNAME=$(whoami) --target runner -t $DOCKER_IMAGE_NAME_RUNNER ..
-    - docker push $DOCKER_IMAGE_NAME_RUNNER
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: manual
-      changes:
-        - dockerEnv/Dockerfile.Run
-    - when: never
 
 build-deploy-image:
   stage: build-image
@@ -110,60 +63,6 @@ build-deploy-image:
       when: manual
       changes:
         - dockerEnv/Dockerfile.Deploy
-    - when: never
-
-build-test-app:       # This job runs in the build stage, which runs first.
-  stage: build-test
-  image: $DOCKER_IMAGE_NAME_BUILDER
-  script:
-    - /root/.local/bin/poetry install # duplicate prepare package
-    - /root/.local/bin/poetry run python -m unittest discover tests # test application
-  needs: []
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: manual
-    - when: never
-
-uat-build-package-app:
-  stage: build-package
-  image: $DOCKER_IMAGE_NAME_BUILDER
-  script:
-    - tar -zcvf $PACKAGE_NAME_UAT ./*
-    - |
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file ./$PACKAGE_NAME_UAT ${PACKAGE_REGISTRY_URL_UAT}/$PACKAGE_NAME_UAT
-  needs: []
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: manual
-    - when: never
-
-prod-build-package-app:
-  stage: build-package
-  image: $DOCKER_IMAGE_NAME_BUILDER
-  script:
-    - tar -zcvf $PACKAGE_NAME ./*
-    - |
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file ./$PACKAGE_NAME ${PACKAGE_REGISTRY_URL}/$PACKAGE_NAME
-  needs: []
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: always
-    - when: never
-
-release-app:
-  stage: tag-release
-  image: python:3.8
-  script:
-    - pip install poetry twine
-    - poetry version ${CI_COMMIT_TAG}
-    - poetry build
-    - export TWINE_PASSWORD=${CI_JOB_TOKEN}
-    - export TWINE_USERNAME=gitlab-ci-token
-    - python -m twine upload --verbose --repository-url $PYTHON_RELEASE_PATH dist/*
-  needs: ["prod-build-package-app"]
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: always
     - when: never
 
 .aws-login: &aws-login
@@ -220,37 +119,111 @@ release-app:
     # check cluster
     - kubectl get all --all-namespaces
 
-pages:
-  stage: deploy
-  image: $DOCKER_IMAGE_NAME_BUILDER
+prod-create-k8s-cluster-kops:
+  stage: manage-k8s-cluster
+  # image: $DOCKER_IMAGE_NAME_BUILDER
+  image: sulfredlee/aws-k8s-management
   script:
-    - export PROJECT_VERSION=${CI_COMMIT_TAG:-latest}
-    - doxygen
-    - mv doxygen_doc/html/ public/
-  artifacts:
-    paths:
-      - public
-    expire_in: 1 week
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: always
-    - when: never
+    - *aws-login-kops
 
-uat-deploy:
-  stage: deploy
-  script:
-    - echo "deploy to uat from branch $CI_COMMIT_REF_NAME"
-  needs: ["uat-build-package-app"]
+    # create S3 bucket for kops configuration storage
+    - aws s3api create-bucket --bucket ${KOPS_S3} --region ${CLUSTER_REGION}
+
+    - kops create cluster --zones ${CLUSTER_REGION}a,${CLUSTER_REGION}b --name=${CLUSTER_NAME} --node-size t3.medium --master-size t3.medium --node-count 2
+    - kops update cluster --name=${CLUSTER_NAME} --yes --admin=87600h
+  needs: []
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
     - when: never
 
-prod-deploy:
+prod-validate-k8s-cluster-kops:
+  stage: manage-k8s-cluster
+  # image: $DOCKER_IMAGE_NAME_BUILDER
+  image: sulfredlee/aws-k8s-management
+  extends:
+    - .prepare-kops
+  script:
+    - kops validate cluster --name=${CLUSTER_NAME}
+  needs: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+    - when: never
+
+prod-stop-k8s-cluster-kops:
+  stage: manage-k8s-cluster
+  # image: $DOCKER_IMAGE_NAME_BUILDER
+  image: sulfredlee/aws-k8s-management
+  extends:
+    - .prepare-kops
+  script:
+    - kops delete cluster --name=${CLUSTER_NAME} --yes
+  needs: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+    - when: never
+
+prod-create-k8s-cluster-eks:
+  stage: manage-k8s-cluster
+  # image: $DOCKER_IMAGE_NAME_BUILDER
+  image: sulfredlee/aws-k8s-management
+  script:
+    - *aws-login
+    - eksctl create cluster --name ${CLUSTER_NAME} --nodes-min=2 --node-type t3.medium
+  needs: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+    - when: never
+
+prod-stop-k8s-cluster-eks:
+  stage: manage-k8s-cluster
+  # image: $DOCKER_IMAGE_NAME_BUILDER
+  image: sulfredlee/aws-k8s-management
+  script:
+    - *aws-login
+
+    - eksctl delete cluster --name ${CLUSTER_NAME}
+  needs: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+    - when: never
+
+uat-deploy:
   stage: deploy
+  # image: $DOCKER_IMAGE_NAME_BUILDER
+  image: sulfredlee/aws-k8s-management
+  extends:
+    # - .prepare-eks
+    - .prepare-kops
+  script:
+    - echo "deploy to uat from branch $CI_COMMIT_REF_NAME"
+  needs: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+    - when: never
+
+prod-deploy-all:
+  stage: deploy
+  # image: $DOCKER_IMAGE_NAME_BUILDER
+  image: sulfredlee/aws-k8s-management
+  extends:
+    # - .prepare-eks
+    - .prepare-kops
   script:
     - echo "deploy to prod from tag $CI_COMMIT_TAG"
-  needs: ["prod-build-package-app"]
+    # # install kube-state-metrics
+    # - helm upgrade --wait --timeout=1200s --install kube-state-metrics ./kube-state-metrics --namespace kube-system
+    # # install elastic agent
+    # - kubectl apply -f ./elastic_agent/elastic-agent-managed-kubernetes.yaml
+    # # install logstash
+    # - sed "s/ES_PASSWORD/$ES_PASSWORD/" ./logstash/custom_config/prod/values.customer.yaml > ./logstash/custom_config/prod/values.customer.secret.yaml
+    # - helm upgrade --wait --timeout=1200s --install --values ./logstash/custom_config/prod/values.customer.secret.yaml logstash-elastic ./logstash
+  needs: []
   rules:
     - if: $CI_COMMIT_TAG
       when: manual

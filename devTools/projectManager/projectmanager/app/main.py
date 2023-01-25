@@ -2,6 +2,7 @@ import argparse
 import projectmanager.internal.observability.log_helper as lh
 import projectmanager.internal.projectCreator.pythonCreator as pc
 import projectmanager.internal.projectCreator.cppCreator as cc
+import projectmanager.internal.projectCreator.k8sCreator as kc
 import projectmanager.internal.projectCreator.projectCreatorBase as pcb
 import projectmanager.internal.projectUpdater.cppUpdater as cu
 import projectmanager.internal.projectUpdater.projectUpdaterBase as pub
@@ -29,6 +30,10 @@ def create_project(args: argparse.Namespace, logger: logging.Logger) -> None:
                                            , logger=logger)
     elif args.lang == "Cpp":
         project_creator = cc.cppCreator(project_name=args.projectName
+                                        , project_path=args.projectPath
+                                        , logger=logger)
+    elif args.lang == "Kubernetes":
+        project_creator = kc.k8sCreator(project_name=args.projectName
                                         , project_path=args.projectPath
                                         , logger=logger)
     else:

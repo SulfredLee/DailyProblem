@@ -22,7 +22,7 @@ import projectmanager.internal.projectCreator.pythonFiles.template_Mainpage as t
 import projectmanager.internal.projectCreator.pythonFiles.template_readme_md as trm
 import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile as td
 import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile_Runner as tdr
-import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile_Deployer as tdd
+import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile_Deploy as tdd
 import projectmanager.internal.projectCreator.pythonFiles.template_gitlab_ci_yml as tgcy
 import projectmanager.internal.projectCreator.pythonFiles.template_gitlab_ci_yml_qc as tgcyqc
 import projectmanager.internal.projectCreator.pythonFiles.template_Doxyfile as tdf
@@ -183,6 +183,7 @@ class pythonCreator(projectCreatorBase):
                                 , file_list=[
                                     Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
+                                    , Path.joinpath(project_root_path, "dockerEnv", "BuildImageDeployer.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
                                     , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
                                     , Path.joinpath(project_root_path, "scripts", "install.vscode.sh")
@@ -260,6 +261,7 @@ class pythonCreator(projectCreatorBase):
                                 , file_list=[
                                     Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
+                                    , Path.joinpath(project_root_path, "dockerEnv", "BuildImageDeployer.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
                                     , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
                                     , Path.joinpath(project_root_path, "scripts", "install.vscode.sh")
@@ -322,6 +324,7 @@ class pythonCreator(projectCreatorBase):
                                 , file_list=[
                                     Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
+                                    , Path.joinpath(project_root_path, "dockerEnv", "BuildImageDeployer.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
                                     , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
                                     , Path.joinpath(project_root_path, "scripts", "install.vscode.sh")
@@ -383,6 +386,7 @@ class pythonCreator(projectCreatorBase):
                                 , file_list=[
                                     Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh")
+                                    , Path.joinpath(project_root_path, "dockerEnv", "BuildImageDeployer.sh")
                                     , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
                                     , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
                                     , Path.joinpath(project_root_path, "scripts", "install.vscode.sh")
