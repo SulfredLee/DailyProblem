@@ -22,6 +22,7 @@ import projectmanager.internal.projectCreator.pythonFiles.template_Mainpage as t
 import projectmanager.internal.projectCreator.pythonFiles.template_readme_md as trm
 import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile as td
 import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile_Runner as tdr
+import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile_Deployer as tdd
 import projectmanager.internal.projectCreator.pythonFiles.template_gitlab_ci_yml as tgcy
 import projectmanager.internal.projectCreator.pythonFiles.template_gitlab_ci_yml_qc as tgcyqc
 import projectmanager.internal.projectCreator.pythonFiles.template_Doxyfile as tdf
@@ -36,6 +37,7 @@ import projectmanager.internal.projectCreator.pythonFiles.template_web_site_sign
 import projectmanager.internal.projectCreator.pythonFiles.scripts.template_install_vscode_sh as tiv
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.template_BuildImageBuilder_sh as tbbs
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.template_BuildImageRunner_sh as tbrs
+import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.template_BuildImageDeployer_sh as tbds
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.dev.template_env as dte
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.dev.template_start_dev_container_sh as dtsdc
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.uat.template_env as ute
@@ -147,8 +149,10 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Dev"), td.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Run"), tdr.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Deploy"), tdd.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh"), tbbs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageDeployer.sh"), tbds.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]
@@ -235,8 +239,10 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Dev"), td.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Run"), tdr.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Deploy"), tdd.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh"), tbbs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageDeployer.sh"), tbds.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]
@@ -295,8 +301,10 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Dev"), td.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Run"), tdr.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Deploy"), tdd.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh"), tbbs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageDeployer.sh"), tbds.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]
@@ -354,8 +362,10 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_root_path, "Doxyfile"), tdf.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Dev"), td.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Run"), tdr.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "Dockerfile.Deploy"), tdd.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageRunner.sh"), tbrs.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageDev.sh"), tbbs.content_st]
+                                        , [Path.joinpath(project_root_path, "dockerEnv", "BuildImageDeployer.sh"), tbds.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", ".env"), ute.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "uat", "docker-compose.yml"), utdcy.content_st]
                                         , [Path.joinpath(project_root_path, "dockerEnv", "dev", ".env"), dte.content_st]

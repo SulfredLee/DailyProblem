@@ -21,6 +21,12 @@ content_st = """
 # https://docs.gitlab.com/ee/user/packages/generic_packages/index.html --- wget release package
 # https://docs.gitlab.com/ee/ci/variables/predefined_variables.html --- predefined variables
 
+# ================================================ qc notice !!!!
+# You need to prepare variables in the gitlab cicd before you can use k8s related cicd
+# Variable list:
+# - QC_ID, QC_TOKEN
+# ================================================ qc notice !!!!
+
 stages:          # List of stages for jobs, and their order of execution
   - build-image
   - build-test
