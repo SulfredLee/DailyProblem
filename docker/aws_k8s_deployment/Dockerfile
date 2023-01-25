@@ -1,0 +1,28 @@
+FROM amazonlinux AS builder
+
+RUN yum install -y tar gzip unzip openssl git
+
+# install kops
+RUN curl -Lo kops https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+RUN chmod +x kops
+RUN mv kops /usr/local/bin/kops
+
+# install AWS CLI
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip && ./aws/install
+
+# install eksctl
+RUN curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+RUN mv /tmp/eksctl /usr/local/bin
+
+# install kubectl
+# This is k8s default version from AWS
+ENV RELEASE="1.24.0"
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v$RELEASE/bin/linux/amd64/kubectl
+RUN chmod +x ./kubectl
+RUN mv ./kubectl /usr/local/bin/kubectl
+
+# install helm
+RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+RUN chmod 700 get_helm.sh
+RUN ./get_helm.sh
