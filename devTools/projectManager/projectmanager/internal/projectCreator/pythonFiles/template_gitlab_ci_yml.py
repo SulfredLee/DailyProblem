@@ -238,9 +238,16 @@ pages:
 
 uat-deploy:
   stage: deploy
+  image: sulfredlee/aws-k8s-management
+  extends:
+    # - .prepare-eks
+    - .prepare-kops
   script:
     - echo "deploy to uat from branch $CI_COMMIT_REF_NAME"
-  needs: ["uat-build-package-app"]
+    - kubectl delete secret {{ project_name_hyphen }}-regcred
+    - kubectl create secret docker-registry {{ project_name_hyphen }}-regcred --docker-server=registry.gitlab.com --docker-username=$CI_REGISTRY_USER --docker-password=$CI_JOB_TOKEN
+    - helm upgrade --wait --timeout=1200s --install --values ./chart/values.dev.yaml {{ project_name_hyphen }} ./chart
+  needs: []
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
@@ -248,9 +255,14 @@ uat-deploy:
 
 prod-deploy:
   stage: deploy
+  image: sulfredlee/aws-k8s-management
+  extends:
+    # - .prepare-eks
+    - .prepare-kops
   script:
     - echo "deploy to prod from tag $CI_COMMIT_TAG"
-  needs: ["prod-build-package-app"]
+    - helm upgrade --wait --timeout=1200s --install --values ./chart/values.prod.yaml {{ project_name_hyphen }} ./chart
+  needs: []
   rules:
     - if: $CI_COMMIT_TAG
       when: manual

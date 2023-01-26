@@ -44,6 +44,11 @@ import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.uat.template
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.uat.template_docker_compose_yml as utdcy
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.prod.template_env as pte
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.prod.template_docker_compose_yml as ptdcy
+import projectmanager.internal.projectCreator.pythonFiles.chart.template_chart_yaml as ctcy
+import projectmanager.internal.projectCreator.pythonFiles.chart.template_helmignore as cth
+import projectmanager.internal.projectCreator.pythonFiles.chart.template_values_dev_yaml as ctvdy
+import projectmanager.internal.projectCreator.pythonFiles.chart.template_values_prod_yaml as ctvpy
+import projectmanager.internal.projectCreator.pythonFiles.chart.templates.template_workload_yaml as cttwy
 import projectmanager.internal.commonConst as cc
 import subprocess
 
@@ -123,6 +128,9 @@ class pythonCreator(projectCreatorBase):
                                          , [Path.joinpath(project_root_path, "dockerEnv", "dev"), False]
                                          , [Path.joinpath(project_root_path, "dockerEnv", "prod"), False]
                                          , [Path.joinpath(project_root_path, "scripts"), False]
+                                         # k8s chart folders
+                                         , [Path.joinpath(project_root_path, "chart"), False]
+                                         , [Path.joinpath(project_root_path, "chart", "templates"), False]
                                      ])
 
         # create project files
@@ -161,6 +169,12 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_root_path, "dockerEnv", "prod", "docker-compose.yml"), ptdcy.content_st]
                                         , [Path.joinpath(project_root_path, "tests", f"test_{self._project_name}.py"), tt.content_st]
                                         , [Path.joinpath(project_root_path, "scripts", "install.vscode.sh"), tiv.content_st]
+                                        # k8s chart files
+                                        , [Path.joinpath(project_root_path, "chart", "Chart.yaml"), ctcy.content_st]
+                                        , [Path.joinpath(project_root_path, "chart", ".helmsignore"), cth.content_st]
+                                        , [Path.joinpath(project_root_path, "chart", "values.dev.yaml"), ctvdy.content_st]
+                                        , [Path.joinpath(project_root_path, "chart", "values.prod.yaml"), ctvpy.content_st]
+                                        , [Path.joinpath(project_root_path, "chart", "templates", "workload.yaml"), cttwy.content_st]
                                     ])
 
         # create project files without jinja2
@@ -217,6 +231,9 @@ class pythonCreator(projectCreatorBase):
                                          , [Path.joinpath(project_root_path, "dockerEnv", "dev"), False]
                                          , [Path.joinpath(project_root_path, "dockerEnv", "prod"), False]
                                          , [Path.joinpath(project_root_path, "scripts"), False]
+                                         # k8s chart folders
+                                         , [Path.joinpath(project_root_path, "chart"), False]
+                                         , [Path.joinpath(project_root_path, "chart", "templates"), False]
                                      ])
 
         # create project files
@@ -252,6 +269,12 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_root_path, "dockerEnv", "prod", "docker-compose.yml"), ptdcy.content_st]
                                         , [Path.joinpath(project_root_path, "tests", f"test_{self._project_name}.py"), tt.content_st]
                                         , [Path.joinpath(project_root_path, "scripts", "install.vscode.sh"), tiv.content_st]
+                                        # k8s chart files
+                                        , [Path.joinpath(project_root_path, "chart", "Chart.yaml"), ctcy.content_st]
+                                        , [Path.joinpath(project_root_path, "chart", ".helmsignore"), cth.content_st]
+                                        , [Path.joinpath(project_root_path, "chart", "values.dev.yaml"), ctvdy.content_st]
+                                        , [Path.joinpath(project_root_path, "chart", "values.prod.yaml"), ctvpy.content_st]
+                                        , [Path.joinpath(project_root_path, "chart", "templates", "workload.yaml"), cttwy.content_st]
                                     ])
 
         # enable execution
@@ -348,6 +371,9 @@ class pythonCreator(projectCreatorBase):
                                          , [Path.joinpath(project_root_path, "dockerEnv", "dev"), False]
                                          , [Path.joinpath(project_root_path, "dockerEnv", "prod"), False]
                                          , [Path.joinpath(project_root_path, "scripts"), False]
+                                         # k8s chart folders
+                                         , [Path.joinpath(project_root_path, "chart"), False]
+                                         , [Path.joinpath(project_root_path, "chart", "templates"), False]
                                          ])
 
         # create project files
@@ -377,6 +403,12 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_root_path, "dockerEnv", "prod", "docker-compose.yml"), ptdcy.content_st]
                                         , [Path.joinpath(project_root_path, "tests", f"test_{self._project_name}.py"), tt.content_st]
                                         , [Path.joinpath(project_root_path, "scripts", "install.vscode.sh"), tiv.content_st]
+                                        # k8s chart files
+                                        , [Path.joinpath(project_root_path, "chart", "Chart.yaml"), ctcy.content_st]
+                                        , [Path.joinpath(project_root_path, "chart", ".helmsignore"), cth.content_st]
+                                        , [Path.joinpath(project_root_path, "chart", "values.dev.yaml"), ctvdy.content_st]
+                                        , [Path.joinpath(project_root_path, "chart", "values.prod.yaml"), ctvpy.content_st]
+                                        , [Path.joinpath(project_root_path, "chart", "templates", "workload.yaml"), cttwy.content_st]
                                     ])
 
         # enable execution
@@ -435,9 +467,11 @@ class pythonCreator(projectCreatorBase):
         for template_obj in file_list:
             with open(template_obj[0], "w") as w_FH:
                 w_FH.write(j_env.from_string(template_obj[1]).render(project_name=self._project_name
+                                                                     , project_name_hyphen=self._project_name.replace("_", "-")
                                                                      , description=f"{self._project_name} Inputs"
                                                                      , cur_uid=pwd.getpwuid(os.getuid()).pw_uid
                                                                      , cur_gid=pwd.getpwuid(os.getuid()).pw_gid
+                                                                     , cur_name=pwd.getpwuid(os.getuid()).pw_name
                                                                      , is_need_port_mapping=is_need_port_mapping
                                                                      ))
 

@@ -23,7 +23,7 @@ else
     {% if is_need_port_mapping %}
     docker run -it -v "${PWD}/../../:/python/project:rw"\
                    -v "${PWD}/../../virtualenvs/:/home/$(whoami)/.cache/pypoetry/virtualenvs_mount/"\
-                   -p "${DOCKER_FLASK_SERVER_PORT}:5000"\
+                   -p "${DOCKER_FLASK_SERVER_PORT}:${DOCKER_FLASK_SERVER_PORT}"\
                    --env-file ./.env -u $(id -u):$(id -g) {{ project_name }}:${DOCKER_VERSION}_$(whoami) bash -c "cp -rfL /home/$(whoami)/.cache/pypoetry/virtualenvs/* /home/$(whoami)/.cache/pypoetry/virtualenvs_mount/; bash"
     {% else %}
     docker run -it -v "${PWD}/../../:/python/project:rw"\
