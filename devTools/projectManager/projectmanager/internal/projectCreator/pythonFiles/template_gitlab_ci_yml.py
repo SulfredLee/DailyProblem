@@ -74,6 +74,7 @@ build-dev-image:
       when: manual
       changes:
         - dockerEnv/Dockerfile.Dev
+        - {{ project_name }}/**/*
     - when: never
 
 build-run-image:
@@ -92,6 +93,7 @@ build-run-image:
       when: manual
       changes:
         - dockerEnv/Dockerfile.Run
+        - {{ project_name }}/**/*
     - when: never
 
 build-deploy-image:
@@ -110,6 +112,7 @@ build-deploy-image:
       when: manual
       changes:
         - dockerEnv/Dockerfile.Deploy
+        - {{ project_name }}/**/*
     - when: never
 
 build-test-app:       # This job runs in the build stage, which runs first.
