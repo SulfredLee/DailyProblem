@@ -1,13 +1,12 @@
 [tool.poetry]
 name = "sfdevtools"
-version = "1.5.0"
+version = "1.7.0"
 description = ""
 authors = ["SulfredLee <sflee1112@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-logging-json = "^0.2.1"
 
 
 [build-system]

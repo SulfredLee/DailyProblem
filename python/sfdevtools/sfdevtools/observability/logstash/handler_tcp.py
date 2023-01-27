@@ -1,5 +1,5 @@
 from logging.handlers import DatagramHandler, SocketHandler
-from . import formatter
+from sfdevtools.observability.logstash import formatter
 
 
 # Derive from object to force a new-style class and thus allow super() to work

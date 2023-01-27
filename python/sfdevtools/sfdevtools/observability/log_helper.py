@@ -1,5 +1,5 @@
 import logging
-import logging_json
+from sfdevtools.observability.logging_json import JSONFormatter
 from sfdevtools.observability.logstash.handler_tcp import TCPLogstashHandler
 from sfdevtools.observability.logstash.handler_udp import UDPLogstashHandler, LogstashHandler
 from logging.handlers import TimedRotatingFileHandler
@@ -19,7 +19,7 @@ def init_logger(logger_name: str = "default_logger"
 
     formatter = logging.Formatter('%(asctime)s [%(levelname)s] [%(name)s] [%(filename)s:%(funcName)s:%(lineno)d] [%(threadName)s:%(process)d] %(message)s')
     if is_json_output:
-        formatter = logging_json.JSONFormatter(fields={
+        formatter = JSONFormatter(fields={
             "log_time": "asctime"
             , "level_name": "levelname"
             , "logger_name": "name"

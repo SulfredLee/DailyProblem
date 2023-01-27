@@ -8,7 +8,7 @@ from logging import Filter
 from logging.handlers import SocketHandler
 
 import pika
-from . import formatter
+from sfdevtools.observability.logstash import formatter
 
 
 class AMQPLogstashHandler(SocketHandler, object):

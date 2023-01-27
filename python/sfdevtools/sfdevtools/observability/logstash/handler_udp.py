@@ -1,7 +1,6 @@
 from logging.handlers import DatagramHandler, SocketHandler
-from .handler_tcp import TCPLogstashHandler
-from . import formatter
-
+from sfdevtools.observability.logstash.handler_tcp import TCPLogstashHandler
+from sfdevtools.observability.logstash import formatter
 
 class UDPLogstashHandler(TCPLogstashHandler, DatagramHandler):
     """Python logging handler for Logstash. Sends events over UDP.
