@@ -20,10 +20,27 @@ spec:
         # https://stackoverflow.com/questions/49669077/helm-chart-deployment-and-private-docker-repository
         # https://medium.com/devops-with-valentine/gitlab-ci-how-to-pull-a-private-docker-image-from-aws-ecr-in-your-pipeline-515285569231
         image: {% raw %}{{ .Values.ImageNameTag }}{% endraw %}
+{% raw %}{{- if .Values.service.customProbe }}{% endraw %}
+{% raw %}{{ toYaml .Values.service.customProbe | indent 8 }}{% endraw %}
+{% raw %}{{- end }}{% endraw %}
         env:
 {% raw %}{{ toYaml .Values.service.env | indent 10 }}{% endraw %}
       imagePullSecrets:
       - name: {{ project_name_hyphen }}-regcred
+# ---
+# apiVersion: autoscaling/v1
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: {{ project_name_hyphen }}
+#   namespace: default
+# spec:
+#   maxReplicas: 2
+#   minReplicas: 1
+#   scaleTargetRef:
+#     apiVersion: extensions/v1beta1
+#     kind: Deployment
+#     name: {{ project_name_hyphen }}
+#   targetCPUUtilizationPercentage: 400
 ---
 apiVersion: v1
 kind: Service

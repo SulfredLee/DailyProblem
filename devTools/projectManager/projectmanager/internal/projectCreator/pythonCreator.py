@@ -6,6 +6,7 @@ import projectmanager.internal.projectCreator.pythonFiles.template_flask_env as 
 import projectmanager.internal.projectCreator.pythonFiles.template_db as tdb
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_db as twsdb
 import projectmanager.internal.projectCreator.pythonFiles.template_item as tit
+import projectmanager.internal.projectCreator.pythonFiles.template_hc as thc
 import projectmanager.internal.projectCreator.pythonFiles.template_store as tst
 import projectmanager.internal.projectCreator.pythonFiles.template_schemas as tsch
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_schemas as twssch
@@ -140,12 +141,13 @@ class pythonCreator(projectCreatorBase):
                                     , file_list=[
                                         [Path.joinpath(project_action_path, "app", "app.py"), twsa.content_st]
                                         , [Path.joinpath(project_action_path, "app", "main_manager.py"), twsmm.content_st]
-                                        , [Path.joinpath(project_action_path, "app", ".flaskenv"), tfe.content_st]
+                                        # , [Path.joinpath(project_action_path, "app", ".flaskenv"), tfe.content_st]
                                         , [Path.joinpath(project_action_path, "app", "Mainpage.dox"), tmp.content_st]
                                         , [Path.joinpath(project_action_path, "app", "schemas", "schemas.py"), twssch.content_st]
                                         , [Path.joinpath(project_action_path, "app", "routes", "authen.py"), twsau.content_st]
                                         , [Path.joinpath(project_action_path, "app", "routes", "home.py"), twsh.content_st]
                                         , [Path.joinpath(project_action_path, "app", "routes", "bootstrap_example.py"), twsbt.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "routes", "healthcheck.py"), thc.content_st]
                                         , [Path.joinpath(project_action_path, "internal", "db", "db.py"), twsdb.content_st]
                                         , [Path.joinpath(project_action_path, "app", "static", "logo.svg"), twslo.content_st]
                                         , [Path.joinpath(project_action_path, "app", "static", "css", "styles.css"), twsst.content_st]
@@ -243,11 +245,12 @@ class pythonCreator(projectCreatorBase):
                                     , file_list=[
                                         [Path.joinpath(project_action_path, "app", "app.py"), ta.content_st]
                                         , [Path.joinpath(project_action_path, "app", "main_manager.py"), tmm.content_st]
-                                        , [Path.joinpath(project_action_path, "app", ".flaskenv"), tfe.content_st]
+                                        # , [Path.joinpath(project_action_path, "app", ".flaskenv"), tfe.content_st]
                                         , [Path.joinpath(project_action_path, "app", "Mainpage.dox"), tmp.content_st]
                                         , [Path.joinpath(project_action_path, "app", "schemas", "schemas.py"), tsch.content_st]
                                         , [Path.joinpath(project_action_path, "app", "routes", "store.py"), tst.content_st]
                                         , [Path.joinpath(project_action_path, "app", "routes", "item.py"), tit.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "routes", "healthcheck.py"), thc.content_st]
                                         , [Path.joinpath(project_action_path, "internal", "db", "db.py"), tdb.content_st]
                                         , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
                                         , [Path.joinpath(project_root_path, "README.md"), trm.content_st]

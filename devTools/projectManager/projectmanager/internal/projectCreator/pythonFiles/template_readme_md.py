@@ -38,10 +38,10 @@ $ poetry run lean cloud push
 ### kubernetes helm related
 ```bash
 # check helm template
-$ helm template {{ project_name_hyphen }} ./chart --values=./chart/template_values_dev_yaml.py
+$ helm template {{ project_name_hyphen }} ./chart --values=./chart/values.dev.yaml
 
 # install helm chart
-$ helm upgrade --wait --timeout=1200s --install --values ./chart/template_values_dev_yaml.py {{ project_name_hyphen }} ./chart
+$ helm upgrade --wait --timeout=1200s --install --values ./chart/values.dev.yaml {{ project_name_hyphen }} ./chart
 
 # uninstall helm chart
 $ helm uninstall {{ project_name_hyphen }}

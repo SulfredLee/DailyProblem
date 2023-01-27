@@ -236,7 +236,7 @@ pages:
       when: always
     - when: never
 
-uat-deploy:
+uat-install:
   stage: deploy
   image: sulfredlee/aws-k8s-management
   extends:
@@ -244,7 +244,7 @@ uat-deploy:
     - .prepare-kops
   script:
     - echo "deploy to uat from branch $CI_COMMIT_REF_NAME"
-    - kubectl delete secret {{ project_name_hyphen }}-regcred
+    - kubectl delete secret {{ project_name_hyphen }}-regcred || true
     - kubectl create secret docker-registry {{ project_name_hyphen }}-regcred --docker-server=registry.gitlab.com --docker-username=$CI_REGISTRY_USER --docker-password=$CI_JOB_TOKEN
     - helm upgrade --wait --timeout=1200s --install --values ./chart/values.dev.yaml {{ project_name_hyphen }} ./chart
   needs: []
@@ -253,7 +253,7 @@ uat-deploy:
       when: manual
     - when: never
 
-prod-deploy:
+prod-install:
   stage: deploy
   image: sulfredlee/aws-k8s-management
   extends:
@@ -262,6 +262,36 @@ prod-deploy:
   script:
     - echo "deploy to prod from tag $CI_COMMIT_TAG"
     - helm upgrade --wait --timeout=1200s --install --values ./chart/values.prod.yaml {{ project_name_hyphen }} ./chart
+  needs: []
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: manual
+    - when: never
+
+uat-remove:
+  stage: deploy
+  image: sulfredlee/aws-k8s-management
+  extends:
+    # - .prepare-eks
+    - .prepare-kops
+  script:
+    - echo "deploy to uat from branch $CI_COMMIT_REF_NAME"
+    - helm uninstall {{ project_name_hyphen }}
+  needs: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+    - when: never
+
+prod-remove:
+  stage: deploy
+  image: sulfredlee/aws-k8s-management
+  extends:
+    # - .prepare-eks
+    - .prepare-kops
+  script:
+    - echo "deploy to prod from tag $CI_COMMIT_TAG"
+    - helm uninstall {{ project_name_hyphen }}
   needs: []
   rules:
     - if: $CI_COMMIT_TAG

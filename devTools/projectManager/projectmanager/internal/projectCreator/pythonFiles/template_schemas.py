@@ -14,4 +14,8 @@ class ItemUpdateSchema(Schema):
 class StoreSchema(Schema):
     id = fields.Str(dump_only=True)
     name = fields.Str(required=True)
+
+class HCSchema(Schema):
+    status = fields.Str(required=True)
+    timestamp = fields.Str(required=True)
 """

@@ -7,6 +7,7 @@ import sfdevtools.observability.log_helper as lh
 
 from {{ project_name }}.app.routes.item import blp as ItemBlueprint
 from {{ project_name }}.app.routes.store import blp as StoreBlueprint
+from {{ project_name }}.app.routes.healthcheck import blp as HCBlueprint
 from {{ project_name }}.app.main_manager import MainManager as mm
 
 class Config:
@@ -35,6 +36,7 @@ def create_app():
     # Register blueprint
     api.register_blueprint(ItemBlueprint)
     api.register_blueprint(StoreBlueprint)
+    api.register_blueprint(HCBlueprint)
 
     return app
 """

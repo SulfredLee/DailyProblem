@@ -1,5 +1,5 @@
 content_st = """
-ImageNameTag: {{ project_name }}:runner_1.0.0_{{ cur_name }}
+ImageNameTag: registry.gitlab.com/<gitlab group path>/{{ project_name }}:runner_1.0.0
 
 service:
   # {}
@@ -19,4 +19,15 @@ service:
       value: "0.0.0.0"
     - name: FLASK_RUN_PORT
       value: "5000"
+  customProbe:
+    readinessProbe:
+      initialDelaySeconds: 15
+      httpGet:
+        path: /healthcheck
+        port: 5000
+    livenessProbe:
+      initialDelaySeconds: 15
+      httpGet:
+        path: /healthcheck
+        port: 5000
 """
