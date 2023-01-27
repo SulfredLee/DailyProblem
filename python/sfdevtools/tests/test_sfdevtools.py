@@ -51,5 +51,16 @@ class Test_peacock(unittest.TestCase):
         logger.error("Test Message from test")
         logger.warning("Test Message from test")
 
+    def test_demo_logger_with_json_output(self):
+        """! Demo show json output
+        """
+        logger = lh.init_logger(logger_name="connection_tester_logger"
+                                , is_json_output=True
+                                , is_print_to_console=True
+                                , is_print_to_logstash=False)
+        logger.info("Test Message from test")
+        logger.error("Test Message from test")
+        logger.warning("Test Message from test")
+
 if __name__ == "__main__":
     unittest.main()
