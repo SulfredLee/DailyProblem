@@ -5,9 +5,9 @@ from flask_smorest import Blueprint, abort
 from typing import List, Dict, Tuple
 from datetime import datetime
 
-from peacock.app.schemas.schemas import HCSchema
-from peacock.internal.db.db import items
-from peacock.app.main_manager import MainManager as mm
+from {{ project_name }}.app.restful_api.schemas.schemas import HCSchema
+from {{ project_name }}.internal.db.db import items
+from {{ project_name }}.app.restful_api.main_manager import MainManager as mm
 
 blp = Blueprint("healthcheck", __name__, description="General health checking")
 

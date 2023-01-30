@@ -29,7 +29,7 @@ COPY . /python/project
 RUN poetry install
 
 # add your commands
-WORKDIR /python/project/{{ project_name }}/app
 # CMD ["poetry", "run", "flask", "run", "--host", "0.0.0.0"]
-CMD ["poetry", "run", "flask", "run"]
+# CMD ["poetry", "run", "flask", "run"]
+CMD ["bash", "./scripts/start_py_servers.sh"]
 """

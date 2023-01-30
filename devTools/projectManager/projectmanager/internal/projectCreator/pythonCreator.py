@@ -36,6 +36,7 @@ import projectmanager.internal.projectCreator.pythonFiles.template_web_site_logi
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_protected as twsp
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_signup as twsu
 import projectmanager.internal.projectCreator.pythonFiles.scripts.template_install_vscode_sh as tiv
+import projectmanager.internal.projectCreator.pythonFiles.scripts.template_start_py_servers_sh as tspss
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.template_BuildImageBuilder_sh as tbbs
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.template_BuildImageRunner_sh as tbrs
 import projectmanager.internal.projectCreator.pythonFiles.dockerEnv.template_BuildImageDeployer_sh as tbds
@@ -224,8 +225,9 @@ class pythonCreator(projectCreatorBase):
                                      , project_type=cc.py_restful_api_project
                                      , path_list=[
                                          [Path.joinpath(project_action_path, "app"), True]
-                                         , [Path.joinpath(project_action_path, "app", "schemas"), True]
-                                         , [Path.joinpath(project_action_path, "app", "routes"), True]
+                                         , [Path.joinpath(project_action_path, "app", "restful_api"), True]
+                                         , [Path.joinpath(project_action_path, "app", "restful_api", "schemas"), True]
+                                         , [Path.joinpath(project_action_path, "app", "restful_api", "routes"), True]
                                          , [Path.joinpath(project_action_path, "internal"), True]
                                          , [Path.joinpath(project_action_path, "internal", "db"), True]
                                          , [Path.joinpath(project_root_path, "dockerEnv"), False]
@@ -243,14 +245,14 @@ class pythonCreator(projectCreatorBase):
                                     , project_action_path=project_action_path
                                     , project_type=cc.py_restful_api_project
                                     , file_list=[
-                                        [Path.joinpath(project_action_path, "app", "app.py"), ta.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "main_manager.py"), tmm.content_st]
-                                        # , [Path.joinpath(project_action_path, "app", ".flaskenv"), tfe.content_st]
+                                        [Path.joinpath(project_action_path, "app", "restful_api", "app.py"), ta.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "restful_api", "main_manager.py"), tmm.content_st]
+                                        # , [Path.joinpath(project_action_path, "app", "restful_api", ".flaskenv"), tfe.content_st]
                                         , [Path.joinpath(project_action_path, "app", "Mainpage.dox"), tmp.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "schemas", "schemas.py"), tsch.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "routes", "store.py"), tst.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "routes", "item.py"), tit.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "routes", "healthcheck.py"), thc.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "restful_api", "schemas", "schemas.py"), tsch.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "restful_api", "routes", "store.py"), tst.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "restful_api", "routes", "item.py"), tit.content_st]
+                                        , [Path.joinpath(project_action_path, "app", "restful_api", "routes", "healthcheck.py"), thc.content_st]
                                         , [Path.joinpath(project_action_path, "internal", "db", "db.py"), tdb.content_st]
                                         , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
                                         , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
@@ -272,6 +274,7 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_root_path, "dockerEnv", "prod", "docker-compose.yml"), ptdcy.content_st]
                                         , [Path.joinpath(project_root_path, "tests", f"test_{self._project_name}.py"), tt.content_st]
                                         , [Path.joinpath(project_root_path, "scripts", "install.vscode.sh"), tiv.content_st]
+                                        , [Path.joinpath(project_root_path, "scripts", "start.py.servers.sh"), tspss.content_st]
                                         # k8s chart files
                                         , [Path.joinpath(project_root_path, "chart", "Chart.yaml"), ctcy.content_st]
                                         , [Path.joinpath(project_root_path, "chart", ".helmsignore"), cth.content_st]
@@ -291,6 +294,7 @@ class pythonCreator(projectCreatorBase):
                                     , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
                                     , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
                                     , Path.joinpath(project_root_path, "scripts", "install.vscode.sh")
+                                    , Path.joinpath(project_root_path, "scripts", "start.py.servers.sh")
                                 ])
 
         # add observability module

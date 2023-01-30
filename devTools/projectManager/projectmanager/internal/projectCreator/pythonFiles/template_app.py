@@ -5,10 +5,10 @@ from flask import Flask
 from flask_smorest import Api
 import sfdevtools.observability.log_helper as lh
 
-from {{ project_name }}.app.routes.item import blp as ItemBlueprint
-from {{ project_name }}.app.routes.store import blp as StoreBlueprint
-from {{ project_name }}.app.routes.healthcheck import blp as HCBlueprint
-from {{ project_name }}.app.main_manager import MainManager as mm
+from {{ project_name }}.app.restful_api.routes.item import blp as ItemBlueprint
+from {{ project_name }}.app.restful_api.routes.store import blp as StoreBlueprint
+from {{ project_name }}.app.restful_api.routes.healthcheck import blp as HCBlueprint
+from {{ project_name }}.app.restful_api.main_manager import MainManager as mm
 
 class Config:
     API_TITLE = "{{ project_name }} REST API"
