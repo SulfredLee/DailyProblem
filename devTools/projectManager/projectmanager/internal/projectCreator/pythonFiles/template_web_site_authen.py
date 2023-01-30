@@ -15,7 +15,7 @@ from flask import (
 )
 from passlib.hash import pbkdf2_sha256
 
-from {{ project_name }}.app.main_manager import MainManager as mm
+from {{ project_name }}.app.{{ app_subfolder }}.main_manager import MainManager as mm
 from {{ project_name }}.internal.db.db import users
 
 route_name = "Authen"

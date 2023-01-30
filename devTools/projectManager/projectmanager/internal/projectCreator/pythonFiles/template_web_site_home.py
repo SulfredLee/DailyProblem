@@ -5,8 +5,8 @@ from flask_smorest import Blueprint, abort
 from typing import List, Dict, Tuple
 import datetime
 
-from {{ project_name }}.app.main_manager import MainManager as mm
-from {{ project_name }}.app.schemas.schemas import BlogpostSchema
+from {{ project_name }}.app.{{ app_subfolder }}.main_manager import MainManager as mm
+from {{ project_name }}.app.{{ app_subfolder }}.schemas.schemas import BlogpostSchema
 
 blp = Blueprint("Home", __name__, description="Home page of {{ project_name }}")
 

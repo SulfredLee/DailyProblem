@@ -118,13 +118,14 @@ class pythonCreator(projectCreatorBase):
                                      , project_type=cc.py_web_site_project
                                      , path_list=[
                                          [Path.joinpath(project_action_path, "app"), True]
-                                         , [Path.joinpath(project_action_path, "app", "schemas"), True]
-                                         , [Path.joinpath(project_action_path, "app", "routes"), True]
+                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web), True]
+                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "schemas"), True]
+                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "routes"), True]
                                          , [Path.joinpath(project_action_path, "internal"), True]
                                          , [Path.joinpath(project_action_path, "internal", "db"), True]
-                                         , [Path.joinpath(project_action_path, "app", "static"), False]
-                                         , [Path.joinpath(project_action_path, "app", "static", "css"), False]
-                                         , [Path.joinpath(project_action_path, "app", "templates"), False]
+                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "static"), False]
+                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "static", "css"), False]
+                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "templates"), False]
                                          , [Path.joinpath(project_root_path, "dockerEnv"), False]
                                          , [Path.joinpath(project_root_path, "dockerEnv", "uat"), False]
                                          , [Path.joinpath(project_root_path, "dockerEnv", "dev"), False]
@@ -139,19 +140,20 @@ class pythonCreator(projectCreatorBase):
         self.__create_project_files(project_root_path=project_root_path
                                     , project_action_path=project_action_path
                                     , project_type=cc.py_web_site_project
+                                    , app_subfolder=cc.py_app_subfolder_web
                                     , file_list=[
-                                        [Path.joinpath(project_action_path, "app", "app.py"), twsa.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "main_manager.py"), twsmm.content_st]
-                                        # , [Path.joinpath(project_action_path, "app", ".flaskenv"), tfe.content_st]
+                                        [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "app.py"), twsa.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "main_manager.py"), twsmm.content_st]
+                                        # , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, ".flaskenv"), tfe.content_st]
                                         , [Path.joinpath(project_action_path, "app", "Mainpage.dox"), tmp.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "schemas", "schemas.py"), twssch.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "routes", "authen.py"), twsau.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "routes", "home.py"), twsh.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "routes", "bootstrap_example.py"), twsbt.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "routes", "healthcheck.py"), thc.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "schemas", "schemas.py"), twssch.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "routes", "authen.py"), twsau.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "routes", "home.py"), twsh.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "routes", "bootstrap_example.py"), twsbt.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "routes", "healthcheck.py"), thc.content_st]
                                         , [Path.joinpath(project_action_path, "internal", "db", "db.py"), twsdb.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "static", "logo.svg"), twslo.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "static", "css", "styles.css"), twsst.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "static", "logo.svg"), twslo.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "static", "css", "styles.css"), twsst.content_st]
                                         , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
                                         , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
                                         # , [Path.joinpath(project_root_path, "RestoreUserGroup.sh"), trug.content_st]
@@ -172,6 +174,7 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_root_path, "dockerEnv", "prod", "docker-compose.yml"), ptdcy.content_st]
                                         , [Path.joinpath(project_root_path, "tests", f"test_{self._project_name}.py"), tt.content_st]
                                         , [Path.joinpath(project_root_path, "scripts", "install.vscode.sh"), tiv.content_st]
+                                        , [Path.joinpath(project_root_path, "scripts", "start.py.servers.sh"), tspss.content_st]
                                         # k8s chart files
                                         , [Path.joinpath(project_root_path, "chart", "Chart.yaml"), ctcy.content_st]
                                         , [Path.joinpath(project_root_path, "chart", ".helmsignore"), cth.content_st]
@@ -185,12 +188,12 @@ class pythonCreator(projectCreatorBase):
                                   , project_action_path=project_action_path
                                   , project_type=cc.py_web_site_project
                                   , file_list=[
-                                      [Path.joinpath(project_action_path, "app", "templates", "base.html"), twsb.content_st]
-                                      , [Path.joinpath(project_action_path, "app", "templates", "home.html"), twshm.content_st]
-                                      , [Path.joinpath(project_action_path, "app", "templates", "login.html"), twslg.content_st]
-                                      , [Path.joinpath(project_action_path, "app", "templates", "protected.html"), twsp.content_st]
-                                      , [Path.joinpath(project_action_path, "app", "templates", "signup.html"), twsu.content_st]
-                                      , [Path.joinpath(project_action_path, "app", "templates", "bootstrap_example.html"), twsbth.content_st]
+                                      [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "templates", "base.html"), twsb.content_st]
+                                      , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "templates", "home.html"), twshm.content_st]
+                                      , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "templates", "login.html"), twslg.content_st]
+                                      , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "templates", "protected.html"), twsp.content_st]
+                                      , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "templates", "signup.html"), twsu.content_st]
+                                      , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "templates", "bootstrap_example.html"), twsbth.content_st]
                                   ])
 
         # enable execution
@@ -204,6 +207,7 @@ class pythonCreator(projectCreatorBase):
                                     , Path.joinpath(project_root_path, "dockerEnv", "dev", "start_dev_container.sh")
                                     , Path.joinpath(project_root_path, "ExportPythonEnv.sh")
                                     , Path.joinpath(project_root_path, "scripts", "install.vscode.sh")
+                                    , Path.joinpath(project_root_path, "scripts", "start.py.servers.sh")
                                 ])
 
         # add observability module
@@ -225,9 +229,9 @@ class pythonCreator(projectCreatorBase):
                                      , project_type=cc.py_restful_api_project
                                      , path_list=[
                                          [Path.joinpath(project_action_path, "app"), True]
-                                         , [Path.joinpath(project_action_path, "app", "restful_api"), True]
-                                         , [Path.joinpath(project_action_path, "app", "restful_api", "schemas"), True]
-                                         , [Path.joinpath(project_action_path, "app", "restful_api", "routes"), True]
+                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_api), True]
+                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_api, "schemas"), True]
+                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_api, "routes"), True]
                                          , [Path.joinpath(project_action_path, "internal"), True]
                                          , [Path.joinpath(project_action_path, "internal", "db"), True]
                                          , [Path.joinpath(project_root_path, "dockerEnv"), False]
@@ -244,15 +248,16 @@ class pythonCreator(projectCreatorBase):
         self.__create_project_files(project_root_path=project_root_path
                                     , project_action_path=project_action_path
                                     , project_type=cc.py_restful_api_project
+                                    , app_subfolder=cc.py_app_subfolder_api
                                     , file_list=[
-                                        [Path.joinpath(project_action_path, "app", "restful_api", "app.py"), ta.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "restful_api", "main_manager.py"), tmm.content_st]
-                                        # , [Path.joinpath(project_action_path, "app", "restful_api", ".flaskenv"), tfe.content_st]
+                                        [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_api, "app.py"), ta.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_api, "main_manager.py"), tmm.content_st]
+                                        # , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_api, ".flaskenv"), tfe.content_st]
                                         , [Path.joinpath(project_action_path, "app", "Mainpage.dox"), tmp.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "restful_api", "schemas", "schemas.py"), tsch.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "restful_api", "routes", "store.py"), tst.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "restful_api", "routes", "item.py"), tit.content_st]
-                                        , [Path.joinpath(project_action_path, "app", "restful_api", "routes", "healthcheck.py"), thc.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_api, "schemas", "schemas.py"), tsch.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_api, "routes", "store.py"), tst.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_api, "routes", "item.py"), tit.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_api, "routes", "healthcheck.py"), thc.content_st]
                                         , [Path.joinpath(project_action_path, "internal", "db", "db.py"), tdb.content_st]
                                         , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
                                         , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
@@ -460,7 +465,8 @@ class pythonCreator(projectCreatorBase):
                                , project_root_path: str
                                , project_action_path: str
                                , file_list: list
-                               , project_type: str):
+                               , project_type: str
+                               , app_subfolder: str = None):
         # handle port mapping cases
         is_need_port_mapping = False
         if project_type == cc.py_restful_api_project:
@@ -480,6 +486,7 @@ class pythonCreator(projectCreatorBase):
                                                                      , cur_gid=pwd.getpwuid(os.getuid()).pw_gid
                                                                      , cur_name=pwd.getpwuid(os.getuid()).pw_name
                                                                      , is_need_port_mapping=is_need_port_mapping
+                                                                     , app_subfolder=app_subfolder
                                                                      ))
 
     def __enable_execution(self

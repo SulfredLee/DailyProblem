@@ -5,11 +5,11 @@ from flask import Flask
 from flask_smorest import Api
 import sfdevtools.observability.log_helper as lh
 
-from {{ project_name }}.app.routes.home import blp as HomeBlueprint
-from {{ project_name }}.app.routes.authen import blp as AuthenBlueprint
-from {{ project_name }}.app.routes.bootstrap_example import blp as BootstrapExampleBlueprint
-from {{ project_name }}.app.routes.healthcheck import blp as HCBlueprint
-from {{ project_name }}.app.main_manager import MainManager as mm
+from {{ project_name }}.app.{{ app_subfolder }}.routes.home import blp as HomeBlueprint
+from {{ project_name }}.app.{{ app_subfolder }}.routes.authen import blp as AuthenBlueprint
+from {{ project_name }}.app.{{ app_subfolder }}.routes.bootstrap_example import blp as BootstrapExampleBlueprint
+from {{ project_name }}.app.{{ app_subfolder }}.routes.healthcheck import blp as HCBlueprint
+from {{ project_name }}.app.{{ app_subfolder }}.main_manager import MainManager as mm
 
 class Config:
     API_TITLE = "{{ project_name }} REST API"

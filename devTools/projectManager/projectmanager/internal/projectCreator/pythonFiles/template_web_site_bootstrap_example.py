@@ -15,7 +15,7 @@ from flask import (
 )
 
 
-from microblog.app.main_manager import MainManager as mm
+from {{ project_name }}.app.{{ app_subfolder }}.main_manager import MainManager as mm
 
 route_name = "Bootstrap_Example"
 blp = Blueprint(route_name, __name__, description="Page for authentication demo")
