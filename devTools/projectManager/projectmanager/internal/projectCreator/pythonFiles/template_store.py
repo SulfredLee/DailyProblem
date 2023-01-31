@@ -4,9 +4,9 @@ from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from typing import List, Dict, Tuple
 
-from {{ project_name }}.app.restful_api.schemas.schemas import StoreSchema
-from {{ project_name }}.internal.db.db import stores
-from {{ project_name }}.app.restful_api.main_manager import MainManager as mm
+from {{ project_name }}.app.{{ app_subfolder }}.schemas.schemas import StoreSchema
+from {{ project_name }}.app.{{ app_subfolder }}.db.db import stores
+from {{ project_name }}.app.{{ app_subfolder }}.main_manager import MainManager as mm
 
 blp = Blueprint("Stores", __name__, description="Operations on stores")
 

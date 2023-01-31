@@ -16,7 +16,7 @@ from flask import (
 from passlib.hash import pbkdf2_sha256
 
 from {{ project_name }}.app.{{ app_subfolder }}.main_manager import MainManager as mm
-from {{ project_name }}.internal.db.db import users
+from {{ project_name }}.app.{{ app_subfolder }}.db.db import users
 
 route_name = "Authen"
 blp = Blueprint(route_name, __name__, description="Page for authentication demo")

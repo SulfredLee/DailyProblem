@@ -5,7 +5,7 @@ from typing import List, Dict, Tuple
 import sfdevtools.observability.log_helper as lh
 from sfdevtools.devTools.SingletonDoubleChecked import SDC
 
-from {{ project_name }}.internal.db.db import MicroBlog_DC
+from {{ project_name }}.app.{{ app_subfolder }}.db.db import MicroBlog_DC
 
 class MainManager(SDC):
     def __init__(self):
