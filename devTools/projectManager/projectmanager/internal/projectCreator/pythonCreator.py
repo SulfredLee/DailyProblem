@@ -150,7 +150,7 @@ class pythonCreator(projectCreatorBase):
         subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
 
-    def create_grpc_project(self, project_root_path: str, project_action_path: str):
+    def create_grpc_project(self, project_root_path: str, project_action_path: str, is_replace_file: bool = True):
         # create python folders
         self.__create_python_folders(project_root_path=project_root_path
                                      , project_action_path=project_action_path
@@ -165,6 +165,7 @@ class pythonCreator(projectCreatorBase):
                                     , project_action_path=project_action_path
                                     , project_type=cc.py_grpc_project
                                     , app_subfolder=cc.py_app_subfolder_grpc
+                                    , is_replace_file=is_replace_file
                                     , file_list=[
                                         [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "greet_server.py"), gatgs.content_st]
                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "greet_client.py"), gatgc.content_st]
@@ -198,7 +199,7 @@ class pythonCreator(projectCreatorBase):
                         , "--grpc_python_out=."
                         , "protos/greet.proto"], cwd=Path.joinpath(self._project_path, self._project_name, self._project_name, "app", cc.py_app_subfolder_grpc))
 
-    def create_web_site_project(self, project_root_path: str, project_action_path: str):
+    def create_web_site_project(self, project_root_path: str, project_action_path: str, is_replace_file: bool = True):
         # create python folders
         self.__create_python_folders(project_root_path=project_root_path
                                      , project_action_path=project_action_path
@@ -218,6 +219,7 @@ class pythonCreator(projectCreatorBase):
                                     , project_action_path=project_action_path
                                     , project_type=cc.py_web_site_project
                                     , app_subfolder=cc.py_app_subfolder_web
+                                    , is_replace_file=is_replace_file
                                     , file_list=[
                                         [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "app.py"), twsa.content_st]
                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_web, "main_manager.py"), twsmm.content_st]
@@ -266,7 +268,7 @@ class pythonCreator(projectCreatorBase):
         subprocess.run(["poetry", "add", "passlib"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "flask_bootstrap"], cwd=Path.joinpath(self._project_path, self._project_name))
 
-    def create_restful_api_project(self, project_root_path: str, project_action_path: str):
+    def create_restful_api_project(self, project_root_path: str, project_action_path: str, is_replace_file: bool = True):
         # create python folders
         self.__create_python_folders(project_root_path=project_root_path
                                      , project_action_path=project_action_path
@@ -283,6 +285,7 @@ class pythonCreator(projectCreatorBase):
                                     , project_action_path=project_action_path
                                     , project_type=cc.py_restful_api_project
                                     , app_subfolder=cc.py_app_subfolder_api
+                                    , is_replace_file=is_replace_file
                                     , file_list=[
                                         [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_api, "app.py"), ta.content_st]
                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_api, "main_manager.py"), tmm.content_st]

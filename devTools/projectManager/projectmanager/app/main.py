@@ -5,6 +5,7 @@ import projectmanager.internal.projectCreator.cppCreator as cc
 import projectmanager.internal.projectCreator.k8sCreator as kc
 import projectmanager.internal.projectCreator.projectCreatorBase as pcb
 import projectmanager.internal.projectUpdater.cppUpdater as cu
+import projectmanager.internal.projectUpdater.pythonUpdater as pu
 import projectmanager.internal.projectUpdater.projectUpdaterBase as pub
 import logging
 
@@ -51,6 +52,10 @@ def update_project(args: argparse.Namespace, logger: logging.Logger) -> None:
         project_updater = cu.cppUpdater(module_name=args.moduleName
                                         , project_path=args.projectPath
                                         , logger=logger)
+    elif args.lang == "Python":
+        project_updater = pu.pythonUpdater(module_name=args.moduleName
+                                           , project_path=args.projectPath
+                                           , logger=logger)
     else:
         raise ValueError(f"Not support language: {args.lang}")
 
