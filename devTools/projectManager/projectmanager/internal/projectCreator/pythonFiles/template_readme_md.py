@@ -46,4 +46,13 @@ $ helm upgrade --wait --timeout=1200s --install --values ./chart/values.dev.yaml
 # uninstall helm chart
 $ helm uninstall {{ project_name_hyphen }}
 ```
+
+### GRPC related
+[reference](https://github.com/chelseafarley/PythonGrpc)
+```bash
+# generate python script from proto file
+$ cd {{ project_name }}/app/grpc_api
+$ poetry run python -m grpc_tools.protoc -I protos --python_out=. --grpc_python_out=. protos/greet.proto
+
+$ poetry add grpcio-tools
 """

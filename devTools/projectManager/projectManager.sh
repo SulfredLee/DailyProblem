@@ -8,7 +8,7 @@ createLanguageTypes=("Python" "Cpp" "Kubernetes")
 updateLanguageTypes=("Cpp")
 
 ## create project selection
-pythonProjectType=("Python Restful API Project" "Python General Project" "Python Web Site Project" "Python QC Project")
+pythonProjectType=("Python Restful API Project" "Python General Project" "Python Web Site Project" "Python QC Project" "Python GRPC Project")
 cppProjectType=("Cpp General Project" "Cpp QT Project")
 k8sProjectType=("General Infra Project")
 ## udpate project selection
