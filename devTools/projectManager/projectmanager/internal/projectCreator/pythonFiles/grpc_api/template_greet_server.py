@@ -1,6 +1,7 @@
 content_st = """
 from concurrent import futures
 import time
+import os
 
 import grpc
 import greet_pb2
@@ -59,9 +60,14 @@ def serve():
     main_m = mm.instance()
     logger = main_m.get_logger()
 
+    # get env variables
+    host_name = os.getenv("GRPC_RUN_HOST", default="localhost")
+    port_num = os.getenv("GRPC_RUN_PORT", default="50051")
+    logger.info(f"We get host name: {host_name} port number: {port_num}")
+
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     greet_pb2_grpc.add_GreeterServicer_to_server(GreeterServicer(), server)
-    server.add_insecure_port("localhost:50051")
+    server.add_insecure_port(f"{host_name}:{port_num}")
     server.start()
     server.wait_for_termination()
 

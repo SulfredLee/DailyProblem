@@ -2,6 +2,7 @@ content_st = """
 import greet_pb2_grpc
 import greet_pb2
 import time
+import os
 import grpc
 
 from {{ project_name }}.app.{{ app_subfolder }}.main_manager import MainManager as mm
@@ -19,7 +20,13 @@ def get_client_stream_requests():
 
 def run():
     logger = mm.instance().get_logger()
-    with grpc.insecure_channel('localhost:50051') as channel:
+
+    # get env variables
+    host_name = os.getenv("GRPC_RUN_HOST", default="localhost")
+    port_num = os.getenv("GRPC_RUN_PORT", default="50051")
+    logger.info(f"We get host name: {host_name} port number: {port_num}")
+
+    with grpc.insecure_channel(f"{host_name}:{port_num}") as channel:
         stub = greet_pb2_grpc.GreeterStub(channel)
         logger.info("1. SayHello - Unary")
         logger.info("2. ParrotSaysHello - Server Side Streaming")

@@ -11,6 +11,10 @@ service:
       port: 5000
       protocol: TCP
       targetPort: 5000
+    - name: grpc-api
+      port: 50051
+      protocol: TCP
+      targetPort: 50051
   env:
     - name: FLASK_APP
       value: "app"
@@ -20,6 +24,10 @@ service:
       value: "0.0.0.0"
     - name: FLASK_RUN_PORT
       value: "5000"
+    - name: GRPC_RUN_HOST
+      value: "localhost"
+    - name: GRPC_RUN_PORT
+      vlaue: "50051"
   customProbe:
     readinessProbe:
       initialDelaySeconds: 15
