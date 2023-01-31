@@ -7,6 +7,7 @@ package greet;
 service Greeter {
     // Unary - request and respond
     rpc SayHello (HelloRequest) returns (HelloReply);
+    rpc HealthCheck (Ping) returns (Pong);
 
     // Server Streaming
     rpc ParrotSaysHello (HelloRequest) returns (stream HelloReply);
@@ -32,5 +33,13 @@ message HelloReply {
 message DelayedReply {
     string message = 1;
     repeated HelloRequest request = 2;
+}
+
+message Ping {
+    string message = 1;
+}
+
+message Pong {
+    string message = 1;
 }
 """

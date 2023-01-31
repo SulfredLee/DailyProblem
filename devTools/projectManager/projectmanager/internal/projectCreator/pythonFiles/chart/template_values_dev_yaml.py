@@ -34,6 +34,12 @@ service:
       httpGet:
         path: /healthcheck
         port: 5000
+      # Example for grpc server
+      # exec:
+      #   command:
+      #     - bin/bash
+      #     - -c
+      #     - {{ project_name }}/app/grpc_api/healthcheck.sh
     livenessProbe:
       initialDelaySeconds: 15
       httpGet:

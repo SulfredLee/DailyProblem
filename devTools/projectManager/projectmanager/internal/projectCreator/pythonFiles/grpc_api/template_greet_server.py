@@ -20,6 +20,15 @@ class GreeterServicer(greet_pb2_grpc.GreeterServicer):
 
         return hello_reply
 
+    def HealthCheck(self, request, context):
+        logger = mm.instance().get_logger()
+
+        logger.info(f"Healthcheck Request Made: {request.message}")
+        pong = greet_pb2.Pong()
+        pong.message = f"Pong from grpc server"
+
+        return pong
+
     def ParrotSaysHello(self, request, context):
         logger = mm.instance().get_logger()
 

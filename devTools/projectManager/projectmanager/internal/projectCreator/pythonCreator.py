@@ -38,6 +38,8 @@ import projectmanager.internal.projectCreator.pythonFiles.template_web_site_sign
 import projectmanager.internal.projectCreator.pythonFiles.grpc_api.template_greet_proto as gatgp
 import projectmanager.internal.projectCreator.pythonFiles.grpc_api.template_greet_client as gatgc
 import projectmanager.internal.projectCreator.pythonFiles.grpc_api.template_greet_server as gatgs
+import projectmanager.internal.projectCreator.pythonFiles.grpc_api.template_hc_client as gathcc
+import projectmanager.internal.projectCreator.pythonFiles.grpc_api.template_healthcheck_sh as gathsh
 import projectmanager.internal.projectCreator.pythonFiles.scripts.template_install_vscode_sh as tiv
 import projectmanager.internal.projectCreator.pythonFiles.scripts.template_start_py_servers_sh as tspss
 import projectmanager.internal.projectCreator.pythonFiles.scripts.template_start_py_servers_grpc_sh as tspsgs
@@ -171,6 +173,8 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "greet_client.py"), gatgc.content_st]
                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "protos", "greet.proto"), gatgp.content_st]
                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "main_manager.py"), tmm.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "healthcheck.sh"), gathsh.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "hc_client.py"), gathcc.content_st]
                                         , [Path.joinpath(project_root_path, "scripts", "start.py.servers.sh"), tspsgs.content_st]
                                     ])
 
@@ -180,6 +184,7 @@ class pythonCreator(projectCreatorBase):
                                 , project_type=cc.py_grpc_project
                                 , file_list=[
                                     Path.joinpath(project_root_path, "scripts", "start.py.servers.sh")
+                                    , Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "healthcheck.sh")
                                 ])
 
         # add observability module
