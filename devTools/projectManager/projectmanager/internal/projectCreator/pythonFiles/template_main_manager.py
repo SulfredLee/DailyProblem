@@ -7,8 +7,11 @@ from sfdevtools.devTools.SingletonDoubleChecked import SDC
 
 class MainManager(SDC):
     def __init__(self):
-        self._logger = lh.init_logger(logger_name="{{ project_name }}_logger", is_json_output=False)
+        self.__logger: logging.Logger = None
+
+    def init_component(self, logger: logging.Logger, bucket_name: str):
+        self.__logger = logger
 
     def get_logger(self) -> logging.Logger:
-        return self._logger
+        return self.__logger
 """

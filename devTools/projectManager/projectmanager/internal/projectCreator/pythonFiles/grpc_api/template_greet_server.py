@@ -9,6 +9,8 @@ import greet_pb2_grpc
 
 from {{ project_name }}.app.{{ app_subfolder }}.main_manager import MainManager as mm
 
+import sfdevtools.observability.log_helper as lh
+
 class GreeterServicer(greet_pb2_grpc.GreeterServicer):
     def SayHello(self, request, context):
         logger = mm.instance().get_logger()
@@ -66,17 +68,20 @@ class GreeterServicer(greet_pb2_grpc.GreeterServicer):
             yield hello_reply
 
 def serve():
-    main_m = mm.instance()
-    logger = main_m.get_logger()
+    logger: logging.Logger = lh.init_logger(logger_name="{{ project_name }}_server_logger", is_json_output=False)
 
     # get env variables
-    host_name = os.getenv("GRPC_RUN_HOST", default="localhost")
-    port_num = os.getenv("GRPC_RUN_PORT", default="50051")
-    logger.info(f"We get host name: {host_name} port number: {port_num}")
+    env_v = {"host_name": os.getenv("GRPC_RUN_HOST", default="localhost")
+             , "port": os.getenv("GRPC_RUN_PORT", default="50051")
+             , "bucket_name": os.getenv("GRPC_BUCKET_NAME", default="dc-databucket")}
+    logger.info(f"We get environment variables: {env_v}")
+
+    main_m = mm.instance()
+    main_m.init_component(logger=logger)
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     greet_pb2_grpc.add_GreeterServicer_to_server(GreeterServicer(), server)
-    server.add_insecure_port(f"{host_name}:{port_num}")
+    server.add_insecure_port(f'{env_v["host_name"]}:{env_v["port"]}')
     server.start()
     server.wait_for_termination()
 

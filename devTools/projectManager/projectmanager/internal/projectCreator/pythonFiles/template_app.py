@@ -19,8 +19,10 @@ class Config:
     OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 
 def create_app():
+    logger: logging.Logger = lh.init_logger(logger_name="{{ project_name }}_logger", is_json_output=False)
+
     main_m = mm.instance()
-    logger = main_m.get_logger()
+    main_m.init_component(logger=logger)
 
     # Create flask app
     app = Flask(__name__)
