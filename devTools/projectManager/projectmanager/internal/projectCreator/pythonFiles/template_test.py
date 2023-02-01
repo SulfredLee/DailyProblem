@@ -6,6 +6,12 @@ import unittest
 
 # Functions
 class Test_{{ project_name }}(unittest.TestCase):
+    def setUp(self):
+        super().setUp()
+
+    def tearDown(self):
+        pass
+
     def test_example(self):
         \"\"\"! Example Test funtions
         \"\"\"
