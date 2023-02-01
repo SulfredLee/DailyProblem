@@ -1,0 +1,28 @@
+
+syntax = "proto3";
+
+package peacock;
+
+// The greeting service definition.
+service Peacock {
+    // Unary - request and respond
+    rpc SaveFileToColud (SaveFileToColud_Msg) returns (NoneReply);
+    rpc HealthCheck (Ping) returns (Pong);
+}
+
+message SaveFileToColud_Msg {
+    string file_name = 1;
+    string file_content = 2;
+}
+
+message NoneReply {
+    string reply = 1;
+}
+
+message Ping {
+    string message = 1;
+}
+
+message Pong {
+    string message = 1;
+}

@@ -12,6 +12,14 @@ poetry publish
 # DONE
 ```
 
+## Generate source code from protobuf
+```bash
+$ poetry add grpcio-tools
+$ poetry add grpcio
+$ cd sfdevtools/
+$ poetry run python -m grpc_tools.protoc -I ./grpc_protos --python_out=./grpc_protos/ --grpc_python_out=./grpc_protos/ ./grpc_protos/peacock.proto
+```
+
 ## Demo example
 ### Double check lock for singleton
 ```python
