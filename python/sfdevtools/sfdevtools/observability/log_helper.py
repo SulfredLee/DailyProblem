@@ -1,19 +1,22 @@
 import logging
+import threading
 from sfdevtools.observability.logging_json import JSONFormatter
 from sfdevtools.observability.logstash.handler_tcp import TCPLogstashHandler
 from sfdevtools.observability.logstash.handler_udp import UDPLogstashHandler, LogstashHandler
 from logging.handlers import TimedRotatingFileHandler
 
-def init_logger(logger_name: str = "default_logger"
-                , log_level: int = logging.DEBUG
-                , is_print_to_file: bool = False
-                , log_file_root: str = "./"
-                , is_print_to_console: bool = True
-                , is_json_output: bool = True
-                , is_print_to_logstash: bool = False
-                , logstash_host: str = None
-                , logstash_port: int = None
-                , logstash_user_tags: list = None) -> logging.Logger:
+__logger_singleton_lock = threading.Lock()
+
+def __init_logger_imp(logger_name: str = "default_logger"
+                      , log_level: int = logging.DEBUG
+                      , is_print_to_file: bool = False
+                      , log_file_root: str = "./"
+                      , is_print_to_console: bool = True
+                      , is_json_output: bool = True
+                      , is_print_to_logstash: bool = False
+                      , logstash_host: str = None
+                      , logstash_port: int = None
+                      , logstash_user_tags: list = None) -> logging.Logger:
     logger = logging.getLogger(logger_name)
     logger.setLevel(log_level)
 
@@ -52,3 +55,32 @@ def init_logger(logger_name: str = "default_logger"
 
     return logger
 
+def init_logger(logger_name: str = "default_logger"
+                , log_level: int = logging.DEBUG
+                , is_print_to_file: bool = False
+                , log_file_root: str = "./"
+                , is_print_to_console: bool = True
+                , is_json_output: bool = True
+                , is_print_to_logstash: bool = False
+                , logstash_host: str = None
+                , logstash_port: int = None
+                , logstash_user_tags: list = None) -> logging.Logger:
+    logger = logging.getLogger(logger_name)
+    # double check lock for singleton
+    if not logger.hasHandlers():
+        with __logger_singleton_lock:
+            if not logger.hasHandlers():
+                return __init_logger_imp(logger_name=logger_name
+                                         , log_level=log_level
+                                         , is_print_to_file=is_print_to_file
+                                         , log_file_root=log_file_root
+                                         , is_print_to_console=is_print_to_console
+                                         , is_json_output=is_json_output
+                                         , is_print_to_logstash=is_print_to_logstash
+                                         , logstash_host=logstash_host
+                                         , logstash_port=logstash_port
+                                         , logstash_user_tags=logstash_user_tags)
+            else:
+                return logger
+    else:
+        return logger
