@@ -31,5 +31,5 @@ RUN poetry install
 # add your commands
 # CMD ["poetry", "run", "flask", "run", "--host", "0.0.0.0"]
 # CMD ["poetry", "run", "flask", "run"]
-CMD ["bash", "./scripts/start_py_servers.sh"]
+CMD ["bash", "./scripts/start.py.servers.sh"]
 """

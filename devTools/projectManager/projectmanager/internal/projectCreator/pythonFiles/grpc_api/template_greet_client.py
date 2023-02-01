@@ -28,7 +28,7 @@ def run():
     logger: logging.Logger = lh.init_logger(logger_name="{{ project_name }}_client_logger", is_json_output=False)
 
     # get env variables
-    env_v = {"host_name": os.getenv("GRPC_RUN_HOST", default="localhost")
+    env_v = {"host_name": os.getenv("GRPC_RUN_HOST", default="0.0.0.0")
              , "port": os.getenv("GRPC_RUN_PORT", default="50051")
              , "bucket_name": os.getenv("GRPC_BUCKET_NAME", default="dc-databucket")}
     logger.info(f"We get environment variables: {env_v}")

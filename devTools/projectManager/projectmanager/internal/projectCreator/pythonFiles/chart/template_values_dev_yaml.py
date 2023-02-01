@@ -25,9 +25,9 @@ service:
     - name: FLASK_RUN_PORT
       value: "5000"
     - name: GRPC_RUN_HOST
-      value: "localhost"
+      value: "0.0.0.0"
     - name: GRPC_RUN_PORT
-      vlaue: "50051"
+      value: "50051"
   customProbe:
     readinessProbe:
       initialDelaySeconds: 15

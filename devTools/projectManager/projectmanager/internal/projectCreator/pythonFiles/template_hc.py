@@ -23,7 +23,7 @@ class Healthcheck(MethodView):
             #                                                          , ".."
             #                                                          , ".."
             #                                                          , "grpc_api"))
-            # if "GRPC server is not healthy" in the_output:
+            # if "GRPC server is not healthy" in str(the_output):
             #     abort(404, message={"status": "Bad"
             #                         , "timestamp": str(datetime.utcnow())})
             return {"status": "Good"
