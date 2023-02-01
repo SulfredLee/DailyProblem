@@ -5,6 +5,9 @@ import unittest
 import sfdevtools.observability.log_helper as lh
 import logging
 from sfdevtools.devTools.SingletonDoubleChecked import SDC
+import sfdevtools.storage.objectStorage.AWSObjectStorage as aws_obj_storage
+import sfdevtools.devTools.DatetimeTools as dtt
+import pandas as pd
 
 # Functions
 class Test_peacock(unittest.TestCase):
@@ -62,5 +65,20 @@ class Test_peacock(unittest.TestCase):
         logger.error("Test Message from test")
         logger.warning("Test Message from test")
 
+    def test_save_file_to_cloud(self):
+        header = ["H_1", "H_2", "H_3"]
+        content = [["r1 c1", "r1 c2", "r1 c3"]
+                   , ["r2 c1", "r2 c2", "r2 c3"]]
+        df = pd.DataFrame(content, columns=header)
+        is_debug = False
+        if is_debug:
+            return
+        logger = lh.init_logger(logger_name="s3_tester_logger", is_print_to_console=True)
+        s3_storage = aws_obj_storage.AWSObjectStorage(logger=logger)
+        file_name = "test_file_name.csv"
+        s3_storage.upload_file_from_memory(file_name=file_name
+                                           , file_content=df.to_csv()
+                                           , bucket_name="dc-databucket"
+                                           , obj_name=f"other/{dtt.get_current_date()}/{dtt.get_current_datetime()}_{file_name}")
 if __name__ == "__main__":
     unittest.main()

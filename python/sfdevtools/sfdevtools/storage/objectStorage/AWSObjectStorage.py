@@ -2,6 +2,7 @@ import logging
 import boto3 # poetry add boto3
 from datetime import datetime
 from nanoid import generate # poetry add nanoid
+from pathlib import Path
 import os
 import sfdevtools.devTools.DatetimeTools as dtt
 
@@ -26,14 +27,15 @@ class AWSObjectStorage(object):
 
         @return None
         """
-        temp_file_name = dtt.get_random_file_name(file_name=file_name)
+        temp_file_name: str = dtt.get_random_file_name(file_name=file_name)
+        temp_file_name: Path = Path.joinpath(Path(__file__).parent, temp_file_name)
 
-        with open(temp_file_name, "w") as FH:
+        with open(temp_file_name.name, "w") as FH:
             FH.write(file_content)
-        self.__s3_client.upload_file(temp_file_name, bucket_name, obj_name)
+        self.__s3_client.upload_file(temp_file_name.name, bucket_name, obj_name)
 
-        if os.path.exists(temp_file_name):
-            os.remove(temp_file_name)
+        # if os.path.exists(temp_file_name.name):
+        #     os.remove(temp_file_name.name)
 
     def list_objects(self, bucket_name: str) -> None:
         """! list_objects

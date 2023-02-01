@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sfdevtools"
-version = "1.11.0"
+version = "1.12.0"
 description = ""
 authors = ["SulfredLee <sflee1112@gmail.com>"]
 readme = "README.md"
@@ -10,6 +10,8 @@ python = "^3.8"
 nanoid = "^2.0.0"
 grpcio-tools = "^1.51.1"
 grpcio = "^1.51.1"
+boto3 = "^1.26.61"
+pandas = "^1.5.3"
 
 
 [build-system]
