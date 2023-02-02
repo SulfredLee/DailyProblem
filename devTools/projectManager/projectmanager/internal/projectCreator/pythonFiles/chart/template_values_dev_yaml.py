@@ -31,6 +31,8 @@ service:
   customProbe:
     readinessProbe:
       initialDelaySeconds: 15
+      periodSeconds: 20
+      timeoutSeconds: 10
       httpGet:
         path: /healthcheck
         port: 5000
@@ -42,6 +44,8 @@ service:
       #     - {{ project_name }}/app/grpc_api/healthcheck.sh
     livenessProbe:
       initialDelaySeconds: 15
+      periodSeconds: 20
+      timeoutSeconds: 10
       httpGet:
         path: /healthcheck
         port: 5000

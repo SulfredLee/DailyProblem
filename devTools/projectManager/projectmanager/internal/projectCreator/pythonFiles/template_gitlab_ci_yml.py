@@ -248,6 +248,7 @@ uat-install:
   script:
     - echo "deploy to uat from branch $CI_COMMIT_REF_NAME"
     - kubectl delete secret {{ project_name_hyphen }}-regcred || true
+    # https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
     - kubectl create secret docker-registry {{ project_name_hyphen }}-regcred --docker-server=registry.gitlab.com --docker-username=$CI_REGISTRY_USER --docker-password=$CI_JOB_TOKEN
     - helm upgrade --wait --timeout=1200s --install --values ./chart/values.dev.yaml {{ project_name_hyphen }} ./chart
   needs: []
