@@ -1,0 +1,27 @@
+
+syntax = "proto3";
+
+package magpie;
+
+// The magpie service definition.
+service Magpie {
+    // Unary - request and respond
+    rpc HealthCheck (Ping) returns (Pong);
+    rpc UpdateRefDataFromQC (UpdateRefDataFromQC_Msg) returns (NoneReply);
+}
+
+message Ping {
+    string message = 1;
+}
+
+message Pong {
+    string message = 1;
+}
+
+message UpdateRefDataFromQC_Msg {
+    string data = 1;
+}
+
+message NoneReply {
+    string reply = 1;
+}
