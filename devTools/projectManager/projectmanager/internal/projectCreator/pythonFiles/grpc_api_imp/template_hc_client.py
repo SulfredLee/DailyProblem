@@ -1,6 +1,6 @@
 content_st = """
-import greet_pb2_grpc
-import greet_pb2
+import sfdevtools.grpc_protos.{{ project_name }}_pb2 as {{ project_name }}_pb2
+import sfdevtools.grpc_protos.{{ project_name }}_pb2_grpc as {{ project_name }}_pb2_grpc
 import time
 import os
 import grpc
@@ -20,9 +20,9 @@ def run():
 
     try:
         with grpc.insecure_channel(f'{env_v["host_name"]}:{env_v["port"]}') as channel:
-            stub = greet_pb2_grpc.GreeterStub(channel)
+            stub = {{ project_name }}_pb2_grpc.{{ project_name_capitalize }}Stub(channel)
 
-            pong = stub.HealthCheck(greet_pb2.Ping(message=""), timeout=5) # timeout in 5 second
+            pong = stub.HealthCheck({{ project_name }}_pb2.Ping(message="{{ project_name }} hc client"), timeout=5) # timeout in 5 second
             logger.info(f"Healthcheck response: {pong}")
     except Exception as e:
         logger.error("GRPC server is not healthy")

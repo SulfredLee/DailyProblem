@@ -52,7 +52,7 @@ $ helm uninstall {{ project_name_hyphen }}
 ```bash
 # generate python script from proto file
 $ cd {{ project_name }}/app/grpc_api
-$ poetry run python -m grpc_tools.protoc -I protos --python_out=. --grpc_python_out=. protos/greet.proto
+$ poetry run python -m grpc_tools.protoc -I protos --python_out=. --grpc_python_out=. protos/{{ project_name }}.proto
 
 $ poetry add grpcio-tools
 """

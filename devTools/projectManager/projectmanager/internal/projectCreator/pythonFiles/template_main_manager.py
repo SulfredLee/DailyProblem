@@ -9,7 +9,7 @@ class MainManager(SDC):
     def __init__(self):
         self.__logger: logging.Logger = None
 
-    def init_component(self, logger: logging.Logger, bucket_name: str):
+    def init_component(self, logger: logging.Logger):
         self.__logger = logger
 
     def get_logger(self) -> logging.Logger:

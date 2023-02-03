@@ -35,6 +35,10 @@ import projectmanager.internal.projectCreator.pythonFiles.template_web_site_boot
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_login as twslg
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_protected as twsp
 import projectmanager.internal.projectCreator.pythonFiles.template_web_site_signup as twsu
+import projectmanager.internal.projectCreator.pythonFiles.grpc_api_imp.template_greet_proto as gatgpi
+import projectmanager.internal.projectCreator.pythonFiles.grpc_api_imp.template_greet_client as gatgci
+import projectmanager.internal.projectCreator.pythonFiles.grpc_api_imp.template_greet_server as gatgsi
+import projectmanager.internal.projectCreator.pythonFiles.grpc_api_imp.template_hc_client as gathcci
 import projectmanager.internal.projectCreator.pythonFiles.grpc_api.template_greet_proto as gatgp
 import projectmanager.internal.projectCreator.pythonFiles.grpc_api.template_greet_client as gatgc
 import projectmanager.internal.projectCreator.pythonFiles.grpc_api.template_greet_server as gatgs
@@ -158,11 +162,16 @@ class pythonCreator(projectCreatorBase):
                                      , project_action_path=project_action_path
                                      , project_type=cc.py_grpc_project
                                      , path_list=[
+                                         # example
                                          [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc), True]
                                          , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "protos"), True]
+                                         # implement version
+                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc_imp), True]
+                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc_imp, "protos"), True]
                                      ])
 
         # create project files
+        # example
         self.__create_project_files(project_root_path=project_root_path
                                     , project_action_path=project_action_path
                                     , project_type=cc.py_grpc_project
@@ -175,6 +184,20 @@ class pythonCreator(projectCreatorBase):
                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "main_manager.py"), tmm.content_st]
                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "healthcheck.sh"), gathsh.content_st]
                                         , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "hc_client.py"), gathcc.content_st]
+                                    ])
+        # implement version
+        self.__create_project_files(project_root_path=project_root_path
+                                    , project_action_path=project_action_path
+                                    , project_type=cc.py_grpc_project
+                                    , app_subfolder=cc.py_app_subfolder_grpc_imp
+                                    , is_replace_file=is_replace_file
+                                    , file_list=[
+                                         [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc_imp, f"{self._project_name}_grpc_server.py"), gatgsi.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc_imp, f"{self._project_name}_grpc_client.py"), gatgci.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc_imp, "protos", f"{self._project_name}.proto"), gatgpi.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc_imp, "main_manager.py"), tmm.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc_imp, "healthcheck.sh"), gathsh.content_st]
+                                        , [Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc_imp, "hc_client.py"), gathcci.content_st]
                                         , [Path.joinpath(project_root_path, "scripts", "start.py.servers.sh"), tspsgs.content_st]
                                     ])
 
@@ -185,6 +208,7 @@ class pythonCreator(projectCreatorBase):
                                 , file_list=[
                                     Path.joinpath(project_root_path, "scripts", "start.py.servers.sh")
                                     , Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc, "healthcheck.sh")
+                                    , Path.joinpath(project_action_path, "app", cc.py_app_subfolder_grpc_imp, "healthcheck.sh")
                                 ])
 
         # add observability module
@@ -432,6 +456,7 @@ class pythonCreator(projectCreatorBase):
             with open(template_obj[0], "w") as w_FH:
                 w_FH.write(j_env.from_string(template_obj[1]).render(project_name=self._project_name
                                                                      , project_name_hyphen=self._project_name.replace("_", "-")
+                                                                     , project_name_capitalize=self._project_name.capitalize()
                                                                      , description=f"{self._project_name} Inputs"
                                                                      , cur_uid=pwd.getpwuid(os.getuid()).pw_uid
                                                                      , cur_gid=pwd.getpwuid(os.getuid()).pw_gid
