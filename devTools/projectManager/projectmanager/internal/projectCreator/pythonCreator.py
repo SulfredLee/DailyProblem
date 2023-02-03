@@ -190,8 +190,9 @@ class pythonCreator(projectCreatorBase):
         # add observability module
         subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
-        subprocess.run(["poetry", "add", "grpcio-tools"], cwd=Path.joinpath(self._project_path, self._project_name))
-        subprocess.run(["poetry", "add", "grpcio"], cwd=Path.joinpath(self._project_path, self._project_name))
+        # grpcio-tools and grpcio will be depends on sfdevtools
+        # subprocess.run(["poetry", "add", "grpcio-tools"], cwd=Path.joinpath(self._project_path, self._project_name))
+        # subprocess.run(["poetry", "add", "grpcio"], cwd=Path.joinpath(self._project_path, self._project_name))
         # $ poetry run python -m grpc_tools.protoc -I protos --python_out=. --grpc_python_out=. protos/greet.proto
         subprocess.run(["poetry"
                         , "run"
