@@ -3,7 +3,9 @@ content_st = """
 
 # Imports
 import unittest
+from unittest.mock import Mock, create_autospec, patch
 import sfdevtools.observability.log_helper as lh
+from typing import List, Dict, Tuple
 
 # Functions
 class Test_{{ project_name }}(unittest.TestCase):
@@ -20,6 +22,8 @@ class Test_{{ project_name }}(unittest.TestCase):
 
         @return argument parser
         \"\"\"
+        # import sfdevtools.storage.relationalDBStorage.PostgresDBCtrl as postDBCtrl
+        # mock_PostgresDBCtrl = create_autospec(postDBCtrl.PostgresDBCtrl)
         self.assertEqual("test".upper(), "TEST")
 
 if __name__ == "__main__":
