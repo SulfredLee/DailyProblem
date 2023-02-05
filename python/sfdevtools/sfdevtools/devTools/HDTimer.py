@@ -25,7 +25,7 @@ class HDTimer(object):
 
     def get_avg_time(self):
         with self.__lock:
-            return self.__total_durationg / self.__avg_size
+            return self.__total_durationg / max(min(len(self.__total_durationg), self.__avg_size), 1)
 
     def get_avg_size(self):
-        return self.__avg_size
+        return max(min(len(self.__total_durationg), self.__avg_size), 1)

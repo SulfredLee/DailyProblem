@@ -2,12 +2,14 @@
 
 # Imports
 import unittest
-import sfdevtools.observability.log_helper as lh
 import logging
-from sfdevtools.devTools.SingletonDoubleChecked import SDC
-import sfdevtools.storage.objectStorage.AWSObjectStorage as aws_obj_storage
-import sfdevtools.devTools.DatetimeTools as dtt
 import pandas as pd
+
+from sfdevtools.devTools.SingletonDoubleChecked import SDC
+import sfdevtools.observability.log_helper as lh
+import sfdevtools.storage.objectStorage.AWSObjectStorage as aws_obj_storage
+import sfdevtools.storage.relationalDBStorage.PostgresDBCtrl as postDBCtrl
+import sfdevtools.devTools.DatetimeTools as dtt
 
 # Functions
 class Test_peacock(unittest.TestCase):
@@ -80,5 +82,24 @@ class Test_peacock(unittest.TestCase):
                                            , file_content=df.to_csv()
                                            , bucket_name="dc-databucket"
                                            , obj_name=f"other/{dtt.get_current_date()}/{dtt.get_current_datetime()}_{file_name}")
+
+    def test_db_connection(self):
+        is_test = False
+        if not is_test:
+            self.__logger.info("Skip test")
+            return
+        db_ctrl = postDBCtrl.PostgresDBCtrl(db_user=os.getenv("DB_USER", default="postgres")
+                                            , db_pw=os.getenv("DB_PW", default="dummy pw")
+                                            , db_host=os.getenv("DB_HOST", default="dummy host")
+                                            , db_port=os.getenv("DB_PORT", default="5432")
+                                            , db_name=os.getenv("DB_NAME", default="postgres")
+                                            , db_schema=os.getenv("DB_SCHEMA", default="refdb")
+                                            , logger=self.__logger)
+
+        # self.__logger.info(type(db_ctrl.get_classes()))
+        # self.__logger.info(type(db_ctrl.get_tables()))
+        # self.__logger.info(type(db_ctrl.get_session()))
+
+
 if __name__ == "__main__":
     unittest.main()
