@@ -61,7 +61,7 @@ class PostgresDBCtrl(object):
         finally:
             db_session.close()
 
-    def insert_update_records(self, db_records: List[Any]) -> bool:
+    def upsert_records(self, db_records: List[Any]) -> bool:
         db_session = Session(self._engine)
         for db_record in db_records:
             db_session.merge(db_record)
