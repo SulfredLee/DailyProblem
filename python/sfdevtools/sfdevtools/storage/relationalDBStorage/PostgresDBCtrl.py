@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, MetaData # poetry add psycopg2-binary, sqlalchemy
+from sqlalchemy import create_engine, MetaData, exc # poetry add psycopg2-binary, sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 import sqlalchemy
 from sqlalchemy.orm import Session
@@ -20,7 +20,7 @@ class PostgresDBCtrl(object):
                  , connection_time: int = 10):
         self._logger = logger
 
-        self._logger.info(f"db config db_user: {db_user}, db_host: {db_host}, db_port: {db_port}, db_name: {db_name}")
+        self._logger.info(f"db config db_user: {db_user}, db_host: {db_host}, db_port: {db_port}, db_name: {db_name}, db_schema: {db_schema}")
         # prepare database connection
         self._engine = create_engine(f"postgresql+psycopg2://{db_user}:{db_pw}@{db_host}:{db_port}/{db_name}"
                                      , connect_args={"connect_timeout": connection_time})
@@ -68,7 +68,7 @@ class PostgresDBCtrl(object):
         try:
             db_session.commit()
             return True
-        except SQLAlchemyError as e:
+        except exc.SQLAlchemyError as e:
             db_session.rollback()
             return False
         finally:
@@ -85,7 +85,7 @@ class PostgresDBCtrl(object):
         try:
             db_session.commit()
             return True
-        except SQLAlchemyError as e:
+        except exc.SQLAlchemyError as e:
             db_session.rollback()
             return False
         finally:
