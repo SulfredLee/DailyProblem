@@ -20,6 +20,7 @@ class PostgresDBCtrl(object):
                  , connection_time: int = 10):
         self._logger = logger
 
+        self._logger.info(f"db config db_user: {db_user}, db_host: {db_host}, db_port: {db_port}, db_name: {db_name}")
         # prepare database connection
         self._engine = create_engine(f"postgresql+psycopg2://{db_user}:{db_pw}@{db_host}:{db_port}/{db_name}"
                                      , connect_args={"connect_timeout": connection_time})
