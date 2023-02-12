@@ -13,6 +13,13 @@ class Test_{{ project_name }}(unittest.TestCase):
         super().setUp()
         self.__logger = lh.init_logger(logger_name="test_{{ project_name }}_logger", is_json_output=False)
 
+        self.__test_config = {
+            "test_example": False
+        }
+        if not self.__test_config[self._testMethodName]:
+            self.__logger.info(f"Skip test {self._testMethodName}")
+            return
+
     def tearDown(self):
         pass
 
