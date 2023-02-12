@@ -56,7 +56,7 @@ def __init_logger_imp(logger_name: str = "default_logger"
     return logger
 
 def init_logger(logger_name: str = "default_logger"
-                , log_level: int = logging.DEBUG
+                , log_level: int = logging.INFO
                 , is_print_to_file: bool = False
                 , log_file_root: str = "./"
                 , is_print_to_console: bool = True

@@ -3,6 +3,7 @@ from sqlalchemy.ext.automap import automap_base
 import sqlalchemy
 from sqlalchemy.orm import Session
 from typing import List, Dict, Tuple, Any
+import pandas as pd
 import logging
 
 # https://hackersandslackers.com/database-queries-sqlalchemy-orm/
@@ -48,6 +49,17 @@ class PostgresDBCtrl(object):
     def get_session(self) -> sqlalchemy.orm.session.Session:
         return Session(self._engine)
 
+    def get_connection(self) -> sqlalchemy.engine.base.Connection:
+        return self._engine.connect()
+
+    def get_query(self, *args) -> sqlalchemy.orm.query.Query:
+        return Session(self._engine).query(*args)
+
+    def get_df_from_query(self, query: sqlalchemy.orm.query.Query, is_debug: bool = False) -> pd.DataFrame:
+        if is_debug:
+            self._logger.debug(query.statement.compile(compile_kwargs={"literal_binds": True}))
+        return pd.read_sql(sql=query.statement, con=self.get_connection())
+
     def add_records(self, db_records: List[Any]) -> bool:
         db_session = Session(self._engine)
         db_session.add_all(db_records)
@@ -62,6 +74,9 @@ class PostgresDBCtrl(object):
             db_session.close()
 
     def upsert_records(self, db_records: List[Any]) -> bool:
+        if len(db_records) == 0:
+            return True
+
         db_session = Session(self._engine)
         for db_record in db_records:
             db_session.merge(db_record)
