@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, MetaData, exc # poetry add psycopg2-binary, sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 import sqlalchemy
+import traceback
 from sqlalchemy.orm import Session
 from typing import List, Dict, Tuple, Any
 import pandas as pd
@@ -70,6 +71,7 @@ class PostgresDBCtrl(object):
             return True
         except exc.SQLAlchemyError as e:
             db_session.rollback()
+            self._logger.error(traceback.format_exc())
             return False
         finally:
             db_session.close()
@@ -87,6 +89,7 @@ class PostgresDBCtrl(object):
             return True
         except exc.SQLAlchemyError as e:
             db_session.rollback()
+            self._logger.error(traceback.format_exc())
             return False
         finally:
             db_session.close()
