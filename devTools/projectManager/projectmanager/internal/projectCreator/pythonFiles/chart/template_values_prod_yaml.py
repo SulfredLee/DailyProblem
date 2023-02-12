@@ -40,7 +40,7 @@ service:
       #   command:
       #     - /bin/bash
       #     - -c
-      #     - {{ project_name }}/app/grpc_api/healthcheck.sh
+      #     - bash {{ project_name }}/app/grpc_api/healthcheck.sh
     livenessProbe:
       initialDelaySeconds: 15
       periodSeconds: 20
@@ -53,5 +53,5 @@ service:
       #   command:
       #     - /bin/bash
       #     - -c
-      #     - {{ project_name }}/app/grpc_api/healthcheck.sh
+      #     - bash {{ project_name }}/app/grpc_api/healthcheck.sh
 """
