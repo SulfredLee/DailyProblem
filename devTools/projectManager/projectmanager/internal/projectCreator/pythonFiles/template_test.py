@@ -29,6 +29,8 @@ class Test_{{ project_name }}(unittest.TestCase):
 
         @return argument parser
         \"\"\"
+        if not self.__test_config[inspect.stack()[0][3]]:
+            return
         # import sfdevtools.storage.relationalDBStorage.PostgresDBCtrl as postDBCtrl
         # mock_PostgresDBCtrl = create_autospec(postDBCtrl.PostgresDBCtrl)
         self.assertEqual("test".upper(), "TEST")
