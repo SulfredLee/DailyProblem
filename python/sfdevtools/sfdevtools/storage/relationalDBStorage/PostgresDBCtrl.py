@@ -1,7 +1,6 @@
-from sqlalchemy import create_engine, MetaData, exc # poetry add psycopg2-binary, sqlalchemy
+from sqlalchemy import create_engine, MetaData # poetry add psycopg2-binary, sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 import sqlalchemy
-import traceback
 from sqlalchemy.orm import Session
 from typing import List, Dict, Tuple, Any
 import pandas as pd
@@ -21,7 +20,7 @@ class PostgresDBCtrl(object):
                  , connection_time: int = 10):
         self._logger = logger
 
-        self._logger.info(f"db config db_user: {db_user}, db_host: {db_host}, db_port: {db_port}, db_name: {db_name}, db_schema: {db_schema}")
+        self._logger.info(f"db config db_user: {db_user}, db_host: {db_host}, db_port: {db_port}, db_name: {db_name}")
         # prepare database connection
         self._engine = create_engine(f"postgresql+psycopg2://{db_user}:{db_pw}@{db_host}:{db_port}/{db_name}"
                                      , connect_args={"connect_timeout": connection_time})
@@ -69,9 +68,8 @@ class PostgresDBCtrl(object):
         try:
             db_session.commit()
             return True
-        except exc.SQLAlchemyError as e:
+        except SQLAlchemyError as e:
             db_session.rollback()
-            self._logger.error(traceback.format_exc())
             return False
         finally:
             db_session.close()
@@ -87,9 +85,8 @@ class PostgresDBCtrl(object):
         try:
             db_session.commit()
             return True
-        except exc.SQLAlchemyError as e:
+        except SQLAlchemyError as e:
             db_session.rollback()
-            self._logger.error(traceback.format_exc())
             return False
         finally:
             db_session.close()

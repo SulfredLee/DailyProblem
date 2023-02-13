@@ -4,23 +4,52 @@
 import unittest
 import logging
 import pandas as pd
+import inspect
+from functools import partial
+from time import sleep
 
 from sfdevtools.devTools.SingletonDoubleChecked import SDC
 import sfdevtools.observability.log_helper as lh
 import sfdevtools.storage.objectStorage.AWSObjectStorage as aws_obj_storage
 import sfdevtools.storage.relationalDBStorage.PostgresDBCtrl as postDBCtrl
 import sfdevtools.devTools.DatetimeTools as dtt
+import sfdevtools.devTools.FuncFifoQ as FuncFifoQ
 
 # Functions
 class Test_peacock(unittest.TestCase):
+    def setUp(self):
+        super().setUp()
+        self.__logger = lh.init_logger(logger_name="sfdevtools_logger", is_json_output=False)
+
+        self.__test_config = {
+            "test_example": False
+            , "test_demo_SDC": False
+            , "test_demo_logger_to_logstash": False
+            , "test_demo_logger_with_json_output": False
+            , "test_save_file_to_cloud": False
+            , "test_db_connection": False
+            , "test_func_fifo_q": True
+        }
+
+        if not self.__test_config[self._testMethodName]:
+            self.__logger.info(f"Skip test {self._testMethodName}")
+            return
+
+    def tearDown(self):
+        pass
+
     def test_example(self):
         """! Example Test funtions
         """
+        if not self.__test_config[inspect.stack()[0][3]]:
+            return
         self.assertEqual("test".upper(), "TEST")
 
     def test_demo_SDC(self):
         """! Demo double check lock class
         """
+        if not self.__test_config[inspect.stack()[0][3]]:
+            return
         logger = lh.init_logger(logger_name="sfdevtools_logger", is_json_output=False)
         # create class X
         class X(SDC):
@@ -45,6 +74,8 @@ class Test_peacock(unittest.TestCase):
     def test_demo_logger_to_logstash(self):
         """! Demo show how to send log to logstash
         """
+        if not self.__test_config[inspect.stack()[0][3]]:
+            return
         logger = lh.init_logger(logger_name="connection_tester_logger"
                                 , is_json_output=False
                                 , is_print_to_console=True
@@ -59,6 +90,8 @@ class Test_peacock(unittest.TestCase):
     def test_demo_logger_with_json_output(self):
         """! Demo show json output
         """
+        if not self.__test_config[inspect.stack()[0][3]]:
+            return
         logger = lh.init_logger(logger_name="connection_tester_logger"
                                 , is_json_output=True
                                 , is_print_to_console=True
@@ -68,13 +101,12 @@ class Test_peacock(unittest.TestCase):
         logger.warning("Test Message from test")
 
     def test_save_file_to_cloud(self):
+        if not self.__test_config[inspect.stack()[0][3]]:
+            return
         header = ["H_1", "H_2", "H_3"]
         content = [["r1 c1", "r1 c2", "r1 c3"]
                    , ["r2 c1", "r2 c2", "r2 c3"]]
         df = pd.DataFrame(content, columns=header)
-        is_debug = False
-        if is_debug:
-            return
         logger = lh.init_logger(logger_name="s3_tester_logger", is_print_to_console=True)
         s3_storage = aws_obj_storage.AWSObjectStorage(logger=logger)
         file_name = "test_file_name.csv"
@@ -84,9 +116,7 @@ class Test_peacock(unittest.TestCase):
                                            , obj_name=f"other/{dtt.get_current_date()}/{dtt.get_current_datetime()}_{file_name}")
 
     def test_db_connection(self):
-        is_test = False
-        if not is_test:
-            self.__logger.info("Skip test")
+        if not self.__test_config[inspect.stack()[0][3]]:
             return
         db_ctrl = postDBCtrl.PostgresDBCtrl(db_user=os.getenv("DB_USER", default="postgres")
                                             , db_pw=os.getenv("DB_PW", default="dummy pw")
@@ -99,6 +129,26 @@ class Test_peacock(unittest.TestCase):
         # self.__logger.info(type(db_ctrl.get_classes()))
         # self.__logger.info(type(db_ctrl.get_tables()))
         # self.__logger.info(type(db_ctrl.get_session()))
+
+    def test_func_fifo_q(self):
+        if not self.__test_config[inspect.stack()[0][3]]:
+            return
+
+        logger = lh.init_logger(logger_name="test_func_fifo_q", is_print_to_console=True, is_json_output=False)
+        func_q: FuncFifoQ.FuncFifoQ = FuncFifoQ.FuncFifoQ(logger=logger, pool_size=10)
+        func_q.start_q()
+        for i in range(10):
+            func_q.push_func(partial(self.__func_test_foo, i, "hi"))
+
+        logger.info("Before sleep")
+        sleep(2)
+        logger.info("After sleep")
+
+        func_q.stop_q()
+
+    def __func_test_foo(self, a: int, b: str):
+        logger = lh.init_logger(logger_name="test_func_fifo_q", is_print_to_console=True, is_json_output=False)
+        logger.info(f"Hi from thread: {a}")
 
 
 if __name__ == "__main__":

@@ -60,3 +60,49 @@ logger.info("Test Message from test")
 logger.error("Test Message from test")
 logger.warning("Test Message from test")
 ```
+
+### Simple function pool
+```python
+import sfdevtools.observability.log_helper as lh
+import sfdevtools.devTools.FuncFifoQ as FuncFifoQ
+from functools import partial
+from time import sleep
+
+logger = lh.init_logger(logger_name="test_func_fifo_q", is_print_to_console=True, is_json_output=False)
+func_q: FuncFifoQ.FuncFifoQ = FuncFifoQ.FuncFifoQ(logger=logger, pool_size=10)
+func_q.start_q()
+for i in range(10):
+    func_q.push_func(partial(self.__func_test_foo, i, "hi"))
+
+logger.info("Before sleep")
+sleep(2)
+logger.info("After sleep")
+
+func_q.stop_q()
+```
+
+Expected output:
+```bash
+2023-02-13 13:50:48,565 [INFO] [test_func_fifo_q] [test_sfdevtools.py:test_func_fifo_q:144] [MainThread:92105] Before sleep
+2023-02-13 13:50:48,565 [INFO] [test_func_fifo_q] [test_sfdevtools.py:__func_test_foo:151] [Thread-4:92105] Hi from thread: 0
+2023-02-13 13:50:48,565 [INFO] [test_func_fifo_q] [test_sfdevtools.py:__func_test_foo:151] [Thread-8:92105] Hi from thread: 1
+2023-02-13 13:50:48,565 [INFO] [test_func_fifo_q] [test_sfdevtools.py:__func_test_foo:151] [Thread-3:92105] Hi from thread: 2
+2023-02-13 13:50:48,565 [INFO] [test_func_fifo_q] [test_sfdevtools.py:__func_test_foo:151] [Thread-2:92105] Hi from thread: 3
+2023-02-13 13:50:48,565 [INFO] [test_func_fifo_q] [test_sfdevtools.py:__func_test_foo:151] [Thread-9:92105] Hi from thread: 4
+2023-02-13 13:50:48,565 [INFO] [test_func_fifo_q] [test_sfdevtools.py:__func_test_foo:151] [Thread-5:92105] Hi from thread: 5
+2023-02-13 13:50:48,565 [INFO] [test_func_fifo_q] [test_sfdevtools.py:__func_test_foo:151] [Thread-7:92105] Hi from thread: 6
+2023-02-13 13:50:48,565 [INFO] [test_func_fifo_q] [test_sfdevtools.py:__func_test_foo:151] [Thread-10:92105] Hi from thread: 7
+2023-02-13 13:50:48,565 [INFO] [test_func_fifo_q] [test_sfdevtools.py:__func_test_foo:151] [Thread-6:92105] Hi from thread: 8
+2023-02-13 13:50:48,565 [INFO] [test_func_fifo_q] [test_sfdevtools.py:__func_test_foo:151] [Thread-1:92105] Hi from thread: 9
+2023-02-13 13:50:50,565 [INFO] [test_func_fifo_q] [test_sfdevtools.py:test_func_fifo_q:146] [MainThread:92105] After sleep
+2023-02-13 13:50:50,566 [INFO] [test_func_fifo_q] [FuncFifoQ.py:main:56] [Thread-7:92105] End
+2023-02-13 13:50:50,566 [INFO] [test_func_fifo_q] [FuncFifoQ.py:main:56] [Thread-5:92105] End
+2023-02-13 13:50:50,566 [INFO] [test_func_fifo_q] [FuncFifoQ.py:main:56] [Thread-4:92105] End
+2023-02-13 13:50:50,566 [INFO] [test_func_fifo_q] [FuncFifoQ.py:main:56] [Thread-10:92105] End
+2023-02-13 13:50:50,567 [INFO] [test_func_fifo_q] [FuncFifoQ.py:main:56] [Thread-1:92105] End
+2023-02-13 13:50:50,567 [INFO] [test_func_fifo_q] [FuncFifoQ.py:main:56] [Thread-3:92105] End
+2023-02-13 13:50:50,567 [INFO] [test_func_fifo_q] [FuncFifoQ.py:main:56] [Thread-8:92105] End
+2023-02-13 13:50:50,568 [INFO] [test_func_fifo_q] [FuncFifoQ.py:main:56] [Thread-6:92105] End
+2023-02-13 13:50:50,568 [INFO] [test_func_fifo_q] [FuncFifoQ.py:main:56] [Thread-2:92105] End
+2023-02-13 13:50:50,568 [INFO] [test_func_fifo_q] [FuncFifoQ.py:main:56] [Thread-9:92105] End
+```
