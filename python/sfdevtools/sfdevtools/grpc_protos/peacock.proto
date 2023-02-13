@@ -7,10 +7,16 @@ package peacock;
 service Peacock {
     // Unary - request and respond
     rpc SaveFileToColud (SaveFileToColud_Msg) returns (NoneReply);
+    rpc SaveRefDataFromQC (SaveRefDataFromQC_Msg) returns (NoneReply);
     rpc HealthCheck (Ping) returns (Pong);
 }
 
 message SaveFileToColud_Msg {
+    string file_name = 1;
+    string file_content = 2;
+}
+
+message SaveRefDataFromQC_Msg {
     string file_name = 1;
     string file_content = 2;
 }
