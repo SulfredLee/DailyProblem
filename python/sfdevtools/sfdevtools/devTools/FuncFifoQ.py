@@ -2,6 +2,7 @@ import threading
 from typing import List, Dict, Tuple
 import logging
 from functools import partial
+import atexit
 
 from sfdevtools.devTools.MsgQ import MsgQ
 
@@ -18,6 +19,8 @@ class FuncFifoQ(object):
         # init threads
         for i in range(pool_size):
             self.__threads.append(threading.Thread(target=self.main))
+
+        atexit.register(self.__cleanup)
 
     def start_q(self) -> None:
         with self.__mutex:
@@ -44,20 +47,24 @@ class FuncFifoQ(object):
         self.__logger.info("Start")
 
         while True:
-            if not self.__is_running:
+            if not self.__is_q_running():
                 break
 
             user_func = self.__msg_q.get()
             user_func()
 
-            if not self.__is_running:
+            if not self.__is_q_running():
                 break
 
         self.__logger.info("End")
 
-    def __is_running(self) -> bool:
+    def __is_q_running(self) -> bool:
         with self.__mutex:
             return self.__is_running
 
     def __dummy_func(self) -> None:
         pass
+
+    def __cleanup(self):
+        self.__logger.info("Here")
+        self.stop_q()

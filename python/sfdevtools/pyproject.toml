@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sfdevtools"
-version = "1.20.0"
+version = "1.21.0"
 description = ""
 authors = ["SulfredLee <sflee1112@gmail.com>"]
 readme = "README.md"
