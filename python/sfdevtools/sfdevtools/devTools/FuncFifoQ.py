@@ -30,6 +30,9 @@ class FuncFifoQ(object):
             th.start()
 
     def stop_q(self) -> None:
+        if not self.__is_q_running():
+            return
+
         with self.__mutex:
             self.__is_running = False
 
