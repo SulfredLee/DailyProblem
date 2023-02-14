@@ -19,6 +19,7 @@ message SaveFileToColud_Msg {
 message SaveRefDataFromQC_Msg {
     string file_name = 1;
     string file_content = 2;
+    string action_mode = 3;
 }
 
 message NoneReply {
