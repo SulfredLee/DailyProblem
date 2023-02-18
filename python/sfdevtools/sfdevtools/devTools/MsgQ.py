@@ -3,10 +3,11 @@ from typing import List, Dict, Tuple, Any, Deque
 from collections import deque
 
 class MsgQ(object):
-    def __init__(self):
+    def __init__(self, timeout: float = None):
         self.__q: Deque[Any] = deque()
         self.__mutex: threading.Lock = threading.Lock()
         self.__cond: threading.Condition = threading.Condition()
+        self.__timeout: float = timeout
 
     def push(self, user_data: Any):
         with self.__mutex:
@@ -18,8 +19,11 @@ class MsgQ(object):
 
     def get(self) -> Any:
         self.__cond.acquire()
-        self.__cond.wait()
+        self.__cond.wait(timeout=self.__timeout)
         self.__cond.release()
 
         with self.__mutex:
-            return self.__q.popleft()
+            if len(self.__q) == 0:
+                return None
+            else:
+                return self.__q.popleft()

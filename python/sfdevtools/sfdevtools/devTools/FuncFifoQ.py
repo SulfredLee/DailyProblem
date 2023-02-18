@@ -2,7 +2,7 @@ import threading
 from typing import List, Dict, Tuple
 import logging
 from functools import partial
-import atexit
+import signal
 
 from sfdevtools.devTools.MsgQ import MsgQ
 
@@ -20,7 +20,7 @@ class FuncFifoQ(object):
         for i in range(pool_size):
             self.__threads.append(threading.Thread(target=self.main))
 
-        atexit.register(self.__cleanup)
+        signal.signal(signal.SIGINT, self.__cleanup)
 
     def start_q(self) -> None:
         with self.__mutex:
@@ -68,6 +68,6 @@ class FuncFifoQ(object):
     def __dummy_func(self) -> None:
         pass
 
-    def __cleanup(self):
-        self.__logger.info("Here")
+    def __cleanup(self, signum, frame):
         self.stop_q()
+        exit(0)
