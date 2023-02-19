@@ -1,0 +1,37 @@
+
+syntax = "proto3";
+
+package tweety;
+
+// The greeting service definition.
+service Tweety {
+    // Unary - request and respond
+    rpc GetStrategyConfigId (GetStrategyConfigId_Msg) returns (GetStrategyConfigId_Reply);
+    rpc SaveStrategyConfig (SaveStrategyConfig_Msg) returns (SaveStrategyConfig_Reply);
+    rpc HealthCheck (Ping) returns (Pong);
+}
+
+message GetStrategyConfigId_Msg {
+    string strategy_config = 1;
+}
+
+message GetStrategyConfigId_Reply {
+    string status = 1;
+    string cfg_id = 2;
+}
+
+message SaveStrategyConfig_Msg {
+    string strategy_config = 1;
+}
+
+message SaveStrategyConfig_Reply {
+    string status = 1;
+}
+
+message Ping {
+    string message = 1;
+}
+
+message Pong {
+    string message = 1;
+}
