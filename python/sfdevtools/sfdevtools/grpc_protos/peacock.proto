@@ -8,7 +8,16 @@ service Peacock {
     // Unary - request and respond
     rpc SaveFileToColud (SaveFileToColud_Msg) returns (NoneReply);
     rpc SaveRefDataFromQC (SaveRefDataFromQC_Msg) returns (NoneReply);
+    rpc SaveStrategyConfig (SaveStrategyConfig_Msg) returns (SaveStrategyConfig_Reply);
     rpc HealthCheck (Ping) returns (Pong);
+}
+
+message SaveStrategyConfig_Msg {
+    string strategy_config = 1;
+}
+
+message SaveStrategyConfig_Reply {
+    string status = 1;
 }
 
 message SaveFileToColud_Msg {

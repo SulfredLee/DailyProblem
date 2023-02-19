@@ -25,6 +25,11 @@ class PeacockStub(object):
                 request_serializer=peacock__pb2.SaveRefDataFromQC_Msg.SerializeToString,
                 response_deserializer=peacock__pb2.NoneReply.FromString,
                 )
+        self.SaveStrategyConfig = channel.unary_unary(
+                '/peacock.Peacock/SaveStrategyConfig',
+                request_serializer=peacock__pb2.SaveStrategyConfig_Msg.SerializeToString,
+                response_deserializer=peacock__pb2.SaveStrategyConfig_Reply.FromString,
+                )
         self.HealthCheck = channel.unary_unary(
                 '/peacock.Peacock/HealthCheck',
                 request_serializer=peacock__pb2.Ping.SerializeToString,
@@ -49,6 +54,12 @@ class PeacockServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SaveStrategyConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def HealthCheck(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -67,6 +78,11 @@ def add_PeacockServicer_to_server(servicer, server):
                     servicer.SaveRefDataFromQC,
                     request_deserializer=peacock__pb2.SaveRefDataFromQC_Msg.FromString,
                     response_serializer=peacock__pb2.NoneReply.SerializeToString,
+            ),
+            'SaveStrategyConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.SaveStrategyConfig,
+                    request_deserializer=peacock__pb2.SaveStrategyConfig_Msg.FromString,
+                    response_serializer=peacock__pb2.SaveStrategyConfig_Reply.SerializeToString,
             ),
             'HealthCheck': grpc.unary_unary_rpc_method_handler(
                     servicer.HealthCheck,
@@ -115,6 +131,23 @@ class Peacock(object):
         return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/SaveRefDataFromQC',
             peacock__pb2.SaveRefDataFromQC_Msg.SerializeToString,
             peacock__pb2.NoneReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SaveStrategyConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/SaveStrategyConfig',
+            peacock__pb2.SaveStrategyConfig_Msg.SerializeToString,
+            peacock__pb2.SaveStrategyConfig_Reply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
