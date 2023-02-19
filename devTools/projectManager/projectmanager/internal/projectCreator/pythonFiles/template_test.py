@@ -6,6 +6,7 @@ import unittest
 from unittest.mock import Mock, create_autospec, patch
 import sfdevtools.observability.log_helper as lh
 from typing import List, Dict, Tuple
+import inspect
 
 # Functions
 class Test_{{ project_name }}(unittest.TestCase):
