@@ -1,0 +1,127 @@
+
+syntax = "proto3";
+
+package ts_cop;
+
+message CI {
+    string value = 1; // json
+}
+
+message CIList {
+    repeated CI ci_list = 1;
+}
+
+message SI {
+    string symbol = 1;
+    double ratio = 2;
+    string parent_id = 3;
+    string si_id = 4;
+    int64 created = 5; // unix time
+    int64 last_update = 6; // unix time
+    string strategy_name = 7;
+    bool live_mode = 8;
+    string qc_strategy_id = 9;
+    string symbol_id = 10;
+}
+
+message SIList {
+    repeated SI si_list = 1;
+}
+
+message TSOrder {
+    string symbol = 1;
+    double quantity = 2;
+    double fill_quantity = 3;
+    string parent_id = 4;
+    string order_id = 5;
+    int64 qc_order_id = 6;
+    int64 created = 7; // unix time
+    int64 last_update = 8; // unix time
+    string strategy_name = 9;
+    bool live_mode = 10;
+    string qc_strategy_id = 11;
+    string order_status = 12;
+    string execution_broker = 13;
+    string clearing_broker = 14;
+    string account = 15;
+    double price = 16;
+    double fee = 17;
+    string exchange = 18;
+    string ccy = 19;
+    string fee_ccy = 20;
+    string symbol_id = 21;
+}
+
+message TSOrderList {
+    repeated TSOrder order_list = 1;
+}
+
+message TSTrade {
+    string symbol = 1;
+    double quantity = 2;
+    string parent_id = 3;
+    string trade_id = 4;
+    int64 created = 5; // unix time
+    int64 last_update = 6; // unix time
+    string strategy_name = 7;
+    bool live_mode = 8;
+    string qc_strategy_id = 9;
+    string trade_status = 10;
+    string execution_broker = 11;
+    string clearing_broker = 12;
+    int64 settlement_date = 13; // unix time
+    double fx_ratio = 14;
+    string account = 15;
+    double price = 16;
+    double fee = 17;
+    string exchange = 18;
+    string ccy = 19;
+    string fee_ccy = 20;
+    string symbol_id = 21;
+}
+
+message TSTradeList {
+    repeated TSTrade trade_list = 1;
+}
+
+message Cop {
+    enum MsgType {
+        Listing = 0;
+        Strategy = 1;
+        System = 2;
+    }
+    enum FidNum {
+        Dummy = 0;
+        // 00001 - 10000 --- int32
+        // 10001 - 20000 --- int64
+        // 20001 - 30000 --- float
+        // 30001 - 40000 --- double
+        // 40001 - 50000 --- string
+        // 50001 - 60000 --- other
+        CI = 50001;
+        SI = 50002;
+        Order = 50003;
+        Trade = 50004;
+        // 60001 - 70000 --- bool
+    }
+
+    // header
+    string msg_id = 1;
+    MsgType msg_type = 2;
+    string sender = 3;
+    int32 instance_id = 4;
+    int64 seq_num = 5;
+    int64 created_time = 6; // unix time
+
+    // body
+    map<int32, int32> int32_map = 7;
+    map<int32, int64> int64_map = 8;
+    map<int32, float> float_map = 9;
+    map<int32, double> double_map = 10;
+    map<int32, string> string_map = 11;
+    map<int32, bool> bool_map = 12;
+    map<int32, TSOrderList> order_map = 13;
+    map<int32, TSTradeList> trade_map = 14;
+    map<int32, SIList> si_map = 15;
+    map<int32, CIList> ci_map = 16;
+}
