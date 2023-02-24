@@ -9,7 +9,7 @@ class StrategyInsight(object):
         self.last_update: datetime = None
         self.strategy_name: str = ""
         self.live_mode: bool = False
-        self.qc_strategy_id: str = ""
+        self.strategy_id: str = ""
 
     def __eq__(self, other) -> bool:
         if isinstance(other, StrategyInsight):
@@ -29,12 +29,12 @@ class TS_Order(object):
         self.fill_quantity: float = 0
         self.parent_id: str = ""
         self.order_id: str = ""
-        self.qc_order_id: int = 0
+        self.platform_order_id: int = 0
         self.created: datetime = None
         self.last_update: datetime = None
         self.strategy_name: str = ""
         self.live_mode: bool = False
-        self.qc_strategy_id: str = ""
+        self.strategy_id: str = ""
         # https://github.com/QuantConnect/Lean/blob/master/Common/Orders/OrderTypes.cs#L107
         self.order_status: str = ""
         self.execution_broker: str = ""
@@ -49,7 +49,7 @@ class TS_Order(object):
     def __eq__(self, other) -> bool:
         if isinstance(other, TS_Order):
             return self.order_id == other.order_id\
-                and self.qc_order_id == other.qc_order_id
+                and self.platform_order_id == other.platform_order_id
         else:
             return False
 
@@ -67,7 +67,7 @@ class TS_Trade(object):
         self.last_update: datetime = None
         self.strategy_name: str = ""
         self.live_mode: bool = False
-        self.qc_strategy_id: str = ""
+        self.strategy_id: str = ""
         # https://github.com/QuantConnect/Lean/blob/master/Common/Orders/OrderTypes.cs#L107
         self.trade_status: str = ""
         self.execution_broker: str = ""
@@ -84,7 +84,7 @@ class TS_Trade(object):
     def __eq__(self, other) -> bool:
         if isinstance(other, TS_Order):
             return self.order_id == other.order_id\
-                and self.qc_order_id == other.qc_order_id
+                and self.platform_order_id == other.platform_order_id
         else:
             return False
 

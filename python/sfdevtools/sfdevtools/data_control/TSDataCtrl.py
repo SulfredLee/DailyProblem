@@ -57,10 +57,13 @@ class TSDataCtrl(object):
         self.__logger.info(f"Subscribe topic: {topic}")
         self.__subscriber.setsockopt(zmq.SUBSCRIBE, str.encode(topic))
 
-    def start_subscription(self):
+    def start_subscription(self, mode: str = "simple"):
         with self.__sub_mutex:
             self.__is_subscription_run = True
-            self.__sub_main_thread = threading.Thread(target=self.sub_main)
+            if mode == "simple":
+                self.__sub_main_thread = threading.Thread(target=self.sub_main_simple)
+            else:
+                self.__sub_main_thread = threading.Thread(target=self.sub_main_extract)
             self.__sub_main_thread.start()
 
             signal.signal(signal.SIGINT, self.__cleanup)
@@ -93,7 +96,61 @@ class TSDataCtrl(object):
         with self.__pub_mutex:
             self.__seq_num = 0
 
-    def sub_main(self):
+    def sub_main_extract(self):
+        self.__logger.info("Start")
+
+        poller = zmq.Poller()
+        poller.register(self.__subscriber, zmq.POLLIN)
+        while self.__is_subscription():
+            sockets = dict(poller.poll(self.__sub_timeout_ms))
+
+            if not self.__is_subscription():
+                break
+
+            # get and process data
+            if self.__subscriber in sockets:
+                topic_encoded, data = self.__subscriber.recv_multipart()
+
+                with self.__sub_mutex:
+                    if self.__cb_fun is not None:
+                        cop = ts_cop_pb2.Cop()
+                        cop.ParseFromString(data)
+                        topic = topic_encoded.decode("utf-8")
+                        # int32
+                        for fid_num, fid_value in cop.int32_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                        # int64
+                        for fid_num, fid_value in cop.int64_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                        # float
+                        for fid_num, fid_value in cop.float_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                        # double
+                        for fid_num, fid_value in cop.double_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                        # string
+                        for fid_num, fid_value in cop.string_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                        # bool
+                        for fid_num, fid_value in cop.bool_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                        # order
+                        for fid_num, fid_value in cop.order_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.order_list)
+                        # trade
+                        for fid_num, fid_value in cop.trade_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.trade_list)
+                        # si
+                        for fid_num, fid_value in cop.si_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.si_list)
+                        # ci
+                        for fid_num, fid_value in cop.ci_map.items():
+                            for ci in fid_value.ci_list:
+                                self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=ci.value)
+
+        self.__logger.info("End")
+
+    def sub_main_simple(self):
         self.__logger.info("Start")
 
         poller = zmq.Poller()

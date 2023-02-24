@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0cts_cop.proto\x12\x06ts_cop\"\x13\n\x02\x43I\x12\r\n\x05value\x18\x01 \x01(\t\"%\n\x06\x43IList\x12\x1b\n\x07\x63i_list\x18\x01 \x03(\x0b\x32\n.ts_cop.CI\"\xc0\x01\n\x02SI\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\r\n\x05ratio\x18\x02 \x01(\x01\x12\x11\n\tparent_id\x18\x03 \x01(\t\x12\r\n\x05si_id\x18\x04 \x01(\t\x12\x0f\n\x07\x63reated\x18\x05 \x01(\x03\x12\x13\n\x0blast_update\x18\x06 \x01(\x03\x12\x15\n\rstrategy_name\x18\x07 \x01(\t\x12\x11\n\tlive_mode\x18\x08 \x01(\x08\x12\x16\n\x0eqc_strategy_id\x18\t \x01(\t\x12\x11\n\tsymbol_id\x18\n \x01(\t\"%\n\x06SIList\x12\x1b\n\x07si_list\x18\x01 \x03(\x0b\x32\n.ts_cop.SI\"\x9d\x03\n\x07TSOrder\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08quantity\x18\x02 \x01(\x01\x12\x15\n\rfill_quantity\x18\x03 \x01(\x01\x12\x11\n\tparent_id\x18\x04 \x01(\t\x12\x10\n\x08order_id\x18\x05 \x01(\t\x12\x13\n\x0bqc_order_id\x18\x06 \x01(\x03\x12\x0f\n\x07\x63reated\x18\x07 \x01(\x03\x12\x13\n\x0blast_update\x18\x08 \x01(\x03\x12\x15\n\rstrategy_name\x18\t \x01(\t\x12\x11\n\tlive_mode\x18\n \x01(\x08\x12\x16\n\x0eqc_strategy_id\x18\x0b \x01(\t\x12\x14\n\x0corder_status\x18\x0c \x01(\t\x12\x18\n\x10\x65xecution_broker\x18\r \x01(\t\x12\x17\n\x0f\x63learing_broker\x18\x0e \x01(\t\x12\x0f\n\x07\x61\x63\x63ount\x18\x0f \x01(\t\x12\r\n\x05price\x18\x10 \x01(\x01\x12\x0b\n\x03\x66\x65\x65\x18\x11 \x01(\x01\x12\x10\n\x08\x65xchange\x18\x12 \x01(\t\x12\x0b\n\x03\x63\x63y\x18\x13 \x01(\t\x12\x0f\n\x07\x66\x65\x65_ccy\x18\x14 \x01(\t\x12\x11\n\tsymbol_id\x18\x15 \x01(\t\"2\n\x0bTSOrderList\x12#\n\norder_list\x18\x01 \x03(\x0b\x32\x0f.ts_cop.TSOrder\"\x9c\x03\n\x07TSTrade\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08quantity\x18\x02 \x01(\x01\x12\x11\n\tparent_id\x18\x03 \x01(\t\x12\x10\n\x08trade_id\x18\x04 \x01(\t\x12\x0f\n\x07\x63reated\x18\x05 \x01(\x03\x12\x13\n\x0blast_update\x18\x06 \x01(\x03\x12\x15\n\rstrategy_name\x18\x07 \x01(\t\x12\x11\n\tlive_mode\x18\x08 \x01(\x08\x12\x16\n\x0eqc_strategy_id\x18\t \x01(\t\x12\x14\n\x0ctrade_status\x18\n \x01(\t\x12\x18\n\x10\x65xecution_broker\x18\x0b \x01(\t\x12\x17\n\x0f\x63learing_broker\x18\x0c \x01(\t\x12\x17\n\x0fsettlement_date\x18\r \x01(\x03\x12\x10\n\x08\x66x_ratio\x18\x0e \x01(\x01\x12\x0f\n\x07\x61\x63\x63ount\x18\x0f \x01(\t\x12\r\n\x05price\x18\x10 \x01(\x01\x12\x0b\n\x03\x66\x65\x65\x18\x11 \x01(\x01\x12\x10\n\x08\x65xchange\x18\x12 \x01(\t\x12\x0b\n\x03\x63\x63y\x18\x13 \x01(\t\x12\x0f\n\x07\x66\x65\x65_ccy\x18\x14 \x01(\t\x12\x11\n\tsymbol_id\x18\x15 \x01(\t\"2\n\x0bTSTradeList\x12#\n\ntrade_list\x18\x01 \x03(\x0b\x32\x0f.ts_cop.TSTrade\"\xee\t\n\x03\x43op\x12\x0e\n\x06msg_id\x18\x01 \x01(\t\x12%\n\x08msg_type\x18\x02 \x01(\x0e\x32\x13.ts_cop.Cop.MsgType\x12\x0e\n\x06sender\x18\x03 \x01(\t\x12\x13\n\x0binstance_id\x18\x04 \x01(\x05\x12\x0f\n\x07seq_num\x18\x05 \x01(\x03\x12\x14\n\x0c\x63reated_time\x18\x06 \x01(\x03\x12,\n\tint32_map\x18\x07 \x03(\x0b\x32\x19.ts_cop.Cop.Int32MapEntry\x12,\n\tint64_map\x18\x08 \x03(\x0b\x32\x19.ts_cop.Cop.Int64MapEntry\x12,\n\tfloat_map\x18\t \x03(\x0b\x32\x19.ts_cop.Cop.FloatMapEntry\x12.\n\ndouble_map\x18\n \x03(\x0b\x32\x1a.ts_cop.Cop.DoubleMapEntry\x12.\n\nstring_map\x18\x0b \x03(\x0b\x32\x1a.ts_cop.Cop.StringMapEntry\x12*\n\x08\x62ool_map\x18\x0c \x03(\x0b\x32\x18.ts_cop.Cop.BoolMapEntry\x12,\n\torder_map\x18\r \x03(\x0b\x32\x19.ts_cop.Cop.OrderMapEntry\x12,\n\ttrade_map\x18\x0e \x03(\x0b\x32\x19.ts_cop.Cop.TradeMapEntry\x12&\n\x06si_map\x18\x0f \x03(\x0b\x32\x16.ts_cop.Cop.SiMapEntry\x12&\n\x06\x63i_map\x18\x10 \x03(\x0b\x32\x16.ts_cop.Cop.CiMapEntry\x1a/\n\rInt32MapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\x1a/\n\rInt64MapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x03:\x02\x38\x01\x1a/\n\rFloatMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x02:\x02\x38\x01\x1a\x30\n\x0e\x44oubleMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x01:\x02\x38\x01\x1a\x30\n\x0eStringMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a.\n\x0c\x42oolMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x08:\x02\x38\x01\x1a\x44\n\rOrderMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.ts_cop.TSOrderList:\x02\x38\x01\x1a\x44\n\rTradeMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.ts_cop.TSTradeList:\x02\x38\x01\x1a<\n\nSiMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.ts_cop.SIList:\x02\x38\x01\x1a<\n\nCiMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.ts_cop.CIList:\x02\x38\x01\"0\n\x07MsgType\x12\x0b\n\x07Listing\x10\x00\x12\x0c\n\x08Strategy\x10\x01\x12\n\n\x06System\x10\x02\"A\n\x06\x46idNum\x12\t\n\x05\x44ummy\x10\x00\x12\x08\n\x02\x43I\x10\xd1\x86\x03\x12\x08\n\x02SI\x10\xd2\x86\x03\x12\x0b\n\x05Order\x10\xd3\x86\x03\x12\x0b\n\x05Trade\x10\xd4\x86\x03\x62\x06proto3'
+  serialized_pb=b'\n\x0cts_cop.proto\x12\x06ts_cop\"\x13\n\x02\x43I\x12\r\n\x05value\x18\x01 \x01(\t\"%\n\x06\x43IList\x12\x1b\n\x07\x63i_list\x18\x01 \x03(\x0b\x32\n.ts_cop.CI\"\xbd\x01\n\x02SI\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\r\n\x05ratio\x18\x02 \x01(\x01\x12\x11\n\tparent_id\x18\x03 \x01(\t\x12\r\n\x05si_id\x18\x04 \x01(\t\x12\x0f\n\x07\x63reated\x18\x05 \x01(\x01\x12\x13\n\x0blast_update\x18\x06 \x01(\x01\x12\x15\n\rstrategy_name\x18\x07 \x01(\t\x12\x11\n\tlive_mode\x18\x08 \x01(\x08\x12\x13\n\x0bstrategy_id\x18\t \x01(\t\x12\x11\n\tsymbol_id\x18\n \x01(\t\"%\n\x06SIList\x12\x1b\n\x07si_list\x18\x01 \x03(\x0b\x32\n.ts_cop.SI\"\xa0\x03\n\x07TSOrder\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08quantity\x18\x02 \x01(\x01\x12\x15\n\rfill_quantity\x18\x03 \x01(\x01\x12\x11\n\tparent_id\x18\x04 \x01(\t\x12\x10\n\x08order_id\x18\x05 \x01(\t\x12\x19\n\x11platform_order_id\x18\x06 \x01(\t\x12\x0f\n\x07\x63reated\x18\x07 \x01(\x01\x12\x13\n\x0blast_update\x18\x08 \x01(\x01\x12\x15\n\rstrategy_name\x18\t \x01(\t\x12\x11\n\tlive_mode\x18\n \x01(\x08\x12\x13\n\x0bstrategy_id\x18\x0b \x01(\t\x12\x14\n\x0corder_status\x18\x0c \x01(\t\x12\x18\n\x10\x65xecution_broker\x18\r \x01(\t\x12\x17\n\x0f\x63learing_broker\x18\x0e \x01(\t\x12\x0f\n\x07\x61\x63\x63ount\x18\x0f \x01(\t\x12\r\n\x05price\x18\x10 \x01(\x01\x12\x0b\n\x03\x66\x65\x65\x18\x11 \x01(\x01\x12\x10\n\x08\x65xchange\x18\x12 \x01(\t\x12\x0b\n\x03\x63\x63y\x18\x13 \x01(\t\x12\x0f\n\x07\x66\x65\x65_ccy\x18\x14 \x01(\t\x12\x11\n\tsymbol_id\x18\x15 \x01(\t\"2\n\x0bTSOrderList\x12#\n\norder_list\x18\x01 \x03(\x0b\x32\x0f.ts_cop.TSOrder\"\x99\x03\n\x07TSTrade\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08quantity\x18\x02 \x01(\x01\x12\x11\n\tparent_id\x18\x03 \x01(\t\x12\x10\n\x08trade_id\x18\x04 \x01(\t\x12\x0f\n\x07\x63reated\x18\x05 \x01(\x01\x12\x13\n\x0blast_update\x18\x06 \x01(\x01\x12\x15\n\rstrategy_name\x18\x07 \x01(\t\x12\x11\n\tlive_mode\x18\x08 \x01(\x08\x12\x13\n\x0bstrategy_id\x18\t \x01(\t\x12\x14\n\x0ctrade_status\x18\n \x01(\t\x12\x18\n\x10\x65xecution_broker\x18\x0b \x01(\t\x12\x17\n\x0f\x63learing_broker\x18\x0c \x01(\t\x12\x17\n\x0fsettlement_date\x18\r \x01(\x01\x12\x10\n\x08\x66x_ratio\x18\x0e \x01(\x01\x12\x0f\n\x07\x61\x63\x63ount\x18\x0f \x01(\t\x12\r\n\x05price\x18\x10 \x01(\x01\x12\x0b\n\x03\x66\x65\x65\x18\x11 \x01(\x01\x12\x10\n\x08\x65xchange\x18\x12 \x01(\t\x12\x0b\n\x03\x63\x63y\x18\x13 \x01(\t\x12\x0f\n\x07\x66\x65\x65_ccy\x18\x14 \x01(\t\x12\x11\n\tsymbol_id\x18\x15 \x01(\t\"2\n\x0bTSTradeList\x12#\n\ntrade_list\x18\x01 \x03(\x0b\x32\x0f.ts_cop.TSTrade\"\xee\t\n\x03\x43op\x12\x0e\n\x06msg_id\x18\x01 \x01(\t\x12%\n\x08msg_type\x18\x02 \x01(\x0e\x32\x13.ts_cop.Cop.MsgType\x12\x0e\n\x06sender\x18\x03 \x01(\t\x12\x13\n\x0binstance_id\x18\x04 \x01(\x05\x12\x0f\n\x07seq_num\x18\x05 \x01(\x03\x12\x14\n\x0c\x63reated_time\x18\x06 \x01(\x01\x12,\n\tint32_map\x18\x07 \x03(\x0b\x32\x19.ts_cop.Cop.Int32MapEntry\x12,\n\tint64_map\x18\x08 \x03(\x0b\x32\x19.ts_cop.Cop.Int64MapEntry\x12,\n\tfloat_map\x18\t \x03(\x0b\x32\x19.ts_cop.Cop.FloatMapEntry\x12.\n\ndouble_map\x18\n \x03(\x0b\x32\x1a.ts_cop.Cop.DoubleMapEntry\x12.\n\nstring_map\x18\x0b \x03(\x0b\x32\x1a.ts_cop.Cop.StringMapEntry\x12*\n\x08\x62ool_map\x18\x0c \x03(\x0b\x32\x18.ts_cop.Cop.BoolMapEntry\x12,\n\torder_map\x18\r \x03(\x0b\x32\x19.ts_cop.Cop.OrderMapEntry\x12,\n\ttrade_map\x18\x0e \x03(\x0b\x32\x19.ts_cop.Cop.TradeMapEntry\x12&\n\x06si_map\x18\x0f \x03(\x0b\x32\x16.ts_cop.Cop.SiMapEntry\x12&\n\x06\x63i_map\x18\x10 \x03(\x0b\x32\x16.ts_cop.Cop.CiMapEntry\x1a/\n\rInt32MapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\x1a/\n\rInt64MapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x03:\x02\x38\x01\x1a/\n\rFloatMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x02:\x02\x38\x01\x1a\x30\n\x0e\x44oubleMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x01:\x02\x38\x01\x1a\x30\n\x0eStringMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a.\n\x0c\x42oolMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x08:\x02\x38\x01\x1a\x44\n\rOrderMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.ts_cop.TSOrderList:\x02\x38\x01\x1a\x44\n\rTradeMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.ts_cop.TSTradeList:\x02\x38\x01\x1a<\n\nSiMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.ts_cop.SIList:\x02\x38\x01\x1a<\n\nCiMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.ts_cop.CIList:\x02\x38\x01\"0\n\x07MsgType\x12\x0b\n\x07Listing\x10\x00\x12\x0c\n\x08Strategy\x10\x01\x12\n\n\x06System\x10\x02\"A\n\x06\x46idNum\x12\t\n\x05\x44ummy\x10\x00\x12\x08\n\x02\x43I\x10\xd1\x86\x03\x12\x08\n\x02SI\x10\xd2\x86\x03\x12\x0b\n\x05Order\x10\xd3\x86\x03\x12\x0b\n\x05Trade\x10\xd4\x86\x03\x62\x06proto3'
 )
 
 
@@ -49,8 +49,8 @@ _COP_MSGTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2401,
-  serialized_end=2449,
+  serialized_start=2398,
+  serialized_end=2446,
 )
 _sym_db.RegisterEnumDescriptor(_COP_MSGTYPE)
 
@@ -89,8 +89,8 @@ _COP_FIDNUM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2451,
-  serialized_end=2516,
+  serialized_start=2448,
+  serialized_end=2513,
 )
 _sym_db.RegisterEnumDescriptor(_COP_FIDNUM)
 
@@ -197,15 +197,15 @@ _SI = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='created', full_name='ts_cop.SI.created', index=4,
-      number=5, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
+      number=5, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='last_update', full_name='ts_cop.SI.last_update', index=5,
-      number=6, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
+      number=6, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -224,7 +224,7 @@ _SI = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='qc_strategy_id', full_name='ts_cop.SI.qc_strategy_id', index=8,
+      name='strategy_id', full_name='ts_cop.SI.strategy_id', index=8,
       number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -250,7 +250,7 @@ _SI = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=85,
-  serialized_end=277,
+  serialized_end=274,
 )
 
 
@@ -281,8 +281,8 @@ _SILIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=279,
-  serialized_end=316,
+  serialized_start=276,
+  serialized_end=313,
 )
 
 
@@ -330,23 +330,23 @@ _TSORDER = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='qc_order_id', full_name='ts_cop.TSOrder.qc_order_id', index=5,
-      number=6, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
+      name='platform_order_id', full_name='ts_cop.TSOrder.platform_order_id', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='created', full_name='ts_cop.TSOrder.created', index=6,
-      number=7, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
+      number=7, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='last_update', full_name='ts_cop.TSOrder.last_update', index=7,
-      number=8, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
+      number=8, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -365,7 +365,7 @@ _TSORDER = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='qc_strategy_id', full_name='ts_cop.TSOrder.qc_strategy_id', index=10,
+      name='strategy_id', full_name='ts_cop.TSOrder.strategy_id', index=10,
       number=11, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -453,7 +453,7 @@ _TSORDER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=319,
+  serialized_start=316,
   serialized_end=732,
 )
 
@@ -528,15 +528,15 @@ _TSTRADE = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='created', full_name='ts_cop.TSTrade.created', index=4,
-      number=5, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
+      number=5, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='last_update', full_name='ts_cop.TSTrade.last_update', index=5,
-      number=6, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
+      number=6, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -555,7 +555,7 @@ _TSTRADE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='qc_strategy_id', full_name='ts_cop.TSTrade.qc_strategy_id', index=8,
+      name='strategy_id', full_name='ts_cop.TSTrade.strategy_id', index=8,
       number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -584,8 +584,8 @@ _TSTRADE = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='settlement_date', full_name='ts_cop.TSTrade.settlement_date', index=12,
-      number=13, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
+      number=13, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -658,7 +658,7 @@ _TSTRADE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=787,
-  serialized_end=1199,
+  serialized_end=1196,
 )
 
 
@@ -689,8 +689,8 @@ _TSTRADELIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1201,
-  serialized_end=1251,
+  serialized_start=1198,
+  serialized_end=1248,
 )
 
 
@@ -728,8 +728,8 @@ _COP_INT32MAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1842,
-  serialized_end=1889,
+  serialized_start=1839,
+  serialized_end=1886,
 )
 
 _COP_INT64MAPENTRY = _descriptor.Descriptor(
@@ -766,8 +766,8 @@ _COP_INT64MAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1891,
-  serialized_end=1938,
+  serialized_start=1888,
+  serialized_end=1935,
 )
 
 _COP_FLOATMAPENTRY = _descriptor.Descriptor(
@@ -804,8 +804,8 @@ _COP_FLOATMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1940,
-  serialized_end=1987,
+  serialized_start=1937,
+  serialized_end=1984,
 )
 
 _COP_DOUBLEMAPENTRY = _descriptor.Descriptor(
@@ -842,8 +842,8 @@ _COP_DOUBLEMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1989,
-  serialized_end=2037,
+  serialized_start=1986,
+  serialized_end=2034,
 )
 
 _COP_STRINGMAPENTRY = _descriptor.Descriptor(
@@ -880,8 +880,8 @@ _COP_STRINGMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2039,
-  serialized_end=2087,
+  serialized_start=2036,
+  serialized_end=2084,
 )
 
 _COP_BOOLMAPENTRY = _descriptor.Descriptor(
@@ -918,8 +918,8 @@ _COP_BOOLMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2089,
-  serialized_end=2135,
+  serialized_start=2086,
+  serialized_end=2132,
 )
 
 _COP_ORDERMAPENTRY = _descriptor.Descriptor(
@@ -956,8 +956,8 @@ _COP_ORDERMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2137,
-  serialized_end=2205,
+  serialized_start=2134,
+  serialized_end=2202,
 )
 
 _COP_TRADEMAPENTRY = _descriptor.Descriptor(
@@ -994,8 +994,8 @@ _COP_TRADEMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2207,
-  serialized_end=2275,
+  serialized_start=2204,
+  serialized_end=2272,
 )
 
 _COP_SIMAPENTRY = _descriptor.Descriptor(
@@ -1032,8 +1032,8 @@ _COP_SIMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2277,
-  serialized_end=2337,
+  serialized_start=2274,
+  serialized_end=2334,
 )
 
 _COP_CIMAPENTRY = _descriptor.Descriptor(
@@ -1070,8 +1070,8 @@ _COP_CIMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2339,
-  serialized_end=2399,
+  serialized_start=2336,
+  serialized_end=2396,
 )
 
 _COP = _descriptor.Descriptor(
@@ -1119,8 +1119,8 @@ _COP = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='created_time', full_name='ts_cop.Cop.created_time', index=5,
-      number=6, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
+      number=6, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -1208,8 +1208,8 @@ _COP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1254,
-  serialized_end=2516,
+  serialized_start=1251,
+  serialized_end=2513,
 )
 
 _CILIST.fields_by_name['ci_list'].message_type = _CI

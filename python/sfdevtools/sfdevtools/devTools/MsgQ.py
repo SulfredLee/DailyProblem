@@ -27,3 +27,29 @@ class MsgQ(object):
                 return None
             else:
                 return self.__q.popleft()
+
+    def get_all(self) -> List[Any]:
+        with self.__mutex:
+            if len(self.__q) == 0:
+                return None
+            else:
+                out_list = list(self.__q)
+                self.__q = deque()
+                return out_list
+
+    def get_all_wait(self) -> List[Any]:
+        self.__cond.acquire()
+        self.__cond.wait(timeout=self.__timeout)
+        self.__cond.release()
+
+        with self.__mutex:
+            if len(self.__q) == 0:
+                return None
+            else:
+                out_list = list(self.__q)
+                self.__q = deque()
+                return out_list
+
+    def size(self) -> int:
+        with self.__mutex:
+            return len(self.__q)

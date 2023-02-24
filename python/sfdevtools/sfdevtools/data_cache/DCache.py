@@ -7,6 +7,7 @@ from sfdevtools.data_cache.DStrategy import DStrategy
 from sfdevtools.data_cache.DComponents import StrategyInsight, TS_Order, TS_Trade
 import sfdevtools.grpc_protos.ts_cop_pb2 as ts_cop_pb2
 import sfdevtools.grpc_protos.ts_cop_pb2_grpc as ts_cop_pb2_grpc
+import sfdevtools.devTools.TimelyCache as TimelyCache
 
 class DCache(object):
     def __init__(self):
@@ -14,10 +15,21 @@ class DCache(object):
         self.__pages: Dict[str, DPage] = None # key: QC Symbol ID, value: data page
         self.__strategy: DStrategy = DStrategy()
         self.__page_mutex: threading.Lock = threading.Lock()
+        self.__order_snapshot_cache: TimelyCache.TimelyCache_DupKey\
+            = TimelyCache.TimelyCache_DupKey() # key: platform_order_id, value: db_key
+        self.__order_hist_cache: TimelyCache.TimelyCache_UniKey\
+            = TimelyCache.TimelyCache_UniKey() # key: platform_order_id, value: TS_Order
 
-    def init_component(self, logger: logging.Logger):
+    def init_component(self
+                       , logger: logging.Logger
+                       , max_hist_orders: int = 1000
+                       , max_hist_trades: int = 1000
+                       , max_hist_si: int = 1000) -> None:
         self.__logger = logger
-        self.__strategy.init_component(logger=self.__logger)
+        self.__strategy.init_component(logger=self.__logger
+                                       , max_hist_orders=max_hist_orders
+                                       , max_hist_si=max_hist_si
+                                       , max_hist_trades=max_hist_trades)
 
     def get_strategy_insight(self) -> List[StrategyInsight]:
         return self.__strategy.get_strategy_insight()
@@ -25,11 +37,20 @@ class DCache(object):
     def save_si(self, si: List[StrategyInsight]) -> bool:
         return self.__strategy.save_si(si=si)
 
+    def is_latest_si(self, si: List[StrategyInsight]) -> bool:
+        return self.__strategy.is_latest_si(si=si)
+
+    def is_si_exist(self, si_id: str) -> bool:
+        return self.__strategy.is_si_exist(si_id=si_id)
+
     def get_ci_id(self) -> str:
         return self.__strategy.get_ci_id()
 
-    def get_order(self, qc_order_id: int) -> Union[bool, TS_Order]:
-        return self.__strategy.get_order(qc_order_id=qc_order_id)
+    def is_order_exist(self, platform_order_id: str) -> bool:
+        return self.__strategy.is_order_exist(platform_order_id=platform_order_id)
+
+    def get_order(self, platform_order_id: str) -> Union[bool, TS_Order]:
+        return self.__strategy.get_order(platform_order_id=platform_order_id)
 
     def save_ci(self, ci: Dict[str, Any]) -> None:
         self.__strategy.save_ci(ci=ci)
@@ -37,8 +58,20 @@ class DCache(object):
     def save_ci_id(self, ci_id: str) -> None:
         self.__strategy.save_ci_id(ci_id=ci_id)
 
+    def save_order(self, order: TS_Order) -> None:
+        self.__strategy.save_order(order=order)
+
     def save_orders(self, orders: List[TS_Order]) -> None:
         self.__strategy.save_orders(orders=orders)
+
+    def is_trade_exist(self, trade_id: str) -> bool:
+        return self.__strategy.is_trade_exist(trade_id=trade_id)
+
+    def get_trade(self, trade_id: str) -> Union[bool, TS_Trade]:
+        return self.__strategy.get_trade(trade_id=trade_id)
+
+    def save_trade(self, trade: TS_Trade) -> None:
+        self.__strategy.save_trade(trade=trade)
 
     def save_trades(self, trades: List[TS_Trade]) -> None:
         self.__strategy.save_trades(trades=trades)
@@ -87,6 +120,12 @@ class DCache(object):
                 return self.__pages[page_id]
             else:
                 return self.__create_dpage(page_id=page_id)
+
+    def get_order_snapshot_cache(self) -> TimelyCache.TimelyCache_DupKey:
+        return self.__order_snapshot_cache
+
+    def get_order_hist_cache(self) -> TimelyCache.TimelyCache_UniKey:
+        return self.__order_hist_cache
 
     def __create_dpage(self, page_id: str) -> DPage:
         with self.__page_mutex:

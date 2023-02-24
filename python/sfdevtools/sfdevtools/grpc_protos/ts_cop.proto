@@ -16,11 +16,11 @@ message SI {
     double ratio = 2;
     string parent_id = 3;
     string si_id = 4;
-    int64 created = 5; // unix time
-    int64 last_update = 6; // unix time
+    double created = 5; // unix time
+    double last_update = 6; // unix time
     string strategy_name = 7;
     bool live_mode = 8;
-    string qc_strategy_id = 9;
+    string strategy_id = 9;
     string symbol_id = 10;
 }
 
@@ -34,12 +34,12 @@ message TSOrder {
     double fill_quantity = 3;
     string parent_id = 4;
     string order_id = 5;
-    int64 qc_order_id = 6;
-    int64 created = 7; // unix time
-    int64 last_update = 8; // unix time
+    string platform_order_id = 6;
+    double created = 7; // unix time
+    double last_update = 8; // unix time
     string strategy_name = 9;
     bool live_mode = 10;
-    string qc_strategy_id = 11;
+    string strategy_id = 11;
     string order_status = 12;
     string execution_broker = 13;
     string clearing_broker = 14;
@@ -61,15 +61,15 @@ message TSTrade {
     double quantity = 2;
     string parent_id = 3;
     string trade_id = 4;
-    int64 created = 5; // unix time
-    int64 last_update = 6; // unix time
+    double created = 5; // unix time
+    double last_update = 6; // unix time
     string strategy_name = 7;
     bool live_mode = 8;
-    string qc_strategy_id = 9;
+    string strategy_id = 9;
     string trade_status = 10;
     string execution_broker = 11;
     string clearing_broker = 12;
-    int64 settlement_date = 13; // unix time
+    double settlement_date = 13; // unix time
     double fx_ratio = 14;
     string account = 15;
     double price = 16;
@@ -111,7 +111,7 @@ message Cop {
     string sender = 3;
     int32 instance_id = 4;
     int64 seq_num = 5;
-    int64 created_time = 6; // unix time
+    double created_time = 6; // unix time
 
     // body
     map<int32, int32> int32_map = 7;

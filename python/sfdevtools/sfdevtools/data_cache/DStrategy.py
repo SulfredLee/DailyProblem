@@ -1,21 +1,26 @@
 import logging
 import threading
 from typing import List, Dict, Tuple, Union, Any
+import copy
 
 from sfdevtools.data_cache.DComponents import StrategyInsight, TS_Order, TS_Trade
 import sfdevtools.grpc_protos.ts_cop_pb2 as ts_cop_pb2
 import sfdevtools.grpc_protos.ts_cop_pb2_grpc as ts_cop_pb2_grpc
+import sfdevtools.devTools.TimelyCache as TimelyCache
 
 class DStrategy(object):
     def __init__(self):
         self.__logger: logging.Logger = None
-        self.__si: List[StrategyInsight] = list() # strategy insight
-        self.__ci_list: List[Dict[str, Any]] = list() # calculation insight
+        self.__max_hist_orders: int = 1000
+        self.__max_hist_trades: int = 1000
+        self.__max_hist_si: int = 1000
+        self.__si_dict: Dict[str, List[StrategyInsight]] = dict() # key: si_id
+        self.__si_list: List[str] = list() # List of si_id
         self.__ci: Dict[str, Any] = dict()
+        self.__ci_list: List[Dict[str, Any]] = list() # calculation insight
         self.__ci_id: str = ""
-        self.__orders: Dict[int, TS_Order] = dict() # key: qc_order_id --- keep latest snapshot
-        self.__order_list: List[TS_Order] = list() # store all historical orders
-        self.__trade_list: List[TS_Trade] = list() # store all historical trades
+        self.__order_cache: TimelyCache.TimelyCache_DupKey = TimelyCache.TimelyCache_DupKey() # key: platform_order_id --- keep latest snapshot
+        self.__trade_cache: TimelyCache.TimelyCache_UniKey = TimelyCache.TimelyCache_UniKey() # key: trade_id --- keep latest records in hash
         self.__mutex: threading.Lock = threading.Lock()
 
         self.__int_mutex: threading.Lock = threading.Lock()
@@ -62,26 +67,53 @@ class DStrategy(object):
         }
         self.__bucket_size = 10000
 
-    def init_component(self, logger: logging.Logger) -> None:
+    def init_component(self
+                       , logger: logging.Logger
+                       , max_hist_orders: int = 1000
+                       , max_hist_trades: int = 1000
+                       , max_hist_si: int = 1000) -> None:
         self.__logger = logger
+        self.__max_hist_orders = max_hist_orders
+        self.__max_hist_trades = max_hist_trades
+        self.__max_hist_si = max_hist_si
 
     def get_strategy_insight(self) -> List[StrategyInsight]:
         with self.__mutex:
-            return self.__si
+            return self.__si_list
 
     def save_si(self, si: List[StrategyInsight]) -> bool:
-        sorted_si = sorted(si, key=lambda x: x.symbol)
         with self.__mutex:
-            if self.__is_same_si(si1=self.__si, si2=sorted_si):
-                return False
-            else:
-                self.__si = sorted_si
+            if len(si) == 0:
                 return True
+
+            self.__si_list.append(si[0].si_id)
+            self.__si_dict[si[0].si_id] = si
+
+            # remove old records
+            if len(self.__si_list) > self.__max_hist_si:
+                extra_records = len(self.__si_list) - self.__max_hist_si
+                # remove records from dictionary
+                for old_si_id in self.__si_list[:extra_records]:
+                    if old_si_id in self.__si_dict:
+                        del self.__si_dict[old_si_id]
+
+                # remove records from list
+                del self.__si_list[:extra_records]
+
+            return True
         return False
+
+    def is_latest_si(self, si: List[StrategyInsight]) -> bool:
+        with self.__mutex:
+            return self.__is_same_si(si1=self.__si_list, si2=si)
+
+    def is_si_exist(self, si_id: str) -> bool:
+        with self.__mutex:
+            return si_id in self.__si_dict
 
     def get_si(self) -> List[StrategyInsight]:
         with self.__mutex:
-            return self.__si
+            return self.__si_dict[self.__si_list[-1]] # get latest si_id from self.__si_list
 
     def save_ci(self, ci: Dict[str, Any]) -> None:
         with self.__mutex:
@@ -100,31 +132,86 @@ class DStrategy(object):
         with self.__mutex:
             return self.__ci_id
 
-    def save_orders(self, orders: List[TS_Order]) -> None:
-        with self.__mutex:
-            for order in orders:
-                self.__orders[order.qc_order_id] = order
+    def save_order(self, order: TS_Order) -> None:
+        self.__order_cache.upsert_ele(key=order.platform_order_id, value=order)
 
-            self.__order_list.extend(orders)
+    def save_orders(self, orders: List[TS_Order]) -> None:
+        self.__order_cache.upsert_multi(keys=[order.platform_order_id for order in orders], values=orders)
+
+    def __remove_old_orders(self
+                            , order_list: List[TS_Order]
+                            , order_dict: Dict[str, TS_Order]
+                            , max_records: int) -> None:
+        if len(order_dict) > max_records:
+            # find old records
+            extra_records = len(order_dict) - max_records
+            old_record_count = 0
+            old_idx_from_list = 0
+            old_ids: List[str] = list()
+            # find old order_id from order_list
+            while old_record_count <= extra_records:
+                for idx, old_record in enumerate(order_list):
+                    if old_record.order_id == cur_order_id:
+                        continue
+                    else:
+                        cur_order_id = old_record.order_id
+                        old_record_count += 1
+                        if old_record_count <= extra_records:
+                            old_ids.append(cur_order_id)
+                            old_idx_from_list = idx
+                        break
+            # remove records from dictionary
+            for old_order_id in old_ids:
+                if old_order_id in order_dict:
+                    del order_dict[old_order_id]
+            # remove records from list
+            del order_list[:old_idx_from_list + 1]
+
+    def save_trade(self, trade: TS_Trade) -> None:
+        self.__trade_cache.upsert_ele(key=trade.trade_id, value=trade)
 
     def save_trades(self, trades: List[TS_Trade]) -> None:
-        with self.__mutex:
-            self.__trade_list.extend(trades)
+        self.__trade_cache.upsert_multi(keys=[trade.trade_id for trade in trades], values=trades)
+
+    def __remove_old_trades(self
+                            , trade_list: List[TS_Trade]
+                            , trade_dict: Dict[str, TS_Trade]
+                            , max_records: int) -> None:
+        # remove old records
+        if len(trade_list) > max_records:
+            extra_records = len(trade_list) - max_records
+            # remove records from dictionary
+            for old_record in trade_list[:extra_records]:
+                if old_record.trade_id in trade_dict:
+                    del trade_dict[old_record.trade_id]
+            # remove records from list
+            del trade_list[:extra_records]
+
+    def is_trade_exist(self, trade_id: str) -> bool:
+        return self.__trade_cache.is_exist(key=trade_id)
+
+    def get_trade(self, trade_id: str) -> Union[bool, TS_Trade]:
+        trade = self.__trade_cache.get_ele(key=trade_id)
+        if None is trade:
+            return (False, None)
+        else:
+            return (True, trade)
 
     def get_trades(self) -> List[TS_Trade]:
-        with self.__mutex:
-            return self.__trade_list
+        return self.__trade_cache.get_records_in_time_series()
 
-    def get_order(self, qc_order_id: int) -> Union[bool, TS_Order]:
-        with self.__mutex:
-            if qc_order_id in self.__orders:
-                return (True, self.__orders[qc_order_id])
-            else:
-                return (False, None)
+    def get_order(self, platform_order_id: str) -> Union[bool, TS_Order]:
+        order = self.__order_cache.get_ele(key=platform_order_id)
+        if None is order:
+            return (False, None)
+        else:
+            return (True, order)
+
+    def is_order_exist(self, platform_order_id: str) -> bool:
+        return self.__order_cache.is_exist(key=platform_order_id)
 
     def get_orders(self) -> List[TS_Order]:
-        with self.__mutex:
-            return self.__order_list
+        return self.__order_cache.get_records_in_time_series()
 
     def save_fid(self, fid_num: int, fid_value: Any) -> None:
         bucket_num = int((fid_num - 1) / self.__bucket_size)
@@ -223,7 +310,10 @@ class DStrategy(object):
     def __is_same_si(self, si1: List[StrategyInsight], si2: List[StrategyInsight]) -> bool:
         if len(si1) != len(si2):
             return False
-        for a, b in zip(si1, si2):
+
+        si1_sorted = sorted(si1, key=lambda x: x.symbol_id)
+        si2_sorted = sorted(si2, key=lambda x: x.symbol_id)
+        for a, b in zip(si1_sorted, si2_sorted):
             if a != b:
                 return False
         return True

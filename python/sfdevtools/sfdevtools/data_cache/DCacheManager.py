@@ -6,6 +6,7 @@ from sfdevtools.data_cache.DCache import DCache
 from sfdevtools.data_cache.DComponents import StrategyInsight, TS_Order, TS_Trade
 import sfdevtools.grpc_protos.ts_cop_pb2 as ts_cop_pb2
 import sfdevtools.grpc_protos.ts_cop_pb2_grpc as ts_cop_pb2_grpc
+import sfdevtools.devTools.TimelyCache as TimelyCache
 
 class DCacheManager(object):
     def __init__(self):
@@ -16,13 +17,20 @@ class DCacheManager(object):
     def init_component(self, logger: logging.Logger) -> None:
         self.__logger = logger
 
-    def create_cache(self, cache_name: str) -> DCache:
+    def create_cache(self
+                     , cache_name: str
+                     , max_hist_orders: int = 1000
+                     , max_hist_trades: int = 1000
+                     , max_hist_si: int = 1000) -> DCache:
         with self.__mutex:
             if cache_name not in self.__dcache:
                 self.__logger.info(f"Create DCache with name: {cache_name}")
                 new_dcache = DCache()
                 self.__dcache[cache_name] = new_dcache
-                new_dcache.init_component(self.__logger)
+                new_dcache.init_component(logger=self.__logger
+                                          , max_hist_orders=max_hist_orders
+                                          , max_hist_si=max_hist_si
+                                          , max_hist_trades=max_hist_trades)
                 return new_dcache
             else:
                 return self.__dcache[cache_name]
@@ -35,31 +43,52 @@ class DCacheManager(object):
                 return (False, None)
 
     def get_strategy_insight(self, cache_name: str) -> Union[bool, List]:
-        with self.__mutex:
-            if cache_name in self.__dcache:
-                return (True, self.__dcache[cache_name].get_strategy_insight())
-            else:
-                return (False, None)
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, None)
+        return (True, dcache.get_strategy_insight())
 
     def save_si(self
-                                , cache_name: str
-                                , si: List[StrategyInsight]) -> Union[bool, bool]:
+                , cache_name: str
+                , si: List[StrategyInsight]) -> Union[bool, bool]:
         dcache = self.create_cache(cache_name=cache_name)
         return (True, dcache.save_si(si=si))
 
-    def get_ci_id(self, cache_name: str) -> Union[bool, str]:
-        with self.__mutex:
-            if cache_name in self.__dcache:
-                return (True, self.__dcache[cache_name].get_ci_id())
-            else:
-                return (False, None)
+    def is_latest_si(self, cache_name: str, si: List[StrategyInsight]) -> Union[bool, bool]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, None)
+        return (True, dcache.is_latest_si(si=si))
 
-    def get_order(self, cache_name: str, qc_order_id: int) -> Union[bool, bool, TS_Order]:
-        with self.__mutex:
-            if cache_name in self.__dcache:
-                return (True, self.__dcache[cache_name].get_order(qc_order_id=qc_order_id))
-            else:
-                return (False, False, None)
+    def is_si_exist(self, cache_name: str, si_id: str) -> Union[bool, bool]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, None)
+        return (True, dcache.is_si_exist(si_id=si_id))
+
+    def get_ci_id(self, cache_name: str) -> Union[bool, str]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, None)
+        return (True, dcache.get_ci_id())
+
+    def is_order_exist(self, cache_name: str, platform_order_id: str) -> Union[bool, bool]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, None)
+        return (True, dcache.is_order_exist(platform_order_id=platform_order_id))
+
+    def get_trade(self, cache_name: str, trade_id: str) -> Union[bool, Union[bool, TS_Trade]]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, (False, None))
+        return (True, dcache.get_trade(trade_id=trade_id))
+
+    def get_order(self, cache_name: str, platform_order_id: str) -> Union[bool, Union[bool, TS_Order]]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, (False, None))
+        return (True, dcache.get_order(platform_order_id=platform_order_id))
 
     def save_ci(self, cache_name: str, ci: Dict[str, Any]) -> bool:
         dcache = self.create_cache(cache_name=cache_name)
@@ -71,10 +100,26 @@ class DCacheManager(object):
         dcache.save_ci_id(ci_id=ci_id)
         return True
 
+    def save_order(self, cache_name: str, order: TS_Order) -> bool:
+        dcache = self.create_cache(cache_name=cache_name)
+        dcache.save_order(order=order)
+        return True
+
     def save_orders(self, cache_name: str, orders: List[TS_Order]) -> bool:
         dcache = self.create_cache(cache_name=cache_name)
         dcache.save_orders(orders=orders)
         return True
+
+    def is_trade_exist(self, cache_name: str, trade_id: str) -> Union[bool, bool]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, None)
+        return (True, dcache.is_trade_exist(trade_id=trade_id))
+
+    def save_trade(self, cache_name: str, trade: TS_Trade) -> None:
+        dcache = self.create_cache(cache_name=cache_name)
+        dcache.save_trade(trade=trade)
+        return None
 
     def save_trades(self, cache_name: str, trades: List[TS_Trade]) -> None:
         dcache = self.create_cache(cache_name=cache_name)
@@ -95,10 +140,18 @@ class DCacheManager(object):
                 , msg_id: str
                 , msg_type: ts_cop_pb2.Cop.MsgType
                 , fid_num: int) -> Union[bool, Union[bool, Union[bool, Any]]]:
-        with self.__mutex:
-            if cache_name in self.__dcache:
-                return (True, self.__dcache[cache_name].get_fid(msg_id=msg_id
-                                                                , msg_type=msg_type
-                                                                , fid_num=fid_num))
-            else:
-                return (False, None, None)
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, (False, None))
+        return (True, dcache.get_fid(msg_id=msg_id
+                                     , msg_type=msg_type
+                                     , fid_num=fid_num))
+    def get_order_snapshot_cache(self
+                                 , cache_name: str) -> TimelyCache.TimelyCache_DupKey:
+        dcache = self.create_cache(cache_name=cache_name)
+        return dcache.get_order_snapshot_cache()
+
+    def get_order_hist_cache(self
+                             , cache_name: str) -> TimelyCache.TimelyCache_UniKey:
+        dcache = self.create_cache(cache_name=cache_name)
+        return dcache.get_order_hist_cache()
