@@ -1,10 +1,10 @@
 content_st = """
 import logging
 from typing import List, Dict, Tuple
+import atexit
 
 import sfdevtools.observability.log_helper as lh
 from sfdevtools.devTools.SingletonDoubleChecked import SDC
-import atexit
 
 class MainManager(SDC):
     def __init__(self):
@@ -19,5 +19,5 @@ class MainManager(SDC):
         return self.__logger
 
     def __cleanup(self):
-        pass
+        exit(0)
 """

@@ -2,14 +2,13 @@ content_st = """
 from concurrent import futures
 import time
 import os
-
 import grpc
-import greet_pb2
-import greet_pb2_grpc
-
-from {{ project_name }}.app.{{ app_subfolder }}.main_manager import MainManager as mm
 
 import sfdevtools.observability.log_helper as lh
+
+from {{ project_name }}.app.{{ app_subfolder }}.main_manager import MainManager as mm
+import greet_pb2
+import greet_pb2_grpc
 
 class GreeterServicer(greet_pb2_grpc.GreeterServicer):
     def SayHello(self, request, context):

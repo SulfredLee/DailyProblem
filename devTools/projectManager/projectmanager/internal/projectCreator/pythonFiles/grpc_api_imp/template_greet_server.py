@@ -2,14 +2,13 @@ content_st = """
 from concurrent import futures
 import time
 import os
-
 import grpc
+
 import sfdevtools.grpc_protos.{{ project_name }}_pb2 as {{ project_name }}_pb2
 import sfdevtools.grpc_protos.{{ project_name }}_pb2_grpc as {{ project_name }}_pb2_grpc
+import sfdevtools.observability.log_helper as lh
 
 from {{ project_name }}.app.{{ app_subfolder }}.main_manager import MainManager as mm
-
-import sfdevtools.observability.log_helper as lh
 
 class {{ project_name_capitalize }}Servicer({{ project_name }}_pb2_grpc.{{ project_name_capitalize }}Servicer):
     def HealthCheck(self, request, context):
