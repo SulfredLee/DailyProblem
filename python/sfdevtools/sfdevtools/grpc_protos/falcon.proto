@@ -1,0 +1,18 @@
+
+syntax = "proto3";
+
+package falcon;
+
+// The falcon service definition.
+service Falcon {
+    // Unary - request and respond
+    rpc HealthCheck (Ping) returns (Pong);
+}
+
+message Ping {
+    string message = 1;
+}
+
+message Pong {
+    string message = 1;
+}
