@@ -46,6 +46,32 @@ class DPage(object):
             return None
         self.__save_map[bucket_num](fid_num=fid_num, fid_value=fid_value)
 
+    def get_fids(self) -> List[Union[int, Any]]:
+        result_list: List[Union[int, Any]] = list()
+        with self.__int_mutex:
+            for fid_num, v in self.__int32_map.items():
+                result_list.append((fid_num, v))
+
+            for fid_num, v in self.__int64_map.items():
+                result_list.append((fid_num, v))
+
+        with self.__float_mutex:
+            for fid_num, v in self.__float_map.items():
+                result_list.append((fid_num, v))
+
+            for fid_num, v in self.__double_map.items():
+                result_list.append((fid_num, v))
+
+        with self.__str_mutex:
+            for fid_num, v in self.__string_map.items():
+                result_list.append((fid_num, v))
+
+        with self.__bool_mutex:
+            for fid_num, v in self.__bool_map.items():
+                result_list.append((fid_num, v))
+
+        return result_list
+
     def get_fid(self, fid_num: int) -> Union[bool, Any]:
         bucket_num = int((fid_num - 1) / self.__bucket_size)
         if bucket_num not in self.__get_map:

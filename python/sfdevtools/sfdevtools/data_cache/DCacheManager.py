@@ -3,6 +3,8 @@ import threading
 from typing import List, Dict, Tuple, Union, Any
 
 from sfdevtools.data_cache.DCache import DCache
+from sfdevtools.data_cache.DPage import DPage
+from sfdevtools.data_cache.DStrategy import DStrategy
 from sfdevtools.data_cache.DComponents import StrategyInsight, TS_Order, TS_Trade
 import sfdevtools.data_cache.DTimelyCache as TimelyCache
 import sfdevtools.grpc_protos.ts_cop_pb2 as ts_cop_pb2
@@ -14,26 +16,71 @@ class DCacheManager(object):
         self.__dcache: Dict[str, DCache] = dict() # key: cache name, value: dcache
         self.__mutex: threading.Lock = threading.Lock()
 
-    def init_component(self, logger: logging.Logger) -> None:
+    def init_component(self
+                       , logger: logging.Logger
+                       , max_hist_orders: int = 1000
+                       , max_hist_si: int = 1000
+                       , max_hist_trades: int = 1000) -> None:
         self.__logger = logger
+        self.__max_hist_orders = max_hist_orders
+        self.__max_hist_si = max_hist_si
+        self.__max_hist_trades = max_hist_trades
 
     def create_cache(self
-                     , cache_name: str
-                     , max_hist_orders: int = 1000
-                     , max_hist_trades: int = 1000
-                     , max_hist_si: int = 1000) -> DCache:
+                     , cache_name: str) -> DCache:
         with self.__mutex:
             if cache_name not in self.__dcache:
                 self.__logger.info(f"Create DCache with name: {cache_name}")
                 new_dcache = DCache()
                 self.__dcache[cache_name] = new_dcache
                 new_dcache.init_component(logger=self.__logger
-                                          , max_hist_orders=max_hist_orders
-                                          , max_hist_si=max_hist_si
-                                          , max_hist_trades=max_hist_trades)
+                                          , max_hist_orders=self.__max_hist_orders
+                                          , max_hist_si=self.__max_hist_si
+                                          , max_hist_trades=self.__max_hist_trades)
                 return new_dcache
             else:
                 return self.__dcache[cache_name]
+
+    def get_cache_name(self) -> List[str]:
+        with self.__mutex:
+            return [k for k, v in self.__dcache.items()]
+
+    def get_total_cache_count(self) -> int:
+        with self.__mutex:
+            return len(self.__dcache)
+
+    def get_page_name(self) -> List[Union[str, str]]:
+        with self.__mutex:
+            all_page_name: List[Union[str, str]] = list()
+            for cache_name, dcache in self.__dcache.items():
+                page_names = dcache.get_page_name()
+
+                all_page_name.extend([(cache_name, page_name) for page_name in page_names])
+
+            return all_page_name
+
+    def get_page(self
+                 , cache_name: str
+                 , page_id: str) -> Union[bool, DPage]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, None)
+        return (True, dcache.get_create_dpage(page_id=page_id))
+
+    def get_total_page_count(self) -> int:
+        with self.__mutex:
+            total_count = 0
+            for cache_name, dcache in self.__dcache.items():
+                total_count += dcache.get_page_count()
+
+            return total_count
+
+    def get_strgy(self
+                  , cache_name: str) -> Union[bool, DStrategy]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, None)
+        return (True, dcache.get_strgy())
 
     def get_cache(self, cache_name: str) -> Union[bool, DCache]:
         with self.__mutex:
@@ -41,12 +88,6 @@ class DCacheManager(object):
                 return (True, self.__dcache[cache_name])
             else:
                 return (False, None)
-
-    def get_strategy_insight(self, cache_name: str) -> Union[bool, List]:
-        ret, dcache = self.get_cache(cache_name=cache_name)
-        if not ret:
-            return (False, None)
-        return (True, dcache.get_strategy_insight())
 
     def save_si(self
                 , cache_name: str
@@ -146,6 +187,14 @@ class DCacheManager(object):
                  , fid_value: Any) -> None:
         dcache = self.create_cache(cache_name=cache_name)
         dcache.save_fid(msg_id=msg_id, msg_type=msg_type, fid_num=fid_num, fid_value=fid_value)
+
+    def get_fids(self
+                 , cache_name: str
+                 , page_id: str) -> Union[bool, Union[bool, List[Union[int, Any]]]]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, (False, None))
+        return (True, dcache.get_fids(page_id=page_id))
 
     def get_fid(self
                 , cache_name: str

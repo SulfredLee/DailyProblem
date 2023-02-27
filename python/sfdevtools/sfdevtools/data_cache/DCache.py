@@ -31,9 +31,6 @@ class DCache(object):
                                        , max_hist_si=max_hist_si
                                        , max_hist_trades=max_hist_trades)
 
-    def get_strategy_insight(self) -> List[StrategyInsight]:
-        return self.__strategy.get_strategy_insight()
-
     def save_si(self, si: List[StrategyInsight]) -> bool:
         return self.__strategy.save_si(si=si)
 
@@ -108,6 +105,11 @@ class DCache(object):
         elif fid_num == ts_cop_pb2.FidNum.Trade:
             self.save_trades(trades=fid_value)
 
+    def get_fids(self
+                 , page_id: str) -> List[Union[int, Any]]:
+        dpage = self.get_create_dpage(page_id=msg_id)
+        return dpage.get_fids()
+
     def get_fid(self
                 , msg_id: str
                 , msg_type: ts_cop_pb2.Cop.MsgType
@@ -119,6 +121,17 @@ class DCache(object):
         # handle page level
         dpage = self.get_create_dpage(page_id=msg_id)
         return dpage.get_fid(fid_num=fid_num)
+
+    def get_page_name(self) -> List[str]:
+        with self.__page_mutex:
+            return [page_id for page_id, page in self.__pages.items()]
+
+    def get_page_count(self) -> int:
+        with self.__page_mutex:
+            return len(self.__pages)
+
+    def get_strgy(self) -> DStrategy:
+        return self.__strategy
 
     def get_create_dpage(self, page_id: str) -> DPage:
         with self.__page_mutex:

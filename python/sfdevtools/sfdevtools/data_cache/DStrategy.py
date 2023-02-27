@@ -16,8 +16,7 @@ class DStrategy(object):
         self.__max_hist_orders: int = 1000
         self.__max_hist_trades: int = 1000
         self.__max_hist_si: int = 1000
-        self.__si_dict: Dict[str, List[StrategyInsight]] = dict() # key: si_id
-        self.__si_list: List[str] = list() # List of si_id
+        self.__si_cache: TimelyCache.TimelyCache_Hist = TimelyCache.TimelyCache_Hist() # key: si_id --- keep a limited list of latest records
         self.__ci_id: str = ""
         self.__ci_cache: TimelyCache.TimelyCache_Hist = TimelyCache.TimelyCache_Hist() # key: ci_id --- keep a limited list of latest records
         self.__order_cache: TimelyCache.TimelyCache_Snapshot = TimelyCache.TimelyCache_Snapshot() # key: platform_order_id --- keep latest snapshot
@@ -78,52 +77,36 @@ class DStrategy(object):
         self.__max_hist_trades = max_hist_trades
         self.__max_hist_si = max_hist_si
 
-    def get_strategy_insight(self) -> List[StrategyInsight]:
-        with self.__mutex:
-            return self.__si_list
-
     def save_si(self, si: List[StrategyInsight]) -> bool:
-        with self.__mutex:
-            if len(si) == 0:
-                return True
-
-            self.__si_list.append(si[0].si_id)
-            self.__si_dict[si[0].si_id] = si
-
-            # remove old records
-            if len(self.__si_list) > self.__max_hist_si:
-                extra_records = len(self.__si_list) - self.__max_hist_si
-                # remove records from dictionary
-                for old_si_id in self.__si_list[:extra_records]:
-                    if old_si_id in self.__si_dict:
-                        del self.__si_dict[old_si_id]
-
-                # remove records from list
-                del self.__si_list[:extra_records]
-
+        if len(si) == 0:
             return True
-        return False
+        self.__si_cache.upsert_ele(key=si[0].si_id, value=si)
+        return True
 
     def is_latest_si(self, si: List[StrategyInsight]) -> bool:
         with self.__mutex:
-            return self.__is_same_si(si1=self.__si_list, si2=si)
+            return self.__is_same_si(si1=self.__si_cache.get_records_by_index(-1), si2=si)
 
     def is_ci_exist(self, ci: Dict[str, Any]) -> bool:
         return self.__ci_cache.is_exist(key=hashlib.md5(json.dumps(ci, sort_keys=True).encode("utf-8")).digest())
 
     def is_si_exist(self, si_id: str) -> bool:
-        with self.__mutex:
-            return si_id in self.__si_dict
+        return self.__si_cache.is_exist(key=si_id)
 
     def get_si(self) -> List[StrategyInsight]:
-        with self.__mutex:
-            return self.__si_dict[self.__si_list[-1]] # get latest si_id from self.__si_list
+        return self.__si_cache.get_records_by_index(-1)
+
+    def get_all_si(self) -> List[List[StrategyInsight]]:
+        return self.__si_cache.get_records_in_time_series()
 
     def save_ci(self, ci: Dict[str, Any]) -> None:
         self.__ci_cache.upsert_ele(key=hashlib.md5(json.dumps(ci, sort_keys=True).encode("utf-8")).digest(), value=ci)
 
     def get_ci(self) -> Dict[str, Any]:
         return self.__ci_cache.get_records_by_index(idx=-1)
+
+    def get_all_ci(self) -> List[Dict[str, Any]]:
+        return self.__ci_cache.get_records_in_time_series()
 
     def save_ci_id(self, ci_id: str) -> None:
         with self.__mutex:
@@ -219,6 +202,32 @@ class DStrategy(object):
         if bucket_num not in self.__save_map:
             return None
         self.__save_map[bucket_num](fid_num=fid_num, fid_value=fid_value)
+
+    def get_fids(self) -> List[Union[int, Any]]:
+        result_list: List[Union[int, Any]] = list()
+        with self.__int_mutex:
+            for fid_num, v in self.__int32_map.items():
+                result_list.append((fid_num, v))
+
+            for fid_num, v in self.__int64_map.items():
+                result_list.append((fid_num, v))
+
+        with self.__float_mutex:
+            for fid_num, v in self.__float_map.items():
+                result_list.append((fid_num, v))
+
+            for fid_num, v in self.__double_map.items():
+                result_list.append((fid_num, v))
+
+        with self.__str_mutex:
+            for fid_num, v in self.__string_map.items():
+                result_list.append((fid_num, v))
+
+        with self.__bool_mutex:
+            for fid_num, v in self.__bool_map.items():
+                result_list.append((fid_num, v))
+
+        return result_list
 
     def get_fid(self, fid_num: int) -> Union[bool, Any]:
         bucket_num = int((fid_num - 1) / self.__bucket_size)
