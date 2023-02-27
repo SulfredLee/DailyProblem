@@ -18,8 +18,6 @@ class DStrategy(object):
         self.__max_hist_si: int = 1000
         self.__si_dict: Dict[str, List[StrategyInsight]] = dict() # key: si_id
         self.__si_list: List[str] = list() # List of si_id
-        # self.__ci: Dict[str, Any] = dict()
-        # self.__ci_list: List[Dict[str, Any]] = list() # calculation insight
         self.__ci_id: str = ""
         self.__ci_cache: TimelyCache.TimelyCache_Hist = TimelyCache.TimelyCache_Hist() # key: ci_id --- keep a limited list of latest records
         self.__order_cache: TimelyCache.TimelyCache_Snapshot = TimelyCache.TimelyCache_Snapshot() # key: platform_order_id --- keep latest snapshot
@@ -123,14 +121,9 @@ class DStrategy(object):
 
     def save_ci(self, ci: Dict[str, Any]) -> None:
         self.__ci_cache.upsert_ele(key=hashlib.md5(json.dumps(ci, sort_keys=True).encode("utf-8")).digest(), value=ci)
-        # with self.__mutex:
-        #     self.__ci = ci
-        #     # self.__ci_list.append(ci)
 
     def get_ci(self) -> Dict[str, Any]:
         return self.__ci_cache.get_records_by_index(idx=-1)
-        # with self.__mutex:
-        #     return self.__ci
 
     def save_ci_id(self, ci_id: str) -> None:
         with self.__mutex:
