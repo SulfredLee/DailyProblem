@@ -5,9 +5,9 @@ from typing import List, Dict, Tuple, Union, Any
 from sfdevtools.data_cache.DPage import DPage
 from sfdevtools.data_cache.DStrategy import DStrategy
 from sfdevtools.data_cache.DComponents import StrategyInsight, TS_Order, TS_Trade
+import sfdevtools.data_cache.DTimelyCache as TimelyCache
 import sfdevtools.grpc_protos.ts_cop_pb2 as ts_cop_pb2
 import sfdevtools.grpc_protos.ts_cop_pb2_grpc as ts_cop_pb2_grpc
-import sfdevtools.devTools.TimelyCache as TimelyCache
 
 class DCache(object):
     def __init__(self):
@@ -15,10 +15,10 @@ class DCache(object):
         self.__pages: Dict[str, DPage] = None # key: QC Symbol ID, value: data page
         self.__strategy: DStrategy = DStrategy()
         self.__page_mutex: threading.Lock = threading.Lock()
-        self.__order_snapshot_cache: TimelyCache.TimelyCache_DupKey\
-            = TimelyCache.TimelyCache_DupKey() # key: platform_order_id, value: db_key
-        self.__order_hist_cache: TimelyCache.TimelyCache_UniKey\
-            = TimelyCache.TimelyCache_UniKey() # key: platform_order_id, value: TS_Order
+        self.__order_snapshot_cache: TimelyCache.TimelyCache_Snapshot\
+            = TimelyCache.TimelyCache_Snapshot() # key: platform_order_id, value: db_key
+        self.__order_hist_cache: TimelyCache.TimelyCache_Hist\
+            = TimelyCache.TimelyCache_Hist() # key: platform_order_id, value: TS_Order
 
     def init_component(self
                        , logger: logging.Logger
@@ -42,6 +42,12 @@ class DCache(object):
 
     def is_si_exist(self, si_id: str) -> bool:
         return self.__strategy.is_si_exist(si_id=si_id)
+
+    def is_ci_exist(self, ci: Dict[str, Any]) -> bool:
+        return self.__strategy.is_ci_exist(ci=ci)
+
+    def get_ci(self) -> Dict[str, Any]:
+        return self.__strategy.get_ci()
 
     def get_ci_id(self) -> str:
         return self.__strategy.get_ci_id()
@@ -121,10 +127,10 @@ class DCache(object):
             else:
                 return self.__create_dpage(page_id=page_id)
 
-    def get_order_snapshot_cache(self) -> TimelyCache.TimelyCache_DupKey:
+    def get_order_snapshot_cache(self) -> TimelyCache.TimelyCache_Snapshot:
         return self.__order_snapshot_cache
 
-    def get_order_hist_cache(self) -> TimelyCache.TimelyCache_UniKey:
+    def get_order_hist_cache(self) -> TimelyCache.TimelyCache_Hist:
         return self.__order_hist_cache
 
     def __create_dpage(self, page_id: str) -> DPage:

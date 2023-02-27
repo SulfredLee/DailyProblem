@@ -2,7 +2,11 @@ from typing import List, Dict, Tuple, Union, Any
 import threading
 import copy
 
-class TimelyCache_DupKey(object):
+class TimelyCache_Snapshot(object):
+    """! Keep a limited list of latest snapshot
+    self.__dict: it stores a pair of key and value, the value is the latest snapshot
+    self.__time_index: it stores a list of key in time sequential. Key value can be duplicated
+    """
     def __init__(self, max_size: int = 1000):
         self.__dict: Dict[Any, Any] = dict()
         self.__time_index: List[Union[Any, Any]] = list()
@@ -27,6 +31,10 @@ class TimelyCache_DupKey(object):
     def is_exist(self, key: Any) -> Any:
         with self.__mutex:
             return key in self.__dict
+
+    def get_records_by_index(self, idx: int) -> Any:
+        with self.__mutex:
+            return copy.deepcopy(self.__time_index[idx])
 
     def get_records_in_time_series(self) -> List[Any]:
         with self.__mutex:
@@ -70,7 +78,11 @@ class TimelyCache_DupKey(object):
             # remove from list
             del self.__time_index[:last_n]
 
-class TimelyCache_UniKey(object):
+class TimelyCache_Hist(object):
+    """! Keep a limited list of latest records
+    self.__dict: it stores a pair of key and value
+    self.__time_index: it stores a list of key in time sequential
+    """
     def __init__(self, max_size: int = 1000):
         self.__dict: Dict[Any, Any] = dict()
         self.__time_index: List[Union[Any, Any]] = list()
@@ -101,6 +113,10 @@ class TimelyCache_UniKey(object):
     def is_exist(self, key: Any) -> Any:
         with self.__mutex:
             return key in self.__dict
+
+    def get_records_by_index(self, idx: int) -> Any:
+        with self.__mutex:
+            return copy.deepcopy(self.__time_index[idx][1])
 
     def get_records_in_time_series(self) -> List[Any]:
         with self.__mutex:

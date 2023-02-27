@@ -2,11 +2,13 @@ import logging
 import threading
 from typing import List, Dict, Tuple, Union, Any
 import copy
+import json
+import hashlib
 
 from sfdevtools.data_cache.DComponents import StrategyInsight, TS_Order, TS_Trade
+import sfdevtools.data_cache.DTimelyCache as TimelyCache
 import sfdevtools.grpc_protos.ts_cop_pb2 as ts_cop_pb2
 import sfdevtools.grpc_protos.ts_cop_pb2_grpc as ts_cop_pb2_grpc
-import sfdevtools.devTools.TimelyCache as TimelyCache
 
 class DStrategy(object):
     def __init__(self):
@@ -16,11 +18,12 @@ class DStrategy(object):
         self.__max_hist_si: int = 1000
         self.__si_dict: Dict[str, List[StrategyInsight]] = dict() # key: si_id
         self.__si_list: List[str] = list() # List of si_id
-        self.__ci: Dict[str, Any] = dict()
-        self.__ci_list: List[Dict[str, Any]] = list() # calculation insight
+        # self.__ci: Dict[str, Any] = dict()
+        # self.__ci_list: List[Dict[str, Any]] = list() # calculation insight
         self.__ci_id: str = ""
-        self.__order_cache: TimelyCache.TimelyCache_DupKey = TimelyCache.TimelyCache_DupKey() # key: platform_order_id --- keep latest snapshot
-        self.__trade_cache: TimelyCache.TimelyCache_UniKey = TimelyCache.TimelyCache_UniKey() # key: trade_id --- keep latest records in hash
+        self.__ci_cache: TimelyCache.TimelyCache_Hist = TimelyCache.TimelyCache_Hist() # key: ci_id --- keep a limited list of latest records
+        self.__order_cache: TimelyCache.TimelyCache_Snapshot = TimelyCache.TimelyCache_Snapshot() # key: platform_order_id --- keep latest snapshot
+        self.__trade_cache: TimelyCache.TimelyCache_Hist = TimelyCache.TimelyCache_Hist() # key: trade_id --- keep latest records in hash
         self.__mutex: threading.Lock = threading.Lock()
 
         self.__int_mutex: threading.Lock = threading.Lock()
@@ -107,6 +110,9 @@ class DStrategy(object):
         with self.__mutex:
             return self.__is_same_si(si1=self.__si_list, si2=si)
 
+    def is_ci_exist(self, ci: Dict[str, Any]) -> bool:
+        return self.__ci_cache.is_exist(key=hashlib.md5(json.dumps(ci, sort_keys=True).encode("utf-8")).digest())
+
     def is_si_exist(self, si_id: str) -> bool:
         with self.__mutex:
             return si_id in self.__si_dict
@@ -116,13 +122,15 @@ class DStrategy(object):
             return self.__si_dict[self.__si_list[-1]] # get latest si_id from self.__si_list
 
     def save_ci(self, ci: Dict[str, Any]) -> None:
-        with self.__mutex:
-            self.__ci = ci
-            # self.__ci_list.append(ci)
+        self.__ci_cache.upsert_ele(key=hashlib.md5(json.dumps(ci, sort_keys=True).encode("utf-8")).digest(), value=ci)
+        # with self.__mutex:
+        #     self.__ci = ci
+        #     # self.__ci_list.append(ci)
 
     def get_ci(self) -> Dict[str, Any]:
-        with self.__mutex:
-            return self.__ci
+        return self.__ci_cache.get_records_by_index(idx=-1)
+        # with self.__mutex:
+        #     return self.__ci
 
     def save_ci_id(self, ci_id: str) -> None:
         with self.__mutex:

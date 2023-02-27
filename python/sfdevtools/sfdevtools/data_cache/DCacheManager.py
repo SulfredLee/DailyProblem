@@ -4,9 +4,9 @@ from typing import List, Dict, Tuple, Union, Any
 
 from sfdevtools.data_cache.DCache import DCache
 from sfdevtools.data_cache.DComponents import StrategyInsight, TS_Order, TS_Trade
+import sfdevtools.data_cache.DTimelyCache as TimelyCache
 import sfdevtools.grpc_protos.ts_cop_pb2 as ts_cop_pb2
 import sfdevtools.grpc_protos.ts_cop_pb2_grpc as ts_cop_pb2_grpc
-import sfdevtools.devTools.TimelyCache as TimelyCache
 
 class DCacheManager(object):
     def __init__(self):
@@ -65,6 +65,18 @@ class DCacheManager(object):
         if not ret:
             return (False, None)
         return (True, dcache.is_si_exist(si_id=si_id))
+
+    def is_ci_exist(self, cache_name: str, ci: Dict[str, Any]) -> Union[bool, bool]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, None)
+        return (True, dcache.is_ci_exist(ci=ci))
+
+    def get_ci(self, cache_name: str) -> Union[bool, Dict[str, Any]]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, None)
+        return (True, dcache.get_ci())
 
     def get_ci_id(self, cache_name: str) -> Union[bool, str]:
         ret, dcache = self.get_cache(cache_name=cache_name)
@@ -147,11 +159,11 @@ class DCacheManager(object):
                                      , msg_type=msg_type
                                      , fid_num=fid_num))
     def get_order_snapshot_cache(self
-                                 , cache_name: str) -> TimelyCache.TimelyCache_DupKey:
+                                 , cache_name: str) -> TimelyCache.TimelyCache_Snapshot:
         dcache = self.create_cache(cache_name=cache_name)
         return dcache.get_order_snapshot_cache()
 
     def get_order_hist_cache(self
-                             , cache_name: str) -> TimelyCache.TimelyCache_UniKey:
+                             , cache_name: str) -> TimelyCache.TimelyCache_Hist:
         dcache = self.create_cache(cache_name=cache_name)
         return dcache.get_order_hist_cache()
