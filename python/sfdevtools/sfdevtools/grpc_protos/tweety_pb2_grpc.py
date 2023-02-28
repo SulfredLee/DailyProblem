@@ -25,6 +25,21 @@ class TweetyStub(object):
                 request_serializer=tweety__pb2.SaveStrategyConfig_Msg.SerializeToString,
                 response_deserializer=tweety__pb2.SaveStrategyConfig_Reply.FromString,
                 )
+        self.GetStrategyConfig = channel.unary_unary(
+                '/tweety.Tweety/GetStrategyConfig',
+                request_serializer=tweety__pb2.GetStrategyConfig_Msg.SerializeToString,
+                response_deserializer=tweety__pb2.GetStrategyConfig_Reply.FromString,
+                )
+        self.RemoveStrategyConfig = channel.unary_unary(
+                '/tweety.Tweety/RemoveStrategyConfig',
+                request_serializer=tweety__pb2.RemoveStrategyConfig_Msg.SerializeToString,
+                response_deserializer=tweety__pb2.Dummy_Reply.FromString,
+                )
+        self.RemoveOldConfig = channel.unary_unary(
+                '/tweety.Tweety/RemoveOldConfig',
+                request_serializer=tweety__pb2.RemoveOldConfig_Msg.SerializeToString,
+                response_deserializer=tweety__pb2.Dummy_Reply.FromString,
+                )
         self.HealthCheck = channel.unary_unary(
                 '/tweety.Tweety/HealthCheck',
                 request_serializer=tweety__pb2.Ping.SerializeToString,
@@ -49,6 +64,24 @@ class TweetyServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetStrategyConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RemoveStrategyConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RemoveOldConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def HealthCheck(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -67,6 +100,21 @@ def add_TweetyServicer_to_server(servicer, server):
                     servicer.SaveStrategyConfig,
                     request_deserializer=tweety__pb2.SaveStrategyConfig_Msg.FromString,
                     response_serializer=tweety__pb2.SaveStrategyConfig_Reply.SerializeToString,
+            ),
+            'GetStrategyConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetStrategyConfig,
+                    request_deserializer=tweety__pb2.GetStrategyConfig_Msg.FromString,
+                    response_serializer=tweety__pb2.GetStrategyConfig_Reply.SerializeToString,
+            ),
+            'RemoveStrategyConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemoveStrategyConfig,
+                    request_deserializer=tweety__pb2.RemoveStrategyConfig_Msg.FromString,
+                    response_serializer=tweety__pb2.Dummy_Reply.SerializeToString,
+            ),
+            'RemoveOldConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemoveOldConfig,
+                    request_deserializer=tweety__pb2.RemoveOldConfig_Msg.FromString,
+                    response_serializer=tweety__pb2.Dummy_Reply.SerializeToString,
             ),
             'HealthCheck': grpc.unary_unary_rpc_method_handler(
                     servicer.HealthCheck,
@@ -115,6 +163,57 @@ class Tweety(object):
         return grpc.experimental.unary_unary(request, target, '/tweety.Tweety/SaveStrategyConfig',
             tweety__pb2.SaveStrategyConfig_Msg.SerializeToString,
             tweety__pb2.SaveStrategyConfig_Reply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetStrategyConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/tweety.Tweety/GetStrategyConfig',
+            tweety__pb2.GetStrategyConfig_Msg.SerializeToString,
+            tweety__pb2.GetStrategyConfig_Reply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RemoveStrategyConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/tweety.Tweety/RemoveStrategyConfig',
+            tweety__pb2.RemoveStrategyConfig_Msg.SerializeToString,
+            tweety__pb2.Dummy_Reply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RemoveOldConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/tweety.Tweety/RemoveOldConfig',
+            tweety__pb2.RemoveOldConfig_Msg.SerializeToString,
+            tweety__pb2.Dummy_Reply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

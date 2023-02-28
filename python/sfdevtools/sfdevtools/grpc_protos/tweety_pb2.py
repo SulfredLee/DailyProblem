@@ -19,10 +19,198 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0ctweety.proto\x12\x06tweety\"2\n\x17GetStrategyConfigId_Msg\x12\x17\n\x0fstrategy_config\x18\x01 \x01(\t\";\n\x19GetStrategyConfigId_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0e\n\x06\x63\x66g_id\x18\x02 \x01(\t\"1\n\x16SaveStrategyConfig_Msg\x12\x17\n\x0fstrategy_config\x18\x01 \x01(\t\"*\n\x18SaveStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\xe6\x01\n\x06Tweety\x12Y\n\x13GetStrategyConfigId\x12\x1f.tweety.GetStrategyConfigId_Msg\x1a!.tweety.GetStrategyConfigId_Reply\x12V\n\x12SaveStrategyConfig\x12\x1e.tweety.SaveStrategyConfig_Msg\x1a .tweety.SaveStrategyConfig_Reply\x12)\n\x0bHealthCheck\x12\x0c.tweety.Ping\x1a\x0c.tweety.Pongb\x06proto3'
+  serialized_pb=b'\n\x0ctweety.proto\x12\x06tweety\"\\\n\x18RemoveStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\x12\x18\n\x10strategy_id_list\x18\x03 \x03(\t\"#\n\x13RemoveOldConfig_Msg\x12\x0c\n\x04\x64\x61ys\x18\x01 \x01(\x05\"\x1c\n\x0b\x44ummy_Reply\x12\r\n\x05\x64ummy\x18\x01 \x01(\t\"?\n\x15GetStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\";\n\x17GetStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x10\n\x08\x63\x66g_list\x18\x02 \x03(\t\"2\n\x17GetStrategyConfigId_Msg\x12\x17\n\x0fstrategy_config\x18\x01 \x01(\t\";\n\x19GetStrategyConfigId_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0e\n\x06\x63\x66g_id\x18\x02 \x01(\t\"1\n\x16SaveStrategyConfig_Msg\x12\x17\n\x0fstrategy_config\x18\x01 \x01(\t\"*\n\x18SaveStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\xcf\x03\n\x06Tweety\x12Y\n\x13GetStrategyConfigId\x12\x1f.tweety.GetStrategyConfigId_Msg\x1a!.tweety.GetStrategyConfigId_Reply\x12V\n\x12SaveStrategyConfig\x12\x1e.tweety.SaveStrategyConfig_Msg\x1a .tweety.SaveStrategyConfig_Reply\x12S\n\x11GetStrategyConfig\x12\x1d.tweety.GetStrategyConfig_Msg\x1a\x1f.tweety.GetStrategyConfig_Reply\x12M\n\x14RemoveStrategyConfig\x12 .tweety.RemoveStrategyConfig_Msg\x1a\x13.tweety.Dummy_Reply\x12\x43\n\x0fRemoveOldConfig\x12\x1b.tweety.RemoveOldConfig_Msg\x1a\x13.tweety.Dummy_Reply\x12)\n\x0bHealthCheck\x12\x0c.tweety.Ping\x1a\x0c.tweety.Pongb\x06proto3'
 )
 
 
+
+
+_REMOVESTRATEGYCONFIG_MSG = _descriptor.Descriptor(
+  name='RemoveStrategyConfig_Msg',
+  full_name='tweety.RemoveStrategyConfig_Msg',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='strategy_name', full_name='tweety.RemoveStrategyConfig_Msg.strategy_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='is_live', full_name='tweety.RemoveStrategyConfig_Msg.is_live', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='strategy_id_list', full_name='tweety.RemoveStrategyConfig_Msg.strategy_id_list', index=2,
+      number=3, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=24,
+  serialized_end=116,
+)
+
+
+_REMOVEOLDCONFIG_MSG = _descriptor.Descriptor(
+  name='RemoveOldConfig_Msg',
+  full_name='tweety.RemoveOldConfig_Msg',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='days', full_name='tweety.RemoveOldConfig_Msg.days', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=118,
+  serialized_end=153,
+)
+
+
+_DUMMY_REPLY = _descriptor.Descriptor(
+  name='Dummy_Reply',
+  full_name='tweety.Dummy_Reply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='dummy', full_name='tweety.Dummy_Reply.dummy', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=155,
+  serialized_end=183,
+)
+
+
+_GETSTRATEGYCONFIG_MSG = _descriptor.Descriptor(
+  name='GetStrategyConfig_Msg',
+  full_name='tweety.GetStrategyConfig_Msg',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='strategy_name', full_name='tweety.GetStrategyConfig_Msg.strategy_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='is_live', full_name='tweety.GetStrategyConfig_Msg.is_live', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=185,
+  serialized_end=248,
+)
+
+
+_GETSTRATEGYCONFIG_REPLY = _descriptor.Descriptor(
+  name='GetStrategyConfig_Reply',
+  full_name='tweety.GetStrategyConfig_Reply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='status', full_name='tweety.GetStrategyConfig_Reply.status', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='cfg_list', full_name='tweety.GetStrategyConfig_Reply.cfg_list', index=1,
+      number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=250,
+  serialized_end=309,
+)
 
 
 _GETSTRATEGYCONFIGID_MSG = _descriptor.Descriptor(
@@ -52,8 +240,8 @@ _GETSTRATEGYCONFIGID_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=24,
-  serialized_end=74,
+  serialized_start=311,
+  serialized_end=361,
 )
 
 
@@ -91,8 +279,8 @@ _GETSTRATEGYCONFIGID_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=76,
-  serialized_end=135,
+  serialized_start=363,
+  serialized_end=422,
 )
 
 
@@ -123,8 +311,8 @@ _SAVESTRATEGYCONFIG_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=137,
-  serialized_end=186,
+  serialized_start=424,
+  serialized_end=473,
 )
 
 
@@ -155,8 +343,8 @@ _SAVESTRATEGYCONFIG_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=188,
-  serialized_end=230,
+  serialized_start=475,
+  serialized_end=517,
 )
 
 
@@ -187,8 +375,8 @@ _PING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=232,
-  serialized_end=255,
+  serialized_start=519,
+  serialized_end=542,
 )
 
 
@@ -219,10 +407,15 @@ _PONG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=257,
-  serialized_end=280,
+  serialized_start=544,
+  serialized_end=567,
 )
 
+DESCRIPTOR.message_types_by_name['RemoveStrategyConfig_Msg'] = _REMOVESTRATEGYCONFIG_MSG
+DESCRIPTOR.message_types_by_name['RemoveOldConfig_Msg'] = _REMOVEOLDCONFIG_MSG
+DESCRIPTOR.message_types_by_name['Dummy_Reply'] = _DUMMY_REPLY
+DESCRIPTOR.message_types_by_name['GetStrategyConfig_Msg'] = _GETSTRATEGYCONFIG_MSG
+DESCRIPTOR.message_types_by_name['GetStrategyConfig_Reply'] = _GETSTRATEGYCONFIG_REPLY
 DESCRIPTOR.message_types_by_name['GetStrategyConfigId_Msg'] = _GETSTRATEGYCONFIGID_MSG
 DESCRIPTOR.message_types_by_name['GetStrategyConfigId_Reply'] = _GETSTRATEGYCONFIGID_REPLY
 DESCRIPTOR.message_types_by_name['SaveStrategyConfig_Msg'] = _SAVESTRATEGYCONFIG_MSG
@@ -230,6 +423,41 @@ DESCRIPTOR.message_types_by_name['SaveStrategyConfig_Reply'] = _SAVESTRATEGYCONF
 DESCRIPTOR.message_types_by_name['Ping'] = _PING
 DESCRIPTOR.message_types_by_name['Pong'] = _PONG
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+RemoveStrategyConfig_Msg = _reflection.GeneratedProtocolMessageType('RemoveStrategyConfig_Msg', (_message.Message,), {
+  'DESCRIPTOR' : _REMOVESTRATEGYCONFIG_MSG,
+  '__module__' : 'tweety_pb2'
+  # @@protoc_insertion_point(class_scope:tweety.RemoveStrategyConfig_Msg)
+  })
+_sym_db.RegisterMessage(RemoveStrategyConfig_Msg)
+
+RemoveOldConfig_Msg = _reflection.GeneratedProtocolMessageType('RemoveOldConfig_Msg', (_message.Message,), {
+  'DESCRIPTOR' : _REMOVEOLDCONFIG_MSG,
+  '__module__' : 'tweety_pb2'
+  # @@protoc_insertion_point(class_scope:tweety.RemoveOldConfig_Msg)
+  })
+_sym_db.RegisterMessage(RemoveOldConfig_Msg)
+
+Dummy_Reply = _reflection.GeneratedProtocolMessageType('Dummy_Reply', (_message.Message,), {
+  'DESCRIPTOR' : _DUMMY_REPLY,
+  '__module__' : 'tweety_pb2'
+  # @@protoc_insertion_point(class_scope:tweety.Dummy_Reply)
+  })
+_sym_db.RegisterMessage(Dummy_Reply)
+
+GetStrategyConfig_Msg = _reflection.GeneratedProtocolMessageType('GetStrategyConfig_Msg', (_message.Message,), {
+  'DESCRIPTOR' : _GETSTRATEGYCONFIG_MSG,
+  '__module__' : 'tweety_pb2'
+  # @@protoc_insertion_point(class_scope:tweety.GetStrategyConfig_Msg)
+  })
+_sym_db.RegisterMessage(GetStrategyConfig_Msg)
+
+GetStrategyConfig_Reply = _reflection.GeneratedProtocolMessageType('GetStrategyConfig_Reply', (_message.Message,), {
+  'DESCRIPTOR' : _GETSTRATEGYCONFIG_REPLY,
+  '__module__' : 'tweety_pb2'
+  # @@protoc_insertion_point(class_scope:tweety.GetStrategyConfig_Reply)
+  })
+_sym_db.RegisterMessage(GetStrategyConfig_Reply)
 
 GetStrategyConfigId_Msg = _reflection.GeneratedProtocolMessageType('GetStrategyConfigId_Msg', (_message.Message,), {
   'DESCRIPTOR' : _GETSTRATEGYCONFIGID_MSG,
@@ -282,8 +510,8 @@ _TWEETY = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=283,
-  serialized_end=513,
+  serialized_start=570,
+  serialized_end=1033,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetStrategyConfigId',
@@ -306,9 +534,39 @@ _TWEETY = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='GetStrategyConfig',
+    full_name='tweety.Tweety.GetStrategyConfig',
+    index=2,
+    containing_service=None,
+    input_type=_GETSTRATEGYCONFIG_MSG,
+    output_type=_GETSTRATEGYCONFIG_REPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='RemoveStrategyConfig',
+    full_name='tweety.Tweety.RemoveStrategyConfig',
+    index=3,
+    containing_service=None,
+    input_type=_REMOVESTRATEGYCONFIG_MSG,
+    output_type=_DUMMY_REPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='RemoveOldConfig',
+    full_name='tweety.Tweety.RemoveOldConfig',
+    index=4,
+    containing_service=None,
+    input_type=_REMOVEOLDCONFIG_MSG,
+    output_type=_DUMMY_REPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='HealthCheck',
     full_name='tweety.Tweety.HealthCheck',
-    index=2,
+    index=5,
     containing_service=None,
     input_type=_PING,
     output_type=_PONG,
