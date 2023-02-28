@@ -30,6 +30,21 @@ class PeacockStub(object):
                 request_serializer=peacock__pb2.SaveStrategyConfig_Msg.SerializeToString,
                 response_deserializer=peacock__pb2.SaveStrategyConfig_Reply.FromString,
                 )
+        self.GetStrategyConfig = channel.unary_unary(
+                '/peacock.Peacock/GetStrategyConfig',
+                request_serializer=peacock__pb2.GetStrategyConfig_Msg.SerializeToString,
+                response_deserializer=peacock__pb2.GetStrategyConfig_Reply.FromString,
+                )
+        self.RemoveStrategyConfig = channel.unary_unary(
+                '/peacock.Peacock/RemoveStrategyConfig',
+                request_serializer=peacock__pb2.RemoveStrategyConfig_Msg.SerializeToString,
+                response_deserializer=peacock__pb2.Dummy_Reply.FromString,
+                )
+        self.RemoveOldConfig = channel.unary_unary(
+                '/peacock.Peacock/RemoveOldConfig',
+                request_serializer=peacock__pb2.RemoveOldConfig_Msg.SerializeToString,
+                response_deserializer=peacock__pb2.Dummy_Reply.FromString,
+                )
         self.HealthCheck = channel.unary_unary(
                 '/peacock.Peacock/HealthCheck',
                 request_serializer=peacock__pb2.Ping.SerializeToString,
@@ -55,13 +70,33 @@ class PeacockServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def SaveStrategyConfig(self, request, context):
+        """tweety - start
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetStrategyConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RemoveStrategyConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RemoveOldConfig(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def HealthCheck(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """tweety - end
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -83,6 +118,21 @@ def add_PeacockServicer_to_server(servicer, server):
                     servicer.SaveStrategyConfig,
                     request_deserializer=peacock__pb2.SaveStrategyConfig_Msg.FromString,
                     response_serializer=peacock__pb2.SaveStrategyConfig_Reply.SerializeToString,
+            ),
+            'GetStrategyConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetStrategyConfig,
+                    request_deserializer=peacock__pb2.GetStrategyConfig_Msg.FromString,
+                    response_serializer=peacock__pb2.GetStrategyConfig_Reply.SerializeToString,
+            ),
+            'RemoveStrategyConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemoveStrategyConfig,
+                    request_deserializer=peacock__pb2.RemoveStrategyConfig_Msg.FromString,
+                    response_serializer=peacock__pb2.Dummy_Reply.SerializeToString,
+            ),
+            'RemoveOldConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemoveOldConfig,
+                    request_deserializer=peacock__pb2.RemoveOldConfig_Msg.FromString,
+                    response_serializer=peacock__pb2.Dummy_Reply.SerializeToString,
             ),
             'HealthCheck': grpc.unary_unary_rpc_method_handler(
                     servicer.HealthCheck,
@@ -148,6 +198,57 @@ class Peacock(object):
         return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/SaveStrategyConfig',
             peacock__pb2.SaveStrategyConfig_Msg.SerializeToString,
             peacock__pb2.SaveStrategyConfig_Reply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetStrategyConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/GetStrategyConfig',
+            peacock__pb2.GetStrategyConfig_Msg.SerializeToString,
+            peacock__pb2.GetStrategyConfig_Reply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RemoveStrategyConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/RemoveStrategyConfig',
+            peacock__pb2.RemoveStrategyConfig_Msg.SerializeToString,
+            peacock__pb2.Dummy_Reply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RemoveOldConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/RemoveOldConfig',
+            peacock__pb2.RemoveOldConfig_Msg.SerializeToString,
+            peacock__pb2.Dummy_Reply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

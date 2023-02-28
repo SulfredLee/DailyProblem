@@ -19,10 +19,198 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rpeacock.proto\x12\x07peacock\"1\n\x16SaveStrategyConfig_Msg\x12\x17\n\x0fstrategy_config\x18\x01 \x01(\t\"*\n\x18SaveStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\">\n\x13SaveFileToColud_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\"U\n\x15SaveRefDataFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"\x1a\n\tNoneReply\x12\r\n\x05reply\x18\x01 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\x9e\x02\n\x07Peacock\x12\x43\n\x0fSaveFileToColud\x12\x1c.peacock.SaveFileToColud_Msg\x1a\x12.peacock.NoneReply\x12G\n\x11SaveRefDataFromQC\x12\x1e.peacock.SaveRefDataFromQC_Msg\x1a\x12.peacock.NoneReply\x12X\n\x12SaveStrategyConfig\x12\x1f.peacock.SaveStrategyConfig_Msg\x1a!.peacock.SaveStrategyConfig_Reply\x12+\n\x0bHealthCheck\x12\r.peacock.Ping\x1a\r.peacock.Pongb\x06proto3'
+  serialized_pb=b'\n\rpeacock.proto\x12\x07peacock\"\\\n\x18RemoveStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\x12\x18\n\x10strategy_id_list\x18\x03 \x03(\t\"#\n\x13RemoveOldConfig_Msg\x12\x0c\n\x04\x64\x61ys\x18\x01 \x01(\x05\"\x1c\n\x0b\x44ummy_Reply\x12\r\n\x05\x64ummy\x18\x01 \x01(\t\"?\n\x15GetStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\";\n\x17GetStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x10\n\x08\x63\x66g_list\x18\x02 \x03(\t\"1\n\x16SaveStrategyConfig_Msg\x12\x17\n\x0fstrategy_config\x18\x01 \x01(\t\"*\n\x18SaveStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\">\n\x13SaveFileToColud_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\"U\n\x15SaveRefDataFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"\x1a\n\tNoneReply\x12\r\n\x05reply\x18\x01 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\x8d\x04\n\x07Peacock\x12\x43\n\x0fSaveFileToColud\x12\x1c.peacock.SaveFileToColud_Msg\x1a\x12.peacock.NoneReply\x12G\n\x11SaveRefDataFromQC\x12\x1e.peacock.SaveRefDataFromQC_Msg\x1a\x12.peacock.NoneReply\x12X\n\x12SaveStrategyConfig\x12\x1f.peacock.SaveStrategyConfig_Msg\x1a!.peacock.SaveStrategyConfig_Reply\x12U\n\x11GetStrategyConfig\x12\x1e.peacock.GetStrategyConfig_Msg\x1a .peacock.GetStrategyConfig_Reply\x12O\n\x14RemoveStrategyConfig\x12!.peacock.RemoveStrategyConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12\x45\n\x0fRemoveOldConfig\x12\x1c.peacock.RemoveOldConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12+\n\x0bHealthCheck\x12\r.peacock.Ping\x1a\r.peacock.Pongb\x06proto3'
 )
 
 
+
+
+_REMOVESTRATEGYCONFIG_MSG = _descriptor.Descriptor(
+  name='RemoveStrategyConfig_Msg',
+  full_name='peacock.RemoveStrategyConfig_Msg',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='strategy_name', full_name='peacock.RemoveStrategyConfig_Msg.strategy_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='is_live', full_name='peacock.RemoveStrategyConfig_Msg.is_live', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='strategy_id_list', full_name='peacock.RemoveStrategyConfig_Msg.strategy_id_list', index=2,
+      number=3, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=26,
+  serialized_end=118,
+)
+
+
+_REMOVEOLDCONFIG_MSG = _descriptor.Descriptor(
+  name='RemoveOldConfig_Msg',
+  full_name='peacock.RemoveOldConfig_Msg',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='days', full_name='peacock.RemoveOldConfig_Msg.days', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=120,
+  serialized_end=155,
+)
+
+
+_DUMMY_REPLY = _descriptor.Descriptor(
+  name='Dummy_Reply',
+  full_name='peacock.Dummy_Reply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='dummy', full_name='peacock.Dummy_Reply.dummy', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=157,
+  serialized_end=185,
+)
+
+
+_GETSTRATEGYCONFIG_MSG = _descriptor.Descriptor(
+  name='GetStrategyConfig_Msg',
+  full_name='peacock.GetStrategyConfig_Msg',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='strategy_name', full_name='peacock.GetStrategyConfig_Msg.strategy_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='is_live', full_name='peacock.GetStrategyConfig_Msg.is_live', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=187,
+  serialized_end=250,
+)
+
+
+_GETSTRATEGYCONFIG_REPLY = _descriptor.Descriptor(
+  name='GetStrategyConfig_Reply',
+  full_name='peacock.GetStrategyConfig_Reply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='status', full_name='peacock.GetStrategyConfig_Reply.status', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='cfg_list', full_name='peacock.GetStrategyConfig_Reply.cfg_list', index=1,
+      number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=252,
+  serialized_end=311,
+)
 
 
 _SAVESTRATEGYCONFIG_MSG = _descriptor.Descriptor(
@@ -52,8 +240,8 @@ _SAVESTRATEGYCONFIG_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=26,
-  serialized_end=75,
+  serialized_start=313,
+  serialized_end=362,
 )
 
 
@@ -84,8 +272,8 @@ _SAVESTRATEGYCONFIG_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=77,
-  serialized_end=119,
+  serialized_start=364,
+  serialized_end=406,
 )
 
 
@@ -123,8 +311,8 @@ _SAVEFILETOCOLUD_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=121,
-  serialized_end=183,
+  serialized_start=408,
+  serialized_end=470,
 )
 
 
@@ -169,8 +357,8 @@ _SAVEREFDATAFROMQC_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=185,
-  serialized_end=270,
+  serialized_start=472,
+  serialized_end=557,
 )
 
 
@@ -201,8 +389,8 @@ _NONEREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=272,
-  serialized_end=298,
+  serialized_start=559,
+  serialized_end=585,
 )
 
 
@@ -233,8 +421,8 @@ _PING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=300,
-  serialized_end=323,
+  serialized_start=587,
+  serialized_end=610,
 )
 
 
@@ -265,10 +453,15 @@ _PONG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=325,
-  serialized_end=348,
+  serialized_start=612,
+  serialized_end=635,
 )
 
+DESCRIPTOR.message_types_by_name['RemoveStrategyConfig_Msg'] = _REMOVESTRATEGYCONFIG_MSG
+DESCRIPTOR.message_types_by_name['RemoveOldConfig_Msg'] = _REMOVEOLDCONFIG_MSG
+DESCRIPTOR.message_types_by_name['Dummy_Reply'] = _DUMMY_REPLY
+DESCRIPTOR.message_types_by_name['GetStrategyConfig_Msg'] = _GETSTRATEGYCONFIG_MSG
+DESCRIPTOR.message_types_by_name['GetStrategyConfig_Reply'] = _GETSTRATEGYCONFIG_REPLY
 DESCRIPTOR.message_types_by_name['SaveStrategyConfig_Msg'] = _SAVESTRATEGYCONFIG_MSG
 DESCRIPTOR.message_types_by_name['SaveStrategyConfig_Reply'] = _SAVESTRATEGYCONFIG_REPLY
 DESCRIPTOR.message_types_by_name['SaveFileToColud_Msg'] = _SAVEFILETOCOLUD_MSG
@@ -277,6 +470,41 @@ DESCRIPTOR.message_types_by_name['NoneReply'] = _NONEREPLY
 DESCRIPTOR.message_types_by_name['Ping'] = _PING
 DESCRIPTOR.message_types_by_name['Pong'] = _PONG
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+RemoveStrategyConfig_Msg = _reflection.GeneratedProtocolMessageType('RemoveStrategyConfig_Msg', (_message.Message,), {
+  'DESCRIPTOR' : _REMOVESTRATEGYCONFIG_MSG,
+  '__module__' : 'peacock_pb2'
+  # @@protoc_insertion_point(class_scope:peacock.RemoveStrategyConfig_Msg)
+  })
+_sym_db.RegisterMessage(RemoveStrategyConfig_Msg)
+
+RemoveOldConfig_Msg = _reflection.GeneratedProtocolMessageType('RemoveOldConfig_Msg', (_message.Message,), {
+  'DESCRIPTOR' : _REMOVEOLDCONFIG_MSG,
+  '__module__' : 'peacock_pb2'
+  # @@protoc_insertion_point(class_scope:peacock.RemoveOldConfig_Msg)
+  })
+_sym_db.RegisterMessage(RemoveOldConfig_Msg)
+
+Dummy_Reply = _reflection.GeneratedProtocolMessageType('Dummy_Reply', (_message.Message,), {
+  'DESCRIPTOR' : _DUMMY_REPLY,
+  '__module__' : 'peacock_pb2'
+  # @@protoc_insertion_point(class_scope:peacock.Dummy_Reply)
+  })
+_sym_db.RegisterMessage(Dummy_Reply)
+
+GetStrategyConfig_Msg = _reflection.GeneratedProtocolMessageType('GetStrategyConfig_Msg', (_message.Message,), {
+  'DESCRIPTOR' : _GETSTRATEGYCONFIG_MSG,
+  '__module__' : 'peacock_pb2'
+  # @@protoc_insertion_point(class_scope:peacock.GetStrategyConfig_Msg)
+  })
+_sym_db.RegisterMessage(GetStrategyConfig_Msg)
+
+GetStrategyConfig_Reply = _reflection.GeneratedProtocolMessageType('GetStrategyConfig_Reply', (_message.Message,), {
+  'DESCRIPTOR' : _GETSTRATEGYCONFIG_REPLY,
+  '__module__' : 'peacock_pb2'
+  # @@protoc_insertion_point(class_scope:peacock.GetStrategyConfig_Reply)
+  })
+_sym_db.RegisterMessage(GetStrategyConfig_Reply)
 
 SaveStrategyConfig_Msg = _reflection.GeneratedProtocolMessageType('SaveStrategyConfig_Msg', (_message.Message,), {
   'DESCRIPTOR' : _SAVESTRATEGYCONFIG_MSG,
@@ -336,8 +564,8 @@ _PEACOCK = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=351,
-  serialized_end=637,
+  serialized_start=638,
+  serialized_end=1163,
   methods=[
   _descriptor.MethodDescriptor(
     name='SaveFileToColud',
@@ -370,9 +598,39 @@ _PEACOCK = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='GetStrategyConfig',
+    full_name='peacock.Peacock.GetStrategyConfig',
+    index=3,
+    containing_service=None,
+    input_type=_GETSTRATEGYCONFIG_MSG,
+    output_type=_GETSTRATEGYCONFIG_REPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='RemoveStrategyConfig',
+    full_name='peacock.Peacock.RemoveStrategyConfig',
+    index=4,
+    containing_service=None,
+    input_type=_REMOVESTRATEGYCONFIG_MSG,
+    output_type=_DUMMY_REPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='RemoveOldConfig',
+    full_name='peacock.Peacock.RemoveOldConfig',
+    index=5,
+    containing_service=None,
+    input_type=_REMOVEOLDCONFIG_MSG,
+    output_type=_DUMMY_REPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='HealthCheck',
     full_name='peacock.Peacock.HealthCheck',
-    index=3,
+    index=6,
     containing_service=None,
     input_type=_PING,
     output_type=_PONG,
