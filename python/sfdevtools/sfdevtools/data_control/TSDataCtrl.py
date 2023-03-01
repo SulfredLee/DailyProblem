@@ -136,17 +136,16 @@ class TSDataCtrl(object):
                             self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
                         # order
                         for fid_num, fid_value in cop.order_map.items():
-                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.order_list)
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
                         # trade
                         for fid_num, fid_value in cop.trade_map.items():
-                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.trade_list)
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
                         # si
                         for fid_num, fid_value in cop.si_map.items():
-                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.si_list)
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
                         # ci
                         for fid_num, fid_value in cop.ci_map.items():
-                            for ci in fid_value.ci_list:
-                                self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=ci.value)
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
 
         self.__logger.info("End")
 
