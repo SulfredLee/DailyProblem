@@ -15,12 +15,13 @@ class MongoDBCtrl(object):
         self._logger: logging.Logger = logger
         self._db_client = None
         if "mongodb" == db_conn_protocol:
+            # this connection works for local minikube mongodb creation
             self._db_client = MongoClient(f"mongodb://{db_user}:{db_pw}@{db_host}:{db_port}/?authSource={db_name}"
                                           , serverSelectionTimeoutMS=connection_time_ms)
         else:
-            self._db_client = MongoClient(f"mongodb+srv://{db_user}:{db_pw}@{db_host}/?authSource={db_name}"
+            # this connection works for mongodb service provided by altas
+            self._db_client = MongoClient(f"mongodb+srv://{db_user}:{db_pw}@{db_host}/?retryWrites=true&w=majority"
                                           , serverSelectionTimeoutMS=connection_time_ms)
-
         self._db = self._db_client[db_name]
 
     def get_db(self, db_name: str = None) -> pymongo.database.Database:
