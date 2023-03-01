@@ -7,6 +7,12 @@ from sfdevtools.data_cache.DComponents import StrategyInsight, TS_Order, TS_Trad
 from sfdevtools.data_cache.DPage import DPage
 from sfdevtools.data_cache.DStrategy import DStrategy
 
+def to_timestamp_safe(value) -> float:
+    if isinstance(value, datetime.datetime):
+        return value.timestamp()
+    else:
+        return value
+
 def conv_strg_2_cop(strgy: DStrategy) -> ts_cop_pb2.Cop:
     cop: ts_cop_pb2.Cop = ts_cop_pb2.Cop()
 
@@ -33,8 +39,8 @@ def conv_strg_2_cop(strgy: DStrategy) -> ts_cop_pb2.Cop:
 
     # ci
     for ci in strgy.get_all_ci():
-        ci["created"] = ci["created"].timestamp()
-        ci["last_update"] = ci["last_update"].timestamp()
+        ci["created"] = to_timestamp_safe(ci["created"])
+        ci["last_update"] = to_timestamp_safe(ci["last_update"])
         cop.ci_map[ts_cop_pb2.FidNum.CI].ci_list.append(ts_cop_pb2.CI(value=json.dumps(ci)))
     # si
     for si in strgy.get_all_si():
@@ -86,8 +92,8 @@ def conv_TS_Order_2_cop_order(order: TS_Order) -> ts_cop_pb2.TSOrder:
     ord_ele.parent_id = order.parent_id
     ord_ele.order_id = order.order_id
     ord_ele.platform_order_id = order.platform_order_id
-    ord_ele.created = order.created.timestamp()
-    ord_ele.last_update = order.last_update.timestamp()
+    ord_ele.created = to_timestamp_safe(order.created)
+    ord_ele.last_update = to_timestamp_safe(order.last_update)
     ord_ele.strategy_name = order.strategy_name
     ord_ele.live_mode = order.live_mode
     ord_ele.strategy_id = order.strategy_id
@@ -111,8 +117,8 @@ def conv_TS_Trade_2_cop_trade(trd: TS_Trade) -> ts_cop_pb2.TSTrade:
     trd_ele.quantity = trd.quantity
     trd_ele.parent_id = trd.parent_id
     trd_ele.trade_id = trd.trade_id
-    trd_ele.created = trd.created.timestamp()
-    trd_ele.last_update = trd.last_update.timestamp()
+    trd_ele.created = to_timestamp_safe(trd.created)
+    trd_ele.last_update = to_timestamp_safe(trd.last_update)
     trd_ele.strategy_name = trd.strategy_name
     trd_ele.live_mode = trd.live_mode
     trd_ele.strategy_id = trd.strategy_id
@@ -138,8 +144,8 @@ def conv_SI_2_cop_si(si: StrategyInsight) -> ts_cop_pb2.SI:
     si_ele.ratio = si.ratio
     si_ele.parent_id = si.parent_id
     si_ele.si_id = si.si_id
-    si_ele.created = si.created.timestamp()
-    si_ele.last_update = si.last_update.timestamp()
+    si_ele.created = to_timestamp_safe(si.created)
+    si_ele.last_update = to_timestamp_safe(si.last_update)
     si_ele.strategy_name = si.strategy_name
     si_ele.live_mode = si.live_mode
     si_ele.strategy_id = si.strategy_id

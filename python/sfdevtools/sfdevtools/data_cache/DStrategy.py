@@ -84,8 +84,9 @@ class DStrategy(object):
         return True
 
     def is_latest_si(self, si: List[StrategyInsight]) -> bool:
-        with self.__mutex:
-            return self.__is_same_si(si1=self.__si_cache.get_records_by_index(-1), si2=si)
+        if self.__si_cache.size() < 1:
+            return False
+        return self.__is_same_si(si1=self.__si_cache.get_records_by_index(-1), si2=si)
 
     def is_ci_exist(self, ci: Dict[str, Any]) -> bool:
         return self.__ci_cache.is_exist(key=hashlib.md5(json.dumps(ci, sort_keys=True).encode("utf-8")).digest())
@@ -103,6 +104,8 @@ class DStrategy(object):
         self.__ci_cache.upsert_ele(key=hashlib.md5(json.dumps(ci, sort_keys=True).encode("utf-8")).digest(), value=ci)
 
     def get_ci(self) -> Dict[str, Any]:
+        if self.__ci_cache.size() < 1:
+            return None
         return self.__ci_cache.get_records_by_index(idx=-1)
 
     def get_all_ci(self) -> List[Dict[str, Any]]:

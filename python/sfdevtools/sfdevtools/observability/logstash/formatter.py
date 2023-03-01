@@ -135,6 +135,7 @@ class LogstashFormatterVersion1(LogstashFormatterBase):
             'thread_name': record.threadName,
             'filename': record.filename,
             'module': record.module,
+            'funcName': record.funcName,
         }
 
         # Add extra fields
