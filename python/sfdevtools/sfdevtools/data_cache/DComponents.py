@@ -24,6 +24,19 @@ class StrategyInsight(object):
     def __str__(self):
         return f"{self.symbol},{self.ratio}"
 
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        special_fields = set(["created", "last_update"])
+        for k, v in self.__dict__.items():
+            if k in special_fields:
+                setattr(result, k, datetime.datetime.fromtimestamp(v.timestamp()))
+            else:
+                setattr(result, k, copy.deepcopy(v, memo))
+
+        return result
+
 class TS_Order(object):
     def __init__(self):
         self.symbol: str = ""
