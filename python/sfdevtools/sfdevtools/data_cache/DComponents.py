@@ -1,3 +1,6 @@
+import copy
+import datetime
+
 class StrategyInsight(object):
     def __init__(self, symbol: str, ratio: float):
         self.symbol: str = symbol
@@ -56,6 +59,19 @@ class TS_Order(object):
     def __str__(self):
         return f"{self.symbol},{self.quantity}"
 
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        special_fields = set(["created", "last_update"])
+        for k, v in self.__dict__.items():
+            if k in special_fields:
+                setattr(result, k, datetime.datetime.fromtimestamp(v.timestamp()))
+            else:
+                setattr(result, k, copy.deepcopy(v, memo))
+
+        return result
+
 class TS_Trade(object):
     def __init__(self):
         self.symbol: str = ""
@@ -82,11 +98,23 @@ class TS_Trade(object):
         self.ccy: str = ""
 
     def __eq__(self, other) -> bool:
-        if isinstance(other, TS_Order):
-            return self.order_id == other.order_id\
-                and self.platform_order_id == other.platform_order_id
+        if isinstance(other, TS_Trade):
+            return self.trade_id == other.trade_id
         else:
             return False
 
     def __str__(self):
         return f"{self.symbol},{self.quantity}"
+
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        special_fields = set(["created", "last_update", "settlement_date"])
+        for k, v in self.__dict__.items():
+            if k in special_fields:
+                setattr(result, k, datetime.datetime.fromtimestamp(v.timestamp()))
+            else:
+                setattr(result, k, copy.deepcopy(v, memo))
+
+        return result

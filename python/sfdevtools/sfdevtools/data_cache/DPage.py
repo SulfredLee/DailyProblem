@@ -17,28 +17,17 @@ class DPage(object):
         self.__string_map: Dict[int, str] = dict()
         self.__bool_map: Dict[int, bool] = dict()
 
-        self.__save_map: Dict[int, Any] = {
-            0: self.__save_fid_int32
-            , 1: self.__save_fid_int64
-            , 2: self.__save_fid_float
-            , 3: self.__save_fid_double
-            , 4: self.__save_fid_string
-            , 5: self.__save_fid_other
-            , 6: self.__save_fid_bool
-        }
-        self.__get_map: Dict[int, Any] = {
-            0: self.__get_fid_int32
-            , 1: self.__get_fid_int64
-            , 2: self.__get_fid_float
-            , 3: self.__get_fid_double
-            , 4: self.__get_fid_string
-            , 5: self.__get_fid_other
-            , 6: self.__get_fid_bool
-        }
+        self.__save_map: Dict[int, Any] = dict()
+        self.__get_map: Dict[int, Any] = dict()
         self.__bucket_size = 10000
 
-    def init_component(self, logger: logging.Logger) -> None:
+    def init_component(self
+                       , logger: logging.Logger
+                       , save_other_map: Dict
+                       , get_other_map: Dict) -> None:
         self.__logger = logger
+        self.__save_other_map = save_other_map
+        self.__get_other_map = get_other_map
 
     def save_fid(self, fid_num: int, fid_value: Any) -> None:
         bucket_num = int((fid_num - 1) / self.__bucket_size)
@@ -104,7 +93,12 @@ class DPage(object):
             self.__bool_map[fid_num] = fid_value
 
     def __save_fid_other(self, fid_num: int, fid_value: Any) -> None:
-        pass
+        with self.__other_mutex:
+            if fid_num not in self.__save_other_map:
+                return None
+
+            self.__save_other_map[fid_num](fid_value)
+            return None
 
     def __get_fid_int32(self, fid_num: int) -> Union[bool, int]:
         with self.__int_mutex:
@@ -149,4 +143,8 @@ class DPage(object):
                 return (False, None)
 
     def __get_fid_other(self, fid_num: int) -> Union[bool, Any]:
-        pass
+        with self.__other_mutex:
+            if fid_num in self.__get_other_map:
+                return (True, self.__get_other_map[fid_num]())
+            else:
+                return (False, None)
