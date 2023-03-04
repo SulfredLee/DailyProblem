@@ -9,21 +9,26 @@ class TimelyCache_Snapshot(object):
     """
     def __init__(self, max_size: int = 1000):
         self.__dict: Dict[Any, Any] = dict()
-        self.__time_index: List[Union[Any, Any]] = list()
+        self.__time_index: List[Any] = list()
+        self.__hist_data: List[Union[Any, Any]] = list()
         self.__mutex: threading.Lock = threading.Lock()
         self.__max_size = max_size
 
     def upsert_multi(self, keys: List[Any], values: List[Any]) -> None:
         with self.__mutex:
             for key, value in zip(keys, values):
-                self.__time_index.append((key, value))
+                if key not in self.__dict:
+                    self.__time_index.append(key)
+                self.__hist_data.append((key, value))
                 self.__dict[key] = value
 
             self.__remove_extra_records()
 
     def upsert_ele(self, key: Any, value: Any) -> None:
         with self.__mutex:
-            self.__time_index.append((key, value))
+            if key not in self.__dict:
+                self.__time_index.append(key)
+            self.__hist_data.append((key, value))
             self.__dict[key] = value
 
             self.__remove_extra_records()
@@ -34,11 +39,11 @@ class TimelyCache_Snapshot(object):
 
     def get_records_by_index(self, idx: int) -> Any:
         with self.__mutex:
-            return copy.deepcopy(self.__time_index[idx])
+            return copy.deepcopy(self.__dict[self.__time_index[idx]])
 
     def get_records_in_time_series(self) -> List[Any]:
         with self.__mutex:
-            return [ele[1] for ele in self.__time_index]
+            return [ele[1] for ele in self.__hist_data]
 
     def get_ele(self, key: Any) -> Any:
         with self.__mutex:
@@ -58,25 +63,26 @@ class TimelyCache_Snapshot(object):
     def __remove_extra_records(self):
         if len(self.__dict) > self.__max_size:
             total_old_records = len(self.__dict) - self.__max_size
-            # find the outdated key
-            old_key, old_value = self.__time_index[0]
-            last_n = 0
-            old_record_count = 1
             old_key_list: List[Any] = list()
-            # find old records from list
-            for idx, ele in enumerate(self.__time_index):
-                if not ele[0] == old_key:
-                    old_record_count += 1
-                    old_key_list.append(old_key)
-                    old_key = ele[0]
-                    if old_record_count > total_old_records:
-                        last_n = idx
-                        break
+            idx = 0
+            while total_old_records > len(old_key_list):
+                if len(old_key_list) == 0:
+                    old_key_list.append(self.__time_index[idx])
+                else:
+                    if old_key_list[-1] != self.__time_index[idx]:
+                        old_key_list.append(self.__time_index[idx])
+
+                while old_key_list[-1] == self.__time_index[idx]:
+                    idx += 1
+
+            last_n = idx
             # remove from dict
             for old_key in old_key_list:
                 del self.__dict[old_key]
             # remove from list
             del self.__time_index[:last_n]
+            # remove from hist data
+            del self.__hist_data[:total_old_records]
 
 class TimelyCache_Hist(object):
     """! Keep a limited list of latest records
