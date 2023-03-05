@@ -15,13 +15,16 @@ class DCacheManager(object):
         self.__logger: logging.Logger = None
         self.__dcache: Dict[str, DCache] = dict() # key: cache name, value: dcache
         self.__mutex: threading.Lock = threading.Lock()
+        self.__update_cb: Any = None
 
     def init_component(self
                        , logger: logging.Logger
+                       , update_cb
                        , max_hist_orders: int = 1000
                        , max_hist_si: int = 1000
                        , max_hist_trades: int = 1000) -> None:
         self.__logger = logger
+        self.__update_cb = update_cb
         self.__max_hist_orders = max_hist_orders
         self.__max_hist_si = max_hist_si
         self.__max_hist_trades = max_hist_trades
@@ -34,6 +37,7 @@ class DCacheManager(object):
                 new_dcache = DCache()
                 self.__dcache[cache_name] = new_dcache
                 new_dcache.init_component(logger=self.__logger
+                                          , update_cb=self.__update_cb
                                           , max_hist_orders=self.__max_hist_orders
                                           , max_hist_si=self.__max_hist_si
                                           , max_hist_trades=self.__max_hist_trades)
@@ -101,11 +105,11 @@ class DCacheManager(object):
             return (False, None)
         return (True, dcache.is_latest_si(si=si))
 
-    def is_si_exist(self, cache_name: str, si_id: str) -> Union[bool, bool]:
+    def is_si_exist(self, cache_name: str, si: List[StrategyInsight]) -> Union[bool, bool]:
         ret, dcache = self.get_cache(cache_name=cache_name)
         if not ret:
             return (False, None)
-        return (True, dcache.is_si_exist(si_id=si_id))
+        return (True, dcache.is_si_exist(si=si))
 
     def is_ci_exist(self, cache_name: str, ci: Dict[str, Any]) -> Union[bool, bool]:
         ret, dcache = self.get_cache(cache_name=cache_name)
@@ -125,11 +129,17 @@ class DCacheManager(object):
             return (False, None)
         return (True, dcache.get_ci_id())
 
-    def is_order_exist(self, cache_name: str, platform_order_id: str) -> Union[bool, bool]:
+    def is_order_exist(self, cache_name: str, order: TS_Order) -> Union[bool, bool]:
         ret, dcache = self.get_cache(cache_name=cache_name)
         if not ret:
             return (False, None)
-        return (True, dcache.is_order_exist(platform_order_id=platform_order_id))
+        return (True, dcache.is_order_exist(order=order))
+
+    def is_db_record_id_exist(self, cache_name: str, order: TS_Order) -> Union[bool, bool]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, None)
+        return (True, dcache.is_db_record_id_exist(order=order))
 
     def get_trade(self, cache_name: str, trade_id: str) -> Union[bool, Union[bool, TS_Trade]]:
         ret, dcache = self.get_cache(cache_name=cache_name)
@@ -137,11 +147,23 @@ class DCacheManager(object):
             return (False, (False, None))
         return (True, dcache.get_trade(trade_id=trade_id))
 
-    def get_order(self, cache_name: str, platform_order_id: str) -> Union[bool, Union[bool, TS_Order]]:
+    def get_order(self, cache_name: str, order_id: str) -> Union[bool, Union[bool, TS_Order]]:
         ret, dcache = self.get_cache(cache_name=cache_name)
         if not ret:
             return (False, (False, None))
-        return (True, dcache.get_order(platform_order_id=platform_order_id))
+        return (True, dcache.get_order(order_id=order_id))
+
+    def get_order_latest_snapshot(self, cache_name: str, platform_order_id: str) -> Union[bool, Union[bool, TS_Order]]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, (False, None))
+        return (True, dcache.get_order_latest_snapshot(platform_order_id=platform_order_id))
+
+    def get_db_record_id(self, cache_name: str, order_id: str) -> Union[bool, Union[bool, str]]:
+        ret, dcache = self.get_cache(cache_name=cache_name)
+        if not ret:
+            return (False, (False, None))
+        return (True, dcache.get_db_record_id(order_id=order_id))
 
     def save_ci(self, cache_name: str, ci: Dict[str, Any]) -> bool:
         dcache = self.create_cache(cache_name=cache_name)
@@ -163,11 +185,15 @@ class DCacheManager(object):
         dcache.save_orders(orders=orders)
         return True
 
-    def is_trade_exist(self, cache_name: str, trade_id: str) -> Union[bool, bool]:
+    def save_db_record_id(self, cache_name: str, order: TS_Order, db_record_id: str) -> None:
+        dcache = self.create_cache(cache_name=cache_name)
+        dcache.save_db_record_id(order=order, db_record_id=db_record_id)
+
+    def is_trade_exist(self, cache_name: str, trade: TS_Trade) -> Union[bool, bool]:
         ret, dcache = self.get_cache(cache_name=cache_name)
         if not ret:
             return (False, None)
-        return (True, dcache.is_trade_exist(trade_id=trade_id))
+        return (True, dcache.is_trade_exist(trade=trade))
 
     def save_trade(self, cache_name: str, trade: TS_Trade) -> None:
         dcache = self.create_cache(cache_name=cache_name)

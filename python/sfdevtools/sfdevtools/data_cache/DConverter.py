@@ -47,11 +47,11 @@ def conv_strg_2_cop(strgy: DStrategy) -> ts_cop_pb2.Cop:
         si_ele = dconv.conv_SI_2_cop_si(si=si)
         cop.si_map[ts_cop_pb2.Cop.FidNum.SI].si_list.append(si_ele)
     # order
-    for order in strgy.get_orders():
+    for order in strgy.get_orders(last_n=10):
         ord_ele = dconv.conv_TS_Order_2_cop_order(order=order)
         cop.order_map[ts_cop_pb2.Cop.FidNum.Order].order_list.append(ord_ele)
     # trade
-    for trd in strgy.get_trades():
+    for trd in strgy.get_trades(last_n=10):
         trd_ele = dconv.conv_TS_Trade_2_cop_trade(trd=trd)
         cop.trade_map[ts_cop_pb2.Cop.FidNum.Trade].trade_list.append(trd_ele)
 

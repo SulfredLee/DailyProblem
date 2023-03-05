@@ -72,6 +72,8 @@ class TSBackgroundCtrl(object):
             cop = dconv.conv_page_2_cop(dpage=dpage)
             self.__send_cop_fun(msg_id=page_id, msg_type=ts_cop_pb2.Cop.MsgType.Listing, cop=cop)
 
+        del self.__page_list[:num_page_needed_to_send]
+
         # hanlde strategy
         if len(self.__strgy_list) == 0:
             self.__strgy_list = self.__dcache_m.get_cache_name()

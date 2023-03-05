@@ -102,6 +102,7 @@ message Cop {
         SI = 50002;
         Order = 50003;
         Trade = 50004;
+        Order_Snap = 50005;
         // 60001 - 70000 --- bool
     }
 

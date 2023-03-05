@@ -19,21 +19,47 @@ class DPage(object):
 
         self.__save_map: Dict[int, Any] = dict()
         self.__get_map: Dict[int, Any] = dict()
+        self.__save_other_map: Dict[int, Any] = dict()
+        self.__get_other_map: Dict[int, Any] = dict()
         self.__bucket_size = 10000
+        self.__update_cb: Any = None
 
     def init_component(self
                        , logger: logging.Logger
+                       , update_cb: Any
                        , save_other_map: Dict
                        , get_other_map: Dict) -> None:
         self.__logger = logger
+        self.__update_cb = update_cb
         self.__save_other_map = save_other_map
         self.__get_other_map = get_other_map
+
+        self.__save_map = {
+            0: self.__save_fid_int32
+            , 1: self.__save_fid_int64
+            , 2: self.__save_fid_float
+            , 3: self.__save_fid_double
+            , 4: self.__save_fid_string
+            , 5: self.__save_fid_other
+            , 6: self.__save_fid_bool
+        }
+        self.__get_map = {
+            0: self.__get_fid_int32
+            , 1: self.__get_fid_int64
+            , 2: self.__get_fid_float
+            , 3: self.__get_fid_double
+            , 4: self.__get_fid_string
+            , 5: self.__get_fid_other
+            , 6: self.__get_fid_bool
+        }
 
     def save_fid(self, fid_num: int, fid_value: Any) -> None:
         bucket_num = int((fid_num - 1) / self.__bucket_size)
         if bucket_num not in self.__save_map:
             return None
-        self.__save_map[bucket_num](fid_num=fid_num, fid_value=fid_value)
+        is_new = self.__save_map[bucket_num](fid_num=fid_num, fid_value=fid_value)
+        if is_new is not None and is_new and self.__update_cb is not None:
+            self.__update_cb(fid_num=fid_num, fid_value=fid_value)
 
     def get_fids(self) -> List[Union[int, Any]]:
         result_list: List[Union[int, Any]] = list()
@@ -68,29 +94,40 @@ class DPage(object):
 
         return (True, self.__get_map[bucket_num](fid_num=fid_num))
 
-    def __save_fid_int32(self, fid_num: int, fid_value: int) -> None:
-        with self.__int_mutex:
-            self.__int32_map[fid_num] = fid_value
+    def __save_fid_int32(self, fid_num: int, fid_value: int) -> bool:
+        return self.__save_fid_imp(mutex=self.__int_mutex, the_map=self.__int32_map, fid_num=fid_num, fid_value=fid_value)
 
-    def __save_fid_int64(self, fid_num: int, fid_value: int) -> None:
-        with self.__int_mutex:
-            self.__int64_map[fid_num] = fid_value
+    def __save_fid_int64(self, fid_num: int, fid_value: int) -> bool:
+        return self.__save_fid_imp(mutex=self.__int_mutex, the_map=self.__int64_map, fid_num=fid_num, fid_value=fid_value)
 
-    def __save_fid_float(self, fid_num: int, fid_value: float) -> None:
-        with self.__float_mutex:
-            self.__float_map[fid_num] = fid_value
+    def __save_fid_float(self, fid_num: int, fid_value: float) -> bool:
+        return self.__save_fid_imp(mutex=self.__float_mutex, the_map=self.__float_map, fid_num=fid_num, fid_value=fid_value)
 
-    def __save_fid_double(self, fid_num: int, fid_value: float) -> None:
-        with self.__float_mutex:
-            self.__double_map[fid_num] = fid_value
+    def __save_fid_double(self, fid_num: int, fid_value: float) -> bool:
+        return self.__save_fid_imp(mutex=self.__float_mutex, the_map=self.__double_map, fid_num=fid_num, fid_value=fid_value)
 
-    def __save_fid_string(self, fid_num: int, fid_value: str) -> None:
-        with self.__str_mutex:
-            self.__string_map[fid_num] = fid_value
+    def __save_fid_string(self, fid_num: int, fid_value: str) -> bool:
+        return self.__save_fid_imp(mutex=self.__str_mutex, the_map=self.__str_map, fid_num=fid_num, fid_value=fid_value)
 
-    def __save_fid_bool(self, fid_num: int, fid_value: float) -> None:
-        with self.__bool_mutex:
-            self.__bool_map[fid_num] = fid_value
+    def __save_fid_bool(self, fid_num: int, fid_value: float) -> bool:
+        return self.__save_fid_imp(mutex=self.__bool_mutex, the_map=self.__bool_map, fid_num=fid_num, fid_value=fid_value)
+
+    def __save_fid_imp(self, mutex: threading.Lock, the_map: Dict[int, Any], fid_num: int, fid_value: int) -> bool:
+        is_new = False
+        with mutex:
+            if fid_num not in the_map:
+                is_new = True
+
+                the_map[fid_num] = fid_value
+            else:
+                if the_map[fid_num] == fid_value:
+                    is_new = False
+                else:
+                    is_new = True
+
+                    the_map[fid_num] = fid_value
+
+        return is_new
 
     def __save_fid_other(self, fid_num: int, fid_value: Any) -> None:
         with self.__other_mutex:
@@ -101,44 +138,27 @@ class DPage(object):
             return None
 
     def __get_fid_int32(self, fid_num: int) -> Union[bool, int]:
-        with self.__int_mutex:
-            if fid_num in self.__int32_map:
-                return (True, self.__int32_map[fid_num])
-            else:
-                return (False, None)
+        return self.__get_fid_imp(mutex=self.__int_mutex, the_map=self.__int32_map, fid_num=fid_num)
 
     def __get_fid_int64(self, fid_num: int) -> Union[bool, int]:
-        with self.__int_mutex:
-            if fid_num in self.__int64_map:
-                return (True, self.__int64_map[fid_num])
-            else:
-                return (False, None)
+        return self.__get_fid_imp(mutex=self.__int_mutex, the_map=self.__int64_map, fid_num=fid_num)
 
     def __get_fid_float(self, fid_num: int) -> Union[bool, float]:
-        with self.__float_mutex:
-            if fid_num in self.__float_map:
-                return (True, self.__float_map[fid_num])
-            else:
-                return (False, None)
+        return self.__get_fid_imp(mutex=self.__float_mutex, the_map=self.__float_map, fid_num=fid_num)
 
     def __get_fid_double(self, fid_num: int) -> Union[bool, float]:
-        with self.__float_mutex:
-            if fid_num in self.__double_map:
-                return (True, self.__double_map[fid_num])
-            else:
-                return (False, None)
+        return self.__get_fid_imp(mutex=self.__float_mutex, the_map=self.__double_map, fid_num=fid_num)
 
     def __get_fid_string(self, fid_num: int) -> Union[bool, str]:
-        with self.__str_mutex:
-            if fid_num in self.__str_map:
-                return (True, self.__str_map[fid_num])
-            else:
-                return (False, None)
+        return self.__get_fid_imp(mutex=self.__str_mutex, the_map=self.__str_map, fid_num=fid_num)
 
     def __get_fid_bool(self, fid_num: int) -> Union[bool, bool]:
-        with self.__bool_mutex:
-            if fid_num in self.__bool_map:
-                return (True, self.__bool_map[fid_num])
+        return self.__get_fid_imp(mutex=self.__bool_mutex, the_map=self.__bool_map, fid_num=fid_num)
+
+    def __get_fid_imp(self, mutex: threading.Lock, the_map: Dict[int, Any], fid_num: int) -> Union[bool, Any]:
+        with mutex:
+            if fid_num in the_map:
+                return (True, the_map[fid_num])
             else:
                 return (False, None)
 

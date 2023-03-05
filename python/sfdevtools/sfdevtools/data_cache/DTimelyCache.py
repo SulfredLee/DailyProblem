@@ -7,39 +7,40 @@ class TimelyCache_Snapshot(object):
     self.__dict: it stores a pair of key and value, the value is the latest snapshot
     self.__time_index: it stores a list of key in time sequential. Key value can be duplicated
     """
-    def __init__(self, max_size: int = 1000):
+    def __init__(self, max_size: int = 1000, eq_fun: Any = None):
         self.__dict: Dict[Any, Any] = dict()
         self.__time_index: List[Any] = list()
         self.__hist_data: List[Union[Any, Any]] = list()
         self.__mutex: threading.Lock = threading.Lock()
         self.__max_size = max_size
+        self.__eq_fun = eq_fun
 
-    def upsert_multi(self, keys: List[Any], values: List[Any]) -> None:
+    def upsert_multi(self, keys: List[Any], values: List[Any]) -> List[bool]:
+        is_new_list: List[bool] = list()
         with self.__mutex:
             for key, value in zip(keys, values):
-                if key not in self.__dict:
-                    self.__time_index.append(key)
-                self.__hist_data.append((key, value))
-                self.__dict[key] = value
+                is_new_list.append(self.__upsert_ele_imp(key=key, value=value))
 
-            self.__remove_extra_records()
+            return is_new_list
 
-    def upsert_ele(self, key: Any, value: Any) -> None:
+        is_new_list = [False] * len(keys)
+        return is_new_list
+
+    def upsert_ele(self, key: Any, value: Any) -> bool:
         with self.__mutex:
-            if key not in self.__dict:
-                self.__time_index.append(key)
-            self.__hist_data.append((key, value))
-            self.__dict[key] = value
+            return self.__upsert_ele_imp(key=key, value=value)
 
-            self.__remove_extra_records()
-
-    def is_exist(self, key: Any) -> Any:
+    def is_exist(self, key: Any) -> bool:
         with self.__mutex:
             return key in self.__dict
 
     def get_records_by_index(self, idx: int) -> Any:
         with self.__mutex:
             return copy.deepcopy(self.__dict[self.__time_index[idx]])
+
+    def get_last_n_records_in_time_series(self, n: int) -> List[Any]:
+        with self.__mutex:
+            return [ele[1] for ele in self.__hist_data[-n:]]
 
     def get_records_in_time_series(self) -> List[Any]:
         with self.__mutex:
@@ -59,6 +60,32 @@ class TimelyCache_Snapshot(object):
         with self.__mutex:
             for k, v in self.__dict.items():
                 yield k, v
+
+    def __upsert_ele_imp(self, key: Any, value: Any) -> bool:
+        is_new = False
+        if key not in self.__dict:
+            # new value found
+            self.__time_index.append(key)
+            is_new = True
+
+            # save record
+            self.__hist_data.append((key, value))
+            self.__dict[key] = value
+        else:
+            if (None is not self.__eq_fun and self.__eq_fun(first=self.__dict[key], second=value))\
+               or self.__dict[key] == value:
+                # save value found
+                return is_new
+            else:
+                # new value found
+                is_new = True
+
+                # save record
+                self.__hist_data.append((key, value))
+                self.__dict[key] = value
+
+        self.__remove_extra_records()
+        return is_new
 
     def __remove_extra_records(self):
         if len(self.__dict) > self.__max_size:
@@ -89,40 +116,39 @@ class TimelyCache_Hist(object):
     self.__dict: it stores a pair of key and value
     self.__time_index: it stores a list of key in time sequential
     """
-    def __init__(self, max_size: int = 1000):
+    def __init__(self, max_size: int = 1000, eq_fun: Any = None):
         self.__dict: Dict[Any, Any] = dict()
         self.__time_index: List[Union[Any, Any]] = list()
         self.__mutex: threading.Lock = threading.Lock()
         self.__max_size = max_size
+        self.__eq_fun = eq_fun
 
-    def upsert_multi(self, keys: List[Any], values: List[Any]) -> None:
+    def upsert_multi(self, keys: List[Any], values: List[Any]) -> List[bool]:
+        is_new_list: List[bool] = list()
         with self.__mutex:
             for key, value in zip(keys, values):
-                if key in self.__dict:
-                    return
+                is_new_list.append(self.__upsert_ele_imp(key=key, value=value))
 
-                self.__time_index.append((key, value))
-                self.__dict[key] = value
+            return is_new_list
 
-            self.__remove_extra_records()
+        is_new_list = [False] * len(keys)
+        return is_new_list
 
-    def upsert_ele(self, key: Any, value: Any) -> None:
+    def upsert_ele(self, key: Any, value: Any) -> bool:
         with self.__mutex:
-            if key in self.__dict:
-                return
+            return self.__upsert_ele_imp(key=key, value=value)
 
-            self.__time_index.append((key, value))
-            self.__dict[key] = value
-
-            self.__remove_extra_records()
-
-    def is_exist(self, key: Any) -> Any:
+    def is_exist(self, key: Any) -> bool:
         with self.__mutex:
             return key in self.__dict
 
     def get_records_by_index(self, idx: int) -> Any:
         with self.__mutex:
             return copy.deepcopy(self.__time_index[idx][1])
+
+    def get_last_n_records_in_time_series(self, n: int) -> List[Any]:
+        with self.__mutex:
+            return [ele[1] for ele in self.__time_index[-n:]]
 
     def get_records_in_time_series(self) -> List[Any]:
         with self.__mutex:
@@ -142,6 +168,30 @@ class TimelyCache_Hist(object):
         with self.__mutex:
             for k, v in self.__dict.items():
                 yield k, v
+
+    def __upsert_ele_imp(self, key: Any, value: Any) -> bool:
+        is_new = False
+        if key not in self.__dict:
+            # found new record
+            is_new = True
+
+            self.__time_index.append((key, value))
+            self.__dict[key] = value
+        else:
+            if (None is not self.__eq_fun and self.__eq_fun(first=self.__dict[key], second=value))\
+               or self.__dict[key] == value:
+                # found old record
+                is_new = False
+            else:
+                # found new record
+                is_new = True
+
+                self.__time_index.append((key, value))
+                self.__dict[key] = value
+
+        self.__remove_extra_records()
+
+        return is_new
 
     def __remove_extra_records(self):
         if len(self.__dict) > self.__max_size:
