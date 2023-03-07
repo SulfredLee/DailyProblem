@@ -1,6 +1,12 @@
 import copy
 import datetime
 
+def to_timestamp_safe(value) -> float:
+    if isinstance(value, datetime.datetime):
+        return value.timestamp()
+    else:
+        return value
+
 class StrategyInsight(object):
     def __init__(self, symbol: str, ratio: float):
         self.symbol: str = symbol
@@ -39,7 +45,7 @@ class StrategyInsight(object):
         special_fields = set(["created", "last_update"])
         for k, v in self.__dict__.items():
             if k in special_fields:
-                setattr(result, k, datetime.datetime.fromtimestamp(v.timestamp()))
+                setattr(result, k, datetime.datetime.fromtimestamp(to_timestamp_safe(v)))
             else:
                 setattr(result, k, copy.deepcopy(v, memo))
 
@@ -106,7 +112,7 @@ class TS_Order(object):
         special_fields = set(["created", "last_update"])
         for k, v in self.__dict__.items():
             if k in special_fields:
-                setattr(result, k, datetime.datetime.fromtimestamp(v.timestamp()))
+                setattr(result, k, datetime.datetime.fromtimestamp(to_timestamp_safe(v)))
             else:
                 setattr(result, k, copy.deepcopy(v, memo))
 
@@ -173,7 +179,7 @@ class TS_Trade(object):
         special_fields = set(["created", "last_update", "settlement_date"])
         for k, v in self.__dict__.items():
             if k in special_fields:
-                setattr(result, k, datetime.datetime.fromtimestamp(v.timestamp()))
+                setattr(result, k, datetime.datetime.fromtimestamp(to_timestamp_safe(v)))
             else:
                 setattr(result, k, copy.deepcopy(v, memo))
 

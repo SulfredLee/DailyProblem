@@ -1,10 +1,11 @@
-from sqlalchemy import create_engine, MetaData # poetry add psycopg2-binary, sqlalchemy
+from sqlalchemy import exc, create_engine, MetaData # poetry add psycopg2-binary, sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 import sqlalchemy
 from sqlalchemy.orm import Session
 from typing import List, Dict, Tuple, Any
 import pandas as pd
 import logging
+import traceback
 
 # https://hackersandslackers.com/database-queries-sqlalchemy-orm/
 class PostgresDBCtrl(object):
@@ -68,7 +69,9 @@ class PostgresDBCtrl(object):
         try:
             db_session.commit()
             return True
-        except SQLAlchemyError as e:
+        except exc.SQLAlchemyError as e:
+            self._logger.error(e)
+            self._logger.error(traceback.format_exc())
             db_session.rollback()
             return False
         finally:
@@ -85,7 +88,9 @@ class PostgresDBCtrl(object):
         try:
             db_session.commit()
             return True
-        except SQLAlchemyError as e:
+        except exc.SQLAlchemyError as e:
+            self._logger.error(e)
+            self._logger.error(traceback.format_exc())
             db_session.rollback()
             return False
         finally:

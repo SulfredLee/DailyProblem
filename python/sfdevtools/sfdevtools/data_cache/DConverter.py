@@ -213,8 +213,8 @@ def conv_cop_si_2_SI(si_ele: ts_cop_pb2.SI) -> StrategyInsight:
     si.ratio = si_ele.ratio
     si.parent_id = si_ele.parent_id
     si.si_id = si_ele.si_id
-    si.created = datetime.datetime.fromtimestamp(si_ele.created / 1000)
-    si.last_update = datetime.datetime.fromtimestamp(si_ele.last_update / 1000)
+    si.created = datetime.datetime.fromtimestamp(si_ele.created)
+    si.last_update = datetime.datetime.fromtimestamp(si_ele.last_update)
     si.strategy_name = si_ele.strategy_name
     si.live_mode = si_ele.live_mode
     si.strategy_id = si_ele.strategy_id
