@@ -27,6 +27,7 @@ class DCache(object):
         self.__update_cb = update_cb
         self.__strategy.init_component(logger=self.__logger
                                        , update_cb=self.__update_cb
+                                       , get_parent_dcache_fun=self.__get_self
                                        , max_hist_orders=max_hist_orders
                                        , max_hist_si=max_hist_si
                                        , max_hist_trades=max_hist_trades)
@@ -154,7 +155,11 @@ class DCache(object):
                 new_dpage = DPage()
                 new_dpage.init_component(logger=self.__logger
                                          , update_cb=self.__update_cb
+                                         , get_parent_dcache_fun=self.__get_self
                                          , save_other_map=dict()
                                          , get_other_map=dict())
                 self.__pages[page_id] = new_dpage
                 return new_dpage
+
+    def __get_self(self) -> Any:
+        return self

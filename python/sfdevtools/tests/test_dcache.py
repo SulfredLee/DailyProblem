@@ -330,7 +330,7 @@ class Test_peacock(unittest.TestCase):
             for ele in v.ci_list:
                 logger.info(ele)
 
-    def __update_cb(self, fid_num: ts_cop_pb2.Cop.FidNum, fid_value: Any):
+    def __update_cb(self, dcache: DCache, fid_num: ts_cop_pb2.Cop.FidNum, fid_value: Any):
         logger = lh.init_logger(logger_name="test_ci_update_check", is_print_to_console=True, is_json_output=False)
         if fid_num == ts_cop_pb2.Cop.FidNum.SI:
             for ele in fid_value:
