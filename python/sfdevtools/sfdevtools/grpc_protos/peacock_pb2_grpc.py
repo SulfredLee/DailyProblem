@@ -45,6 +45,11 @@ class PeacockStub(object):
                 request_serializer=peacock__pb2.RemoveOldConfig_Msg.SerializeToString,
                 response_deserializer=peacock__pb2.Dummy_Reply.FromString,
                 )
+        self.GetDataByStrategyId = channel.unary_unary(
+                '/peacock.Peacock/GetDataByStrategyId',
+                request_serializer=peacock__pb2.GetDataByStrategyId_Msg.SerializeToString,
+                response_deserializer=peacock__pb2.GetDataByStrategyId_Reply.FromString,
+                )
         self.HealthCheck = channel.unary_unary(
                 '/peacock.Peacock/HealthCheck',
                 request_serializer=peacock__pb2.Ping.SerializeToString,
@@ -94,8 +99,16 @@ class PeacockServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def HealthCheck(self, request, context):
+    def GetDataByStrategyId(self, request, context):
         """tweety - end
+        eagle - start
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def HealthCheck(self, request, context):
+        """eagle - end
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -133,6 +146,11 @@ def add_PeacockServicer_to_server(servicer, server):
                     servicer.RemoveOldConfig,
                     request_deserializer=peacock__pb2.RemoveOldConfig_Msg.FromString,
                     response_serializer=peacock__pb2.Dummy_Reply.SerializeToString,
+            ),
+            'GetDataByStrategyId': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetDataByStrategyId,
+                    request_deserializer=peacock__pb2.GetDataByStrategyId_Msg.FromString,
+                    response_serializer=peacock__pb2.GetDataByStrategyId_Reply.SerializeToString,
             ),
             'HealthCheck': grpc.unary_unary_rpc_method_handler(
                     servicer.HealthCheck,
@@ -249,6 +267,23 @@ class Peacock(object):
         return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/RemoveOldConfig',
             peacock__pb2.RemoveOldConfig_Msg.SerializeToString,
             peacock__pb2.Dummy_Reply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetDataByStrategyId(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/GetDataByStrategyId',
+            peacock__pb2.GetDataByStrategyId_Msg.SerializeToString,
+            peacock__pb2.GetDataByStrategyId_Reply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

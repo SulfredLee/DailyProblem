@@ -14,8 +14,26 @@ service Peacock {
     rpc RemoveStrategyConfig(RemoveStrategyConfig_Msg) returns (Dummy_Reply);
     rpc RemoveOldConfig (RemoveOldConfig_Msg) returns (Dummy_Reply);
     // tweety - end
+    // eagle - start
+    rpc GetDataByStrategyId (GetDataByStrategyId_Msg) returns (GetDataByStrategyId_Reply);
+    // eagle - end
     rpc HealthCheck (Ping) returns (Pong);
 }
+
+// eagle - start
+message GetDataByStrategyId_Msg {
+    string strategy_id = 1;
+}
+
+message GetDataByStrategyId_Reply {
+    repeated string cfg = 1;
+    repeated string ci = 2;
+    string si = 3;
+    string ord_snap = 4;
+    string ord_hist = 5;
+    string trd = 6;
+}
+// eagle - end
 
 // tweety - start
 message RemoveStrategyConfig_Msg {
