@@ -35,6 +35,7 @@ message GetDataByStrategyId_Reply {
     string ord_snap = 4;
     string ord_hist = 5;
     string trd = 6;
+    string price = 7;
 }
 // eagle - end
 

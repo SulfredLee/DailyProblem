@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rpeacock.proto\x12\x07peacock\".\n\x17GetDataByStrategyId_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\"q\n\x19GetDataByStrategyId_Reply\x12\x0b\n\x03\x63\x66g\x18\x01 \x03(\t\x12\n\n\x02\x63i\x18\x02 \x03(\t\x12\n\n\x02si\x18\x03 \x01(\t\x12\x10\n\x08ord_snap\x18\x04 \x01(\t\x12\x10\n\x08ord_hist\x18\x05 \x01(\t\x12\x0b\n\x03trd\x18\x06 \x01(\t\"\\\n\x18RemoveStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\x12\x18\n\x10strategy_id_list\x18\x03 \x03(\t\"#\n\x13RemoveOldConfig_Msg\x12\x0c\n\x04\x64\x61ys\x18\x01 \x01(\x05\"\x1c\n\x0b\x44ummy_Reply\x12\r\n\x05\x64ummy\x18\x01 \x01(\t\"?\n\x15GetStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\";\n\x17GetStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x10\n\x08\x63\x66g_list\x18\x02 \x03(\t\"1\n\x16SaveStrategyConfig_Msg\x12\x17\n\x0fstrategy_config\x18\x01 \x01(\t\"*\n\x18SaveStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\">\n\x13SaveFileToColud_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\"Z\n\x1aSaveRefDataPriceFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"U\n\x15SaveRefDataFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"\x1a\n\tNoneReply\x12\r\n\x05reply\x18\x01 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\xbd\x05\n\x07Peacock\x12\x43\n\x0fSaveFileToColud\x12\x1c.peacock.SaveFileToColud_Msg\x1a\x12.peacock.NoneReply\x12Q\n\x16SaveRefDataPriceFromQC\x12#.peacock.SaveRefDataPriceFromQC_Msg\x1a\x12.peacock.NoneReply\x12G\n\x11SaveRefDataFromQC\x12\x1e.peacock.SaveRefDataFromQC_Msg\x1a\x12.peacock.NoneReply\x12X\n\x12SaveStrategyConfig\x12\x1f.peacock.SaveStrategyConfig_Msg\x1a!.peacock.SaveStrategyConfig_Reply\x12U\n\x11GetStrategyConfig\x12\x1e.peacock.GetStrategyConfig_Msg\x1a .peacock.GetStrategyConfig_Reply\x12O\n\x14RemoveStrategyConfig\x12!.peacock.RemoveStrategyConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12\x45\n\x0fRemoveOldConfig\x12\x1c.peacock.RemoveOldConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12[\n\x13GetDataByStrategyId\x12 .peacock.GetDataByStrategyId_Msg\x1a\".peacock.GetDataByStrategyId_Reply\x12+\n\x0bHealthCheck\x12\r.peacock.Ping\x1a\r.peacock.Pongb\x06proto3'
+  serialized_pb=b'\n\rpeacock.proto\x12\x07peacock\".\n\x17GetDataByStrategyId_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\"\x80\x01\n\x19GetDataByStrategyId_Reply\x12\x0b\n\x03\x63\x66g\x18\x01 \x03(\t\x12\n\n\x02\x63i\x18\x02 \x03(\t\x12\n\n\x02si\x18\x03 \x01(\t\x12\x10\n\x08ord_snap\x18\x04 \x01(\t\x12\x10\n\x08ord_hist\x18\x05 \x01(\t\x12\x0b\n\x03trd\x18\x06 \x01(\t\x12\r\n\x05price\x18\x07 \x01(\t\"\\\n\x18RemoveStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\x12\x18\n\x10strategy_id_list\x18\x03 \x03(\t\"#\n\x13RemoveOldConfig_Msg\x12\x0c\n\x04\x64\x61ys\x18\x01 \x01(\x05\"\x1c\n\x0b\x44ummy_Reply\x12\r\n\x05\x64ummy\x18\x01 \x01(\t\"?\n\x15GetStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\";\n\x17GetStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x10\n\x08\x63\x66g_list\x18\x02 \x03(\t\"1\n\x16SaveStrategyConfig_Msg\x12\x17\n\x0fstrategy_config\x18\x01 \x01(\t\"*\n\x18SaveStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\">\n\x13SaveFileToColud_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\"Z\n\x1aSaveRefDataPriceFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"U\n\x15SaveRefDataFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"\x1a\n\tNoneReply\x12\r\n\x05reply\x18\x01 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\xbd\x05\n\x07Peacock\x12\x43\n\x0fSaveFileToColud\x12\x1c.peacock.SaveFileToColud_Msg\x1a\x12.peacock.NoneReply\x12Q\n\x16SaveRefDataPriceFromQC\x12#.peacock.SaveRefDataPriceFromQC_Msg\x1a\x12.peacock.NoneReply\x12G\n\x11SaveRefDataFromQC\x12\x1e.peacock.SaveRefDataFromQC_Msg\x1a\x12.peacock.NoneReply\x12X\n\x12SaveStrategyConfig\x12\x1f.peacock.SaveStrategyConfig_Msg\x1a!.peacock.SaveStrategyConfig_Reply\x12U\n\x11GetStrategyConfig\x12\x1e.peacock.GetStrategyConfig_Msg\x1a .peacock.GetStrategyConfig_Reply\x12O\n\x14RemoveStrategyConfig\x12!.peacock.RemoveStrategyConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12\x45\n\x0fRemoveOldConfig\x12\x1c.peacock.RemoveOldConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12[\n\x13GetDataByStrategyId\x12 .peacock.GetDataByStrategyId_Msg\x1a\".peacock.GetDataByStrategyId_Reply\x12+\n\x0bHealthCheck\x12\r.peacock.Ping\x1a\r.peacock.Pongb\x06proto3'
 )
 
 
@@ -107,6 +107,13 @@ _GETDATABYSTRATEGYID_REPLY = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='price', full_name='peacock.GetDataByStrategyId_Reply.price', index=6,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -119,8 +126,8 @@ _GETDATABYSTRATEGYID_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=74,
-  serialized_end=187,
+  serialized_start=75,
+  serialized_end=203,
 )
 
 
@@ -165,8 +172,8 @@ _REMOVESTRATEGYCONFIG_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=189,
-  serialized_end=281,
+  serialized_start=205,
+  serialized_end=297,
 )
 
 
@@ -197,8 +204,8 @@ _REMOVEOLDCONFIG_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=283,
-  serialized_end=318,
+  serialized_start=299,
+  serialized_end=334,
 )
 
 
@@ -229,8 +236,8 @@ _DUMMY_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=320,
-  serialized_end=348,
+  serialized_start=336,
+  serialized_end=364,
 )
 
 
@@ -268,8 +275,8 @@ _GETSTRATEGYCONFIG_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=350,
-  serialized_end=413,
+  serialized_start=366,
+  serialized_end=429,
 )
 
 
@@ -307,8 +314,8 @@ _GETSTRATEGYCONFIG_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=415,
-  serialized_end=474,
+  serialized_start=431,
+  serialized_end=490,
 )
 
 
@@ -339,8 +346,8 @@ _SAVESTRATEGYCONFIG_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=476,
-  serialized_end=525,
+  serialized_start=492,
+  serialized_end=541,
 )
 
 
@@ -371,8 +378,8 @@ _SAVESTRATEGYCONFIG_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=527,
-  serialized_end=569,
+  serialized_start=543,
+  serialized_end=585,
 )
 
 
@@ -410,8 +417,8 @@ _SAVEFILETOCOLUD_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=571,
-  serialized_end=633,
+  serialized_start=587,
+  serialized_end=649,
 )
 
 
@@ -456,8 +463,8 @@ _SAVEREFDATAPRICEFROMQC_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=635,
-  serialized_end=725,
+  serialized_start=651,
+  serialized_end=741,
 )
 
 
@@ -502,8 +509,8 @@ _SAVEREFDATAFROMQC_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=727,
-  serialized_end=812,
+  serialized_start=743,
+  serialized_end=828,
 )
 
 
@@ -534,8 +541,8 @@ _NONEREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=814,
-  serialized_end=840,
+  serialized_start=830,
+  serialized_end=856,
 )
 
 
@@ -566,8 +573,8 @@ _PING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=842,
-  serialized_end=865,
+  serialized_start=858,
+  serialized_end=881,
 )
 
 
@@ -598,8 +605,8 @@ _PONG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=867,
-  serialized_end=890,
+  serialized_start=883,
+  serialized_end=906,
 )
 
 DESCRIPTOR.message_types_by_name['GetDataByStrategyId_Msg'] = _GETDATABYSTRATEGYID_MSG
@@ -733,8 +740,8 @@ _PEACOCK = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=893,
-  serialized_end=1594,
+  serialized_start=909,
+  serialized_end=1610,
   methods=[
   _descriptor.MethodDescriptor(
     name='SaveFileToColud',

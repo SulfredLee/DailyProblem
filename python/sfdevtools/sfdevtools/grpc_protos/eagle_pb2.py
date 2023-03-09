@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0b\x65\x61gle.proto\x12\x05\x65\x61gle\".\n\x17GetDataByStrategyId_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\"q\n\x19GetDataByStrategyId_Reply\x12\x0b\n\x03\x63\x66g\x18\x01 \x03(\t\x12\n\n\x02\x63i\x18\x02 \x03(\t\x12\n\n\x02si\x18\x03 \x01(\t\x12\x10\n\x08ord_snap\x18\x04 \x01(\t\x12\x10\n\x08ord_hist\x18\x05 \x01(\t\x12\x0b\n\x03trd\x18\x06 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\x89\x01\n\x05\x45\x61gle\x12\'\n\x0bHealthCheck\x12\x0b.eagle.Ping\x1a\x0b.eagle.Pong\x12W\n\x13GetDataByStrategyId\x12\x1e.eagle.GetDataByStrategyId_Msg\x1a .eagle.GetDataByStrategyId_Replyb\x06proto3'
+  serialized_pb=b'\n\x0b\x65\x61gle.proto\x12\x05\x65\x61gle\".\n\x17GetDataByStrategyId_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\"\x80\x01\n\x19GetDataByStrategyId_Reply\x12\x0b\n\x03\x63\x66g\x18\x01 \x03(\t\x12\n\n\x02\x63i\x18\x02 \x03(\t\x12\n\n\x02si\x18\x03 \x01(\t\x12\x10\n\x08ord_snap\x18\x04 \x01(\t\x12\x10\n\x08ord_hist\x18\x05 \x01(\t\x12\x0b\n\x03trd\x18\x06 \x01(\t\x12\r\n\x05price\x18\x07 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\x89\x01\n\x05\x45\x61gle\x12\'\n\x0bHealthCheck\x12\x0b.eagle.Ping\x1a\x0b.eagle.Pong\x12W\n\x13GetDataByStrategyId\x12\x1e.eagle.GetDataByStrategyId_Msg\x1a .eagle.GetDataByStrategyId_Replyb\x06proto3'
 )
 
 
@@ -107,6 +107,13 @@ _GETDATABYSTRATEGYID_REPLY = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='price', full_name='eagle.GetDataByStrategyId_Reply.price', index=6,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -119,8 +126,8 @@ _GETDATABYSTRATEGYID_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=70,
-  serialized_end=183,
+  serialized_start=71,
+  serialized_end=199,
 )
 
 
@@ -151,8 +158,8 @@ _PING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=185,
-  serialized_end=208,
+  serialized_start=201,
+  serialized_end=224,
 )
 
 
@@ -183,8 +190,8 @@ _PONG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=210,
-  serialized_end=233,
+  serialized_start=226,
+  serialized_end=249,
 )
 
 DESCRIPTOR.message_types_by_name['GetDataByStrategyId_Msg'] = _GETDATABYSTRATEGYID_MSG
@@ -230,8 +237,8 @@ _EAGLE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=236,
-  serialized_end=373,
+  serialized_start=252,
+  serialized_end=389,
   methods=[
   _descriptor.MethodDescriptor(
     name='HealthCheck',
