@@ -20,6 +20,11 @@ class MagpieStub(object):
                 request_serializer=magpie__pb2.Ping.SerializeToString,
                 response_deserializer=magpie__pb2.Pong.FromString,
                 )
+        self.UpdateRefDataPriceFromQC = channel.unary_unary(
+                '/magpie.Magpie/UpdateRefDataPriceFromQC',
+                request_serializer=magpie__pb2.UpdateRefDataPriceFromQC_Msg.SerializeToString,
+                response_deserializer=magpie__pb2.NoneReply.FromString,
+                )
         self.UpdateRefDataFromQC = channel.unary_unary(
                 '/magpie.Magpie/UpdateRefDataFromQC',
                 request_serializer=magpie__pb2.UpdateRefDataFromQC_Msg.SerializeToString,
@@ -38,6 +43,12 @@ class MagpieServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateRefDataPriceFromQC(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def UpdateRefDataFromQC(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -51,6 +62,11 @@ def add_MagpieServicer_to_server(servicer, server):
                     servicer.HealthCheck,
                     request_deserializer=magpie__pb2.Ping.FromString,
                     response_serializer=magpie__pb2.Pong.SerializeToString,
+            ),
+            'UpdateRefDataPriceFromQC': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateRefDataPriceFromQC,
+                    request_deserializer=magpie__pb2.UpdateRefDataPriceFromQC_Msg.FromString,
+                    response_serializer=magpie__pb2.NoneReply.SerializeToString,
             ),
             'UpdateRefDataFromQC': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateRefDataFromQC,
@@ -82,6 +98,23 @@ class Magpie(object):
         return grpc.experimental.unary_unary(request, target, '/magpie.Magpie/HealthCheck',
             magpie__pb2.Ping.SerializeToString,
             magpie__pb2.Pong.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateRefDataPriceFromQC(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/magpie.Magpie/UpdateRefDataPriceFromQC',
+            magpie__pb2.UpdateRefDataPriceFromQC_Msg.SerializeToString,
+            magpie__pb2.NoneReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

@@ -7,6 +7,7 @@ package magpie;
 service Magpie {
     // Unary - request and respond
     rpc HealthCheck (Ping) returns (Pong);
+    rpc UpdateRefDataPriceFromQC (UpdateRefDataPriceFromQC_Msg) returns (NoneReply);
     rpc UpdateRefDataFromQC (UpdateRefDataFromQC_Msg) returns (NoneReply);
 }
 
@@ -16,6 +17,10 @@ message Ping {
 
 message Pong {
     string message = 1;
+}
+
+message UpdateRefDataPriceFromQC_Msg {
+    string data = 1;
 }
 
 message UpdateRefDataFromQC_Msg {

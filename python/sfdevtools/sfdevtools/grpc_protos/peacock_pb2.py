@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rpeacock.proto\x12\x07peacock\".\n\x17GetDataByStrategyId_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\"q\n\x19GetDataByStrategyId_Reply\x12\x0b\n\x03\x63\x66g\x18\x01 \x03(\t\x12\n\n\x02\x63i\x18\x02 \x03(\t\x12\n\n\x02si\x18\x03 \x01(\t\x12\x10\n\x08ord_snap\x18\x04 \x01(\t\x12\x10\n\x08ord_hist\x18\x05 \x01(\t\x12\x0b\n\x03trd\x18\x06 \x01(\t\"\\\n\x18RemoveStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\x12\x18\n\x10strategy_id_list\x18\x03 \x03(\t\"#\n\x13RemoveOldConfig_Msg\x12\x0c\n\x04\x64\x61ys\x18\x01 \x01(\x05\"\x1c\n\x0b\x44ummy_Reply\x12\r\n\x05\x64ummy\x18\x01 \x01(\t\"?\n\x15GetStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\";\n\x17GetStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x10\n\x08\x63\x66g_list\x18\x02 \x03(\t\"1\n\x16SaveStrategyConfig_Msg\x12\x17\n\x0fstrategy_config\x18\x01 \x01(\t\"*\n\x18SaveStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\">\n\x13SaveFileToColud_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\"U\n\x15SaveRefDataFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"\x1a\n\tNoneReply\x12\r\n\x05reply\x18\x01 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\xea\x04\n\x07Peacock\x12\x43\n\x0fSaveFileToColud\x12\x1c.peacock.SaveFileToColud_Msg\x1a\x12.peacock.NoneReply\x12G\n\x11SaveRefDataFromQC\x12\x1e.peacock.SaveRefDataFromQC_Msg\x1a\x12.peacock.NoneReply\x12X\n\x12SaveStrategyConfig\x12\x1f.peacock.SaveStrategyConfig_Msg\x1a!.peacock.SaveStrategyConfig_Reply\x12U\n\x11GetStrategyConfig\x12\x1e.peacock.GetStrategyConfig_Msg\x1a .peacock.GetStrategyConfig_Reply\x12O\n\x14RemoveStrategyConfig\x12!.peacock.RemoveStrategyConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12\x45\n\x0fRemoveOldConfig\x12\x1c.peacock.RemoveOldConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12[\n\x13GetDataByStrategyId\x12 .peacock.GetDataByStrategyId_Msg\x1a\".peacock.GetDataByStrategyId_Reply\x12+\n\x0bHealthCheck\x12\r.peacock.Ping\x1a\r.peacock.Pongb\x06proto3'
+  serialized_pb=b'\n\rpeacock.proto\x12\x07peacock\".\n\x17GetDataByStrategyId_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\"q\n\x19GetDataByStrategyId_Reply\x12\x0b\n\x03\x63\x66g\x18\x01 \x03(\t\x12\n\n\x02\x63i\x18\x02 \x03(\t\x12\n\n\x02si\x18\x03 \x01(\t\x12\x10\n\x08ord_snap\x18\x04 \x01(\t\x12\x10\n\x08ord_hist\x18\x05 \x01(\t\x12\x0b\n\x03trd\x18\x06 \x01(\t\"\\\n\x18RemoveStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\x12\x18\n\x10strategy_id_list\x18\x03 \x03(\t\"#\n\x13RemoveOldConfig_Msg\x12\x0c\n\x04\x64\x61ys\x18\x01 \x01(\x05\"\x1c\n\x0b\x44ummy_Reply\x12\r\n\x05\x64ummy\x18\x01 \x01(\t\"?\n\x15GetStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\";\n\x17GetStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x10\n\x08\x63\x66g_list\x18\x02 \x03(\t\"1\n\x16SaveStrategyConfig_Msg\x12\x17\n\x0fstrategy_config\x18\x01 \x01(\t\"*\n\x18SaveStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\">\n\x13SaveFileToColud_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\"Z\n\x1aSaveRefDataPriceFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"U\n\x15SaveRefDataFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"\x1a\n\tNoneReply\x12\r\n\x05reply\x18\x01 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\xbd\x05\n\x07Peacock\x12\x43\n\x0fSaveFileToColud\x12\x1c.peacock.SaveFileToColud_Msg\x1a\x12.peacock.NoneReply\x12Q\n\x16SaveRefDataPriceFromQC\x12#.peacock.SaveRefDataPriceFromQC_Msg\x1a\x12.peacock.NoneReply\x12G\n\x11SaveRefDataFromQC\x12\x1e.peacock.SaveRefDataFromQC_Msg\x1a\x12.peacock.NoneReply\x12X\n\x12SaveStrategyConfig\x12\x1f.peacock.SaveStrategyConfig_Msg\x1a!.peacock.SaveStrategyConfig_Reply\x12U\n\x11GetStrategyConfig\x12\x1e.peacock.GetStrategyConfig_Msg\x1a .peacock.GetStrategyConfig_Reply\x12O\n\x14RemoveStrategyConfig\x12!.peacock.RemoveStrategyConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12\x45\n\x0fRemoveOldConfig\x12\x1c.peacock.RemoveOldConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12[\n\x13GetDataByStrategyId\x12 .peacock.GetDataByStrategyId_Msg\x1a\".peacock.GetDataByStrategyId_Reply\x12+\n\x0bHealthCheck\x12\r.peacock.Ping\x1a\r.peacock.Pongb\x06proto3'
 )
 
 
@@ -415,6 +415,52 @@ _SAVEFILETOCOLUD_MSG = _descriptor.Descriptor(
 )
 
 
+_SAVEREFDATAPRICEFROMQC_MSG = _descriptor.Descriptor(
+  name='SaveRefDataPriceFromQC_Msg',
+  full_name='peacock.SaveRefDataPriceFromQC_Msg',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='file_name', full_name='peacock.SaveRefDataPriceFromQC_Msg.file_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='file_content', full_name='peacock.SaveRefDataPriceFromQC_Msg.file_content', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='action_mode', full_name='peacock.SaveRefDataPriceFromQC_Msg.action_mode', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=635,
+  serialized_end=725,
+)
+
+
 _SAVEREFDATAFROMQC_MSG = _descriptor.Descriptor(
   name='SaveRefDataFromQC_Msg',
   full_name='peacock.SaveRefDataFromQC_Msg',
@@ -456,8 +502,8 @@ _SAVEREFDATAFROMQC_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=635,
-  serialized_end=720,
+  serialized_start=727,
+  serialized_end=812,
 )
 
 
@@ -488,8 +534,8 @@ _NONEREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=722,
-  serialized_end=748,
+  serialized_start=814,
+  serialized_end=840,
 )
 
 
@@ -520,8 +566,8 @@ _PING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=750,
-  serialized_end=773,
+  serialized_start=842,
+  serialized_end=865,
 )
 
 
@@ -552,8 +598,8 @@ _PONG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=775,
-  serialized_end=798,
+  serialized_start=867,
+  serialized_end=890,
 )
 
 DESCRIPTOR.message_types_by_name['GetDataByStrategyId_Msg'] = _GETDATABYSTRATEGYID_MSG
@@ -566,6 +612,7 @@ DESCRIPTOR.message_types_by_name['GetStrategyConfig_Reply'] = _GETSTRATEGYCONFIG
 DESCRIPTOR.message_types_by_name['SaveStrategyConfig_Msg'] = _SAVESTRATEGYCONFIG_MSG
 DESCRIPTOR.message_types_by_name['SaveStrategyConfig_Reply'] = _SAVESTRATEGYCONFIG_REPLY
 DESCRIPTOR.message_types_by_name['SaveFileToColud_Msg'] = _SAVEFILETOCOLUD_MSG
+DESCRIPTOR.message_types_by_name['SaveRefDataPriceFromQC_Msg'] = _SAVEREFDATAPRICEFROMQC_MSG
 DESCRIPTOR.message_types_by_name['SaveRefDataFromQC_Msg'] = _SAVEREFDATAFROMQC_MSG
 DESCRIPTOR.message_types_by_name['NoneReply'] = _NONEREPLY
 DESCRIPTOR.message_types_by_name['Ping'] = _PING
@@ -642,6 +689,13 @@ SaveFileToColud_Msg = _reflection.GeneratedProtocolMessageType('SaveFileToColud_
   })
 _sym_db.RegisterMessage(SaveFileToColud_Msg)
 
+SaveRefDataPriceFromQC_Msg = _reflection.GeneratedProtocolMessageType('SaveRefDataPriceFromQC_Msg', (_message.Message,), {
+  'DESCRIPTOR' : _SAVEREFDATAPRICEFROMQC_MSG,
+  '__module__' : 'peacock_pb2'
+  # @@protoc_insertion_point(class_scope:peacock.SaveRefDataPriceFromQC_Msg)
+  })
+_sym_db.RegisterMessage(SaveRefDataPriceFromQC_Msg)
+
 SaveRefDataFromQC_Msg = _reflection.GeneratedProtocolMessageType('SaveRefDataFromQC_Msg', (_message.Message,), {
   'DESCRIPTOR' : _SAVEREFDATAFROMQC_MSG,
   '__module__' : 'peacock_pb2'
@@ -679,8 +733,8 @@ _PEACOCK = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=801,
-  serialized_end=1419,
+  serialized_start=893,
+  serialized_end=1594,
   methods=[
   _descriptor.MethodDescriptor(
     name='SaveFileToColud',
@@ -693,9 +747,19 @@ _PEACOCK = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='SaveRefDataPriceFromQC',
+    full_name='peacock.Peacock.SaveRefDataPriceFromQC',
+    index=1,
+    containing_service=None,
+    input_type=_SAVEREFDATAPRICEFROMQC_MSG,
+    output_type=_NONEREPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='SaveRefDataFromQC',
     full_name='peacock.Peacock.SaveRefDataFromQC',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_SAVEREFDATAFROMQC_MSG,
     output_type=_NONEREPLY,
@@ -705,7 +769,7 @@ _PEACOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SaveStrategyConfig',
     full_name='peacock.Peacock.SaveStrategyConfig',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_SAVESTRATEGYCONFIG_MSG,
     output_type=_SAVESTRATEGYCONFIG_REPLY,
@@ -715,7 +779,7 @@ _PEACOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetStrategyConfig',
     full_name='peacock.Peacock.GetStrategyConfig',
-    index=3,
+    index=4,
     containing_service=None,
     input_type=_GETSTRATEGYCONFIG_MSG,
     output_type=_GETSTRATEGYCONFIG_REPLY,
@@ -725,7 +789,7 @@ _PEACOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='RemoveStrategyConfig',
     full_name='peacock.Peacock.RemoveStrategyConfig',
-    index=4,
+    index=5,
     containing_service=None,
     input_type=_REMOVESTRATEGYCONFIG_MSG,
     output_type=_DUMMY_REPLY,
@@ -735,7 +799,7 @@ _PEACOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='RemoveOldConfig',
     full_name='peacock.Peacock.RemoveOldConfig',
-    index=5,
+    index=6,
     containing_service=None,
     input_type=_REMOVEOLDCONFIG_MSG,
     output_type=_DUMMY_REPLY,
@@ -745,7 +809,7 @@ _PEACOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetDataByStrategyId',
     full_name='peacock.Peacock.GetDataByStrategyId',
-    index=6,
+    index=7,
     containing_service=None,
     input_type=_GETDATABYSTRATEGYID_MSG,
     output_type=_GETDATABYSTRATEGYID_REPLY,
@@ -755,7 +819,7 @@ _PEACOCK = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='HealthCheck',
     full_name='peacock.Peacock.HealthCheck',
-    index=7,
+    index=8,
     containing_service=None,
     input_type=_PING,
     output_type=_PONG,

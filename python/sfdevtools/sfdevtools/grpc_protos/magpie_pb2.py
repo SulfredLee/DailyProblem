@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0cmagpie.proto\x12\x06magpie\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t\"\'\n\x17UpdateRefDataFromQC_Msg\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t\"\x1a\n\tNoneReply\x12\r\n\x05reply\x18\x01 \x01(\t2~\n\x06Magpie\x12)\n\x0bHealthCheck\x12\x0c.magpie.Ping\x1a\x0c.magpie.Pong\x12I\n\x13UpdateRefDataFromQC\x12\x1f.magpie.UpdateRefDataFromQC_Msg\x1a\x11.magpie.NoneReplyb\x06proto3'
+  serialized_pb=b'\n\x0cmagpie.proto\x12\x06magpie\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t\",\n\x1cUpdateRefDataPriceFromQC_Msg\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t\"\'\n\x17UpdateRefDataFromQC_Msg\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t\"\x1a\n\tNoneReply\x12\r\n\x05reply\x18\x01 \x01(\t2\xd3\x01\n\x06Magpie\x12)\n\x0bHealthCheck\x12\x0c.magpie.Ping\x1a\x0c.magpie.Pong\x12S\n\x18UpdateRefDataPriceFromQC\x12$.magpie.UpdateRefDataPriceFromQC_Msg\x1a\x11.magpie.NoneReply\x12I\n\x13UpdateRefDataFromQC\x12\x1f.magpie.UpdateRefDataFromQC_Msg\x1a\x11.magpie.NoneReplyb\x06proto3'
 )
 
 
@@ -89,6 +89,38 @@ _PONG = _descriptor.Descriptor(
 )
 
 
+_UPDATEREFDATAPRICEFROMQC_MSG = _descriptor.Descriptor(
+  name='UpdateRefDataPriceFromQC_Msg',
+  full_name='magpie.UpdateRefDataPriceFromQC_Msg',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='data', full_name='magpie.UpdateRefDataPriceFromQC_Msg.data', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=74,
+  serialized_end=118,
+)
+
+
 _UPDATEREFDATAFROMQC_MSG = _descriptor.Descriptor(
   name='UpdateRefDataFromQC_Msg',
   full_name='magpie.UpdateRefDataFromQC_Msg',
@@ -116,8 +148,8 @@ _UPDATEREFDATAFROMQC_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=74,
-  serialized_end=113,
+  serialized_start=120,
+  serialized_end=159,
 )
 
 
@@ -148,12 +180,13 @@ _NONEREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=115,
-  serialized_end=141,
+  serialized_start=161,
+  serialized_end=187,
 )
 
 DESCRIPTOR.message_types_by_name['Ping'] = _PING
 DESCRIPTOR.message_types_by_name['Pong'] = _PONG
+DESCRIPTOR.message_types_by_name['UpdateRefDataPriceFromQC_Msg'] = _UPDATEREFDATAPRICEFROMQC_MSG
 DESCRIPTOR.message_types_by_name['UpdateRefDataFromQC_Msg'] = _UPDATEREFDATAFROMQC_MSG
 DESCRIPTOR.message_types_by_name['NoneReply'] = _NONEREPLY
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -171,6 +204,13 @@ Pong = _reflection.GeneratedProtocolMessageType('Pong', (_message.Message,), {
   # @@protoc_insertion_point(class_scope:magpie.Pong)
   })
 _sym_db.RegisterMessage(Pong)
+
+UpdateRefDataPriceFromQC_Msg = _reflection.GeneratedProtocolMessageType('UpdateRefDataPriceFromQC_Msg', (_message.Message,), {
+  'DESCRIPTOR' : _UPDATEREFDATAPRICEFROMQC_MSG,
+  '__module__' : 'magpie_pb2'
+  # @@protoc_insertion_point(class_scope:magpie.UpdateRefDataPriceFromQC_Msg)
+  })
+_sym_db.RegisterMessage(UpdateRefDataPriceFromQC_Msg)
 
 UpdateRefDataFromQC_Msg = _reflection.GeneratedProtocolMessageType('UpdateRefDataFromQC_Msg', (_message.Message,), {
   'DESCRIPTOR' : _UPDATEREFDATAFROMQC_MSG,
@@ -195,8 +235,8 @@ _MAGPIE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=143,
-  serialized_end=269,
+  serialized_start=190,
+  serialized_end=401,
   methods=[
   _descriptor.MethodDescriptor(
     name='HealthCheck',
@@ -209,9 +249,19 @@ _MAGPIE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='UpdateRefDataPriceFromQC',
+    full_name='magpie.Magpie.UpdateRefDataPriceFromQC',
+    index=1,
+    containing_service=None,
+    input_type=_UPDATEREFDATAPRICEFROMQC_MSG,
+    output_type=_NONEREPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='UpdateRefDataFromQC',
     full_name='magpie.Magpie.UpdateRefDataFromQC',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_UPDATEREFDATAFROMQC_MSG,
     output_type=_NONEREPLY,

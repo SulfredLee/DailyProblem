@@ -20,6 +20,11 @@ class PeacockStub(object):
                 request_serializer=peacock__pb2.SaveFileToColud_Msg.SerializeToString,
                 response_deserializer=peacock__pb2.NoneReply.FromString,
                 )
+        self.SaveRefDataPriceFromQC = channel.unary_unary(
+                '/peacock.Peacock/SaveRefDataPriceFromQC',
+                request_serializer=peacock__pb2.SaveRefDataPriceFromQC_Msg.SerializeToString,
+                response_deserializer=peacock__pb2.NoneReply.FromString,
+                )
         self.SaveRefDataFromQC = channel.unary_unary(
                 '/peacock.Peacock/SaveRefDataFromQC',
                 request_serializer=peacock__pb2.SaveRefDataFromQC_Msg.SerializeToString,
@@ -68,6 +73,13 @@ class PeacockServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SaveRefDataPriceFromQC(self, request, context):
+        """magpie - start
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def SaveRefDataFromQC(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -75,7 +87,8 @@ class PeacockServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def SaveStrategyConfig(self, request, context):
-        """tweety - start
+        """magpie - end
+        tweety - start
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -120,6 +133,11 @@ def add_PeacockServicer_to_server(servicer, server):
             'SaveFileToColud': grpc.unary_unary_rpc_method_handler(
                     servicer.SaveFileToColud,
                     request_deserializer=peacock__pb2.SaveFileToColud_Msg.FromString,
+                    response_serializer=peacock__pb2.NoneReply.SerializeToString,
+            ),
+            'SaveRefDataPriceFromQC': grpc.unary_unary_rpc_method_handler(
+                    servicer.SaveRefDataPriceFromQC,
+                    request_deserializer=peacock__pb2.SaveRefDataPriceFromQC_Msg.FromString,
                     response_serializer=peacock__pb2.NoneReply.SerializeToString,
             ),
             'SaveRefDataFromQC': grpc.unary_unary_rpc_method_handler(
@@ -181,6 +199,23 @@ class Peacock(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/SaveFileToColud',
             peacock__pb2.SaveFileToColud_Msg.SerializeToString,
+            peacock__pb2.NoneReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SaveRefDataPriceFromQC(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/SaveRefDataPriceFromQC',
+            peacock__pb2.SaveRefDataPriceFromQC_Msg.SerializeToString,
             peacock__pb2.NoneReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

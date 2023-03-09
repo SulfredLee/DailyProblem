@@ -7,7 +7,10 @@ package peacock;
 service Peacock {
     // Unary - request and respond
     rpc SaveFileToColud (SaveFileToColud_Msg) returns (NoneReply);
+    // magpie - start
+    rpc SaveRefDataPriceFromQC (SaveRefDataPriceFromQC_Msg) returns (NoneReply);
     rpc SaveRefDataFromQC (SaveRefDataFromQC_Msg) returns (NoneReply);
+    // magpie - end
     // tweety - start
     rpc SaveStrategyConfig (SaveStrategyConfig_Msg) returns (SaveStrategyConfig_Reply);
     rpc GetStrategyConfig (GetStrategyConfig_Msg) returns (GetStrategyConfig_Reply);
@@ -74,11 +77,19 @@ message SaveFileToColud_Msg {
     string file_content = 2;
 }
 
+// magpie - start
+message SaveRefDataPriceFromQC_Msg {
+    string file_name = 1;
+    string file_content = 2;
+    string action_mode = 3;
+}
+
 message SaveRefDataFromQC_Msg {
     string file_name = 1;
     string file_content = 2;
     string action_mode = 3;
 }
+// magpie - end
 
 message NoneReply {
     string reply = 1;
