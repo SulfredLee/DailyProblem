@@ -108,21 +108,13 @@ class DCache(object):
         dpage = self.get_create_dpage(page_id=msg_id)
         dpage.save_fid(fid_num=fid_num, fid_value=fid_value)
 
-        # # handle extra strategy level
-        # if fid_num == ts_cop_pb2.FidNum.CI:
-        #     for ci in fid_value:
-        #         self.save_ci(ci=ci)
-        # elif fid_num == ts_cop_pb2.FidNum.SI:
-        #     self.save_si(si=fid_value)
-        # elif fid_num == ts_cop_pb2.FidNum.Order:
-        #     self.save_orders(orders=fid_value)
-        # elif fid_num == ts_cop_pb2.FidNum.Trade:
-        #     self.save_trades(trades=fid_value)
-
-    def get_fids(self
+    def get_page_fids(self
                  , page_id: str) -> List[Union[int, Any]]:
         dpage = self.get_create_dpage(page_id=msg_id)
         return dpage.get_fids()
+
+    def get_strategy_fids(self) -> List[Union[int, Any]]:
+        return self.__strategy.get_fids()
 
     def get_fid(self
                 , msg_id: str
