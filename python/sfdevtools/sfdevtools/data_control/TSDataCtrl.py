@@ -2,6 +2,7 @@ import logging
 import zmq
 import threading
 import signal
+import math
 
 import sfdevtools.grpc_protos.ts_cop_pb2 as ts_cop_pb2
 import sfdevtools.grpc_protos.ts_cop_pb2_grpc as ts_cop_pb2_grpc
@@ -20,6 +21,26 @@ class TSDataCtrl(object):
         self.__sub_main_thread: threading.Thread = None
         self.__is_subscription_run: bool = False
         self.__sub_timeout_ms: int = 100
+
+        self.__process_fid_map = {
+            1: self.__process_int32
+            , 2: self.__process_int64
+            , 3: self.__process_float
+            , 4: self.__process_double
+            , 5: self.__process_string
+            , 7: self.__process_bool
+            , 8: self.__process_d_int32
+            , 9: self.__process_d_int64
+            , 10: self.__process_d_float
+            , 11: self.__process_d_double
+            , 12: self.__process_d_string
+            , 13: self.__process_d_bool
+            , ts_cop_pb2.Cop.FidNum.CI: self.__process_ci
+            , ts_cop_pb2.Cop.FidNum.SI: self.__process_si
+            , ts_cop_pb2.Cop.FidNum.Order: self.__process_order
+            , ts_cop_pb2.Cop.FidNum.Trade: self.__process_trade
+            , ts_cop_pb2.Cop.FidNum.Order_Snap: self.__process_order
+        }
 
     def init_component(self
                        , logger: logging.Logger):
@@ -62,6 +83,8 @@ class TSDataCtrl(object):
             self.__is_subscription_run = True
             if mode == "simple":
                 self.__sub_main_thread = threading.Thread(target=self.sub_main_simple)
+            elif mode == "smart":
+                self.__sub_main_thread = threading.Thread(target=self.sub_main_smart)
             else:
                 self.__sub_main_thread = threading.Thread(target=self.sub_main_extract)
             self.__sub_main_thread.start()
@@ -95,6 +118,41 @@ class TSDataCtrl(object):
     def reset_msg_seq_num(self):
         with self.__pub_mutex:
             self.__seq_num = 0
+
+    def sub_main_smart(self):
+        self.__logger.info("Start")
+
+        poller = zmq.Poller()
+        poller.register(self.__subscriber, zmq.POLLIN)
+        while self.__is_subscription():
+            sockets = dict(poller.poll(self.__sub_timeout_ms))
+
+            if not self.__is_subscription():
+                break
+
+            # get and process data
+            if self.__subscriber in sockets:
+                topic_encoded, data = self.__subscriber.recv_multipart()
+
+                with self.__sub_mutex:
+                    if self.__cb_fun is not None:
+                        cop = ts_cop_pb2.Cop()
+                        cop.ParseFromString(data)
+                        topic = topic_encoded.decode("utf-8")
+
+                        # tsdata
+                        for fid_num, fid_value in cop.data_map.items():
+                            if 50001 <= fid_num and fid_num <= 60000:
+                                if fid_num not in self.__process_fid_map:
+                                    continue
+                                self.__process_fid_map[fid_num](topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                            else:
+                                num = math.ceil(fid_num / 10000)
+                                if num not in self.__process_fid_map:
+                                    continue
+                                self.__process_fid_map[num](topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+
+        self.__logger.info("End")
 
     def sub_main_extract(self):
         self.__logger.info("Start")
@@ -133,6 +191,24 @@ class TSDataCtrl(object):
                             self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
                         # bool
                         for fid_num, fid_value in cop.bool_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                        # d_int32
+                        for fid_num, fid_value in cop.d_int32_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                        # d_int64
+                        for fid_num, fid_value in cop.d_int64_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                        # d_float
+                        for fid_num, fid_value in cop.d_float_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                        # d_double
+                        for fid_num, fid_value in cop.d_double_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                        # d_string
+                        for fid_num, fid_value in cop.d_string_map.items():
+                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                        # d_bool
+                        for fid_num, fid_value in cop.d_bool_map.items():
                             self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
                         # order
                         for fid_num, fid_value in cop.order_map.items():
@@ -174,6 +250,54 @@ class TSDataCtrl(object):
                 break
 
         self.__logger.info("End")
+
+    def __process_int32(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.int32_data)
+
+    def __process_int64(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.int64_data)
+
+    def __process_float(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.float_data)
+
+    def __process_double(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.double_data)
+
+    def __process_string(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.string_data)
+
+    def __process_bool(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.bool_data)
+
+    def __process_d_int32(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_int32_data)
+
+    def __process_d_int64(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_int64_data)
+
+    def __process_d_float(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_float_data)
+
+    def __process_d_double(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_double_data)
+
+    def __process_d_string(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_string_data)
+
+    def __process_d_bool(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_bool_data)
+
+    def __process_ci(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.ci_data)
+
+    def __process_si(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.si_data)
+
+    def __process_order(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.order_data)
+
+    def __process_trade(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.trade_data)
 
     def __cleanup(self, signum, frame):
         self.stop_subscription()

@@ -114,6 +114,25 @@ message TSTradeList {
     repeated TSTrade trade_list = 1;
 }
 
+message TSDATA {
+    int32 int32_data = 1;
+    int64 int64_data = 2;
+    float float_data = 3;
+    double double_data = 4;
+    string string_data = 5;
+    bool bool_data = 6;
+    TSOrderList order_data = 7;
+    TSTradeList trade_data = 8;
+    SIList si_data = 9;
+    CIList ci_data = 10;
+    DINT32 d_int32_data = 11;
+    DINT64 d_int64_data = 12;
+    DFLOAT d_float_data = 13;
+    DDOUBLE d_double_data = 14;
+    DSTRING d_string_data = 15;
+    DBOOL d_bool_data = 16;
+}
+
 message Cop {
     enum MsgType {
         Listing = 0;
@@ -134,6 +153,12 @@ message Cop {
         Trade = 50004;
         Order_Snap = 50005;
         // 60001 - 70000 --- bool
+        // 70001 - 80000 --- d_int32
+        // 80001 - 90000 --- d_int64
+        // 90001 - 100000 --- d_float
+        // 100001 - 110000 --- d_double
+        // 110001 - 120000 --- d_string
+        // 120001 - 130000 --- d_bool
     }
 
     // header
@@ -162,4 +187,5 @@ message Cop {
     map<int32, DDOUBLE> d_double_map = 21;
     map<int32, DSTRING> d_string_map = 22;
     map<int32, DBOOL> d_bool_map = 23;
+    map<int32, TSDATA> data_map = 24;
 }
