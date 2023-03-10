@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0cts_cop.proto\x12\x06ts_cop\"\x13\n\x02\x43I\x12\r\n\x05value\x18\x01 \x01(\t\"%\n\x06\x43IList\x12\x1b\n\x07\x63i_list\x18\x01 \x03(\x0b\x32\n.ts_cop.CI\"\xbd\x01\n\x02SI\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\r\n\x05ratio\x18\x02 \x01(\x01\x12\x11\n\tparent_id\x18\x03 \x01(\t\x12\r\n\x05si_id\x18\x04 \x01(\t\x12\x0f\n\x07\x63reated\x18\x05 \x01(\x01\x12\x13\n\x0blast_update\x18\x06 \x01(\x01\x12\x15\n\rstrategy_name\x18\x07 \x01(\t\x12\x11\n\tlive_mode\x18\x08 \x01(\x08\x12\x13\n\x0bstrategy_id\x18\t \x01(\t\x12\x11\n\tsymbol_id\x18\n \x01(\t\"%\n\x06SIList\x12\x1b\n\x07si_list\x18\x01 \x03(\x0b\x32\n.ts_cop.SI\"\xa0\x03\n\x07TSOrder\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08quantity\x18\x02 \x01(\x01\x12\x15\n\rfill_quantity\x18\x03 \x01(\x01\x12\x11\n\tparent_id\x18\x04 \x01(\t\x12\x10\n\x08order_id\x18\x05 \x01(\t\x12\x19\n\x11platform_order_id\x18\x06 \x01(\t\x12\x0f\n\x07\x63reated\x18\x07 \x01(\x01\x12\x13\n\x0blast_update\x18\x08 \x01(\x01\x12\x15\n\rstrategy_name\x18\t \x01(\t\x12\x11\n\tlive_mode\x18\n \x01(\x08\x12\x13\n\x0bstrategy_id\x18\x0b \x01(\t\x12\x14\n\x0corder_status\x18\x0c \x01(\t\x12\x18\n\x10\x65xecution_broker\x18\r \x01(\t\x12\x17\n\x0f\x63learing_broker\x18\x0e \x01(\t\x12\x0f\n\x07\x61\x63\x63ount\x18\x0f \x01(\t\x12\r\n\x05price\x18\x10 \x01(\x01\x12\x0b\n\x03\x66\x65\x65\x18\x11 \x01(\x01\x12\x10\n\x08\x65xchange\x18\x12 \x01(\t\x12\x0b\n\x03\x63\x63y\x18\x13 \x01(\t\x12\x0f\n\x07\x66\x65\x65_ccy\x18\x14 \x01(\t\x12\x11\n\tsymbol_id\x18\x15 \x01(\t\"2\n\x0bTSOrderList\x12#\n\norder_list\x18\x01 \x03(\x0b\x32\x0f.ts_cop.TSOrder\"\x99\x03\n\x07TSTrade\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08quantity\x18\x02 \x01(\x01\x12\x11\n\tparent_id\x18\x03 \x01(\t\x12\x10\n\x08trade_id\x18\x04 \x01(\t\x12\x0f\n\x07\x63reated\x18\x05 \x01(\x01\x12\x13\n\x0blast_update\x18\x06 \x01(\x01\x12\x15\n\rstrategy_name\x18\x07 \x01(\t\x12\x11\n\tlive_mode\x18\x08 \x01(\x08\x12\x13\n\x0bstrategy_id\x18\t \x01(\t\x12\x14\n\x0ctrade_status\x18\n \x01(\t\x12\x18\n\x10\x65xecution_broker\x18\x0b \x01(\t\x12\x17\n\x0f\x63learing_broker\x18\x0c \x01(\t\x12\x17\n\x0fsettlement_date\x18\r \x01(\x01\x12\x10\n\x08\x66x_ratio\x18\x0e \x01(\x01\x12\x0f\n\x07\x61\x63\x63ount\x18\x0f \x01(\t\x12\r\n\x05price\x18\x10 \x01(\x01\x12\x0b\n\x03\x66\x65\x65\x18\x11 \x01(\x01\x12\x10\n\x08\x65xchange\x18\x12 \x01(\t\x12\x0b\n\x03\x63\x63y\x18\x13 \x01(\t\x12\x0f\n\x07\x66\x65\x65_ccy\x18\x14 \x01(\t\x12\x11\n\tsymbol_id\x18\x15 \x01(\t\"2\n\x0bTSTradeList\x12#\n\ntrade_list\x18\x01 \x03(\x0b\x32\x0f.ts_cop.TSTrade\"\x80\n\n\x03\x43op\x12\x0e\n\x06msg_id\x18\x01 \x01(\t\x12%\n\x08msg_type\x18\x02 \x01(\x0e\x32\x13.ts_cop.Cop.MsgType\x12\x0e\n\x06sender\x18\x03 \x01(\t\x12\x13\n\x0binstance_id\x18\x04 \x01(\x05\x12\x0f\n\x07seq_num\x18\x05 \x01(\x03\x12\x14\n\x0c\x63reated_time\x18\x06 \x01(\x01\x12,\n\tint32_map\x18\x07 \x03(\x0b\x32\x19.ts_cop.Cop.Int32MapEntry\x12,\n\tint64_map\x18\x08 \x03(\x0b\x32\x19.ts_cop.Cop.Int64MapEntry\x12,\n\tfloat_map\x18\t \x03(\x0b\x32\x19.ts_cop.Cop.FloatMapEntry\x12.\n\ndouble_map\x18\n \x03(\x0b\x32\x1a.ts_cop.Cop.DoubleMapEntry\x12.\n\nstring_map\x18\x0b \x03(\x0b\x32\x1a.ts_cop.Cop.StringMapEntry\x12*\n\x08\x62ool_map\x18\x0c \x03(\x0b\x32\x18.ts_cop.Cop.BoolMapEntry\x12,\n\torder_map\x18\r \x03(\x0b\x32\x19.ts_cop.Cop.OrderMapEntry\x12,\n\ttrade_map\x18\x0e \x03(\x0b\x32\x19.ts_cop.Cop.TradeMapEntry\x12&\n\x06si_map\x18\x0f \x03(\x0b\x32\x16.ts_cop.Cop.SiMapEntry\x12&\n\x06\x63i_map\x18\x10 \x03(\x0b\x32\x16.ts_cop.Cop.CiMapEntry\x1a/\n\rInt32MapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\x1a/\n\rInt64MapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x03:\x02\x38\x01\x1a/\n\rFloatMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x02:\x02\x38\x01\x1a\x30\n\x0e\x44oubleMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x01:\x02\x38\x01\x1a\x30\n\x0eStringMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a.\n\x0c\x42oolMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x08:\x02\x38\x01\x1a\x44\n\rOrderMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.ts_cop.TSOrderList:\x02\x38\x01\x1a\x44\n\rTradeMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.ts_cop.TSTradeList:\x02\x38\x01\x1a<\n\nSiMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.ts_cop.SIList:\x02\x38\x01\x1a<\n\nCiMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.ts_cop.CIList:\x02\x38\x01\"0\n\x07MsgType\x12\x0b\n\x07Listing\x10\x00\x12\x0c\n\x08Strategy\x10\x01\x12\n\n\x06System\x10\x02\"S\n\x06\x46idNum\x12\t\n\x05\x44ummy\x10\x00\x12\x08\n\x02\x43I\x10\xd1\x86\x03\x12\x08\n\x02SI\x10\xd2\x86\x03\x12\x0b\n\x05Order\x10\xd3\x86\x03\x12\x0b\n\x05Trade\x10\xd4\x86\x03\x12\x10\n\nOrder_Snap\x10\xd5\x86\x03\x62\x06proto3'
+  serialized_pb=b'\n\x0cts_cop.proto\x12\x06ts_cop\"%\n\x06\x44INT32\x12\r\n\x05value\x18\x01 \x01(\x05\x12\x0c\n\x04time\x18\x02 \x01(\x01\"%\n\x06\x44INT64\x12\r\n\x05value\x18\x01 \x01(\x03\x12\x0c\n\x04time\x18\x02 \x01(\x01\"%\n\x06\x44\x46LOAT\x12\r\n\x05value\x18\x01 \x01(\x02\x12\x0c\n\x04time\x18\x02 \x01(\x01\"&\n\x07\x44\x44OUBLE\x12\r\n\x05value\x18\x01 \x01(\x01\x12\x0c\n\x04time\x18\x02 \x01(\x01\"&\n\x07\x44STRING\x12\r\n\x05value\x18\x01 \x01(\t\x12\x0c\n\x04time\x18\x02 \x01(\x01\"$\n\x05\x44\x42OOL\x12\r\n\x05value\x18\x01 \x01(\x08\x12\x0c\n\x04time\x18\x02 \x01(\x01\"\x13\n\x02\x43I\x12\r\n\x05value\x18\x01 \x01(\t\"%\n\x06\x43IList\x12\x1b\n\x07\x63i_list\x18\x01 \x03(\x0b\x32\n.ts_cop.CI\"\xbd\x01\n\x02SI\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\r\n\x05ratio\x18\x02 \x01(\x01\x12\x11\n\tparent_id\x18\x03 \x01(\t\x12\r\n\x05si_id\x18\x04 \x01(\t\x12\x0f\n\x07\x63reated\x18\x05 \x01(\x01\x12\x13\n\x0blast_update\x18\x06 \x01(\x01\x12\x15\n\rstrategy_name\x18\x07 \x01(\t\x12\x11\n\tlive_mode\x18\x08 \x01(\x08\x12\x13\n\x0bstrategy_id\x18\t \x01(\t\x12\x11\n\tsymbol_id\x18\n \x01(\t\"%\n\x06SIList\x12\x1b\n\x07si_list\x18\x01 \x03(\x0b\x32\n.ts_cop.SI\"\xa0\x03\n\x07TSOrder\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08quantity\x18\x02 \x01(\x01\x12\x15\n\rfill_quantity\x18\x03 \x01(\x01\x12\x11\n\tparent_id\x18\x04 \x01(\t\x12\x10\n\x08order_id\x18\x05 \x01(\t\x12\x19\n\x11platform_order_id\x18\x06 \x01(\t\x12\x0f\n\x07\x63reated\x18\x07 \x01(\x01\x12\x13\n\x0blast_update\x18\x08 \x01(\x01\x12\x15\n\rstrategy_name\x18\t \x01(\t\x12\x11\n\tlive_mode\x18\n \x01(\x08\x12\x13\n\x0bstrategy_id\x18\x0b \x01(\t\x12\x14\n\x0corder_status\x18\x0c \x01(\t\x12\x18\n\x10\x65xecution_broker\x18\r \x01(\t\x12\x17\n\x0f\x63learing_broker\x18\x0e \x01(\t\x12\x0f\n\x07\x61\x63\x63ount\x18\x0f \x01(\t\x12\r\n\x05price\x18\x10 \x01(\x01\x12\x0b\n\x03\x66\x65\x65\x18\x11 \x01(\x01\x12\x10\n\x08\x65xchange\x18\x12 \x01(\t\x12\x0b\n\x03\x63\x63y\x18\x13 \x01(\t\x12\x0f\n\x07\x66\x65\x65_ccy\x18\x14 \x01(\t\x12\x11\n\tsymbol_id\x18\x15 \x01(\t\"2\n\x0bTSOrderList\x12#\n\norder_list\x18\x01 \x03(\x0b\x32\x0f.ts_cop.TSOrder\"\x99\x03\n\x07TSTrade\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x10\n\x08quantity\x18\x02 \x01(\x01\x12\x11\n\tparent_id\x18\x03 \x01(\t\x12\x10\n\x08trade_id\x18\x04 \x01(\t\x12\x0f\n\x07\x63reated\x18\x05 \x01(\x01\x12\x13\n\x0blast_update\x18\x06 \x01(\x01\x12\x15\n\rstrategy_name\x18\x07 \x01(\t\x12\x11\n\tlive_mode\x18\x08 \x01(\x08\x12\x13\n\x0bstrategy_id\x18\t \x01(\t\x12\x14\n\x0ctrade_status\x18\n \x01(\t\x12\x18\n\x10\x65xecution_broker\x18\x0b \x01(\t\x12\x17\n\x0f\x63learing_broker\x18\x0c \x01(\t\x12\x17\n\x0fsettlement_date\x18\r \x01(\x01\x12\x10\n\x08\x66x_ratio\x18\x0e \x01(\x01\x12\x0f\n\x07\x61\x63\x63ount\x18\x0f \x01(\t\x12\r\n\x05price\x18\x10 \x01(\x01\x12\x0b\n\x03\x66\x65\x65\x18\x11 \x01(\x01\x12\x10\n\x08\x65xchange\x18\x12 \x01(\t\x12\x0b\n\x03\x63\x63y\x18\x13 \x01(\t\x12\x0f\n\x07\x66\x65\x65_ccy\x18\x14 \x01(\t\x12\x11\n\tsymbol_id\x18\x15 \x01(\t\"2\n\x0bTSTradeList\x12#\n\ntrade_list\x18\x01 \x03(\x0b\x32\x0f.ts_cop.TSTrade\"\xcb\x0f\n\x03\x43op\x12\x0e\n\x06msg_id\x18\x01 \x01(\t\x12%\n\x08msg_type\x18\x02 \x01(\x0e\x32\x13.ts_cop.Cop.MsgType\x12\x0e\n\x06sender\x18\x03 \x01(\t\x12\x13\n\x0binstance_id\x18\x04 \x01(\x05\x12\x0f\n\x07seq_num\x18\x05 \x01(\x03\x12\x14\n\x0c\x63reated_time\x18\x06 \x01(\x01\x12\x13\n\x0bstrategy_id\x18\x11 \x01(\t\x12,\n\tint32_map\x18\x07 \x03(\x0b\x32\x19.ts_cop.Cop.Int32MapEntry\x12,\n\tint64_map\x18\x08 \x03(\x0b\x32\x19.ts_cop.Cop.Int64MapEntry\x12,\n\tfloat_map\x18\t \x03(\x0b\x32\x19.ts_cop.Cop.FloatMapEntry\x12.\n\ndouble_map\x18\n \x03(\x0b\x32\x1a.ts_cop.Cop.DoubleMapEntry\x12.\n\nstring_map\x18\x0b \x03(\x0b\x32\x1a.ts_cop.Cop.StringMapEntry\x12*\n\x08\x62ool_map\x18\x0c \x03(\x0b\x32\x18.ts_cop.Cop.BoolMapEntry\x12,\n\torder_map\x18\r \x03(\x0b\x32\x19.ts_cop.Cop.OrderMapEntry\x12,\n\ttrade_map\x18\x0e \x03(\x0b\x32\x19.ts_cop.Cop.TradeMapEntry\x12&\n\x06si_map\x18\x0f \x03(\x0b\x32\x16.ts_cop.Cop.SiMapEntry\x12&\n\x06\x63i_map\x18\x10 \x03(\x0b\x32\x16.ts_cop.Cop.CiMapEntry\x12/\n\x0b\x64_int32_map\x18\x12 \x03(\x0b\x32\x1a.ts_cop.Cop.DInt32MapEntry\x12/\n\x0b\x64_int64_map\x18\x13 \x03(\x0b\x32\x1a.ts_cop.Cop.DInt64MapEntry\x12/\n\x0b\x64_float_map\x18\x14 \x03(\x0b\x32\x1a.ts_cop.Cop.DFloatMapEntry\x12\x31\n\x0c\x64_double_map\x18\x15 \x03(\x0b\x32\x1b.ts_cop.Cop.DDoubleMapEntry\x12\x31\n\x0c\x64_string_map\x18\x16 \x03(\x0b\x32\x1b.ts_cop.Cop.DStringMapEntry\x12-\n\nd_bool_map\x18\x17 \x03(\x0b\x32\x19.ts_cop.Cop.DBoolMapEntry\x1a/\n\rInt32MapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\x1a/\n\rInt64MapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x03:\x02\x38\x01\x1a/\n\rFloatMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x02:\x02\x38\x01\x1a\x30\n\x0e\x44oubleMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x01:\x02\x38\x01\x1a\x30\n\x0eStringMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a.\n\x0c\x42oolMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\r\n\x05value\x18\x02 \x01(\x08:\x02\x38\x01\x1a\x44\n\rOrderMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.ts_cop.TSOrderList:\x02\x38\x01\x1a\x44\n\rTradeMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\"\n\x05value\x18\x02 \x01(\x0b\x32\x13.ts_cop.TSTradeList:\x02\x38\x01\x1a<\n\nSiMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.ts_cop.SIList:\x02\x38\x01\x1a<\n\nCiMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.ts_cop.CIList:\x02\x38\x01\x1a@\n\x0e\x44Int32MapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.ts_cop.DINT32:\x02\x38\x01\x1a@\n\x0e\x44Int64MapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.ts_cop.DINT64:\x02\x38\x01\x1a@\n\x0e\x44\x46loatMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1d\n\x05value\x18\x02 \x01(\x0b\x32\x0e.ts_cop.DFLOAT:\x02\x38\x01\x1a\x42\n\x0f\x44\x44oubleMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1e\n\x05value\x18\x02 \x01(\x0b\x32\x0f.ts_cop.DDOUBLE:\x02\x38\x01\x1a\x42\n\x0f\x44StringMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1e\n\x05value\x18\x02 \x01(\x0b\x32\x0f.ts_cop.DSTRING:\x02\x38\x01\x1a>\n\rDBoolMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\x05\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.ts_cop.DBOOL:\x02\x38\x01\"0\n\x07MsgType\x12\x0b\n\x07Listing\x10\x00\x12\x0c\n\x08Strategy\x10\x01\x12\n\n\x06System\x10\x02\"S\n\x06\x46idNum\x12\t\n\x05\x44ummy\x10\x00\x12\x08\n\x02\x43I\x10\xd1\x86\x03\x12\x08\n\x02SI\x10\xd2\x86\x03\x12\x0b\n\x05Order\x10\xd3\x86\x03\x12\x0b\n\x05Trade\x10\xd4\x86\x03\x12\x10\n\nOrder_Snap\x10\xd5\x86\x03\x62\x06proto3'
 )
 
 
@@ -49,8 +49,8 @@ _COP_MSGTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2398,
-  serialized_end=2446,
+  serialized_start=3348,
+  serialized_end=3396,
 )
 _sym_db.RegisterEnumDescriptor(_COP_MSGTYPE)
 
@@ -94,10 +94,244 @@ _COP_FIDNUM = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2448,
-  serialized_end=2531,
+  serialized_start=3398,
+  serialized_end=3481,
 )
 _sym_db.RegisterEnumDescriptor(_COP_FIDNUM)
+
+
+_DINT32 = _descriptor.Descriptor(
+  name='DINT32',
+  full_name='ts_cop.DINT32',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ts_cop.DINT32.value', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='time', full_name='ts_cop.DINT32.time', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=24,
+  serialized_end=61,
+)
+
+
+_DINT64 = _descriptor.Descriptor(
+  name='DINT64',
+  full_name='ts_cop.DINT64',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ts_cop.DINT64.value', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='time', full_name='ts_cop.DINT64.time', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=63,
+  serialized_end=100,
+)
+
+
+_DFLOAT = _descriptor.Descriptor(
+  name='DFLOAT',
+  full_name='ts_cop.DFLOAT',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ts_cop.DFLOAT.value', index=0,
+      number=1, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='time', full_name='ts_cop.DFLOAT.time', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=102,
+  serialized_end=139,
+)
+
+
+_DDOUBLE = _descriptor.Descriptor(
+  name='DDOUBLE',
+  full_name='ts_cop.DDOUBLE',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ts_cop.DDOUBLE.value', index=0,
+      number=1, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='time', full_name='ts_cop.DDOUBLE.time', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=141,
+  serialized_end=179,
+)
+
+
+_DSTRING = _descriptor.Descriptor(
+  name='DSTRING',
+  full_name='ts_cop.DSTRING',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ts_cop.DSTRING.value', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='time', full_name='ts_cop.DSTRING.time', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=181,
+  serialized_end=219,
+)
+
+
+_DBOOL = _descriptor.Descriptor(
+  name='DBOOL',
+  full_name='ts_cop.DBOOL',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ts_cop.DBOOL.value', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='time', full_name='ts_cop.DBOOL.time', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=221,
+  serialized_end=257,
+)
 
 
 _CI = _descriptor.Descriptor(
@@ -127,8 +361,8 @@ _CI = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=24,
-  serialized_end=43,
+  serialized_start=259,
+  serialized_end=278,
 )
 
 
@@ -159,8 +393,8 @@ _CILIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=45,
-  serialized_end=82,
+  serialized_start=280,
+  serialized_end=317,
 )
 
 
@@ -254,8 +488,8 @@ _SI = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=85,
-  serialized_end=274,
+  serialized_start=320,
+  serialized_end=509,
 )
 
 
@@ -286,8 +520,8 @@ _SILIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=276,
-  serialized_end=313,
+  serialized_start=511,
+  serialized_end=548,
 )
 
 
@@ -458,8 +692,8 @@ _TSORDER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=316,
-  serialized_end=732,
+  serialized_start=551,
+  serialized_end=967,
 )
 
 
@@ -490,8 +724,8 @@ _TSORDERLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=734,
-  serialized_end=784,
+  serialized_start=969,
+  serialized_end=1019,
 )
 
 
@@ -662,8 +896,8 @@ _TSTRADE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=787,
-  serialized_end=1196,
+  serialized_start=1022,
+  serialized_end=1431,
 )
 
 
@@ -694,8 +928,8 @@ _TSTRADELIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1198,
-  serialized_end=1248,
+  serialized_start=1433,
+  serialized_end=1483,
 )
 
 
@@ -733,8 +967,8 @@ _COP_INT32MAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1839,
-  serialized_end=1886,
+  serialized_start=2391,
+  serialized_end=2438,
 )
 
 _COP_INT64MAPENTRY = _descriptor.Descriptor(
@@ -771,8 +1005,8 @@ _COP_INT64MAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1888,
-  serialized_end=1935,
+  serialized_start=2440,
+  serialized_end=2487,
 )
 
 _COP_FLOATMAPENTRY = _descriptor.Descriptor(
@@ -809,8 +1043,8 @@ _COP_FLOATMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1937,
-  serialized_end=1984,
+  serialized_start=2489,
+  serialized_end=2536,
 )
 
 _COP_DOUBLEMAPENTRY = _descriptor.Descriptor(
@@ -847,8 +1081,8 @@ _COP_DOUBLEMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1986,
-  serialized_end=2034,
+  serialized_start=2538,
+  serialized_end=2586,
 )
 
 _COP_STRINGMAPENTRY = _descriptor.Descriptor(
@@ -885,8 +1119,8 @@ _COP_STRINGMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2036,
-  serialized_end=2084,
+  serialized_start=2588,
+  serialized_end=2636,
 )
 
 _COP_BOOLMAPENTRY = _descriptor.Descriptor(
@@ -923,8 +1157,8 @@ _COP_BOOLMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2086,
-  serialized_end=2132,
+  serialized_start=2638,
+  serialized_end=2684,
 )
 
 _COP_ORDERMAPENTRY = _descriptor.Descriptor(
@@ -961,8 +1195,8 @@ _COP_ORDERMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2134,
-  serialized_end=2202,
+  serialized_start=2686,
+  serialized_end=2754,
 )
 
 _COP_TRADEMAPENTRY = _descriptor.Descriptor(
@@ -999,8 +1233,8 @@ _COP_TRADEMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2204,
-  serialized_end=2272,
+  serialized_start=2756,
+  serialized_end=2824,
 )
 
 _COP_SIMAPENTRY = _descriptor.Descriptor(
@@ -1037,8 +1271,8 @@ _COP_SIMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2274,
-  serialized_end=2334,
+  serialized_start=2826,
+  serialized_end=2886,
 )
 
 _COP_CIMAPENTRY = _descriptor.Descriptor(
@@ -1075,8 +1309,236 @@ _COP_CIMAPENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2336,
-  serialized_end=2396,
+  serialized_start=2888,
+  serialized_end=2948,
+)
+
+_COP_DINT32MAPENTRY = _descriptor.Descriptor(
+  name='DInt32MapEntry',
+  full_name='ts_cop.Cop.DInt32MapEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='ts_cop.Cop.DInt32MapEntry.key', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ts_cop.Cop.DInt32MapEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2950,
+  serialized_end=3014,
+)
+
+_COP_DINT64MAPENTRY = _descriptor.Descriptor(
+  name='DInt64MapEntry',
+  full_name='ts_cop.Cop.DInt64MapEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='ts_cop.Cop.DInt64MapEntry.key', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ts_cop.Cop.DInt64MapEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3016,
+  serialized_end=3080,
+)
+
+_COP_DFLOATMAPENTRY = _descriptor.Descriptor(
+  name='DFloatMapEntry',
+  full_name='ts_cop.Cop.DFloatMapEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='ts_cop.Cop.DFloatMapEntry.key', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ts_cop.Cop.DFloatMapEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3082,
+  serialized_end=3146,
+)
+
+_COP_DDOUBLEMAPENTRY = _descriptor.Descriptor(
+  name='DDoubleMapEntry',
+  full_name='ts_cop.Cop.DDoubleMapEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='ts_cop.Cop.DDoubleMapEntry.key', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ts_cop.Cop.DDoubleMapEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3148,
+  serialized_end=3214,
+)
+
+_COP_DSTRINGMAPENTRY = _descriptor.Descriptor(
+  name='DStringMapEntry',
+  full_name='ts_cop.Cop.DStringMapEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='ts_cop.Cop.DStringMapEntry.key', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ts_cop.Cop.DStringMapEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3216,
+  serialized_end=3282,
+)
+
+_COP_DBOOLMAPENTRY = _descriptor.Descriptor(
+  name='DBoolMapEntry',
+  full_name='ts_cop.Cop.DBoolMapEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='ts_cop.Cop.DBoolMapEntry.key', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ts_cop.Cop.DBoolMapEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3284,
+  serialized_end=3346,
 )
 
 _COP = _descriptor.Descriptor(
@@ -1130,71 +1592,120 @@ _COP = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='int32_map', full_name='ts_cop.Cop.int32_map', index=6,
+      name='strategy_id', full_name='ts_cop.Cop.strategy_id', index=6,
+      number=17, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='int32_map', full_name='ts_cop.Cop.int32_map', index=7,
       number=7, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='int64_map', full_name='ts_cop.Cop.int64_map', index=7,
+      name='int64_map', full_name='ts_cop.Cop.int64_map', index=8,
       number=8, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='float_map', full_name='ts_cop.Cop.float_map', index=8,
+      name='float_map', full_name='ts_cop.Cop.float_map', index=9,
       number=9, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='double_map', full_name='ts_cop.Cop.double_map', index=9,
+      name='double_map', full_name='ts_cop.Cop.double_map', index=10,
       number=10, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='string_map', full_name='ts_cop.Cop.string_map', index=10,
+      name='string_map', full_name='ts_cop.Cop.string_map', index=11,
       number=11, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='bool_map', full_name='ts_cop.Cop.bool_map', index=11,
+      name='bool_map', full_name='ts_cop.Cop.bool_map', index=12,
       number=12, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='order_map', full_name='ts_cop.Cop.order_map', index=12,
+      name='order_map', full_name='ts_cop.Cop.order_map', index=13,
       number=13, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='trade_map', full_name='ts_cop.Cop.trade_map', index=13,
+      name='trade_map', full_name='ts_cop.Cop.trade_map', index=14,
       number=14, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='si_map', full_name='ts_cop.Cop.si_map', index=14,
+      name='si_map', full_name='ts_cop.Cop.si_map', index=15,
       number=15, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='ci_map', full_name='ts_cop.Cop.ci_map', index=15,
+      name='ci_map', full_name='ts_cop.Cop.ci_map', index=16,
       number=16, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='d_int32_map', full_name='ts_cop.Cop.d_int32_map', index=17,
+      number=18, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='d_int64_map', full_name='ts_cop.Cop.d_int64_map', index=18,
+      number=19, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='d_float_map', full_name='ts_cop.Cop.d_float_map', index=19,
+      number=20, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='d_double_map', full_name='ts_cop.Cop.d_double_map', index=20,
+      number=21, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='d_string_map', full_name='ts_cop.Cop.d_string_map', index=21,
+      number=22, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='d_bool_map', full_name='ts_cop.Cop.d_bool_map', index=22,
+      number=23, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -1202,7 +1713,7 @@ _COP = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_COP_INT32MAPENTRY, _COP_INT64MAPENTRY, _COP_FLOATMAPENTRY, _COP_DOUBLEMAPENTRY, _COP_STRINGMAPENTRY, _COP_BOOLMAPENTRY, _COP_ORDERMAPENTRY, _COP_TRADEMAPENTRY, _COP_SIMAPENTRY, _COP_CIMAPENTRY, ],
+  nested_types=[_COP_INT32MAPENTRY, _COP_INT64MAPENTRY, _COP_FLOATMAPENTRY, _COP_DOUBLEMAPENTRY, _COP_STRINGMAPENTRY, _COP_BOOLMAPENTRY, _COP_ORDERMAPENTRY, _COP_TRADEMAPENTRY, _COP_SIMAPENTRY, _COP_CIMAPENTRY, _COP_DINT32MAPENTRY, _COP_DINT64MAPENTRY, _COP_DFLOATMAPENTRY, _COP_DDOUBLEMAPENTRY, _COP_DSTRINGMAPENTRY, _COP_DBOOLMAPENTRY, ],
   enum_types=[
     _COP_MSGTYPE,
     _COP_FIDNUM,
@@ -1213,8 +1724,8 @@ _COP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1251,
-  serialized_end=2531,
+  serialized_start=1486,
+  serialized_end=3481,
 )
 
 _CILIST.fields_by_name['ci_list'].message_type = _CI
@@ -1235,6 +1746,18 @@ _COP_SIMAPENTRY.fields_by_name['value'].message_type = _SILIST
 _COP_SIMAPENTRY.containing_type = _COP
 _COP_CIMAPENTRY.fields_by_name['value'].message_type = _CILIST
 _COP_CIMAPENTRY.containing_type = _COP
+_COP_DINT32MAPENTRY.fields_by_name['value'].message_type = _DINT32
+_COP_DINT32MAPENTRY.containing_type = _COP
+_COP_DINT64MAPENTRY.fields_by_name['value'].message_type = _DINT64
+_COP_DINT64MAPENTRY.containing_type = _COP
+_COP_DFLOATMAPENTRY.fields_by_name['value'].message_type = _DFLOAT
+_COP_DFLOATMAPENTRY.containing_type = _COP
+_COP_DDOUBLEMAPENTRY.fields_by_name['value'].message_type = _DDOUBLE
+_COP_DDOUBLEMAPENTRY.containing_type = _COP
+_COP_DSTRINGMAPENTRY.fields_by_name['value'].message_type = _DSTRING
+_COP_DSTRINGMAPENTRY.containing_type = _COP
+_COP_DBOOLMAPENTRY.fields_by_name['value'].message_type = _DBOOL
+_COP_DBOOLMAPENTRY.containing_type = _COP
 _COP.fields_by_name['msg_type'].enum_type = _COP_MSGTYPE
 _COP.fields_by_name['int32_map'].message_type = _COP_INT32MAPENTRY
 _COP.fields_by_name['int64_map'].message_type = _COP_INT64MAPENTRY
@@ -1246,8 +1769,20 @@ _COP.fields_by_name['order_map'].message_type = _COP_ORDERMAPENTRY
 _COP.fields_by_name['trade_map'].message_type = _COP_TRADEMAPENTRY
 _COP.fields_by_name['si_map'].message_type = _COP_SIMAPENTRY
 _COP.fields_by_name['ci_map'].message_type = _COP_CIMAPENTRY
+_COP.fields_by_name['d_int32_map'].message_type = _COP_DINT32MAPENTRY
+_COP.fields_by_name['d_int64_map'].message_type = _COP_DINT64MAPENTRY
+_COP.fields_by_name['d_float_map'].message_type = _COP_DFLOATMAPENTRY
+_COP.fields_by_name['d_double_map'].message_type = _COP_DDOUBLEMAPENTRY
+_COP.fields_by_name['d_string_map'].message_type = _COP_DSTRINGMAPENTRY
+_COP.fields_by_name['d_bool_map'].message_type = _COP_DBOOLMAPENTRY
 _COP_MSGTYPE.containing_type = _COP
 _COP_FIDNUM.containing_type = _COP
+DESCRIPTOR.message_types_by_name['DINT32'] = _DINT32
+DESCRIPTOR.message_types_by_name['DINT64'] = _DINT64
+DESCRIPTOR.message_types_by_name['DFLOAT'] = _DFLOAT
+DESCRIPTOR.message_types_by_name['DDOUBLE'] = _DDOUBLE
+DESCRIPTOR.message_types_by_name['DSTRING'] = _DSTRING
+DESCRIPTOR.message_types_by_name['DBOOL'] = _DBOOL
 DESCRIPTOR.message_types_by_name['CI'] = _CI
 DESCRIPTOR.message_types_by_name['CIList'] = _CILIST
 DESCRIPTOR.message_types_by_name['SI'] = _SI
@@ -1258,6 +1793,48 @@ DESCRIPTOR.message_types_by_name['TSTrade'] = _TSTRADE
 DESCRIPTOR.message_types_by_name['TSTradeList'] = _TSTRADELIST
 DESCRIPTOR.message_types_by_name['Cop'] = _COP
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+DINT32 = _reflection.GeneratedProtocolMessageType('DINT32', (_message.Message,), {
+  'DESCRIPTOR' : _DINT32,
+  '__module__' : 'ts_cop_pb2'
+  # @@protoc_insertion_point(class_scope:ts_cop.DINT32)
+  })
+_sym_db.RegisterMessage(DINT32)
+
+DINT64 = _reflection.GeneratedProtocolMessageType('DINT64', (_message.Message,), {
+  'DESCRIPTOR' : _DINT64,
+  '__module__' : 'ts_cop_pb2'
+  # @@protoc_insertion_point(class_scope:ts_cop.DINT64)
+  })
+_sym_db.RegisterMessage(DINT64)
+
+DFLOAT = _reflection.GeneratedProtocolMessageType('DFLOAT', (_message.Message,), {
+  'DESCRIPTOR' : _DFLOAT,
+  '__module__' : 'ts_cop_pb2'
+  # @@protoc_insertion_point(class_scope:ts_cop.DFLOAT)
+  })
+_sym_db.RegisterMessage(DFLOAT)
+
+DDOUBLE = _reflection.GeneratedProtocolMessageType('DDOUBLE', (_message.Message,), {
+  'DESCRIPTOR' : _DDOUBLE,
+  '__module__' : 'ts_cop_pb2'
+  # @@protoc_insertion_point(class_scope:ts_cop.DDOUBLE)
+  })
+_sym_db.RegisterMessage(DDOUBLE)
+
+DSTRING = _reflection.GeneratedProtocolMessageType('DSTRING', (_message.Message,), {
+  'DESCRIPTOR' : _DSTRING,
+  '__module__' : 'ts_cop_pb2'
+  # @@protoc_insertion_point(class_scope:ts_cop.DSTRING)
+  })
+_sym_db.RegisterMessage(DSTRING)
+
+DBOOL = _reflection.GeneratedProtocolMessageType('DBOOL', (_message.Message,), {
+  'DESCRIPTOR' : _DBOOL,
+  '__module__' : 'ts_cop_pb2'
+  # @@protoc_insertion_point(class_scope:ts_cop.DBOOL)
+  })
+_sym_db.RegisterMessage(DBOOL)
 
 CI = _reflection.GeneratedProtocolMessageType('CI', (_message.Message,), {
   'DESCRIPTOR' : _CI,
@@ -1386,6 +1963,48 @@ Cop = _reflection.GeneratedProtocolMessageType('Cop', (_message.Message,), {
     # @@protoc_insertion_point(class_scope:ts_cop.Cop.CiMapEntry)
     })
   ,
+
+  'DInt32MapEntry' : _reflection.GeneratedProtocolMessageType('DInt32MapEntry', (_message.Message,), {
+    'DESCRIPTOR' : _COP_DINT32MAPENTRY,
+    '__module__' : 'ts_cop_pb2'
+    # @@protoc_insertion_point(class_scope:ts_cop.Cop.DInt32MapEntry)
+    })
+  ,
+
+  'DInt64MapEntry' : _reflection.GeneratedProtocolMessageType('DInt64MapEntry', (_message.Message,), {
+    'DESCRIPTOR' : _COP_DINT64MAPENTRY,
+    '__module__' : 'ts_cop_pb2'
+    # @@protoc_insertion_point(class_scope:ts_cop.Cop.DInt64MapEntry)
+    })
+  ,
+
+  'DFloatMapEntry' : _reflection.GeneratedProtocolMessageType('DFloatMapEntry', (_message.Message,), {
+    'DESCRIPTOR' : _COP_DFLOATMAPENTRY,
+    '__module__' : 'ts_cop_pb2'
+    # @@protoc_insertion_point(class_scope:ts_cop.Cop.DFloatMapEntry)
+    })
+  ,
+
+  'DDoubleMapEntry' : _reflection.GeneratedProtocolMessageType('DDoubleMapEntry', (_message.Message,), {
+    'DESCRIPTOR' : _COP_DDOUBLEMAPENTRY,
+    '__module__' : 'ts_cop_pb2'
+    # @@protoc_insertion_point(class_scope:ts_cop.Cop.DDoubleMapEntry)
+    })
+  ,
+
+  'DStringMapEntry' : _reflection.GeneratedProtocolMessageType('DStringMapEntry', (_message.Message,), {
+    'DESCRIPTOR' : _COP_DSTRINGMAPENTRY,
+    '__module__' : 'ts_cop_pb2'
+    # @@protoc_insertion_point(class_scope:ts_cop.Cop.DStringMapEntry)
+    })
+  ,
+
+  'DBoolMapEntry' : _reflection.GeneratedProtocolMessageType('DBoolMapEntry', (_message.Message,), {
+    'DESCRIPTOR' : _COP_DBOOLMAPENTRY,
+    '__module__' : 'ts_cop_pb2'
+    # @@protoc_insertion_point(class_scope:ts_cop.Cop.DBoolMapEntry)
+    })
+  ,
   'DESCRIPTOR' : _COP,
   '__module__' : 'ts_cop_pb2'
   # @@protoc_insertion_point(class_scope:ts_cop.Cop)
@@ -1401,6 +2020,12 @@ _sym_db.RegisterMessage(Cop.OrderMapEntry)
 _sym_db.RegisterMessage(Cop.TradeMapEntry)
 _sym_db.RegisterMessage(Cop.SiMapEntry)
 _sym_db.RegisterMessage(Cop.CiMapEntry)
+_sym_db.RegisterMessage(Cop.DInt32MapEntry)
+_sym_db.RegisterMessage(Cop.DInt64MapEntry)
+_sym_db.RegisterMessage(Cop.DFloatMapEntry)
+_sym_db.RegisterMessage(Cop.DDoubleMapEntry)
+_sym_db.RegisterMessage(Cop.DStringMapEntry)
+_sym_db.RegisterMessage(Cop.DBoolMapEntry)
 
 
 _COP_INT32MAPENTRY._options = None
@@ -1413,4 +2038,10 @@ _COP_ORDERMAPENTRY._options = None
 _COP_TRADEMAPENTRY._options = None
 _COP_SIMAPENTRY._options = None
 _COP_CIMAPENTRY._options = None
+_COP_DINT32MAPENTRY._options = None
+_COP_DINT64MAPENTRY._options = None
+_COP_DFLOATMAPENTRY._options = None
+_COP_DDOUBLEMAPENTRY._options = None
+_COP_DSTRINGMAPENTRY._options = None
+_COP_DBOOLMAPENTRY._options = None
 # @@protoc_insertion_point(module_scope)

@@ -3,6 +3,36 @@ syntax = "proto3";
 
 package ts_cop;
 
+message DINT32 {
+    int32 value = 1;
+    double time = 2;
+}
+
+message DINT64 {
+    int64 value = 1;
+    double time = 2;
+}
+
+message DFLOAT {
+    float value = 1;
+    double time = 2;
+}
+
+message DDOUBLE {
+    double value = 1;
+    double time = 2;
+}
+
+message DSTRING {
+    string value = 1;
+    double time = 2;
+}
+
+message DBOOL {
+    bool value = 1;
+    double time = 2;
+}
+
 message CI {
     string value = 1; // json
 }
@@ -113,6 +143,7 @@ message Cop {
     int32 instance_id = 4;
     int64 seq_num = 5;
     double created_time = 6; // unix time
+    string strategy_id = 17;
 
     // body
     map<int32, int32> int32_map = 7;
@@ -125,4 +156,10 @@ message Cop {
     map<int32, TSTradeList> trade_map = 14;
     map<int32, SIList> si_map = 15;
     map<int32, CIList> ci_map = 16;
+    map<int32, DINT32> d_int32_map = 18;
+    map<int32, DINT64> d_int64_map = 19;
+    map<int32, DFLOAT> d_float_map = 20;
+    map<int32, DDOUBLE> d_double_map = 21;
+    map<int32, DSTRING> d_string_map = 22;
+    map<int32, DBOOL> d_bool_map = 23;
 }
