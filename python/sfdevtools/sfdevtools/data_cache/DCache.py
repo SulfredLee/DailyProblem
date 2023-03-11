@@ -16,17 +16,21 @@ class DCache(object):
         self.__strategy: DStrategy = DStrategy()
         self.__page_mutex: threading.Lock = threading.Lock()
         self.__update_cb: Any = None
+        self.__cache_name: str = None
 
     def init_component(self
                        , logger: logging.Logger
                        , update_cb
+                       , cache_name: str
                        , max_hist_orders: int = 1000
                        , max_hist_trades: int = 1000
                        , max_hist_si: int = 1000) -> None:
         self.__logger = logger
+        self.__cache_name = cache_name
         self.__update_cb = update_cb
         self.__strategy.init_component(logger=self.__logger
                                        , update_cb=self.__update_cb
+                                       , strategy_name=cache_name
                                        , get_parent_dcache_fun=self.__get_self
                                        , max_hist_orders=max_hist_orders
                                        , max_hist_si=max_hist_si
@@ -108,6 +112,9 @@ class DCache(object):
         dpage = self.get_create_dpage(page_id=msg_id)
         dpage.save_fid(fid_num=fid_num, fid_value=fid_value)
 
+    def get_cache_name(self) -> str:
+        return self.__cache_name
+
     def get_page_fids(self
                  , page_id: str) -> List[Union[int, Any]]:
         dpage = self.get_create_dpage(page_id=msg_id)
@@ -147,6 +154,7 @@ class DCache(object):
                 new_dpage = DPage()
                 new_dpage.init_component(logger=self.__logger
                                          , update_cb=self.__update_cb
+                                         , page_id=page_id
                                          , get_parent_dcache_fun=self.__get_self
                                          , save_other_map=dict()
                                          , get_other_map=dict())

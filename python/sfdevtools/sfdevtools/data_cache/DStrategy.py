@@ -27,17 +27,20 @@ class DStrategy(object):
         self.__si_mutex: threading.Lock = threading.Lock()
         self.__update_cb: Any = None
         self.__get_parent_dcache_fun: Any = None
+        self.__strategy_name: str = None
 
         self.__strategy_page: DPage = DPage()
 
     def init_component(self
                        , logger: logging.Logger
                        , update_cb: Any
+                       , strategy_name: str
                        , get_parent_dcache_fun: Any
                        , max_hist_orders: int = 1000
                        , max_hist_trades: int = 1000
                        , max_hist_si: int = 1000) -> None:
         self.__logger = logger
+        self.__strategy_name = strategy_name
         self.__get_parent_dcache_fun = get_parent_dcache_fun
         self.__update_cb = update_cb
         self.__max_hist_orders = max_hist_orders
@@ -45,6 +48,7 @@ class DStrategy(object):
         self.__max_hist_si = max_hist_si
         self.__strategy_page.init_component(logger=self.__logger
                                             , update_cb=self.__update_cb
+                                            , page_id=f"page.{self.__strategy_name}"
                                             , get_parent_dcache_fun=self.__get_parent_dcache_fun
                                             , save_other_map={
                                                 ts_cop_pb2.Cop.FidNum.CI: self.save_ci
@@ -69,7 +73,7 @@ class DStrategy(object):
         si_sorted = sorted(si, key=lambda x: x.symbol_id)
         is_new = self.__si_cache.upsert_ele(key=si_sorted[0].si_id, value=si_sorted)
         if is_new and self.__update_cb is not None:
-            self.__update_cb(dcache=self.__get_parent_dcache_fun(), fid_num=ts_cop_pb2.Cop.FidNum.SI, fid_value=si_sorted)
+            self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.SI, fid_value=si_sorted)
 
         return True
 
@@ -98,7 +102,7 @@ class DStrategy(object):
                                             , value=json.dumps(ci, sort_keys=True))
 
         if is_new and self.__update_cb is not None:
-            self.__update_cb(dcache=self.__get_parent_dcache_fun(), fid_num=ts_cop_pb2.Cop.FidNum.CI, fid_value=ci)
+            self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.CI, fid_value=ci)
 
     def get_ci(self) -> Dict[str, Any]:
         if self.__ci_cache.size() < 1:
@@ -119,7 +123,7 @@ class DStrategy(object):
     def save_trade(self, trade: TS_Trade) -> None:
         is_new = self.__trade_cache.upsert_ele(key=trade.trade_id, value=trade)
         if is_new and self.__update_cb is not None:
-            self.__update_cb(dcache=self.__get_parent_dcache_fun(), fid_num=ts_cop_pb2.Cop.FidNum.Trade, fid_value=trade)
+            self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.Trade, fid_value=trade)
 
     def save_trades(self, trades: List[TS_Trade]) -> None:
         is_new_list: List[bool] = self.__trade_cache.upsert_multi(keys=[trade.trade_id for trade in trades], values=trades)
@@ -127,7 +131,7 @@ class DStrategy(object):
             return None
         for is_new, trade in zip(is_new_list, trades):
             if is_new:
-                self.__update_cb(dcache=self.__get_parent_dcache_fun(), fid_num=ts_cop_pb2.Cop.FidNum.Trade, fid_value=trade)
+                self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.Trade, fid_value=trade)
 
     def is_trade_exist(self, trade: TS_Trade) -> bool:
         return self.__trade_cache.is_exist(key=trade.trade_id)
@@ -148,16 +152,16 @@ class DStrategy(object):
             return None
         for is_new, order in zip(is_new_list, orders):
             if is_new:
-                self.__update_cb(dcache=self.__get_parent_dcache_fun(), fid_num=ts_cop_pb2.Cop.FidNum.Order, fid_value=order)
+                self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.Order, fid_value=order)
                 order_snap = self.__order_cache.get_order_latest_snapshot(platform_order_id=order.platform_order_id)
-                self.__update_cb(dcache=self.__get_parent_dcache_fun(), fid_num=ts_cop_pb2.Cop.FidNum.Order_Snap, fid_value=order_snap)
+                self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.Order_Snap, fid_value=order_snap)
 
     def save_order(self, order: TS_Order) -> None:
         is_new = self.__order_cache.save_order(order=order)
         if is_new and self.__update_cb is not None:
-            self.__update_cb(dcache=self.__get_parent_dcache_fun(), fid_num=ts_cop_pb2.Cop.FidNum.Order, fid_value=order)
+            self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.Order, fid_value=order)
             order_snap = self.__order_cache.get_order_latest_snapshot(platform_order_id=order.platform_order_id)
-            self.__update_cb(dcache=self.__get_parent_dcache_fun(), fid_num=ts_cop_pb2.Cop.FidNum.Order_Snap, fid_value=order_snap)
+            self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.Order_Snap, fid_value=order_snap)
 
     def save_db_record_id(self, order: TS_Order, db_record_id: str) -> None:
         self.__order_cache.save_db_record_id(order=order, db_record_id=db_record_id)
@@ -167,6 +171,9 @@ class DStrategy(object):
 
     def is_db_record_id_exist(self, order: TS_Order) -> bool:
         return self.__order_cache.is_db_record_id_exist(order=order)
+
+    def get_strategy_name(self) -> str:
+        return self.__strategy_name
 
     def get_order(self, order_id: str) -> Union[bool, TS_Order]:
         order = self.__order_cache.get_order(order_id=order_id)

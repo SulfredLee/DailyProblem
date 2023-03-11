@@ -31,11 +31,13 @@ class DPage(object):
         self.__bucket_size = 10000
         self.__update_cb: Any = None
         self.__get_parent_dcache_fun: Any = None
+        self.__page_id: str = None
 
     def init_component(self
                        , logger: logging.Logger
                        , update_cb: Any
                        , get_parent_dcache_fun: Any
+                       , page_id: str
                        , save_other_map: Dict
                        , get_other_map: Dict) -> None:
         self.__logger = logger
@@ -43,6 +45,7 @@ class DPage(object):
         self.__update_cb = update_cb
         self.__save_other_map = save_other_map
         self.__get_other_map = get_other_map
+        self.__page_id = page_id
 
         self.__save_map = {
             0: self.__save_fid_int32
@@ -81,7 +84,10 @@ class DPage(object):
             return None
         is_new = self.__save_map[bucket_num](fid_num=fid_num, fid_value=fid_value)
         if is_new is not None and is_new and self.__update_cb is not None:
-            self.__update_cb(dcache=self.__get_parent_dcache_fun(), fid_num=fid_num, fid_value=fid_value)
+            self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__page_id, fid_num=fid_num, fid_value=fid_value)
+
+    def get_page_id(self) -> str:
+        return self.__page_id
 
     def get_fids(self) -> List[Union[int, Any]]:
         result_list: List[Union[int, Any]] = list()

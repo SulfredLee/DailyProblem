@@ -38,6 +38,7 @@ class DCacheManager(object):
                 self.__dcache[cache_name] = new_dcache
                 new_dcache.init_component(logger=self.__logger
                                           , update_cb=self.__update_cb
+                                          , cache_name=cache_name
                                           , max_hist_orders=self.__max_hist_orders
                                           , max_hist_si=self.__max_hist_si
                                           , max_hist_trades=self.__max_hist_trades)
