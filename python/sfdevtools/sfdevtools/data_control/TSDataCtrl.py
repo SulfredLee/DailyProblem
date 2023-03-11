@@ -93,7 +93,7 @@ class TSDataCtrl(object):
             elif mode == "smart":
                 self.__sub_main_thread = threading.Thread(target=self.sub_main_smart)
             else:
-                self.__sub_main_thread = threading.Thread(target=self.sub_main_extract)
+                self.__sub_main_thread = threading.Thread(target=self.sub_main_smart)
             self.__sub_main_thread.start()
 
             signal.signal(signal.SIGINT, self.__cleanup)
