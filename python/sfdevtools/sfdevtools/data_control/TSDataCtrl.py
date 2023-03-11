@@ -260,22 +260,22 @@ class TSDataCtrl(object):
         self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.bool_data)
 
     def __process_d_int32(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
-        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_int32_data)
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
 
     def __process_d_int64(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
-        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_int64_data)
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
 
     def __process_d_float(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
-        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_float_data)
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
 
     def __process_d_double(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
-        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_double_data)
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
 
     def __process_d_string(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
-        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_string_data)
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
 
     def __process_d_bool(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
-        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_bool_data)
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
 
     def __process_ci(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
         self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
