@@ -75,6 +75,7 @@ build-dev-image:
       changes:
         - dockerEnv/Dockerfile.Dev
         - {{ project_name }}/**/*
+        - poetry.lock
     - when: never
 
 build-run-image:
@@ -94,6 +95,7 @@ build-run-image:
       changes:
         - dockerEnv/Dockerfile.Run
         - {{ project_name }}/**/*
+        - poetry.lock
     - when: never
 
 build-deploy-image:
@@ -113,6 +115,7 @@ build-deploy-image:
       changes:
         - dockerEnv/Dockerfile.Deploy
         - {{ project_name }}/**/*
+        - poetry.lock
     - when: never
 
 build-test-app:       # This job runs in the build stage, which runs first.
