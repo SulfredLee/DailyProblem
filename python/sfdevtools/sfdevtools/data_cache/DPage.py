@@ -1,6 +1,7 @@
 import logging
 from typing import List, Dict, Tuple, Union, Any
 import threading
+from datetime import datetime
 
 class DPage(object):
     def __init__(self):
@@ -16,6 +17,12 @@ class DPage(object):
         self.__double_map: Dict[int, float] = dict()
         self.__string_map: Dict[int, str] = dict()
         self.__bool_map: Dict[int, bool] = dict()
+        self.__d_int32_map: Dict[int, Union[int, datetime]] = dict()
+        self.__d_int64_map: Dict[int, Union[int, datetime]] = dict()
+        self.__d_float_map: Dict[int, Union[float, datetime]] = dict()
+        self.__d_double_map: Dict[int, Union[float, datetime]] = dict()
+        self.__d_string_map: Dict[int, Union[str, datetime]] = dict()
+        self.__d_bool_map: Dict[int, Union[bool, datetime]] = dict()
 
         self.__save_map: Dict[int, Any] = dict()
         self.__get_map: Dict[int, Any] = dict()
@@ -45,6 +52,12 @@ class DPage(object):
             , 4: self.__save_fid_string
             , 5: self.__save_fid_other
             , 6: self.__save_fid_bool
+            , 7: self.__save_fid_d_int32
+            , 8: self.__save_fid_d_int64
+            , 9: self.__save_fid_d_float
+            , 10: self.__save_fid_d_double
+            , 11: self.__save_fid_d_string
+            , 12: self.__save_fid_d_bool
         }
         self.__get_map = {
             0: self.__get_fid_int32
@@ -54,6 +67,12 @@ class DPage(object):
             , 4: self.__get_fid_string
             , 5: self.__get_fid_other
             , 6: self.__get_fid_bool
+            , 7: self.__get_fid_d_int32
+            , 8: self.__get_fid_d_int64
+            , 9: self.__get_fid_d_float
+            , 10: self.__get_fid_d_double
+            , 11: self.__get_fid_d_string
+            , 12: self.__get_fid_d_bool
         }
 
     def save_fid(self, fid_num: int, fid_value: Any) -> None:
@@ -115,7 +134,7 @@ class DPage(object):
     def __save_fid_bool(self, fid_num: int, fid_value: float) -> bool:
         return self.__save_fid_imp(mutex=self.__bool_mutex, the_map=self.__bool_map, fid_num=fid_num, fid_value=fid_value)
 
-    def __save_fid_imp(self, mutex: threading.Lock, the_map: Dict[int, Any], fid_num: int, fid_value: int) -> bool:
+    def __save_fid_imp(self, mutex: threading.Lock, the_map: Dict[int, Any], fid_num: int, fid_value: Any) -> bool:
         is_new = False
         with mutex:
             if fid_num not in the_map:
@@ -124,6 +143,42 @@ class DPage(object):
                 the_map[fid_num] = fid_value
             else:
                 if the_map[fid_num] == fid_value:
+                    is_new = False
+                else:
+                    is_new = True
+
+                    the_map[fid_num] = fid_value
+
+        return is_new
+
+    def __save_fid_d_int32(self, fid_num: int, fid_value: int) -> bool:
+        return self.__save_fid_d_imp(mutex=self.__int_mutex, the_map=self.__d_int32_map, fid_num=fid_num, fid_value=fid_value)
+
+    def __save_fid_d_int64(self, fid_num: int, fid_value: int) -> bool:
+        return self.__save_fid_d_imp(mutex=self.__int_mutex, the_map=self.__d_int64_map, fid_num=fid_num, fid_value=fid_value)
+
+    def __save_fid_d_float(self, fid_num: int, fid_value: float) -> bool:
+        return self.__save_fid_d_imp(mutex=self.__float_mutex, the_map=self.__d_float_map, fid_num=fid_num, fid_value=fid_value)
+
+    def __save_fid_d_double(self, fid_num: int, fid_value: float) -> bool:
+        return self.__save_fid_d_imp(mutex=self.__float_mutex, the_map=self.__d_double_map, fid_num=fid_num, fid_value=fid_value)
+
+    def __save_fid_d_string(self, fid_num: int, fid_value: str) -> bool:
+        return self.__save_fid_d_imp(mutex=self.__str_mutex, the_map=self.__d_str_map, fid_num=fid_num, fid_value=fid_value)
+
+    def __save_fid_d_bool(self, fid_num: int, fid_value: float) -> bool:
+        return self.__save_fid_d_imp(mutex=self.__bool_mutex, the_map=self.__d_bool_map, fid_num=fid_num, fid_value=fid_value)
+
+    def __save_fid_d_imp(self, mutex: threading.Lock, the_map: Dict[int, Any], fid_num: int, fid_value: Any) -> bool:
+        is_new = False
+        with mutex:
+            if fid_num not in the_map:
+                is_new = True
+
+                the_map[fid_num] = fid_value
+            else:
+                if the_map[fid_num][0] == fid_value[0]\
+                   or the_map[fid_num][1] == fid_value[1]:
                     is_new = False
                 else:
                     is_new = True
@@ -159,6 +214,31 @@ class DPage(object):
         return self.__get_fid_imp(mutex=self.__bool_mutex, the_map=self.__bool_map, fid_num=fid_num)
 
     def __get_fid_imp(self, mutex: threading.Lock, the_map: Dict[int, Any], fid_num: int) -> Union[bool, Any]:
+        with mutex:
+            if fid_num in the_map:
+                return (True, the_map[fid_num])
+            else:
+                return (False, None)
+
+    def __get_fid_d_int32(self, fid_num: int) -> Union[bool, int]:
+        return self.__get_fid_d_imp(mutex=self.__int_mutex, the_map=self.__d_int32_map, fid_num=fid_num)
+
+    def __get_fid_d_int64(self, fid_num: int) -> Union[bool, int]:
+        return self.__get_fid_d_imp(mutex=self.__int_mutex, the_map=self.__d_int64_map, fid_num=fid_num)
+
+    def __get_fid_d_float(self, fid_num: int) -> Union[bool, float]:
+        return self.__get_fid_d_imp(mutex=self.__float_mutex, the_map=self.__d_float_map, fid_num=fid_num)
+
+    def __get_fid_d_double(self, fid_num: int) -> Union[bool, float]:
+        return self.__get_fid_d_imp(mutex=self.__float_mutex, the_map=self.__d_double_map, fid_num=fid_num)
+
+    def __get_fid_d_string(self, fid_num: int) -> Union[bool, str]:
+        return self.__get_fid_d_imp(mutex=self.__str_mutex, the_map=self.__d_str_map, fid_num=fid_num)
+
+    def __get_fid_d_bool(self, fid_num: int) -> Union[bool, bool]:
+        return self.__get_fid_d_imp(mutex=self.__bool_mutex, the_map=self.__d_bool_map, fid_num=fid_num)
+
+    def __get_fid_d_imp(self, mutex: threading.Lock, the_map: Dict[int, Any], fid_num: int) -> Union[bool, Union[Any, datetime]]:
         with mutex:
             if fid_num in the_map:
                 return (True, the_map[fid_num])

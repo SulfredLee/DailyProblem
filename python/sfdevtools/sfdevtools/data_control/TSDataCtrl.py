@@ -22,6 +22,19 @@ class TSDataCtrl(object):
         self.__is_subscription_run: bool = False
         self.__sub_timeout_ms: int = 100
 
+        self.__process_fid_map_smart = {
+            8: self.__process_d_int32
+            , 9: self.__process_d_int64
+            , 10: self.__process_d_float
+            , 11: self.__process_d_double
+            , 12: self.__process_d_string
+            , 13: self.__process_d_bool
+            , ts_cop_pb2.Cop.FidNum.CI: self.__process_ci_smart
+            , ts_cop_pb2.Cop.FidNum.SI: self.__process_si_smart
+            , ts_cop_pb2.Cop.FidNum.Order: self.__process_order_smart
+            , ts_cop_pb2.Cop.FidNum.Trade: self.__process_trade_smart
+            , ts_cop_pb2.Cop.FidNum.Order_Snap: self.__process_order_smart
+        }
         self.__process_fid_map = {
             1: self.__process_int32
             , 2: self.__process_int64
@@ -29,12 +42,6 @@ class TSDataCtrl(object):
             , 4: self.__process_double
             , 5: self.__process_string
             , 7: self.__process_bool
-            , 8: self.__process_d_int32
-            , 9: self.__process_d_int64
-            , 10: self.__process_d_float
-            , 11: self.__process_d_double
-            , 12: self.__process_d_string
-            , 13: self.__process_d_bool
             , ts_cop_pb2.Cop.FidNum.CI: self.__process_ci
             , ts_cop_pb2.Cop.FidNum.SI: self.__process_si
             , ts_cop_pb2.Cop.FidNum.Order: self.__process_order
@@ -143,14 +150,14 @@ class TSDataCtrl(object):
                         # tsdata
                         for fid_num, fid_value in cop.data_map.items():
                             if 50001 <= fid_num and fid_num <= 60000:
-                                if fid_num not in self.__process_fid_map:
+                                if fid_num not in self.__process_fid_map_smart:
                                     continue
-                                self.__process_fid_map[fid_num](topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                                self.__process_fid_map_smart[fid_num](topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
                             else:
                                 num = math.ceil(fid_num / 10000)
-                                if num not in self.__process_fid_map:
+                                if num not in self.__process_fid_map_smart:
                                     continue
-                                self.__process_fid_map[num](topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+                                self.__process_fid_map_smart[num](topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
 
         self.__logger.info("End")
 
@@ -191,24 +198,6 @@ class TSDataCtrl(object):
                             self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
                         # bool
                         for fid_num, fid_value in cop.bool_map.items():
-                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
-                        # d_int32
-                        for fid_num, fid_value in cop.d_int32_map.items():
-                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
-                        # d_int64
-                        for fid_num, fid_value in cop.d_int64_map.items():
-                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
-                        # d_float
-                        for fid_num, fid_value in cop.d_float_map.items():
-                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
-                        # d_double
-                        for fid_num, fid_value in cop.d_double_map.items():
-                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
-                        # d_string
-                        for fid_num, fid_value in cop.d_string_map.items():
-                            self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
-                        # d_bool
-                        for fid_num, fid_value in cop.d_bool_map.items():
                             self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
                         # order
                         for fid_num, fid_value in cop.order_map.items():
@@ -288,15 +277,27 @@ class TSDataCtrl(object):
         self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.d_bool_data)
 
     def __process_ci(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
-        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.ci_data)
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
 
     def __process_si(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
-        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.si_data)
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
 
     def __process_order(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
-        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.order_data)
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
 
     def __process_trade(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
+
+    def __process_ci_smart(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.ci_data)
+
+    def __process_si_smart(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.si_data)
+
+    def __process_order_smart(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
+        self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.order_data)
+
+    def __process_trade_smart(self, topic: str, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any):
         self.__cb_fun(topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value.trade_data)
 
     def __cleanup(self, signum, frame):

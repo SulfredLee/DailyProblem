@@ -50,7 +50,7 @@ class TSDataManager(object):
     def send_ci(self, msg_id: str, ci_list: List[Dict], is_save_to_cache: bool = True) -> None:
         cop = ts_cop_pb2.Cop()
         for ci in ci_list:
-            cop.ci_map[ts_cop_pb2.Cop.FidNum.CI].ci_list.append(ts_cop_pb2.CI(value=json.dumps(ci)))
+            cop.data_map[ts_cop_pb2.Cop.FidNum.CI].ci_data.ci_list.append(ts_cop_pb2.CI(value=json.dumps(ci)))
 
             if is_save_to_cache and self.__is_active_bg:
                 # save to output cache
@@ -66,7 +66,7 @@ class TSDataManager(object):
         for si in si_list:
             si_ele = dconv.conv_SI_2_cop_si(si=si)
 
-            cop.si_map[ts_cop_pb2.Cop.FidNum.SI].si_list.append(si_ele)
+            cop.data_map[ts_cop_pb2.Cop.FidNum.SI].si_data.si_list.append(si_ele)
 
         if is_save_to_cache and self.__is_active_bg:
             # save to output cache
@@ -82,7 +82,7 @@ class TSDataManager(object):
         for order in order_list:
             ord_ele = dconv.conv_TS_Order_2_cop_order(order=order)
 
-            cop.order_map[ts_cop_pb2.Cop.FidNum.Order].order_list.append(ord_ele)
+            cop.data_map[ts_cop_pb2.Cop.FidNum.Order].order_data.order_list.append(ord_ele)
 
         if is_save_to_cache and self.__is_active_bg:
             # save to output cache
@@ -98,7 +98,7 @@ class TSDataManager(object):
         for trd in trade_list:
             trd_ele = dconv.conv_TS_Trade_2_cop_trade(trd=trd)
 
-            cop.trade_map[ts_cop_pb2.Cop.FidNum.Trade].trade_list.append(trd_ele)
+            cop.data_map[ts_cop_pb2.Cop.FidNum.Trade].trade_data.trade_list.append(trd_ele)
 
         if is_save_to_cache and self.__is_active_bg:
             # save to output cache
