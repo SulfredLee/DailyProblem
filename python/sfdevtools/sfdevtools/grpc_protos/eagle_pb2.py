@@ -19,10 +19,95 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0b\x65\x61gle.proto\x12\x05\x65\x61gle\".\n\x17GetDataByStrategyId_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\"\x80\x01\n\x19GetDataByStrategyId_Reply\x12\x0b\n\x03\x63\x66g\x18\x01 \x03(\t\x12\n\n\x02\x63i\x18\x02 \x03(\t\x12\n\n\x02si\x18\x03 \x01(\t\x12\x10\n\x08ord_snap\x18\x04 \x01(\t\x12\x10\n\x08ord_hist\x18\x05 \x01(\t\x12\x0b\n\x03trd\x18\x06 \x01(\t\x12\r\n\x05price\x18\x07 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\x89\x01\n\x05\x45\x61gle\x12\'\n\x0bHealthCheck\x12\x0b.eagle.Ping\x1a\x0b.eagle.Pong\x12W\n\x13GetDataByStrategyId\x12\x1e.eagle.GetDataByStrategyId_Msg\x1a .eagle.GetDataByStrategyId_Replyb\x06proto3'
+  serialized_pb=b'\n\x0b\x65\x61gle.proto\x12\x05\x65\x61gle\"_\n\x15GetTimeSeriesData_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\x12\x0e\n\x06msg_id\x18\x02 \x01(\t\x12\x10\n\x08msg_type\x18\x03 \x01(\x05\x12\x0f\n\x07\x66id_num\x18\x04 \x01(\x05\"\'\n\x17GetTimeSeriesData_Reply\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t\".\n\x17GetDataByStrategyId_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\"\x80\x01\n\x19GetDataByStrategyId_Reply\x12\x0b\n\x03\x63\x66g\x18\x01 \x03(\t\x12\n\n\x02\x63i\x18\x02 \x03(\t\x12\n\n\x02si\x18\x03 \x01(\t\x12\x10\n\x08ord_snap\x18\x04 \x01(\t\x12\x10\n\x08ord_hist\x18\x05 \x01(\t\x12\x0b\n\x03trd\x18\x06 \x01(\t\x12\r\n\x05price\x18\x07 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\xdc\x01\n\x05\x45\x61gle\x12\'\n\x0bHealthCheck\x12\x0b.eagle.Ping\x1a\x0b.eagle.Pong\x12W\n\x13GetDataByStrategyId\x12\x1e.eagle.GetDataByStrategyId_Msg\x1a .eagle.GetDataByStrategyId_Reply\x12Q\n\x11GetTimeSeriesData\x12\x1c.eagle.GetTimeSeriesData_Msg\x1a\x1e.eagle.GetTimeSeriesData_Replyb\x06proto3'
 )
 
 
+
+
+_GETTIMESERIESDATA_MSG = _descriptor.Descriptor(
+  name='GetTimeSeriesData_Msg',
+  full_name='eagle.GetTimeSeriesData_Msg',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='strategy_id', full_name='eagle.GetTimeSeriesData_Msg.strategy_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='msg_id', full_name='eagle.GetTimeSeriesData_Msg.msg_id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='msg_type', full_name='eagle.GetTimeSeriesData_Msg.msg_type', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='fid_num', full_name='eagle.GetTimeSeriesData_Msg.fid_num', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=22,
+  serialized_end=117,
+)
+
+
+_GETTIMESERIESDATA_REPLY = _descriptor.Descriptor(
+  name='GetTimeSeriesData_Reply',
+  full_name='eagle.GetTimeSeriesData_Reply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='data', full_name='eagle.GetTimeSeriesData_Reply.data', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=119,
+  serialized_end=158,
+)
 
 
 _GETDATABYSTRATEGYID_MSG = _descriptor.Descriptor(
@@ -52,8 +137,8 @@ _GETDATABYSTRATEGYID_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=22,
-  serialized_end=68,
+  serialized_start=160,
+  serialized_end=206,
 )
 
 
@@ -126,8 +211,8 @@ _GETDATABYSTRATEGYID_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=71,
-  serialized_end=199,
+  serialized_start=209,
+  serialized_end=337,
 )
 
 
@@ -158,8 +243,8 @@ _PING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=201,
-  serialized_end=224,
+  serialized_start=339,
+  serialized_end=362,
 )
 
 
@@ -190,15 +275,31 @@ _PONG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=226,
-  serialized_end=249,
+  serialized_start=364,
+  serialized_end=387,
 )
 
+DESCRIPTOR.message_types_by_name['GetTimeSeriesData_Msg'] = _GETTIMESERIESDATA_MSG
+DESCRIPTOR.message_types_by_name['GetTimeSeriesData_Reply'] = _GETTIMESERIESDATA_REPLY
 DESCRIPTOR.message_types_by_name['GetDataByStrategyId_Msg'] = _GETDATABYSTRATEGYID_MSG
 DESCRIPTOR.message_types_by_name['GetDataByStrategyId_Reply'] = _GETDATABYSTRATEGYID_REPLY
 DESCRIPTOR.message_types_by_name['Ping'] = _PING
 DESCRIPTOR.message_types_by_name['Pong'] = _PONG
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+GetTimeSeriesData_Msg = _reflection.GeneratedProtocolMessageType('GetTimeSeriesData_Msg', (_message.Message,), {
+  'DESCRIPTOR' : _GETTIMESERIESDATA_MSG,
+  '__module__' : 'eagle_pb2'
+  # @@protoc_insertion_point(class_scope:eagle.GetTimeSeriesData_Msg)
+  })
+_sym_db.RegisterMessage(GetTimeSeriesData_Msg)
+
+GetTimeSeriesData_Reply = _reflection.GeneratedProtocolMessageType('GetTimeSeriesData_Reply', (_message.Message,), {
+  'DESCRIPTOR' : _GETTIMESERIESDATA_REPLY,
+  '__module__' : 'eagle_pb2'
+  # @@protoc_insertion_point(class_scope:eagle.GetTimeSeriesData_Reply)
+  })
+_sym_db.RegisterMessage(GetTimeSeriesData_Reply)
 
 GetDataByStrategyId_Msg = _reflection.GeneratedProtocolMessageType('GetDataByStrategyId_Msg', (_message.Message,), {
   'DESCRIPTOR' : _GETDATABYSTRATEGYID_MSG,
@@ -237,8 +338,8 @@ _EAGLE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=252,
-  serialized_end=389,
+  serialized_start=390,
+  serialized_end=610,
   methods=[
   _descriptor.MethodDescriptor(
     name='HealthCheck',
@@ -257,6 +358,16 @@ _EAGLE = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_GETDATABYSTRATEGYID_MSG,
     output_type=_GETDATABYSTRATEGYID_REPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetTimeSeriesData',
+    full_name='eagle.Eagle.GetTimeSeriesData',
+    index=2,
+    containing_service=None,
+    input_type=_GETTIMESERIESDATA_MSG,
+    output_type=_GETTIMESERIESDATA_REPLY,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

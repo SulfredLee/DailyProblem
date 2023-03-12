@@ -8,6 +8,18 @@ service Eagle {
     // Unary - request and respond
     rpc HealthCheck (Ping) returns (Pong);
     rpc GetDataByStrategyId (GetDataByStrategyId_Msg) returns (GetDataByStrategyId_Reply);
+    rpc GetTimeSeriesData (GetTimeSeriesData_Msg) returns (GetTimeSeriesData_Reply);
+}
+
+message GetTimeSeriesData_Msg {
+    string strategy_id = 1;
+    string msg_id = 2;
+    int32 msg_type = 3;
+    int32 fid_num = 4;
+}
+
+message GetTimeSeriesData_Reply {
+    string data = 1;
 }
 
 message GetDataByStrategyId_Msg {
