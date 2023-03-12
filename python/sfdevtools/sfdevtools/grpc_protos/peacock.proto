@@ -19,7 +19,7 @@ service Peacock {
     // tweety - end
     // eagle - start
     rpc GetDataByStrategyId (GetDataByStrategyId_Msg) returns (GetDataByStrategyId_Reply);
-    rpc GetTimeSeriesData (GetTimeSeriesData_Msg) returns (GetTimeSeriesData_Reply);
+    rpc GetBacktestWarmupData (GetBacktestWarmupData_Msg) returns (GetBacktestWarmupData_Reply);
     // eagle - end
     rpc HealthCheck (Ping) returns (Pong);
 }
@@ -39,14 +39,14 @@ message GetDataByStrategyId_Reply {
     string price = 7;
 }
 
-message GetTimeSeriesData_Msg {
+message GetBacktestWarmupData_Msg {
     string strategy_id = 1;
     string msg_id = 2;
     int32 msg_type = 3;
     int32 fid_num = 4;
 }
 
-message GetTimeSeriesData_Reply {
+message GetBacktestWarmupData_Reply {
     string data = 1;
 }
 

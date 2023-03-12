@@ -55,10 +55,10 @@ class PeacockStub(object):
                 request_serializer=peacock__pb2.GetDataByStrategyId_Msg.SerializeToString,
                 response_deserializer=peacock__pb2.GetDataByStrategyId_Reply.FromString,
                 )
-        self.GetTimeSeriesData = channel.unary_unary(
-                '/peacock.Peacock/GetTimeSeriesData',
-                request_serializer=peacock__pb2.GetTimeSeriesData_Msg.SerializeToString,
-                response_deserializer=peacock__pb2.GetTimeSeriesData_Reply.FromString,
+        self.GetBacktestWarmupData = channel.unary_unary(
+                '/peacock.Peacock/GetBacktestWarmupData',
+                request_serializer=peacock__pb2.GetBacktestWarmupData_Msg.SerializeToString,
+                response_deserializer=peacock__pb2.GetBacktestWarmupData_Reply.FromString,
                 )
         self.HealthCheck = channel.unary_unary(
                 '/peacock.Peacock/HealthCheck',
@@ -125,7 +125,7 @@ class PeacockServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetTimeSeriesData(self, request, context):
+    def GetBacktestWarmupData(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -181,10 +181,10 @@ def add_PeacockServicer_to_server(servicer, server):
                     request_deserializer=peacock__pb2.GetDataByStrategyId_Msg.FromString,
                     response_serializer=peacock__pb2.GetDataByStrategyId_Reply.SerializeToString,
             ),
-            'GetTimeSeriesData': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTimeSeriesData,
-                    request_deserializer=peacock__pb2.GetTimeSeriesData_Msg.FromString,
-                    response_serializer=peacock__pb2.GetTimeSeriesData_Reply.SerializeToString,
+            'GetBacktestWarmupData': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetBacktestWarmupData,
+                    request_deserializer=peacock__pb2.GetBacktestWarmupData_Msg.FromString,
+                    response_serializer=peacock__pb2.GetBacktestWarmupData_Reply.SerializeToString,
             ),
             'HealthCheck': grpc.unary_unary_rpc_method_handler(
                     servicer.HealthCheck,
@@ -339,7 +339,7 @@ class Peacock(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def GetTimeSeriesData(request,
+    def GetBacktestWarmupData(request,
             target,
             options=(),
             channel_credentials=None,
@@ -349,9 +349,9 @@ class Peacock(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/GetTimeSeriesData',
-            peacock__pb2.GetTimeSeriesData_Msg.SerializeToString,
-            peacock__pb2.GetTimeSeriesData_Reply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/GetBacktestWarmupData',
+            peacock__pb2.GetBacktestWarmupData_Msg.SerializeToString,
+            peacock__pb2.GetBacktestWarmupData_Reply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

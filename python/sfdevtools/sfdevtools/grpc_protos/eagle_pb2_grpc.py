@@ -25,10 +25,10 @@ class EagleStub(object):
                 request_serializer=eagle__pb2.GetDataByStrategyId_Msg.SerializeToString,
                 response_deserializer=eagle__pb2.GetDataByStrategyId_Reply.FromString,
                 )
-        self.GetTimeSeriesData = channel.unary_unary(
-                '/eagle.Eagle/GetTimeSeriesData',
-                request_serializer=eagle__pb2.GetTimeSeriesData_Msg.SerializeToString,
-                response_deserializer=eagle__pb2.GetTimeSeriesData_Reply.FromString,
+        self.GetBacktestWarmupData = channel.unary_unary(
+                '/eagle.Eagle/GetBacktestWarmupData',
+                request_serializer=eagle__pb2.GetBacktestWarmupData_Msg.SerializeToString,
+                response_deserializer=eagle__pb2.GetBacktestWarmupData_Reply.FromString,
                 )
 
 
@@ -49,7 +49,7 @@ class EagleServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetTimeSeriesData(self, request, context):
+    def GetBacktestWarmupData(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -68,10 +68,10 @@ def add_EagleServicer_to_server(servicer, server):
                     request_deserializer=eagle__pb2.GetDataByStrategyId_Msg.FromString,
                     response_serializer=eagle__pb2.GetDataByStrategyId_Reply.SerializeToString,
             ),
-            'GetTimeSeriesData': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTimeSeriesData,
-                    request_deserializer=eagle__pb2.GetTimeSeriesData_Msg.FromString,
-                    response_serializer=eagle__pb2.GetTimeSeriesData_Reply.SerializeToString,
+            'GetBacktestWarmupData': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetBacktestWarmupData,
+                    request_deserializer=eagle__pb2.GetBacktestWarmupData_Msg.FromString,
+                    response_serializer=eagle__pb2.GetBacktestWarmupData_Reply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -119,7 +119,7 @@ class Eagle(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def GetTimeSeriesData(request,
+    def GetBacktestWarmupData(request,
             target,
             options=(),
             channel_credentials=None,
@@ -129,8 +129,8 @@ class Eagle(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/eagle.Eagle/GetTimeSeriesData',
-            eagle__pb2.GetTimeSeriesData_Msg.SerializeToString,
-            eagle__pb2.GetTimeSeriesData_Reply.FromString,
+        return grpc.experimental.unary_unary(request, target, '/eagle.Eagle/GetBacktestWarmupData',
+            eagle__pb2.GetBacktestWarmupData_Msg.SerializeToString,
+            eagle__pb2.GetBacktestWarmupData_Reply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
