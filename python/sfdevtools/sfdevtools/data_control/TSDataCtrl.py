@@ -17,6 +17,7 @@ class TSDataCtrl(object):
         self.__subscriber: zmq.sugar.socket.Socket = None
         self.__sender_name: str = ""
         self.__instance_id: int = 0
+        self.__strategy_id: str = None
         self.__seq_num: int = 0
         self.__cb_fun = None
         self.__sub_main_thread: threading.Thread = None
@@ -58,6 +59,7 @@ class TSDataCtrl(object):
                      , pub_host: str
                      , pub_port: str
                      , sender_name: str
+                     , strategy_id: str
                      , instance_id: int):
         ctx = zmq.Context.instance()
         self.__publisher = ctx.socket(zmq.PUB)
@@ -68,6 +70,7 @@ class TSDataCtrl(object):
 
         self.__sender_name = sender_name
         self.__instance_id = instance_id
+        self.__strategy_id = strategy_id
 
     def init_subscribe(self
                        , sub_host: str
@@ -119,6 +122,7 @@ class TSDataCtrl(object):
             cop.msg_type = msg_type
             cop.sender = self.__sender_name
             cop.instance_id = self.__instance_id
+            cop.strategy_id = self.__strategy_id
             cop.seq_num = self.__seq_num
             self.__seq_num += 1
             self.__publisher.send_multipart([str.encode(topic), cop.SerializeToString()])
