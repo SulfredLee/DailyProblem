@@ -4,9 +4,11 @@ import threading
 import signal
 import math
 from typing import Any, List, Dict, Union
+import json
 
 import sfdevtools.grpc_protos.ts_cop_pb2 as ts_cop_pb2
 import sfdevtools.grpc_protos.ts_cop_pb2_grpc as ts_cop_pb2_grpc
+import sfdevtools.grpc_protos.cop_tools as ct
 
 class TSDataCtrl(object):
     def __init__(self):
@@ -23,19 +25,36 @@ class TSDataCtrl(object):
         self.__sub_main_thread: threading.Thread = None
         self.__is_subscription_run: bool = False
         self.__sub_timeout_ms: int = 100
+        self.__max_byte_limit: int = 1024 * 1024 * 100 # 100 MB
+        self.__cur_byte_sent: int = 0
+        self.__is_send_limit_alert: bool = True
+        self.__is_limit_sending: bool = False
 
         self.__process_fid_map_smart = {
-            8: self.__process_d_int32
-            , 9: self.__process_d_int64
-            , 10: self.__process_d_float
-            , 11: self.__process_d_double
-            , 12: self.__process_d_string
-            , 13: self.__process_d_bool
+            7: self.__process_d_int32
+            , 8: self.__process_d_int64
+            , 9: self.__process_d_float
+            , 10: self.__process_d_double
+            , 11: self.__process_d_string
+            , 12: self.__process_d_bool
             , ts_cop_pb2.Cop.FidNum.CI: self.__process_ci_smart
             , ts_cop_pb2.Cop.FidNum.SI: self.__process_si_smart
             , ts_cop_pb2.Cop.FidNum.Order: self.__process_order_smart
             , ts_cop_pb2.Cop.FidNum.Trade: self.__process_trade_smart
             , ts_cop_pb2.Cop.FidNum.Order_Snap: self.__process_order_smart
+        }
+        self.__put_value_2_cop_map = {
+            7: self.__put_value_d_int32
+            , 8: self.__put_value_d_int64
+            , 0: self.__put_value_d_float
+            , 10: self.__put_value_d_double
+            , 11: self.__put_value_d_string
+            , 12: self.__put_value_d_bool
+            , ts_cop_pb2.Cop.FidNum.CI: self.__put_value_ci
+            , ts_cop_pb2.Cop.FidNum.SI: self.__put_value_si
+            , ts_cop_pb2.Cop.FidNum.Order: self.__put_value_order
+            , ts_cop_pb2.Cop.FidNum.Trade: self.__put_value_trade
+            , ts_cop_pb2.Cop.FidNum.Order_Snap: self.__put_value_order
         }
         self.__process_fid_map = {
             1: self.__process_int32
@@ -85,6 +104,18 @@ class TSDataCtrl(object):
 
         self.__sub_timeout_ms = timeout_ms
 
+    def set_max_send_limit(self, max_limit: int) -> None:
+        with self.__pub_mutex:
+            self.__max_byte_limit = max_limit
+
+    def reset_sent_byte(self) -> None:
+        with self.__pub_mutex:
+            self.__cur_byte_sent = 0
+
+    def get_cur_sent_byte(self) -> int:
+        with self.__pub_mutex:
+            return self.__cur_byte_sent
+
     def reg_sub_topic(self, topic: str):
         self.__logger.info(f"Subscribe topic: {topic}")
         self.__subscriber.setsockopt(zmq.SUBSCRIBE, str.encode(topic))
@@ -117,13 +148,58 @@ class TSDataCtrl(object):
             self.__cb_fun = None
 
     def send_cop(self, msg_id: str, msg_type: ts_cop_pb2.Cop.MsgType, topic: str, cop: ts_cop_pb2.Cop):
+        cop.msg_id = msg_id
+        cop.msg_type = msg_type
+        cop.sender = self.__sender_name
+        cop.instance_id = self.__instance_id
+        cop.strategy_id = self.__strategy_id
         with self.__pub_mutex:
-            cop.msg_id = msg_id
-            cop.msg_type = msg_type
-            cop.sender = self.__sender_name
-            cop.instance_id = self.__instance_id
-            cop.strategy_id = self.__strategy_id
             cop.seq_num = self.__seq_num
+            if self.__is_limit_sending and not self.__is_can_send(cop_size=cop.ByteSize()
+                                                                  , max_byte=self.__max_byte_limit
+                                                                  , cur_byte=self.__cur_byte_sent
+                                                                  , is_send_alert=self.__is_send_limit_alert):
+                return
+            self.__cur_byte_sent += cop.ByteSize()
+
+            self.__seq_num += 1
+            self.__publisher.send_multipart([str.encode(topic), cop.SerializeToString()])
+
+    def send_cop_list(self
+                      , msg_id: str
+                      , msg_type: ts_cop_pb2.Cop.MsgType
+                      , fid_nums: List[int]
+                      , fid_values: List[Any]
+                      , topic: str
+                      , timestamp: float) -> None:
+        cop = ts_cop_pb2.Cop()
+        cop.msg_id = msg_id
+        cop.msg_type = msg_type
+        cop.sender = self.__sender_name
+        cop.instance_id = self.__instance_id
+        cop.strategy_id = self.__strategy_id
+
+        # put data into cop
+        for fid_num, fid_value in zip(fid_nums, fid_values):
+            if 50001 <= fid_num and fid_num <= 60000:
+                if fid_num not in self.__put_value_2_cop_map:
+                    continue
+                self.__put_value_2_cop_map[fid_num](cop=cop, fid_num=fid_num, fid_value=fid_value)
+            else:
+                num = ct.get_fid_group_num(fid_num=fid_num)
+                if num not in self.__process_fid_map_smart:
+                    continue
+                self.__put_value_2_cop_map[num](cop=cop, fid_num=fid_num, fid_value=fid_value, timestamp=timestamp)
+
+        with self.__pub_mutex:
+            cop.seq_num = self.__seq_num
+            if self.__is_limit_sending and not self.__is_can_send(cop_size=cop.ByteSize()
+                                                                  , max_byte=self.__max_byte_limit
+                                                                  , cur_byte=self.__cur_byte_sent
+                                                                  , is_send_alert=self.__is_send_limit_alert):
+                return
+            self.__cur_byte_sent += cop.ByteSize()
+
             self.__seq_num += 1
             self.__publisher.send_multipart([str.encode(topic), cop.SerializeToString()])
 
@@ -159,7 +235,7 @@ class TSDataCtrl(object):
                                     continue
                                 self.__process_fid_map_smart[fid_num](topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
                             else:
-                                num = math.ceil(fid_num / 10000)
+                                num = ct.get_fid_group_num(fid_num=fid_num)
                                 if num not in self.__process_fid_map_smart:
                                     continue
                                 self.__process_fid_map_smart[num](topic=topic, cop=cop, fid_num=fid_num, fid_value=fid_value)
@@ -312,3 +388,54 @@ class TSDataCtrl(object):
     def __is_subscription(self):
         with self.__sub_mutex:
             return self.__is_subscription_run
+
+    def __is_can_send(self, cop_size: int, max_byte: int, cur_byte: int, is_send_alert: bool) -> bool:
+        if cur_byte + cop_size > max_byte:
+            if is_send_alert:
+                self.__logger.error(f"Cannot send cop due to size limit. sent: {cur_byte} max_byte: {max_byte} cop_size: {cop_size}")
+                is_send_alert = False
+                return False
+            else:
+                return False
+        else:
+            return True
+
+    def __put_value_d_int32(self, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: int, timestamp: float):
+        cop.data_map[fid_num].d_int32_data.time = timestamp
+        cop.data_map[fid_num].d_int32_data.value = fid_value
+
+    def __put_value_d_int64(self, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: int, timestamp: float):
+        cop.data_map[fid_num].d_int64_data.time = timestamp
+        cop.data_map[fid_num].d_int64_data.value = fid_value
+
+    def __put_value_d_float(self, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: float, timestamp: float):
+        cop.data_map[fid_num].d_float_data.time = timestamp
+        cop.data_map[fid_num].d_float_data.value = fid_value
+
+    def __put_value_d_double(self, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: float, timestamp: float):
+        cop.data_map[fid_num].d_double_data.time = timestamp
+        cop.data_map[fid_num].d_double_data.value = fid_value
+
+    def __put_value_d_string(self, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: str, timestamp: float):
+        cop.data_map[fid_num].d_string_data.time = timestamp
+        cop.data_map[fid_num].d_string_data.value = fid_value
+
+    def __put_value_d_bool(self, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: Any, timestamp: float):
+        cop.data_map[fid_num].d_bool_data.time = timestamp
+        cop.data_map[fid_num].d_bool_data.value = fid_value
+
+    def __put_value_ci(self, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: List[Dict[Any, Any]]):
+        for ci in fid_value: # ci_list:
+            cop.data_map[fid_num].ci_data.ci_list.append(ts_cop_pb2.CI(value=json.dumps(ci)))
+
+    def __put_value_si(self, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: List[ts_cop_pb2.SI]):
+        for si in fid_value: # si_list:
+            cop.data_map[fid_num].si_data.si_list.append(si)
+
+    def __put_value_order(self, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: List[ts_cop_pb2.TSOrder]):
+        for order in fid_value: # order_list:
+            cop.data_map[fid_num].order_data.order_list.append(order)
+
+    def __put_value_trade(self, cop: ts_cop_pb2.Cop, fid_num: int, fid_value: List[ts_cop_pb2.TSTrade]):
+        for trd in fid_value: # trade_list:
+            cop.data_map[fid_num].trade_data.trade_list.append(trd)

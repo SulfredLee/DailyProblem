@@ -5,6 +5,7 @@ from AlgorithmImports import *
 import logging
 from typing import List, Dict, Any
 import json
+import datetime
 
 import sfdevtools.data_control.TSDataCtrl as TSDataCtrl
 import sfdevtools.data_control.TSBackgroundCtrl as TSBackgroundCtrl
@@ -24,6 +25,12 @@ class TSDataManager(object):
         self.__output_dcache_m: DCacheManager = None
         self.__bg_ctrl: TSBackgroundCtrl.TSBackgroundCtrl = None
         self.__is_active_bg: bool = False
+
+        self.__data_convert_map = {
+            ts_cop_pb2.Cop.FidNum.SI: self.__convert_si
+            , ts_cop_pb2.Cop.FidNum.Order: self.__convert_order
+            , ts_cop_pb2.Cop.FidNum.Trade: self.__convert_trade
+        }
 
     def init_component(self
                        , logger: logging.Logger
@@ -109,10 +116,120 @@ class TSDataManager(object):
                                         , topic=self.__pub_topic
                                         , cop=cop)
 
-    def send_bg_cop(self, msg_id: str, msg_type: ts_cop_pb2.Cop.MsgType, cop: ts_cop_pb2.Cop,) -> None:
+    def send_bg_cop(self, msg_id: str, msg_type: ts_cop_pb2.Cop.MsgType, cop: ts_cop_pb2.Cop) -> None:
         if not self.__is_active_bg:
             return
         self.__ts_datactrl_pub.send_cop(msg_id=msg_id
                                         , msg_type=msg_type
                                         , topic=self.__pub_topic
                                         , cop=cop)
+    def send_int(self
+                 , msg_id: str
+                 , msg_type: ts_cop_pb2.Cop.MsgType
+                 , fid_num: int
+                 , fid_value: int
+                 , time: datetime) -> None:
+        cop = ts_cop_pb2.Cop()
+        if 70001 <= fid_num and fid_num <= 80000:
+            cop.data_map[fid_num].d_int32_data.value = fid_num
+            cop.data_map[fid_num].d_int32_data.time = time.timestamp()
+        elif 80001 <= fid_num and fid_num <= 90000:
+            cop.data_map[fid_num].d_int64_data.value = fid_num
+            cop.data_map[fid_num].d_int64_data.time = time.timestamp()
+        else:
+            return None
+
+        self.__ts_datactrl_pub.send_cop(msg_id=msg_id
+                                        , msg_type=msg_type
+                                        , topic=self.__pub_topic
+                                        , cop=cop)
+
+    def send_double(self
+                    , msg_id: str
+                    , msg_type: ts_cop_pb2.Cop.MsgType
+                    , fid_num: int
+                    , fid_value: float
+                    , time: datetime) -> None:
+        cop = ts_cop_pb2.Cop()
+        if 90001 <= fid_num and fid_num <= 100000:
+            cop.data_map[fid_num].d_float_data.value = fid_num
+            cop.data_map[fid_num].d_float_data.time = time.timestamp()
+        elif 100001 <= fid_num and fid_num <= 110000:
+            cop.data_map[fid_num].d_double_data.value = fid_num
+            cop.data_map[fid_num].d_double_data.time = time.timestamp()
+        else:
+            return None
+
+        self.__ts_datactrl_pub.send_cop(msg_id=msg_id
+                                        , msg_type=msg_type
+                                        , topic=self.__pub_topic
+                                        , cop=cop)
+
+    def send_string(self
+                    , msg_id: str
+                    , msg_type: ts_cop_pb2.Cop.MsgType
+                    , fid_num: int
+                    , fid_value: float
+                    , time: datetime) -> None:
+        cop = ts_cop_pb2.Cop()
+        if 110001 <= fid_num and fid_num <= 120000:
+            cop.data_map[fid_num].d_string_data.value = fid_num
+            cop.data_map[fid_num].d_string_data.time = time.timestamp()
+        else:
+            return None
+
+        self.__ts_datactrl_pub.send_cop(msg_id=msg_id
+                                        , msg_type=msg_type
+                                        , topic=self.__pub_topic
+                                        , cop=cop)
+
+    def send_bool(self
+                  , msg_id: str
+                  , msg_type: ts_cop_pb2.Cop.MsgType
+                  , fid_num: int
+                  , fid_value: float
+                  , time: datetime) -> None:
+        cop = ts_cop_pb2.Cop()
+        if 120001 <= fid_num and fid_num <= 130000:
+            cop.data_map[fid_num].d_bool_data.value = fid_num
+            cop.data_map[fid_num].d_bool_data.time = time.timestamp()
+        else:
+            return None
+
+        self.__ts_datactrl_pub.send_cop(msg_id=msg_id
+                                        , msg_type=msg_type
+                                        , topic=self.__pub_topic
+                                        , cop=cop)
+
+    def get_cur_sent_byte(self) -> int:
+        return self.__ts_datactrl_pub.get_cur_sent_byte()
+
+    def send_msg_list(self
+                      , msg_id: str
+                      , msg_type: ts_cop_pb2.Cop.MsgType
+                      , fid_nums: List[int]
+                      , fid_values: List[Any]
+                      , time: datetime) -> None:
+        # convert to cop format
+        idx = 0
+        for fid_num, fid_value in zip(fid_nums, fid_values):
+            if fid_num in self.__data_convert_map:
+                self.__data_convert_map[fid_num](fid_values=fid_values, idx=idx)
+
+            idx += 1
+
+        self.__ts_datactrl_pub.send_cop_list(msg_id=msg_id
+                                             , msg_type=msg_type
+                                             , fid_nums=fid_nums
+                                             , fid_values=fid_values
+                                             , topic=self.__pub_topic
+                                             , timestamp=time.timestamp())
+
+    def __convert_si(self, fid_values: List[Any], idx: int) -> None:
+        fid_values[idx] = conv.conv_SI_2_cop_si(si=fid_values[idx])
+
+    def __convert_order(self, fid_values: List[Any], idx: int):
+        fid_values[idx] = conv.conv_TS_Order_2_cop_order(order=fid_values[idx])
+
+    def __convert_trade(self, fid_values: List[Any], idx: int):
+        fid_values[idx] = conv.conv_TS_Trade_2_cop_trade(trd=fid_values[idx])

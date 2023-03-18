@@ -40,7 +40,8 @@ class Test_peacock(unittest.TestCase):
             , "test_si_update_check": False
             , "test_order_update_check": False
             , "test_trade_update_check": False
-            , "test_fid_update_check": True
+            , "test_fid_update_check": False
+            , "test_cop_size": True
         }
 
         if not self.__test_config[self._testMethodName]:
@@ -648,6 +649,26 @@ class Test_peacock(unittest.TestCase):
             for order in fid_value.order_list:
                 is_cache_exist, is_ord_exist = dcache_manager.is_order_exist(cache_name=cop.sender, order=order)
                 self.assertEqual(True, is_ord_exist)
+
+    def test_cop_size(self):
+        if not self.__test_config[inspect.stack()[0][3]]:
+            return
+
+        logger = lh.init_logger(logger_name="test_cop_size", is_print_to_console=True, is_json_output=False)
+
+        # prepare cop
+        cop = ts_cop_pb2.Cop()
+        cop.msg_id = "Test_True"
+        cop.msg_type = ts_cop_pb2.Cop.MsgType.Strategy
+        cop.sender = "Test_True"
+        cop.instance_id = 1
+        cop.seq_num = 1
+        cop.created_time = datetime.datetime.utcnow().timestamp()
+
+        # ci
+        cop.data_map[ts_cop_pb2.Cop.FidNum.CI].ci_data.ci_list.append(ts_cop_pb2.CI(value=json.dumps({"aa": "hello_world", "00": "hhee"})))
+
+        logger.info(f"size: {cop.ByteSize()}")
 
     def test_ci_update_check(self):
         if not self.__test_config[inspect.stack()[0][3]]:
