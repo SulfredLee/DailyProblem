@@ -160,20 +160,21 @@ message Cop {
         // 80001 - 90000 --- d_int64
         // 90001 - 100000 --- d_float
         // 100001 - 110000 --- d_double
-        Cash = 100001;
-        UnsettledCash = 100002;
-        TotalUnleveredAbsoluteHoldingsCost = 100003;
-        TotalAbsoluteHoldingsCost = 100004;
-        TotalHoldingsValue = 100005;
-        TotalUnrealisedProfit = 100006;
-        TotalUnrealizedProfit = 100007;
-        TotalPortfolioValue = 100008;
-        TotalFees = 100009;
-        TotalProfit = 100010;
-        TotalNetProfit = 100011;
-        TotalSaleVolume = 100012;
-        TotalMarginUsed = 100013;
-        MarginRemaining = 100014;
+        // comment the following enum to reduce the file size
+        // Cash = 100001;
+        // UnsettledCash = 100002;
+        // TotalUnleveredAbsoluteHoldingsCost = 100003;
+        // TotalAbsoluteHoldingsCost = 100004;
+        // TotalHoldingsValue = 100005;
+        // TotalUnrealisedProfit = 100006;
+        // TotalUnrealizedProfit = 100007;
+        // TotalPortfolioValue = 100008;
+        // TotalFees = 100009;
+        // TotalProfit = 100010;
+        // TotalNetProfit = 100011;
+        // TotalSaleVolume = 100012;
+        // TotalMarginUsed = 100013;
+        // MarginRemaining = 100014;
         // 110001 - 120000 --- d_string
         // 120001 - 130000 --- d_bool
     }
