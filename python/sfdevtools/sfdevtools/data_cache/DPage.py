@@ -94,23 +94,35 @@ class DPage(object):
         with self.__int_mutex:
             for fid_num, v in self.__int32_map.items():
                 result_list.append((fid_num, v))
+            for fid_num, v in self.__d_int32_map.items():
+                result_list.append((fid_num, v))
 
             for fid_num, v in self.__int64_map.items():
+                result_list.append((fid_num, v))
+            for fid_num, v in self.__d_int64_map.items():
                 result_list.append((fid_num, v))
 
         with self.__float_mutex:
             for fid_num, v in self.__float_map.items():
                 result_list.append((fid_num, v))
+            for fid_num, v in self.__d_float_map.items():
+                result_list.append((fid_num, v))
 
             for fid_num, v in self.__double_map.items():
+                result_list.append((fid_num, v))
+            for fid_num, v in self.__d_double_map.items():
                 result_list.append((fid_num, v))
 
         with self.__str_mutex:
             for fid_num, v in self.__string_map.items():
                 result_list.append((fid_num, v))
+            for fid_num, v in self.__d_string_map.items():
+                result_list.append((fid_num, v))
 
         with self.__bool_mutex:
             for fid_num, v in self.__bool_map.items():
+                result_list.append((fid_num, v))
+            for fid_num, v in self.__d_bool_map.items():
                 result_list.append((fid_num, v))
 
         return result_list

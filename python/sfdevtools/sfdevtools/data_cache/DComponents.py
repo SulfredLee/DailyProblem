@@ -17,6 +17,7 @@ class StrategyInsight(object):
         self.created: datetime = None
         self.last_update: datetime = None
         self.strategy_name: str = ""
+        self.parent_strategy_name: str = ""
         self.live_mode: bool = False
         self.strategy_id: str = ""
 
@@ -30,6 +31,7 @@ class StrategyInsight(object):
                 and self.created == other.created\
                 and self.last_update == other.last_update\
                 and self.strategy_name == other.strategy_name\
+                and self.parent_strategy_name == other.parent_strategy_name\
                 and self.live_mode == other.live_mode\
                 and self.strategy_id == other.strategy_id
         else:
@@ -63,6 +65,7 @@ class TS_Order(object):
         self.created: datetime = None
         self.last_update: datetime = None
         self.strategy_name: str = ""
+        self.parent_strategy_name: str = ""
         self.live_mode: bool = False
         self.strategy_id: str = ""
         # https://github.com/QuantConnect/Lean/blob/master/Common/Orders/OrderTypes.cs#L107
@@ -88,6 +91,7 @@ class TS_Order(object):
                 and self.created == other.created\
                 and self.last_update == other.last_update\
                 and self.strategy_name == other.strategy_name\
+                and self.parent_strategy_name == other.parent_strategy_name\
                 and self.live_mode == other.live_mode\
                 and self.strategy_id == other.strategy_id\
                 and self.order_status == other.order_status\
@@ -128,6 +132,7 @@ class TS_Trade(object):
         self.created: datetime = None
         self.last_update: datetime = None
         self.strategy_name: str = ""
+        self.parent_strategy_name: str = ""
         self.live_mode: bool = False
         self.strategy_id: str = ""
         # https://github.com/QuantConnect/Lean/blob/master/Common/Orders/OrderTypes.cs#L107
@@ -153,6 +158,7 @@ class TS_Trade(object):
                 and self.created == other.created\
                 and self.last_update == other.last_update\
                 and self.strategy_name == other.strategy_name\
+                and self.parent_strategy_name == other.parent_strategy_name\
                 and self.live_mode == other.live_mode\
                 and self.strategy_id == other.strategy_id\
                 and self.trade_status == other.trade_status\

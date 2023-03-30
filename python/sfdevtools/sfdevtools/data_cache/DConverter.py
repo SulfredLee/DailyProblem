@@ -36,6 +36,26 @@ def conv_strg_2_cop(strgy: DStrategy) -> ts_cop_pb2.Cop:
             cop.string_map[fid_num] = value
         elif fid_num <= 70000:
             cop.bool_map[fid_num] = value
+        elif fid_num <= 90000:
+            if fid_num <= 80000:
+                cop.data_map[fid_num].d_int32_data.value = value[0]
+                cop.data_map[fid_num].d_int32_data.time = value[1]
+            else:
+                cop.data_map[fid_num].d_int64_data.value = value[0]
+                cop.data_map[fid_num].d_int64_data.time = value[1]
+        elif fid_num <= 110000:
+            if fid_num <= 100000:
+                cop.data_map[fid_num].d_float_data.value = value[0]
+                cop.data_map[fid_num].d_float_data.time = value[1]
+            else:
+                cop.data_map[fid_num].d_double_data.value = value[0]
+                cop.data_map[fid_num].d_double_data.time = value[1]
+        elif fid_num <= 120000:
+            cop.data_map[fid_num].d_string_data.value = value[0]
+            cop.data_map[fid_num].d_string_data.time = value[1]
+        elif fid_num <= 130000:
+            cop.data_map[fid_num].d_bool_data.value = value[0]
+            cop.data_map[fid_num].d_bool_data.time = value[1]
 
     # ci
     for ci in strgy.get_all_ci():
@@ -79,6 +99,26 @@ def conv_page_2_cop(dpage: DPage) -> ts_cop_pb2.Cop:
             cop.string_map[fid_num] = value
         elif fid_num <= 70000:
             cop.bool_map[fid_num] = value
+        elif fid_num <= 90000:
+            if fid_num <= 80000:
+                cop.data_map[fid_num].d_int32_data.value = value[0]
+                cop.data_map[fid_num].d_int32_data.time = value[1]
+            else:
+                cop.data_map[fid_num].d_int64_data.value = value[0]
+                cop.data_map[fid_num].d_int64_data.time = value[1]
+        elif fid_num <= 110000:
+            if fid_num <= 100000:
+                cop.data_map[fid_num].d_float_data.value = value[0]
+                cop.data_map[fid_num].d_float_data.time = value[1]
+            else:
+                cop.data_map[fid_num].d_double_data.value = value[0]
+                cop.data_map[fid_num].d_double_data.time = value[1]
+        elif fid_num <= 120000:
+            cop.data_map[fid_num].d_string_data.value = value[0]
+            cop.data_map[fid_num].d_string_data.time = value[1]
+        elif fid_num <= 130000:
+            cop.data_map[fid_num].d_bool_data.value = value[0]
+            cop.data_map[fid_num].d_bool_data.time = value[1]
 
     return cop
 
@@ -95,6 +135,7 @@ def conv_TS_Order_2_cop_order(order: TS_Order) -> ts_cop_pb2.TSOrder:
     ord_ele.created = to_timestamp_safe(order.created)
     ord_ele.last_update = to_timestamp_safe(order.last_update)
     ord_ele.strategy_name = order.strategy_name
+    ord_ele.parent_strategy_name = order.parent_strategy_name
     ord_ele.live_mode = order.live_mode
     ord_ele.strategy_id = order.strategy_id
     ord_ele.order_status = order.order_status
@@ -120,6 +161,7 @@ def conv_TS_Trade_2_cop_trade(trd: TS_Trade) -> ts_cop_pb2.TSTrade:
     trd_ele.created = to_timestamp_safe(trd.created)
     trd_ele.last_update = to_timestamp_safe(trd.last_update)
     trd_ele.strategy_name = trd.strategy_name
+    trd_ele.parent_strategy_name = trd.parent_strategy_name
     trd_ele.live_mode = trd.live_mode
     trd_ele.strategy_id = trd.strategy_id
     trd_ele.trade_status = trd.trade_status
@@ -147,6 +189,7 @@ def conv_SI_2_cop_si(si: StrategyInsight) -> ts_cop_pb2.SI:
     si_ele.created = to_timestamp_safe(si.created)
     si_ele.last_update = to_timestamp_safe(si.last_update)
     si_ele.strategy_name = si.strategy_name
+    si_ele.parent_strategy_name = si.parent_strategy_name
     si_ele.live_mode = si.live_mode
     si_ele.strategy_id = si.strategy_id
 
@@ -165,6 +208,7 @@ def conv_cop_order_2_TS_Order(ord_ele: ts_cop_pb2.TSOrder) -> TS_Order:
     order.created = datetime.datetime.fromtimestamp(ord_ele.created)
     order.last_update = datetime.datetime.fromtimestamp(ord_ele.last_update)
     order.strategy_name = ord_ele.strategy_name
+    order.parent_strategy_name = ord_ele.parent_strategy_name
     order.live_mode = ord_ele.live_mode
     order.strategy_id = ord_ele.strategy_id
     order.order_status = ord_ele.order_status
@@ -190,6 +234,7 @@ def conv_cop_trade_2_TS_Trade(trd_ele: ts_cop_pb2.TSTrade) -> TS_Trade:
     trd.created = datetime.datetime.fromtimestamp(trd_ele.created)
     trd.last_update = datetime.datetime.fromtimestamp(trd_ele.last_update)
     trd.strategy_name = trd_ele.strategy_name
+    trd.parent_strategy_name = trd_ele.parent_strategy_name
     trd.live_mode = trd_ele.live_mode
     trd.strategy_id = trd_ele.strategy_id
     trd.trade_status = trd_ele.trade_status
@@ -216,6 +261,7 @@ def conv_cop_si_2_SI(si_ele: ts_cop_pb2.SI) -> StrategyInsight:
     si.created = datetime.datetime.fromtimestamp(si_ele.created)
     si.last_update = datetime.datetime.fromtimestamp(si_ele.last_update)
     si.strategy_name = si_ele.strategy_name
+    si.parent_strategy_name = si_ele.parent_strategy_name
     si.live_mode = si_ele.live_mode
     si.strategy_id = si_ele.strategy_id
 

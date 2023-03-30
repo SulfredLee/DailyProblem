@@ -52,6 +52,7 @@ message SI {
     bool live_mode = 8;
     string strategy_id = 9;
     string symbol_id = 10;
+    string parent_strategy_name = 11;
 }
 
 message SIList {
@@ -80,6 +81,7 @@ message TSOrder {
     string ccy = 19;
     string fee_ccy = 20;
     string symbol_id = 21;
+    string parent_strategy_name = 22;
 }
 
 message TSOrderList {
@@ -108,6 +110,7 @@ message TSTrade {
     string ccy = 19;
     string fee_ccy = 20;
     string symbol_id = 21;
+    string parent_strategy_name = 22;
 }
 
 message TSTradeList {
