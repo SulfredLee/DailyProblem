@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import sfdevtools.grpc_protos.eagle_pb2 as eagle__pb2
+import eagle_pb2 as eagle__pb2
 
 
 class EagleStub(object):
@@ -30,6 +30,11 @@ class EagleStub(object):
                 request_serializer=eagle__pb2.GetBacktestWarmupData_Msg.SerializeToString,
                 response_deserializer=eagle__pb2.GetBacktestWarmupData_Reply.FromString,
                 )
+        self.GetUSLEIData = channel.unary_unary(
+                '/eagle.Eagle/GetUSLEIData',
+                request_serializer=eagle__pb2.GetUSLEIData_Msg.SerializeToString,
+                response_deserializer=eagle__pb2.GetUSLEIData_Reply.FromString,
+                )
 
 
 class EagleServicer(object):
@@ -55,6 +60,12 @@ class EagleServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetUSLEIData(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_EagleServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -72,6 +83,11 @@ def add_EagleServicer_to_server(servicer, server):
                     servicer.GetBacktestWarmupData,
                     request_deserializer=eagle__pb2.GetBacktestWarmupData_Msg.FromString,
                     response_serializer=eagle__pb2.GetBacktestWarmupData_Reply.SerializeToString,
+            ),
+            'GetUSLEIData': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetUSLEIData,
+                    request_deserializer=eagle__pb2.GetUSLEIData_Msg.FromString,
+                    response_serializer=eagle__pb2.GetUSLEIData_Reply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -132,5 +148,22 @@ class Eagle(object):
         return grpc.experimental.unary_unary(request, target, '/eagle.Eagle/GetBacktestWarmupData',
             eagle__pb2.GetBacktestWarmupData_Msg.SerializeToString,
             eagle__pb2.GetBacktestWarmupData_Reply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetUSLEIData(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/eagle.Eagle/GetUSLEIData',
+            eagle__pb2.GetUSLEIData_Msg.SerializeToString,
+            eagle__pb2.GetUSLEIData_Reply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

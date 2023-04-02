@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0b\x65\x61gle.proto\x12\x05\x65\x61gle\"c\n\x19GetBacktestWarmupData_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\x12\x0e\n\x06msg_id\x18\x02 \x01(\t\x12\x10\n\x08msg_type\x18\x03 \x01(\x05\x12\x0f\n\x07\x66id_num\x18\x04 \x01(\x05\"+\n\x1bGetBacktestWarmupData_Reply\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t\".\n\x17GetDataByStrategyId_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\"\x80\x01\n\x19GetDataByStrategyId_Reply\x12\x0b\n\x03\x63\x66g\x18\x01 \x03(\t\x12\n\n\x02\x63i\x18\x02 \x03(\t\x12\n\n\x02si\x18\x03 \x01(\t\x12\x10\n\x08ord_snap\x18\x04 \x01(\t\x12\x10\n\x08ord_hist\x18\x05 \x01(\t\x12\x0b\n\x03trd\x18\x06 \x01(\t\x12\r\n\x05price\x18\x07 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\xe8\x01\n\x05\x45\x61gle\x12\'\n\x0bHealthCheck\x12\x0b.eagle.Ping\x1a\x0b.eagle.Pong\x12W\n\x13GetDataByStrategyId\x12\x1e.eagle.GetDataByStrategyId_Msg\x1a .eagle.GetDataByStrategyId_Reply\x12]\n\x15GetBacktestWarmupData\x12 .eagle.GetBacktestWarmupData_Msg\x1a\".eagle.GetBacktestWarmupData_Replyb\x06proto3'
+  serialized_pb=b'\n\x0b\x65\x61gle.proto\x12\x05\x65\x61gle\"c\n\x19GetBacktestWarmupData_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\x12\x0e\n\x06msg_id\x18\x02 \x01(\t\x12\x10\n\x08msg_type\x18\x03 \x01(\x05\x12\x0f\n\x07\x66id_num\x18\x04 \x01(\x05\"+\n\x1bGetBacktestWarmupData_Reply\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t\"*\n\x10GetUSLEIData_Msg\x12\x16\n\x0elookback_month\x18\x01 \x01(\x05\"\x8f\x01\n\x12GetUSLEIData_Reply\x12\x44\n\x0fus_lei_data_map\x18\x01 \x03(\x0b\x32+.eagle.GetUSLEIData_Reply.UsLeiDataMapEntry\x1a\x33\n\x11UsLeiDataMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\".\n\x17GetDataByStrategyId_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\"\x80\x01\n\x19GetDataByStrategyId_Reply\x12\x0b\n\x03\x63\x66g\x18\x01 \x03(\t\x12\n\n\x02\x63i\x18\x02 \x03(\t\x12\n\n\x02si\x18\x03 \x01(\t\x12\x10\n\x08ord_snap\x18\x04 \x01(\t\x12\x10\n\x08ord_hist\x18\x05 \x01(\t\x12\x0b\n\x03trd\x18\x06 \x01(\t\x12\r\n\x05price\x18\x07 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\xac\x02\n\x05\x45\x61gle\x12\'\n\x0bHealthCheck\x12\x0b.eagle.Ping\x1a\x0b.eagle.Pong\x12W\n\x13GetDataByStrategyId\x12\x1e.eagle.GetDataByStrategyId_Msg\x1a .eagle.GetDataByStrategyId_Reply\x12]\n\x15GetBacktestWarmupData\x12 .eagle.GetBacktestWarmupData_Msg\x1a\".eagle.GetBacktestWarmupData_Reply\x12\x42\n\x0cGetUSLEIData\x12\x17.eagle.GetUSLEIData_Msg\x1a\x19.eagle.GetUSLEIData_Replyb\x06proto3'
 )
 
 
@@ -110,6 +110,108 @@ _GETBACKTESTWARMUPDATA_REPLY = _descriptor.Descriptor(
 )
 
 
+_GETUSLEIDATA_MSG = _descriptor.Descriptor(
+  name='GetUSLEIData_Msg',
+  full_name='eagle.GetUSLEIData_Msg',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='lookback_month', full_name='eagle.GetUSLEIData_Msg.lookback_month', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=168,
+  serialized_end=210,
+)
+
+
+_GETUSLEIDATA_REPLY_USLEIDATAMAPENTRY = _descriptor.Descriptor(
+  name='UsLeiDataMapEntry',
+  full_name='eagle.GetUSLEIData_Reply.UsLeiDataMapEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='eagle.GetUSLEIData_Reply.UsLeiDataMapEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='eagle.GetUSLEIData_Reply.UsLeiDataMapEntry.value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=305,
+  serialized_end=356,
+)
+
+_GETUSLEIDATA_REPLY = _descriptor.Descriptor(
+  name='GetUSLEIData_Reply',
+  full_name='eagle.GetUSLEIData_Reply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='us_lei_data_map', full_name='eagle.GetUSLEIData_Reply.us_lei_data_map', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[_GETUSLEIDATA_REPLY_USLEIDATAMAPENTRY, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=213,
+  serialized_end=356,
+)
+
+
 _GETDATABYSTRATEGYID_MSG = _descriptor.Descriptor(
   name='GetDataByStrategyId_Msg',
   full_name='eagle.GetDataByStrategyId_Msg',
@@ -137,8 +239,8 @@ _GETDATABYSTRATEGYID_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=168,
-  serialized_end=214,
+  serialized_start=358,
+  serialized_end=404,
 )
 
 
@@ -211,8 +313,8 @@ _GETDATABYSTRATEGYID_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=217,
-  serialized_end=345,
+  serialized_start=407,
+  serialized_end=535,
 )
 
 
@@ -243,8 +345,8 @@ _PING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=347,
-  serialized_end=370,
+  serialized_start=537,
+  serialized_end=560,
 )
 
 
@@ -275,12 +377,16 @@ _PONG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=372,
-  serialized_end=395,
+  serialized_start=562,
+  serialized_end=585,
 )
 
+_GETUSLEIDATA_REPLY_USLEIDATAMAPENTRY.containing_type = _GETUSLEIDATA_REPLY
+_GETUSLEIDATA_REPLY.fields_by_name['us_lei_data_map'].message_type = _GETUSLEIDATA_REPLY_USLEIDATAMAPENTRY
 DESCRIPTOR.message_types_by_name['GetBacktestWarmupData_Msg'] = _GETBACKTESTWARMUPDATA_MSG
 DESCRIPTOR.message_types_by_name['GetBacktestWarmupData_Reply'] = _GETBACKTESTWARMUPDATA_REPLY
+DESCRIPTOR.message_types_by_name['GetUSLEIData_Msg'] = _GETUSLEIDATA_MSG
+DESCRIPTOR.message_types_by_name['GetUSLEIData_Reply'] = _GETUSLEIDATA_REPLY
 DESCRIPTOR.message_types_by_name['GetDataByStrategyId_Msg'] = _GETDATABYSTRATEGYID_MSG
 DESCRIPTOR.message_types_by_name['GetDataByStrategyId_Reply'] = _GETDATABYSTRATEGYID_REPLY
 DESCRIPTOR.message_types_by_name['Ping'] = _PING
@@ -300,6 +406,28 @@ GetBacktestWarmupData_Reply = _reflection.GeneratedProtocolMessageType('GetBackt
   # @@protoc_insertion_point(class_scope:eagle.GetBacktestWarmupData_Reply)
   })
 _sym_db.RegisterMessage(GetBacktestWarmupData_Reply)
+
+GetUSLEIData_Msg = _reflection.GeneratedProtocolMessageType('GetUSLEIData_Msg', (_message.Message,), {
+  'DESCRIPTOR' : _GETUSLEIDATA_MSG,
+  '__module__' : 'eagle_pb2'
+  # @@protoc_insertion_point(class_scope:eagle.GetUSLEIData_Msg)
+  })
+_sym_db.RegisterMessage(GetUSLEIData_Msg)
+
+GetUSLEIData_Reply = _reflection.GeneratedProtocolMessageType('GetUSLEIData_Reply', (_message.Message,), {
+
+  'UsLeiDataMapEntry' : _reflection.GeneratedProtocolMessageType('UsLeiDataMapEntry', (_message.Message,), {
+    'DESCRIPTOR' : _GETUSLEIDATA_REPLY_USLEIDATAMAPENTRY,
+    '__module__' : 'eagle_pb2'
+    # @@protoc_insertion_point(class_scope:eagle.GetUSLEIData_Reply.UsLeiDataMapEntry)
+    })
+  ,
+  'DESCRIPTOR' : _GETUSLEIDATA_REPLY,
+  '__module__' : 'eagle_pb2'
+  # @@protoc_insertion_point(class_scope:eagle.GetUSLEIData_Reply)
+  })
+_sym_db.RegisterMessage(GetUSLEIData_Reply)
+_sym_db.RegisterMessage(GetUSLEIData_Reply.UsLeiDataMapEntry)
 
 GetDataByStrategyId_Msg = _reflection.GeneratedProtocolMessageType('GetDataByStrategyId_Msg', (_message.Message,), {
   'DESCRIPTOR' : _GETDATABYSTRATEGYID_MSG,
@@ -330,6 +458,7 @@ Pong = _reflection.GeneratedProtocolMessageType('Pong', (_message.Message,), {
 _sym_db.RegisterMessage(Pong)
 
 
+_GETUSLEIDATA_REPLY_USLEIDATAMAPENTRY._options = None
 
 _EAGLE = _descriptor.ServiceDescriptor(
   name='Eagle',
@@ -338,8 +467,8 @@ _EAGLE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=398,
-  serialized_end=630,
+  serialized_start=588,
+  serialized_end=888,
   methods=[
   _descriptor.MethodDescriptor(
     name='HealthCheck',
@@ -368,6 +497,16 @@ _EAGLE = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_GETBACKTESTWARMUPDATA_MSG,
     output_type=_GETBACKTESTWARMUPDATA_REPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetUSLEIData',
+    full_name='eagle.Eagle.GetUSLEIData',
+    index=3,
+    containing_service=None,
+    input_type=_GETUSLEIDATA_MSG,
+    output_type=_GETUSLEIDATA_REPLY,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

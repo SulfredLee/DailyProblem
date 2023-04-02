@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\rpeacock.proto\x12\x07peacock\".\n\x17GetDataByStrategyId_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\"\x80\x01\n\x19GetDataByStrategyId_Reply\x12\x0b\n\x03\x63\x66g\x18\x01 \x03(\t\x12\n\n\x02\x63i\x18\x02 \x03(\t\x12\n\n\x02si\x18\x03 \x01(\t\x12\x10\n\x08ord_snap\x18\x04 \x01(\t\x12\x10\n\x08ord_hist\x18\x05 \x01(\t\x12\x0b\n\x03trd\x18\x06 \x01(\t\x12\r\n\x05price\x18\x07 \x01(\t\"c\n\x19GetBacktestWarmupData_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\x12\x0e\n\x06msg_id\x18\x02 \x01(\t\x12\x10\n\x08msg_type\x18\x03 \x01(\x05\x12\x0f\n\x07\x66id_num\x18\x04 \x01(\x05\"+\n\x1bGetBacktestWarmupData_Reply\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t\"\\\n\x18RemoveStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\x12\x18\n\x10strategy_id_list\x18\x03 \x03(\t\"#\n\x13RemoveOldConfig_Msg\x12\x0c\n\x04\x64\x61ys\x18\x01 \x01(\x05\"\x1c\n\x0b\x44ummy_Reply\x12\r\n\x05\x64ummy\x18\x01 \x01(\t\"?\n\x15GetStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\";\n\x17GetStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x10\n\x08\x63\x66g_list\x18\x02 \x03(\t\"1\n\x16SaveStrategyConfig_Msg\x12\x17\n\x0fstrategy_config\x18\x01 \x01(\t\"*\n\x18SaveStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\">\n\x13SaveFileToColud_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\"Z\n\x1aSaveRefDataPriceFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"U\n\x15SaveRefDataFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"\x1a\n\tNoneReply\x12\r\n\x05reply\x18\x01 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\xa0\x06\n\x07Peacock\x12\x43\n\x0fSaveFileToColud\x12\x1c.peacock.SaveFileToColud_Msg\x1a\x12.peacock.NoneReply\x12Q\n\x16SaveRefDataPriceFromQC\x12#.peacock.SaveRefDataPriceFromQC_Msg\x1a\x12.peacock.NoneReply\x12G\n\x11SaveRefDataFromQC\x12\x1e.peacock.SaveRefDataFromQC_Msg\x1a\x12.peacock.NoneReply\x12X\n\x12SaveStrategyConfig\x12\x1f.peacock.SaveStrategyConfig_Msg\x1a!.peacock.SaveStrategyConfig_Reply\x12U\n\x11GetStrategyConfig\x12\x1e.peacock.GetStrategyConfig_Msg\x1a .peacock.GetStrategyConfig_Reply\x12O\n\x14RemoveStrategyConfig\x12!.peacock.RemoveStrategyConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12\x45\n\x0fRemoveOldConfig\x12\x1c.peacock.RemoveOldConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12[\n\x13GetDataByStrategyId\x12 .peacock.GetDataByStrategyId_Msg\x1a\".peacock.GetDataByStrategyId_Reply\x12\x61\n\x15GetBacktestWarmupData\x12\".peacock.GetBacktestWarmupData_Msg\x1a$.peacock.GetBacktestWarmupData_Reply\x12+\n\x0bHealthCheck\x12\r.peacock.Ping\x1a\r.peacock.Pongb\x06proto3'
+  serialized_pb=b'\n\rpeacock.proto\x12\x07peacock\".\n\x17GetDataByStrategyId_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\"\x80\x01\n\x19GetDataByStrategyId_Reply\x12\x0b\n\x03\x63\x66g\x18\x01 \x03(\t\x12\n\n\x02\x63i\x18\x02 \x03(\t\x12\n\n\x02si\x18\x03 \x01(\t\x12\x10\n\x08ord_snap\x18\x04 \x01(\t\x12\x10\n\x08ord_hist\x18\x05 \x01(\t\x12\x0b\n\x03trd\x18\x06 \x01(\t\x12\r\n\x05price\x18\x07 \x01(\t\"c\n\x19GetBacktestWarmupData_Msg\x12\x13\n\x0bstrategy_id\x18\x01 \x01(\t\x12\x0e\n\x06msg_id\x18\x02 \x01(\t\x12\x10\n\x08msg_type\x18\x03 \x01(\x05\x12\x0f\n\x07\x66id_num\x18\x04 \x01(\x05\"+\n\x1bGetBacktestWarmupData_Reply\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t\"*\n\x10GetUSLEIData_Msg\x12\x16\n\x0elookback_month\x18\x01 \x01(\x05\"\x91\x01\n\x12GetUSLEIData_Reply\x12\x46\n\x0fus_lei_data_map\x18\x01 \x03(\x0b\x32-.peacock.GetUSLEIData_Reply.UsLeiDataMapEntry\x1a\x33\n\x11UsLeiDataMapEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\\\n\x18RemoveStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\x12\x18\n\x10strategy_id_list\x18\x03 \x03(\t\"#\n\x13RemoveOldConfig_Msg\x12\x0c\n\x04\x64\x61ys\x18\x01 \x01(\x05\"\x1c\n\x0b\x44ummy_Reply\x12\r\n\x05\x64ummy\x18\x01 \x01(\t\"?\n\x15GetStrategyConfig_Msg\x12\x15\n\rstrategy_name\x18\x01 \x01(\t\x12\x0f\n\x07is_live\x18\x02 \x01(\x08\";\n\x17GetStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x10\n\x08\x63\x66g_list\x18\x02 \x03(\t\"1\n\x16SaveStrategyConfig_Msg\x12\x17\n\x0fstrategy_config\x18\x01 \x01(\t\"*\n\x18SaveStrategyConfig_Reply\x12\x0e\n\x06status\x18\x01 \x01(\t\">\n\x13SaveFileToColud_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\"Z\n\x1aSaveRefDataPriceFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"U\n\x15SaveRefDataFromQC_Msg\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x14\n\x0c\x66ile_content\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63tion_mode\x18\x03 \x01(\t\"\x1a\n\tNoneReply\x12\r\n\x05reply\x18\x01 \x01(\t\"\x17\n\x04Ping\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x17\n\x04Pong\x12\x0f\n\x07message\x18\x01 \x01(\t2\xe8\x06\n\x07Peacock\x12\x43\n\x0fSaveFileToColud\x12\x1c.peacock.SaveFileToColud_Msg\x1a\x12.peacock.NoneReply\x12Q\n\x16SaveRefDataPriceFromQC\x12#.peacock.SaveRefDataPriceFromQC_Msg\x1a\x12.peacock.NoneReply\x12G\n\x11SaveRefDataFromQC\x12\x1e.peacock.SaveRefDataFromQC_Msg\x1a\x12.peacock.NoneReply\x12X\n\x12SaveStrategyConfig\x12\x1f.peacock.SaveStrategyConfig_Msg\x1a!.peacock.SaveStrategyConfig_Reply\x12U\n\x11GetStrategyConfig\x12\x1e.peacock.GetStrategyConfig_Msg\x1a .peacock.GetStrategyConfig_Reply\x12O\n\x14RemoveStrategyConfig\x12!.peacock.RemoveStrategyConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12\x45\n\x0fRemoveOldConfig\x12\x1c.peacock.RemoveOldConfig_Msg\x1a\x14.peacock.Dummy_Reply\x12[\n\x13GetDataByStrategyId\x12 .peacock.GetDataByStrategyId_Msg\x1a\".peacock.GetDataByStrategyId_Reply\x12\x61\n\x15GetBacktestWarmupData\x12\".peacock.GetBacktestWarmupData_Msg\x1a$.peacock.GetBacktestWarmupData_Reply\x12\x46\n\x0cGetUSLEIData\x12\x19.peacock.GetUSLEIData_Msg\x1a\x1b.peacock.GetUSLEIData_Reply\x12+\n\x0bHealthCheck\x12\r.peacock.Ping\x1a\r.peacock.Pongb\x06proto3'
 )
 
 
@@ -216,6 +216,108 @@ _GETBACKTESTWARMUPDATA_REPLY = _descriptor.Descriptor(
 )
 
 
+_GETUSLEIDATA_MSG = _descriptor.Descriptor(
+  name='GetUSLEIData_Msg',
+  full_name='peacock.GetUSLEIData_Msg',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='lookback_month', full_name='peacock.GetUSLEIData_Msg.lookback_month', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=351,
+  serialized_end=393,
+)
+
+
+_GETUSLEIDATA_REPLY_USLEIDATAMAPENTRY = _descriptor.Descriptor(
+  name='UsLeiDataMapEntry',
+  full_name='peacock.GetUSLEIData_Reply.UsLeiDataMapEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='peacock.GetUSLEIData_Reply.UsLeiDataMapEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='peacock.GetUSLEIData_Reply.UsLeiDataMapEntry.value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=490,
+  serialized_end=541,
+)
+
+_GETUSLEIDATA_REPLY = _descriptor.Descriptor(
+  name='GetUSLEIData_Reply',
+  full_name='peacock.GetUSLEIData_Reply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='us_lei_data_map', full_name='peacock.GetUSLEIData_Reply.us_lei_data_map', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[_GETUSLEIDATA_REPLY_USLEIDATAMAPENTRY, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=396,
+  serialized_end=541,
+)
+
+
 _REMOVESTRATEGYCONFIG_MSG = _descriptor.Descriptor(
   name='RemoveStrategyConfig_Msg',
   full_name='peacock.RemoveStrategyConfig_Msg',
@@ -257,8 +359,8 @@ _REMOVESTRATEGYCONFIG_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=351,
-  serialized_end=443,
+  serialized_start=543,
+  serialized_end=635,
 )
 
 
@@ -289,8 +391,8 @@ _REMOVEOLDCONFIG_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=445,
-  serialized_end=480,
+  serialized_start=637,
+  serialized_end=672,
 )
 
 
@@ -321,8 +423,8 @@ _DUMMY_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=482,
-  serialized_end=510,
+  serialized_start=674,
+  serialized_end=702,
 )
 
 
@@ -360,8 +462,8 @@ _GETSTRATEGYCONFIG_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=512,
-  serialized_end=575,
+  serialized_start=704,
+  serialized_end=767,
 )
 
 
@@ -399,8 +501,8 @@ _GETSTRATEGYCONFIG_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=577,
-  serialized_end=636,
+  serialized_start=769,
+  serialized_end=828,
 )
 
 
@@ -431,8 +533,8 @@ _SAVESTRATEGYCONFIG_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=638,
-  serialized_end=687,
+  serialized_start=830,
+  serialized_end=879,
 )
 
 
@@ -463,8 +565,8 @@ _SAVESTRATEGYCONFIG_REPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=689,
-  serialized_end=731,
+  serialized_start=881,
+  serialized_end=923,
 )
 
 
@@ -502,8 +604,8 @@ _SAVEFILETOCOLUD_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=733,
-  serialized_end=795,
+  serialized_start=925,
+  serialized_end=987,
 )
 
 
@@ -548,8 +650,8 @@ _SAVEREFDATAPRICEFROMQC_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=797,
-  serialized_end=887,
+  serialized_start=989,
+  serialized_end=1079,
 )
 
 
@@ -594,8 +696,8 @@ _SAVEREFDATAFROMQC_MSG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=889,
-  serialized_end=974,
+  serialized_start=1081,
+  serialized_end=1166,
 )
 
 
@@ -626,8 +728,8 @@ _NONEREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=976,
-  serialized_end=1002,
+  serialized_start=1168,
+  serialized_end=1194,
 )
 
 
@@ -658,8 +760,8 @@ _PING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1004,
-  serialized_end=1027,
+  serialized_start=1196,
+  serialized_end=1219,
 )
 
 
@@ -690,14 +792,18 @@ _PONG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1029,
-  serialized_end=1052,
+  serialized_start=1221,
+  serialized_end=1244,
 )
 
+_GETUSLEIDATA_REPLY_USLEIDATAMAPENTRY.containing_type = _GETUSLEIDATA_REPLY
+_GETUSLEIDATA_REPLY.fields_by_name['us_lei_data_map'].message_type = _GETUSLEIDATA_REPLY_USLEIDATAMAPENTRY
 DESCRIPTOR.message_types_by_name['GetDataByStrategyId_Msg'] = _GETDATABYSTRATEGYID_MSG
 DESCRIPTOR.message_types_by_name['GetDataByStrategyId_Reply'] = _GETDATABYSTRATEGYID_REPLY
 DESCRIPTOR.message_types_by_name['GetBacktestWarmupData_Msg'] = _GETBACKTESTWARMUPDATA_MSG
 DESCRIPTOR.message_types_by_name['GetBacktestWarmupData_Reply'] = _GETBACKTESTWARMUPDATA_REPLY
+DESCRIPTOR.message_types_by_name['GetUSLEIData_Msg'] = _GETUSLEIDATA_MSG
+DESCRIPTOR.message_types_by_name['GetUSLEIData_Reply'] = _GETUSLEIDATA_REPLY
 DESCRIPTOR.message_types_by_name['RemoveStrategyConfig_Msg'] = _REMOVESTRATEGYCONFIG_MSG
 DESCRIPTOR.message_types_by_name['RemoveOldConfig_Msg'] = _REMOVEOLDCONFIG_MSG
 DESCRIPTOR.message_types_by_name['Dummy_Reply'] = _DUMMY_REPLY
@@ -740,6 +846,28 @@ GetBacktestWarmupData_Reply = _reflection.GeneratedProtocolMessageType('GetBackt
   # @@protoc_insertion_point(class_scope:peacock.GetBacktestWarmupData_Reply)
   })
 _sym_db.RegisterMessage(GetBacktestWarmupData_Reply)
+
+GetUSLEIData_Msg = _reflection.GeneratedProtocolMessageType('GetUSLEIData_Msg', (_message.Message,), {
+  'DESCRIPTOR' : _GETUSLEIDATA_MSG,
+  '__module__' : 'peacock_pb2'
+  # @@protoc_insertion_point(class_scope:peacock.GetUSLEIData_Msg)
+  })
+_sym_db.RegisterMessage(GetUSLEIData_Msg)
+
+GetUSLEIData_Reply = _reflection.GeneratedProtocolMessageType('GetUSLEIData_Reply', (_message.Message,), {
+
+  'UsLeiDataMapEntry' : _reflection.GeneratedProtocolMessageType('UsLeiDataMapEntry', (_message.Message,), {
+    'DESCRIPTOR' : _GETUSLEIDATA_REPLY_USLEIDATAMAPENTRY,
+    '__module__' : 'peacock_pb2'
+    # @@protoc_insertion_point(class_scope:peacock.GetUSLEIData_Reply.UsLeiDataMapEntry)
+    })
+  ,
+  'DESCRIPTOR' : _GETUSLEIDATA_REPLY,
+  '__module__' : 'peacock_pb2'
+  # @@protoc_insertion_point(class_scope:peacock.GetUSLEIData_Reply)
+  })
+_sym_db.RegisterMessage(GetUSLEIData_Reply)
+_sym_db.RegisterMessage(GetUSLEIData_Reply.UsLeiDataMapEntry)
 
 RemoveStrategyConfig_Msg = _reflection.GeneratedProtocolMessageType('RemoveStrategyConfig_Msg', (_message.Message,), {
   'DESCRIPTOR' : _REMOVESTRATEGYCONFIG_MSG,
@@ -833,6 +961,7 @@ Pong = _reflection.GeneratedProtocolMessageType('Pong', (_message.Message,), {
 _sym_db.RegisterMessage(Pong)
 
 
+_GETUSLEIDATA_REPLY_USLEIDATAMAPENTRY._options = None
 
 _PEACOCK = _descriptor.ServiceDescriptor(
   name='Peacock',
@@ -841,8 +970,8 @@ _PEACOCK = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1055,
-  serialized_end=1855,
+  serialized_start=1247,
+  serialized_end=2119,
   methods=[
   _descriptor.MethodDescriptor(
     name='SaveFileToColud',
@@ -935,9 +1064,19 @@ _PEACOCK = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='GetUSLEIData',
+    full_name='peacock.Peacock.GetUSLEIData',
+    index=9,
+    containing_service=None,
+    input_type=_GETUSLEIDATA_MSG,
+    output_type=_GETUSLEIDATA_REPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='HealthCheck',
     full_name='peacock.Peacock.HealthCheck',
-    index=9,
+    index=10,
     containing_service=None,
     input_type=_PING,
     output_type=_PONG,

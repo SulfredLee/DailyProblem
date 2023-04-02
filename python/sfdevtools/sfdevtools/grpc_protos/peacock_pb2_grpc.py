@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import sfdevtools.grpc_protos.peacock_pb2 as peacock__pb2
+import peacock_pb2 as peacock__pb2
 
 
 class PeacockStub(object):
@@ -59,6 +59,11 @@ class PeacockStub(object):
                 '/peacock.Peacock/GetBacktestWarmupData',
                 request_serializer=peacock__pb2.GetBacktestWarmupData_Msg.SerializeToString,
                 response_deserializer=peacock__pb2.GetBacktestWarmupData_Reply.FromString,
+                )
+        self.GetUSLEIData = channel.unary_unary(
+                '/peacock.Peacock/GetUSLEIData',
+                request_serializer=peacock__pb2.GetUSLEIData_Msg.SerializeToString,
+                response_deserializer=peacock__pb2.GetUSLEIData_Reply.FromString,
                 )
         self.HealthCheck = channel.unary_unary(
                 '/peacock.Peacock/HealthCheck',
@@ -131,6 +136,12 @@ class PeacockServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetUSLEIData(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def HealthCheck(self, request, context):
         """eagle - end
         """
@@ -185,6 +196,11 @@ def add_PeacockServicer_to_server(servicer, server):
                     servicer.GetBacktestWarmupData,
                     request_deserializer=peacock__pb2.GetBacktestWarmupData_Msg.FromString,
                     response_serializer=peacock__pb2.GetBacktestWarmupData_Reply.SerializeToString,
+            ),
+            'GetUSLEIData': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetUSLEIData,
+                    request_deserializer=peacock__pb2.GetUSLEIData_Msg.FromString,
+                    response_serializer=peacock__pb2.GetUSLEIData_Reply.SerializeToString,
             ),
             'HealthCheck': grpc.unary_unary_rpc_method_handler(
                     servicer.HealthCheck,
@@ -352,6 +368,23 @@ class Peacock(object):
         return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/GetBacktestWarmupData',
             peacock__pb2.GetBacktestWarmupData_Msg.SerializeToString,
             peacock__pb2.GetBacktestWarmupData_Reply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetUSLEIData(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/peacock.Peacock/GetUSLEIData',
+            peacock__pb2.GetUSLEIData_Msg.SerializeToString,
+            peacock__pb2.GetUSLEIData_Reply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

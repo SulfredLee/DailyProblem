@@ -9,6 +9,7 @@ service Eagle {
     rpc HealthCheck (Ping) returns (Pong);
     rpc GetDataByStrategyId (GetDataByStrategyId_Msg) returns (GetDataByStrategyId_Reply);
     rpc GetBacktestWarmupData (GetBacktestWarmupData_Msg) returns (GetBacktestWarmupData_Reply);
+    rpc GetUSLEIData (GetUSLEIData_Msg) returns (GetUSLEIData_Reply);
 }
 
 message GetBacktestWarmupData_Msg {
@@ -20,6 +21,13 @@ message GetBacktestWarmupData_Msg {
 
 message GetBacktestWarmupData_Reply {
     string data = 1;
+}
+
+message GetUSLEIData_Msg {
+    int32 lookback_month = 1;
+}
+message GetUSLEIData_Reply {
+    map<string, string> us_lei_data_map = 1;
 }
 
 message GetDataByStrategyId_Msg {
