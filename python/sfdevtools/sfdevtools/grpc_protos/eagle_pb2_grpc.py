@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import eagle_pb2 as eagle__pb2
+import sfdevtools.grpc_protos.eagle_pb2 as eagle__pb2
 
 
 class EagleStub(object):

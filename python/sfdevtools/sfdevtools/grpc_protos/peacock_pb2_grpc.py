@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import peacock_pb2 as peacock__pb2
+import psfdevtools.grpc_protos.eacock_pb2 as peacock__pb2
 
 
 class PeacockStub(object):
