@@ -105,7 +105,8 @@ class TimelyCache_Snapshot(object):
             last_n = idx
             # remove from dict
             for old_key in old_key_list:
-                del self.__dict[old_key]
+                if old_key in self.__dict:
+                    del self.__dict[old_key]
             # remove from list
             del self.__time_index[:last_n]
             # remove from hist data
@@ -197,5 +198,6 @@ class TimelyCache_Hist(object):
         if len(self.__dict) > self.__max_size:
             extra_n = len(self.__dict) - self.__max_size
             for ele in self.__time_index[:extra_n]:
-                del self.__dict[ele[0]] # ele = (old_key, old_value)
+                if ele[0] in self.__dict:
+                    del self.__dict[ele[0]] # ele = (old_key, old_value)
             del self.__time_index[:extra_n]
