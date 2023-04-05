@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple, Union, Any
+from typing import List, Dict, Tuple, Union, Any, Set
 import threading
 import copy
 
@@ -9,7 +9,8 @@ class TimelyCache_Snapshot(object):
     """
     def __init__(self, max_size: int = 1000, eq_fun: Any = None):
         self.__dict: Dict[Any, Any] = dict()
-        self.__time_index: List[Any] = list()
+        self.__time_index: List[Any] = list() # store the timeseries of keys
+        self.__key_counter: Dict[Any, int] = dict() # counting the number of occurance of a key
         self.__hist_data: List[Union[Any, Any]] = list()
         self.__mutex: threading.Lock = threading.Lock()
         self.__max_size = max_size
@@ -66,6 +67,9 @@ class TimelyCache_Snapshot(object):
         if key not in self.__dict:
             # new value found
             self.__time_index.append(key)
+            if key not in self.__key_counter:
+                self.__key_counter[key] = 0
+            self.__key_counter[key] += 1
             is_new = True
 
             # save record
@@ -74,10 +78,14 @@ class TimelyCache_Snapshot(object):
         else:
             if (None is not self.__eq_fun and self.__eq_fun(first=self.__dict[key], second=value))\
                or self.__dict[key] == value:
-                # save value found
+                # old value found
                 return is_new
             else:
                 # new value found
+                self.__time_index.append(key)
+                if key not in self.__key_counter:
+                    self.__key_counter[key] = 0
+                self.__key_counter[key] += 1
                 is_new = True
 
                 # save record
@@ -88,29 +96,38 @@ class TimelyCache_Snapshot(object):
         return is_new
 
     def __remove_extra_records(self):
-        if len(self.__dict) > self.__max_size:
-            total_old_records = len(self.__dict) - self.__max_size
-            old_key_list: List[Any] = list()
-            idx = 0
-            while total_old_records > len(old_key_list):
-                if len(old_key_list) == 0:
-                    old_key_list.append(self.__time_index[idx])
-                else:
-                    if old_key_list[-1] != self.__time_index[idx]:
-                        old_key_list.append(self.__time_index[idx])
+        if len(self.__time_index) > self.__max_size:
+            the_key = self.__time_index[0]
+            self.__key_counter[the_key] -= 1
+            if self.__key_counter[the_key] <= 0:
+                del self.__key_counter[the_key]
+                del self.__dict[the_key]
+            del self.__hist_data[0]
+            del self.__time_index[0]
 
-                while old_key_list[-1] == self.__time_index[idx]:
-                    idx += 1
+        # if len(self.__dict) > self.__max_size:
+        #     total_old_records = len(self.__dict) - self.__max_size
+        #     old_key_set: Set[Any] = list()
+        #     idx = 0
+        #     while total_old_records > len(old_key_set):
+        #         if len(old_key_set) == 0:
+        #             old_key_set.append(self.__time_index[idx])
+        #         else:
+        #             if old_key_set[-1] != self.__time_index[idx]:
+        #                 old_key_set.append(self.__time_index[idx])
 
-            last_n = idx
-            # remove from dict
-            for old_key in old_key_list:
-                if old_key in self.__dict:
-                    del self.__dict[old_key]
-            # remove from list
-            del self.__time_index[:last_n]
-            # remove from hist data
-            del self.__hist_data[:total_old_records]
+        #         while old_key_set[-1] == self.__time_index[idx]:
+        #             idx += 1
+
+        #     last_n = idx
+        #     # remove from dict
+        #     for old_key in old_key_set:
+        #         if old_key in self.__dict:
+        #             del self.__dict[old_key]
+        #     # remove from list
+        #     del self.__time_index[:last_n]
+        #     # remove from hist data
+        #     del self.__hist_data[:total_old_records]
 
 class TimelyCache_Hist(object):
     """! Keep a limited list of latest records
@@ -195,9 +212,11 @@ class TimelyCache_Hist(object):
         return is_new
 
     def __remove_extra_records(self):
-        if len(self.__dict) > self.__max_size:
-            extra_n = len(self.__dict) - self.__max_size
-            for ele in self.__time_index[:extra_n]:
-                if ele[0] in self.__dict:
-                    del self.__dict[ele[0]] # ele = (old_key, old_value)
-            del self.__time_index[:extra_n]
+        if len(self.__time_index) > self.__max_size:
+            del self.__dict[self.__time_index[0][0]]
+            del self.__time_index[:1]
+        # if len(self.__time_index) > self.__max_size:
+        #     extra_n = len(self.__time_index) - self.__max_size
+        #     for ele in self.__time_index[:extra_n]:
+        #         del self.__dict[ele[0]] # ele = (old_key, old_value)
+        #     del self.__time_index[:extra_n]

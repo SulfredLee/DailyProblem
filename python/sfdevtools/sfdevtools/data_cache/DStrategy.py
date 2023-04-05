@@ -153,15 +153,13 @@ class DStrategy(object):
         for is_new, order in zip(is_new_list, orders):
             if is_new:
                 self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.Order, fid_value=order)
-                order_snap = self.__order_cache.get_order_latest_snapshot(platform_order_id=order.platform_order_id)
-                self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.Order_Snap, fid_value=order_snap)
+                self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.Order_Snap, fid_value=order)
 
     def save_order(self, order: TS_Order) -> None:
         is_new = self.__order_cache.save_order(order=order)
         if is_new and self.__update_cb is not None:
             self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.Order, fid_value=order)
-            order_snap = self.__order_cache.get_order_latest_snapshot(platform_order_id=order.platform_order_id)
-            self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.Order_Snap, fid_value=order_snap)
+            self.__update_cb(dcache=self.__get_parent_dcache_fun(), msg_id=self.__strategy_name, fid_num=ts_cop_pb2.Cop.FidNum.Order_Snap, fid_value=order)
 
     def save_db_record_id(self, order: TS_Order, db_record_id: str) -> None:
         self.__order_cache.save_db_record_id(order=order, db_record_id=db_record_id)
