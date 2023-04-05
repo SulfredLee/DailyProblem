@@ -9,7 +9,7 @@ class DOrderCache(object):
     def __init__(self):
         self.__logger: logging.Logger = None
         self.__mutex: threading.Lock = None
-        self.__db_id_hist: TimelyCache.TimelyCache_Hist = None # key: order_id, value: db_record_id
+        self.__db_id_hist: TimelyCache.TimelyCache_Hist = None # key: platform_order_id, value: db_record_id
         self.__order_hist: TimelyCache.TimelyCache_Hist = None # key: order_id, value: TS_Order
         self.__order_snapshot: TimelyCache.TimelyCache_Snapshot = None # key: platform_order_id, value: TS_Order
         self.__eq_fun: Any = None
@@ -59,20 +59,20 @@ class DOrderCache(object):
         is_new = False
 
         with self.__mutex:
-            if not self.__db_id_hist.is_exist(key=order.order_id):
+            if not self.__db_id_hist.is_exist(key=order.platform_order_id):
                 # found new record
                 is_new = True
 
-                self.__db_id_hist.upsert_ele(key=order.order_id, value=db_record_id)
+                self.__db_id_hist.upsert_ele(key=order.platform_order_id, value=db_record_id)
             else:
-                if self.__db_id_hist.get_ele(key=order.order_id) == db_record_id:
+                if self.__db_id_hist.get_ele(key=order.platform_order_id) == db_record_id:
                     # found old record
                     is_new = False
                 else:
                     # found new record
                     is_new = True
 
-                    self.__db_id_hist.upsert_ele(key=order.order_id, value=db_record_id)
+                    self.__db_id_hist.upsert_ele(key=order.platform_order_id, value=db_record_id)
 
         return is_new
 
@@ -106,10 +106,10 @@ class DOrderCache(object):
             else:
                 return None
 
-    def get_db_record_id(self, order_id: str) -> str:
+    def get_db_record_id(self, platform_order_id: str) -> str:
         with self.__mutex:
-            if self.__db_id_hist.is_exist(key=order_id):
-                return self.__db_id_hist.get_ele(key=order_id)
+            if self.__db_id_hist.is_exist(key=platform_order_id):
+                return self.__db_id_hist.get_ele(key=platform_order_id)
             else:
                 return None
 
@@ -120,7 +120,6 @@ class DOrderCache(object):
             is_new = True
 
             self.__order_hist.upsert_ele(key=order.order_id, value=order)
-            self.__db_id_hist.upsert_ele(key=order.order_id, value=None)
         else:
             if (self.__eq_fun is not None and self.__eq_fun(first=self.__order_hist.get_ele(key=order.order_id), second=order)\
                 or self.__order_hist.get_ele(key=order.order_id) == order):
@@ -131,6 +130,5 @@ class DOrderCache(object):
                 is_new = True
 
                 self.__order_hist.upsert_ele(key=order.order_id, value=order)
-                self.__db_id_hist.upsert_ele(key=order.order_id, value=None)
 
         return is_new

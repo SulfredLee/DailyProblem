@@ -214,7 +214,7 @@ class TimelyCache_Hist(object):
     def __remove_extra_records(self):
         if len(self.__time_index) > self.__max_size:
             del self.__dict[self.__time_index[0][0]]
-            del self.__time_index[:1]
+            del self.__time_index[0]
         # if len(self.__time_index) > self.__max_size:
         #     extra_n = len(self.__time_index) - self.__max_size
         #     for ele in self.__time_index[:extra_n]:

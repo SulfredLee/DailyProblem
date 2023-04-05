@@ -64,8 +64,8 @@ class DCache(object):
     def get_order_latest_snapshot(self, platform_order_id: str) -> Union[bool, TS_Order]:
         return self.__strategy.get_order_latest_snapshot(platform_order_id=platform_order_id)
 
-    def get_db_record_id(self, order_id: str) -> Union[bool, str]:
-        return self.__strategy.get_db_record_id(order_id=order_id)
+    def get_db_record_id(self, platform_order_id: str) -> Union[bool, str]:
+        return self.__strategy.get_db_record_id(platform_order_id=platform_order_id)
 
     def get_order(self, order_id: str) -> Union[bool, TS_Order]:
         return self.__strategy.get_order(order_id=order_id)
