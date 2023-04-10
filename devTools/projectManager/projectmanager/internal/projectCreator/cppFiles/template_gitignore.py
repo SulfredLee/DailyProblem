@@ -38,4 +38,13 @@ build_release/
 install/
 vcpkg/
 vcpkg
+
+# cpp tags files
+cscope.files
+cscope.in.out
+cscope.out
+cscope.po.out
+GPATH
+GRTAGS
+GTAGS
 """

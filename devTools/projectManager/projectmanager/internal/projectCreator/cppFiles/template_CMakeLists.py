@@ -42,7 +42,7 @@ find_package(GTest CONFIG REQUIRED)
 get_target_property(GTEST_INCLUDE_DIRS GTest::gtest INTERFACE_INCLUDE_DIRECTORIES)
 message(STATUS "Gtest include: " ${GTEST_INCLUDE_DIRS})
 
-# Sub-directories where more CMakeLists.txt exist
+# Add subdirectory
 add_subdirectory(app)
 add_subdirectory(test)
 

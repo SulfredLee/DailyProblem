@@ -12,7 +12,7 @@ pythonProjectType=("Python Restful API Project" "Python General Project" "Python
 cppProjectType=("Cpp General Project" "Cpp QT Project")
 k8sProjectType=("General Infra Project")
 ## udpate project selection
-cppProjectUpdateType=("Add External Project" "Add Static Library" "Add Dynamic Library")
+cppProjectUpdateType=("Add External Project" "Add Static Library" "Add Dynamic Library" "Add Simple App")
 pythonProjectUpdateType=("Add GRPC Project" "Add Restful API Project" "Add Web Site Project")
 
 # functions

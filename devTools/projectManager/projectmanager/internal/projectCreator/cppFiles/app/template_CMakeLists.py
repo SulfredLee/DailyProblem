@@ -1,5 +1,5 @@
 content_st = """
-set(targetName "{{ project_name }}")
+set(targetName "{{ app_name }}")
 get_filename_component(folderName ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 string(REPLACE " " "_" folderName ${folderName})
 
