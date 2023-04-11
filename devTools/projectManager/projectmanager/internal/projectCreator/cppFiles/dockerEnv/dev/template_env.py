@@ -5,4 +5,6 @@ content_st = """
 # CUR_GID={{ cur_gid }}
 
 TERM=xterm-256color
+# for better debug logs
+QT_DEBUG_PLUGINS=1
 """

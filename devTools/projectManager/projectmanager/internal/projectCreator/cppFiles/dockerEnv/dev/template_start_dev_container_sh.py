@@ -17,7 +17,12 @@ if [[ $? == 0 ]]; then
     fi
     docker exec -it $CONTAINER_ID bash
 else
-    docker run -it -v "${PWD}/../../:/cpp/project:rw" --env-file ./.env -u $(id -u):$(id -g) {{ project_name }}:${DOCKER_VERSION}_$(whoami) bash -c "ln -s /cpp/vcpkg /cpp/project/; bash"
-    # docker run -it -v "${PWD}/../../:/cpp/project:rw" --env-file ./.env -u $(id -u):$(id -g) {{ project_name }}:${DOCKER_VERSION}_$(whoami) bash -c "bash"
+    # using enviroment variable DISPLAY for running gui application within docker container https://stackoverflow.com/a/75336008/2358836
+    docker run -it -v "${PWD}/../../:/cpp/project:rw"\\
+            -v "/tmp/.X11-unix:/tmp/.X11-unix"\\
+            --env-file ./.env\\
+            -e DISPLAY=$DISPLAY\\
+            -u $(id -u):$(id -g)\\
+            {{ project_name }}:${DOCKER_VERSION}_$(whoami) bash -c "ln -s /cpp/vcpkg /cpp/project/; bash"
 fi
 """
