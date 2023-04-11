@@ -32,22 +32,17 @@ class cppCreator(projectCreatorBase):
 
     # virtual
     def create_project(self, project_type: str):
-        if cc.cpp_qt_project == project_type:
-            self.__create_qt_project()
-        elif cc.cpp_general_project == project_type:
+        if cc.cpp_general_project == project_type:
             self.__create_general_project()
         else:
             raise ValueError(f"Not support project type: {project_type}")
-
-    def __create_qt_project(self):
-        self._logger.info("Here")
 
     def __create_general_project(self):
         self._logger.info(f"Creating project in folder: {self._project_path}")
 
         # create folders
         project_root = Path.joinpath(self._project_path, self._project_name)
-        project_sub_root = Path.joinpath(project_root, self._project_name)
+        project_sub_root = Path.joinpath(project_root, "project")
         project_root.mkdir(parents=True, exist_ok=True)
         for path_name in [# Path.joinpath(project_root, "release")
                           # , Path.joinpath(project_root, "debug")
@@ -59,8 +54,8 @@ class cppCreator(projectCreatorBase):
                           , Path.joinpath(project_sub_root, "test")
                           , Path.joinpath(project_root, "dockerEnv")
                           , Path.joinpath(project_root, "dockerEnv", "dev")
-                          , Path.joinpath(project_root, "dockerEnv", "uat")
-                          , Path.joinpath(project_root, "dockerEnv", "prod")
+                          # , Path.joinpath(project_root, "dockerEnv", "uat")
+                          # , Path.joinpath(project_root, "dockerEnv", "prod")
                           ]:
             path_name.mkdir(parents=True, exist_ok=True)
 
@@ -74,10 +69,6 @@ class cppCreator(projectCreatorBase):
                              , [Path.joinpath(project_root, "scripts", "PrepareSpacemacsTags.sh"), tpst.content_st]
                              , [Path.joinpath(project_root, "scripts", "CCMake_Debug.sh"), dtc.content_st]
                              , [Path.joinpath(project_root, "scripts", "CCMake_Release.sh"), rtc.content_st]
-                             , [Path.joinpath(project_root, "scripts", "BuildImageRunner.sh"), tbir.content_st]
-                             , [Path.joinpath(project_root, "scripts", "BuildImageDev.sh"), tbib.content_st]
-                             , [Path.joinpath(project_root, "scripts", "Dockerfile.Dev"), td.content_st]
-                             , [Path.joinpath(project_root, "scripts", "Dockerfile.Run"), tdr.content_st]
                              # , [Path.joinpath(project_root, "install", ".gitkeep"), tgk.content_st]
                              , [Path.joinpath(project_sub_root, "CMakeLists.txt"), tc.content_st]
                              , [Path.joinpath(project_sub_root, "app", "Mainpage.dox"), tmd.content_st]
@@ -87,10 +78,14 @@ class cppCreator(projectCreatorBase):
                              , [Path.joinpath(project_sub_root, "test", f"{self._project_name}_Test.h"), tth.content_st]
                              , [Path.joinpath(project_sub_root, "test", f"{self._project_name}_Test.cpp"), ttc.content_st]
                              , [Path.joinpath(project_sub_root, "Doxyfile"), tdf.content_st]
-                             , [Path.joinpath(project_root, "dockerEnv", "uat", ".env"), ute.content_st]
-                             , [Path.joinpath(project_root, "dockerEnv", "uat", "docker-compose.yml"), utdc.content_st]
-                             , [Path.joinpath(project_root, "dockerEnv", "prod", ".env"), pte.content_st]
-                             , [Path.joinpath(project_root, "dockerEnv", "prod", "docker-compose.yml"), ptdc.content_st]
+                             # , [Path.joinpath(project_root, "dockerEnv", "uat", ".env"), ute.content_st]
+                             # , [Path.joinpath(project_root, "dockerEnv", "uat", "docker-compose.yml"), utdc.content_st]
+                             # , [Path.joinpath(project_root, "dockerEnv", "prod", ".env"), pte.content_st]
+                             # , [Path.joinpath(project_root, "dockerEnv", "prod", "docker-compose.yml"), ptdc.content_st]
+                             , [Path.joinpath(project_root, "dockerEnv", "Dockerfile.Dev"), td.content_st]
+                             , [Path.joinpath(project_root, "dockerEnv", "Dockerfile.Run"), tdr.content_st]
+                             , [Path.joinpath(project_root, "dockerEnv", "BuildImageRunner.sh"), tbir.content_st]
+                             , [Path.joinpath(project_root, "dockerEnv", "BuildImageDev.sh"), tbib.content_st]
                              , [Path.joinpath(project_root, "dockerEnv", "dev", ".env"), dte.content_st]
                              , [Path.joinpath(project_root, "dockerEnv", "dev", "start_dev_container.sh"), dtsdc.content_st]
                              ]:
@@ -104,8 +99,8 @@ class cppCreator(projectCreatorBase):
                           , Path.joinpath(project_root, "scripts", "PrepareSpacemacsTags.sh")
                           , Path.joinpath(project_root, "scripts", "CCMake_Debug.sh")
                           , Path.joinpath(project_root, "scripts", "CCMake_Release.sh")
-                          , Path.joinpath(project_root, "scripts", "BuildImageRunner.sh")
-                          , Path.joinpath(project_root, "scripts", "BuildImageDev.sh")
+                          , Path.joinpath(project_root, "dockerEnv", "BuildImageRunner.sh")
+                          , Path.joinpath(project_root, "dockerEnv", "BuildImageDev.sh")
                           , Path.joinpath(project_root, "dockerEnv", "dev", "start_dev_container.sh")
                           ]:
             st = os.stat(file_name)

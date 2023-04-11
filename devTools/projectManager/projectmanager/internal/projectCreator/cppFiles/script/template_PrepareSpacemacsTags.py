@@ -1,6 +1,6 @@
 content_st = """
 #!/bin/bash
-cd ../{{ project_name }}/
+cd ../project/
 # buildPath="$PWD"
 buildPath="."
 

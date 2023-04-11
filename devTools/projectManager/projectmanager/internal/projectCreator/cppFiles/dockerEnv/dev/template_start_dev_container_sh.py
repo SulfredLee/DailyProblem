@@ -18,5 +18,6 @@ if [[ $? == 0 ]]; then
     docker exec -it $CONTAINER_ID bash
 else
     docker run -it -v "${PWD}/../../:/cpp/project:rw" --env-file ./.env -u $(id -u):$(id -g) {{ project_name }}:${DOCKER_VERSION}_$(whoami) bash -c "ln -s /cpp/vcpkg /cpp/project/; bash"
+    # docker run -it -v "${PWD}/../../:/cpp/project:rw" --env-file ./.env -u $(id -u):$(id -g) {{ project_name }}:${DOCKER_VERSION}_$(whoami) bash -c "bash"
 fi
 """

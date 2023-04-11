@@ -2,12 +2,12 @@ content_st = """
 #!/bin/bash
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-VCPKG_DIR="$SCRIPT_DIR/../{{ project_name }}/vcpkg/scripts/buildsystems"
+VCPKG_DIR="$SCRIPT_DIR/../vcpkg/scripts/buildsystems"
 VCPKG_CMAKE="$VCPKG_DIR/vcpkg.cmake"
 
 BUILD_TYPE="release"
 INSTALL_DIR="../install"
-SOURCE_DIR="../{{ project_name }}"
+SOURCE_DIR="../project"
 BUILD_FOLDER="../release"
 
 if [ ! -d "$BUILD_FOLDER" ];

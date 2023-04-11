@@ -9,10 +9,10 @@ updateLanguageTypes=("Cpp" "Python")
 
 ## create project selection
 pythonProjectType=("Python Restful API Project" "Python General Project" "Python Web Site Project" "Python QC Project" "Python GRPC Project")
-cppProjectType=("Cpp General Project" "Cpp QT Project")
+cppProjectType=("Cpp General Project")
 k8sProjectType=("General Infra Project")
 ## udpate project selection
-cppProjectUpdateType=("Add External Project" "Add Static Library" "Add Dynamic Library" "Add Simple App")
+cppProjectUpdateType=("Add External Project" "Add Static Library" "Add Dynamic Library" "Add Simple App" "Add QT App" "Add QT Static Library" "Add QT Dynamic Library")
 pythonProjectUpdateType=("Add GRPC Project" "Add Restful API Project" "Add Web Site Project")
 
 # functions

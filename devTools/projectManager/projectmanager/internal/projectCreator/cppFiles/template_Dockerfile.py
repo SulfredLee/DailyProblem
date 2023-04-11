@@ -1,8 +1,8 @@
 content_st = """
 # FROM ubuntu:16.04 AS builder
 # FROM ubuntu:18.04 AS builder
-# FROM ubuntu:20.04 AS builder
-FROM ubuntu:22.04 AS builder
+FROM ubuntu:20.04 AS builder
+# FROM ubuntu:22.04 AS builder
 
 RUN apt-get update
 RUN apt-get -y install vim
@@ -10,11 +10,14 @@ RUN apt-get -y install vim
 WORKDIR /cpp/project/
 
 FROM builder AS dev
+# fix bug https://github.com/Netflix/security_monkey/issues/1197 --- hunged during Geographic area
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y install build-essential vim ninja-build cmake doxygen git gdb curl zip pkg-config doxygen graphviz
+RUN apt-get -y install qt5-default
 
 # init cpp package manager
-WORKDIR /cpp/script/
-COPY ./script/Preparevcpkg.sh /cpp/script/
+WORKDIR /cpp/docker_scripts/
+COPY ./scripts/Preparevcpkg.sh /cpp/docker_scripts/
 RUN chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh
 
 WORKDIR /cpp/project/

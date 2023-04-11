@@ -36,11 +36,12 @@ else ()
 endif ()
 message(STATUS "Info - CMAKE_THREAD_LIBS_INIT: ${CMAKE_THREAD_LIBS_INIT}")
 
-
 # Handle GTest
 find_package(GTest CONFIG REQUIRED)
 get_target_property(GTEST_INCLUDE_DIRS GTest::gtest INTERFACE_INCLUDE_DIRECTORIES)
 message(STATUS "Gtest include: " ${GTEST_INCLUDE_DIRS})
+
+# Add third party library
 
 # Add subdirectory
 add_subdirectory(app)
