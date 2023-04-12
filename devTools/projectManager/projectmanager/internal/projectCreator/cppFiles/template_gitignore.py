@@ -33,8 +33,8 @@ content_st = """
 *.app
 
 # framework files
-build_debug/
-build_release/
+debug/
+release/
 install/
 vcpkg/
 vcpkg

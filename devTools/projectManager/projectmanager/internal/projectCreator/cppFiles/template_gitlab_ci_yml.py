@@ -21,10 +21,11 @@ content_st = """
 # https://docs.gitlab.com/ee/ci/variables/predefined_variables.html --- predefined variables
 
 stages:          # List of stages for jobs, and their order of execution
-  - build-image
+  - build-dev-image
   - build-test
   - build-package
   - tag-release
+  - build-run-image
   - deploy
 
 variables:
@@ -38,43 +39,29 @@ variables:
   RELEASE_NAME: ${CI_PROJECT_NAME}_Release
   PACKAGE_VERSION: "$CI_COMMIT_TAG"
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${RELEASE_NAME}/${PACKAGE_VERSION}"
-  PACKAGE_NAME: "install_${PACKAGE_VERSION}.tar.gz"
+  PACKAGE_NAME: "install_${PACKAGE_VERSION}.tar"
   PACKAGE_VERSION_UAT: "$CI_COMMIT_REF_NAME"
   PACKAGE_REGISTRY_URL_UAT: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${RELEASE_NAME}/${PACKAGE_VERSION_UAT}"
-  PACKAGE_NAME_UAT: "install_${PACKAGE_VERSION_UAT}.tar.gz"
+  PACKAGE_NAME_UAT: "install_${PACKAGE_VERSION_UAT}.tar"
 
 build-dev-image:
-  stage: build-image
+  stage: build-dev-image
   image: docker:latest
   services:
     - docker:20.10.12-dind
   script:
     - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker pull $DOCKER_IMAGE_NAME_BUILDER || true # use the cached image if possible
-    - docker build --build-arg DOCKER_UID=$(id -u) --build-arg DOCKER_GID=$(id -g) --build-arg DOCKER_GNAME=$(whoami) DOCKER_UNAME=$(whoami) --target builder -t $DOCKER_IMAGE_NAME_BUILDER .
+    - cd dockerEnv
+    - docker build --file Dockerfile.Dev --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --build-arg DOCKER_GNAME=$(whoami) --build-arg DOCKER_UNAME=$(whoami) --target dev -t $DOCKER_IMAGE_NAME_BUILDER ..
     - docker push $DOCKER_IMAGE_NAME_BUILDER
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
       changes:
-        - Dockerfile
-    - when: never
-
-build-run-image:
-  stage: build-image
-  image: docker:latest
-  services:
-    - docker:20.10.12-dind
-  script:
-    - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker pull $DOCKER_IMAGE_NAME_RUNNER || true # use the cached image if possible
-    - docker build --build-arg DOCKER_UID=$(id -u) --build-arg DOCKER_GID=$(id -g) --build-arg DOCKER_GNAME=$(whoami) DOCKER_UNAME=$(whoami)  --target runner -t $DOCKER_IMAGE_NAME_RUNNER .
-    - docker push $DOCKER_IMAGE_NAME_RUNNER
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: manual
-      changes:
-        - Dockerfile
+        - dockerEnv/Dockerfile.Dev
+        - {{ project_name }}/**/*
+        - poetry.lock
     - when: never
 
 build-test-app:       # This job runs in the build stage, which runs first.
@@ -82,9 +69,9 @@ build-test-app:       # This job runs in the build stage, which runs first.
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
     - ln -s /cpp/vcpkg . # prepare package manager
-    - cd ./script
+    - cd ./scripts
     - chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh # duplicate prepare package
-    - chmod +x ./CCMake_Release.sh && ./CCMake_Release.sh && cd ../build_release/
+    - chmod +x ./CCMake_Release.sh && ./CCMake_Release.sh && cd ../release/
     - ninja # build application
     - ./test/$TEST_APP_NAME # test application
   needs: []
@@ -98,10 +85,10 @@ uat-build-package-app:
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
     - ln -s /cpp/vcpkg . # prepare package manager
-    - cd ./script
+    - cd ./scripts
     - chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh # duplicate prepare package
-    - chmod +x ./CCMake_Release.sh && ./CCMake_Release.sh && cd ../build_release/
-    - ninja install # build and install
+    - chmod +x CCMake_Release.sh && ./CCMake_Release.sh && cd ../release/
+    - ninja && ninja install # build and install
     - cd ..
     - echo $PACKAGE_NAME_UAT
     - tar -zcvf $PACKAGE_NAME_UAT ./install
@@ -118,10 +105,10 @@ prod-build-package-app:
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
     - ln -s /cpp/vcpkg . # prepare package manager
-    - cd ./script
+    - cd ./scripts
     - chmod +x Preparevcpkg.sh && ./Preparevcpkg.sh # duplicate prepare package
-    - chmod +x ./CCMake_Release.sh && ./CCMake_Release.sh && cd ../build_release/
-    - ninja install # build and install
+    - chmod +x CCMake_Release.sh && ./CCMake_Release.sh && cd ../release/
+    - ninja && ninja install # build and install
     - cd ..
     - tar -zcvf $PACKAGE_NAME ./install
     - |
@@ -145,13 +132,105 @@ release-app:
       when: always
     - when: never
 
+build-prod-run-image:
+  stage: build-run-image
+  image: docker:latest
+  services:
+    - docker:20.10.12-dind
+  script:
+    - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker pull $DOCKER_IMAGE_NAME_RUNNER || true # use the cached image if possible
+    - cd dockerEnv
+    - docker build --file Dockerfile.Run --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --build-arg DOCKER_GNAME=$(whoami) --build-arg DOCKER_UNAME=$(whoami) --build-arg PACKAGE_NAME=$PACKAGE_NAME --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN --build-arg PACKAGE_REGISTRY_URL=$PACKAGE_REGISTRY_URL --target runner -t $DOCKER_IMAGE_NAME_RUNNER ..
+    - docker push $DOCKER_IMAGE_NAME_RUNNER
+  needs: ["prod-build-package-app"]
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: always
+    - when: never
+
+build-uat-run-image:
+  stage: build-run-image
+  image: docker:latest
+  services:
+    - docker:20.10.12-dind
+  script:
+    - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker pull $DOCKER_IMAGE_NAME_RUNNER || true # use the cached image if possible
+    - cd dockerEnv
+    - docker build --file Dockerfile.Run --build-arg DOCKER_UID=$(whoami) --build-arg DOCKER_GID=$(whoami) --build-arg DOCKER_GNAME=$(whoami) --build-arg DOCKER_UNAME=$(whoami) --build-arg PACKAGE_NAME=$PACKAGE_NAME_UAT --build-arg CI_JOB_TOKEN=$CI_JOB_TOKEN --build-arg PACKAGE_REGISTRY_URL=$PACKAGE_REGISTRY_URL_UAT --target runner -t $DOCKER_IMAGE_NAME_RUNNER ..
+    - docker push $DOCKER_IMAGE_NAME_RUNNER
+  needs: ["uat-build-package-app"]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+      changes:
+        - dockerEnv/Dockerfile.Run
+        - {{ project_name }}/**/*
+        - poetry.lock
+    - when: never
+
+.aws-login: &aws-login
+    - export CLUSTER_REGION=us-east-1
+    - export CLUSTER_NAME=garudacluster
+
+    # handle aws cli login - https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html
+    # or https://stackoverflow.com/a/57497023/2358836
+    - aws configure set aws_access_key_id "$AWS_EKS_USER_ID"
+    - aws configure set aws_secret_access_key "$AWS_EKS_USER_PW"
+    - aws configure set region "${CLUSTER_REGION}"
+    # - echo "User Name,Access key ID,Secret access key" > aws_config.csv
+    # - echo "eksUser,AKIAYDIFZBARFK3TDWDM,$AWS_EKS_USER_PW" >> aws_config.csv
+    # - aws configure import --csv file://aws_config.csv
+
+.aws-login-kops: &aws-login-kops
+    - export CLUSTER_REGION=us-east-1
+    - export CLUSTER_NAME=garudacluster.k8s.local # must end with *.k8s.local
+    - export KOPS_S3=garuda-kops-state-storage
+    - export KOPS_STATE_STORE=s3://${KOPS_S3}
+
+    - aws configure set aws_access_key_id "$AWS_KOPS_USER_ID"
+    - aws configure set aws_secret_access_key "$AWS_KOPS_USER_PW"
+    - aws configure set region "${CLUSTER_REGION}"
+
+.prepare-eks:
+  before_script:
+    - echo "deploy to dev from branch $CI_COMMIT_REF_NAME"
+    # - echo "deploy to prod from tag $CI_COMMIT_TAG"
+    - aws --version
+    - eksctl version
+    - kubectl version --client
+    - helm version
+
+    - *aws-login
+
+    # handle kubectl and k8s cluster pairing - https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/
+    - aws eks update-kubeconfig --name ${CLUSTER_NAME} --region ${CLUSTER_REGION}
+    # check cluster
+    - kubectl get all --all-namespaces
+
+.prepare-kops:
+  before_script:
+    - echo "deploy to dev from branch $CI_COMMIT_REF_NAME"
+    - aws --version
+    - kops version
+    - kubectl version --client
+    - helm version
+
+    - *aws-login-kops
+
+    # handle kubectl and k8s cluster pairing
+    - kops export kubecfg --admin=87600h --name=${CLUSTER_NAME}
+    # check cluster
+    - kubectl get all --all-namespaces
+
 pages:
   stage: deploy
   image: $DOCKER_IMAGE_NAME_BUILDER
   script:
     - export PROJECT_VERSION=${CI_COMMIT_TAG:-latest}
-    - doxygen
-    - mv doxygen_doc/html/ public/
+    - cd project && doxygen
+    - mv doxygen_doc/html/ ../public/
   artifacts:
     paths:
       - public
@@ -161,21 +240,67 @@ pages:
       when: always
     - when: never
 
-uat-deploy:
+uat-install:
   stage: deploy
+  image: sulfredlee/aws-k8s-management
+  extends:
+    # - .prepare-eks
+    - .prepare-kops
   script:
     - echo "deploy to uat from branch $CI_COMMIT_REF_NAME"
-  needs: ["uat-build-package-app"]
+    - kubectl delete secret {{ project_name_hyphen }}-regcred || true
+    # https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+    - kubectl create secret docker-registry {{ project_name_hyphen }}-regcred --docker-server=registry.gitlab.com --docker-username=$CI_REGISTRY_USER --docker-password=$CI_JOB_TOKEN
+    - helm upgrade --wait --timeout=1200s --install --values ./chart/values.dev.yaml {{ project_name_hyphen }} ./chart
+  needs: ["build-uat-run-image"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
     - when: never
 
-prod-deploy:
+prod-install:
   stage: deploy
+  image: sulfredlee/aws-k8s-management
+  extends:
+    # - .prepare-eks
+    - .prepare-kops
   script:
     - echo "deploy to prod from tag $CI_COMMIT_TAG"
-  needs: ["prod-build-package-app"]
+    - kubectl delete secret {{ project_name_hyphen }}-regcred || true
+    # https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+    - kubectl create secret docker-registry {{ project_name_hyphen }}-regcred --docker-server=registry.gitlab.com --docker-username=$CI_REGISTRY_USER --docker-password=$CI_JOB_TOKEN
+    - helm upgrade --wait --timeout=1200s --install --values ./chart/values.prod.yaml {{ project_name_hyphen }} ./chart
+  needs: ["build-prod-run-image"]
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: manual
+    - when: never
+
+uat-remove:
+  stage: deploy
+  image: sulfredlee/aws-k8s-management
+  extends:
+    # - .prepare-eks
+    - .prepare-kops
+  script:
+    - echo "deploy to uat from branch $CI_COMMIT_REF_NAME"
+    - helm uninstall {{ project_name_hyphen }}
+  needs: []
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+    - when: never
+
+prod-remove:
+  stage: deploy
+  image: sulfredlee/aws-k8s-management
+  extends:
+    # - .prepare-eks
+    - .prepare-kops
+  script:
+    - echo "deploy to prod from tag $CI_COMMIT_TAG"
+    - helm uninstall {{ project_name_hyphen }}
+  needs: []
   rules:
     - if: $CI_COMMIT_TAG
       when: manual

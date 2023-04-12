@@ -6,6 +6,7 @@ import projectmanager.internal.projectCreator.cppFiles.script.template_CCMake_De
 import projectmanager.internal.projectCreator.cppFiles.script.template_CCMake_Release as rtc
 import projectmanager.internal.projectCreator.cppFiles.script.template_BuildImageRunner_sh as tbir
 import projectmanager.internal.projectCreator.cppFiles.script.template_BuildImageBuilder_sh as tbib
+import projectmanager.internal.projectCreator.cppFiles.script.template_Start_CPP_Servers_sh as tscss
 import projectmanager.internal.projectCreator.cppFiles.template_readme as tr
 import projectmanager.internal.projectCreator.cppFiles.template_gitignore as tg
 import projectmanager.internal.projectCreator.cppFiles.install.template_gitkeep as tgk
@@ -24,6 +25,12 @@ import projectmanager.internal.projectCreator.cppFiles.dockerEnv.prod.template_d
 import projectmanager.internal.projectCreator.cppFiles.dockerEnv.dev.template_env as dte
 import projectmanager.internal.projectCreator.cppFiles.dockerEnv.dev.template_docker_compose_yml as dtdc
 import projectmanager.internal.projectCreator.cppFiles.dockerEnv.dev.template_start_dev_container_sh as dtsdc
+import projectmanager.internal.projectCreator.cppFiles.chart.template_chart_yaml as ctcy
+import projectmanager.internal.projectCreator.cppFiles.chart.template_helmignore as cth
+import projectmanager.internal.projectCreator.cppFiles.chart.template_values_dev_yaml as ctvdy
+import projectmanager.internal.projectCreator.cppFiles.chart.template_values_prod_yaml as ctvpy
+import projectmanager.internal.projectCreator.cppFiles.chart.templates.template_workload_yaml as cttwy
+import projectmanager.internal.commonConst as cc
 import projectmanager.internal.commonConst as cc
 
 class cppCreator(projectCreatorBase):
@@ -44,18 +51,16 @@ class cppCreator(projectCreatorBase):
         project_root = Path.joinpath(self._project_path, self._project_name)
         project_sub_root = Path.joinpath(project_root, "project")
         project_root.mkdir(parents=True, exist_ok=True)
-        for path_name in [# Path.joinpath(project_root, "release")
-                          # , Path.joinpath(project_root, "debug")
-                          # , Path.joinpath(project_root, "install")
-                          Path.joinpath(project_root, "scripts")
+        for path_name in [Path.joinpath(project_root, "scripts")
                           , Path.joinpath(project_sub_root, "app")
                           , Path.joinpath(project_sub_root, "internal")
                           , Path.joinpath(project_sub_root, "external")
                           , Path.joinpath(project_sub_root, "test")
                           , Path.joinpath(project_root, "dockerEnv")
                           , Path.joinpath(project_root, "dockerEnv", "dev")
-                          # , Path.joinpath(project_root, "dockerEnv", "uat")
-                          # , Path.joinpath(project_root, "dockerEnv", "prod")
+                          # k8s chart folders
+                          , Path.joinpath(project_root, "chart")
+                          , Path.joinpath(project_root, "chart", "templates")
                           ]:
             path_name.mkdir(parents=True, exist_ok=True)
 
@@ -68,6 +73,7 @@ class cppCreator(projectCreatorBase):
                              , [Path.joinpath(project_root, "scripts", "Preparevcpkg.sh"), tp.content_st]
                              , [Path.joinpath(project_root, "scripts", "PrepareSpacemacsTags.sh"), tpst.content_st]
                              , [Path.joinpath(project_root, "scripts", "CCMake_Debug.sh"), dtc.content_st]
+                             , [Path.joinpath(project_root, "scripts", "Start_CPP_Servers.sh"), tscss.content_st]
                              , [Path.joinpath(project_root, "scripts", "CCMake_Release.sh"), rtc.content_st]
                              # , [Path.joinpath(project_root, "install", ".gitkeep"), tgk.content_st]
                              , [Path.joinpath(project_sub_root, "CMakeLists.txt"), tc.content_st]
@@ -88,9 +94,17 @@ class cppCreator(projectCreatorBase):
                              , [Path.joinpath(project_root, "dockerEnv", "BuildImageDev.sh"), tbib.content_st]
                              , [Path.joinpath(project_root, "dockerEnv", "dev", ".env"), dte.content_st]
                              , [Path.joinpath(project_root, "dockerEnv", "dev", "start_dev_container.sh"), dtsdc.content_st]
+                             # k8s chart files
+                             , [Path.joinpath(project_root, "chart", "Chart.yaml"), ctcy.content_st]
+                             , [Path.joinpath(project_root, "chart", ".helmsignore"), cth.content_st]
+                             , [Path.joinpath(project_root, "chart", "values.dev.yaml"), ctvdy.content_st]
+                             , [Path.joinpath(project_root, "chart", "values.prod.yaml"), ctvpy.content_st]
+                             , [Path.joinpath(project_root, "chart", "templates", "workload.yaml"), cttwy.content_st]
                              ]:
             with open(template_obj[0], "w") as w_FH:
                 w_FH.write(j_env.from_string(template_obj[1]).render(project_name=self._project_name
+                                                                     , project_name_hyphen=self._project_name.replace("_", "-")
+                                                                     , cur_name=pwd.getpwuid(os.getuid()).pw_name
                                                                      , cur_uid=pwd.getpwuid(os.getuid()).pw_uid
                                                                      , cur_gid=pwd.getpwuid(os.getuid()).pw_gid))
 
@@ -99,6 +113,7 @@ class cppCreator(projectCreatorBase):
                           , Path.joinpath(project_root, "scripts", "PrepareSpacemacsTags.sh")
                           , Path.joinpath(project_root, "scripts", "CCMake_Debug.sh")
                           , Path.joinpath(project_root, "scripts", "CCMake_Release.sh")
+                          , Path.joinpath(project_root, "scripts", "Start_CPP_Servers.sh")
                           , Path.joinpath(project_root, "dockerEnv", "BuildImageRunner.sh")
                           , Path.joinpath(project_root, "dockerEnv", "BuildImageDev.sh")
                           , Path.joinpath(project_root, "dockerEnv", "dev", "start_dev_container.sh")
