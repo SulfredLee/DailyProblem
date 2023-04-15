@@ -12,7 +12,7 @@ WORKDIR /cpp/project/
 FROM builder AS dev
 # fix bug https://github.com/Netflix/security_monkey/issues/1197 --- hunged during Geographic area
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get -y install build-essential vim ninja-build cmake doxygen git gdb curl zip pkg-config doxygen graphviz
+RUN apt-get -y install build-essential vim ninja-build cmake doxygen git gdb curl zip pkg-config doxygen graphviz cscope global
 RUN apt-get -y install qt5-default
 
 # init cpp package manager
