@@ -18,6 +18,10 @@ class MsgQ(object):
         self.__cond.release()
 
     def get(self) -> Any:
+        with self.__mutex:
+            if len(self.__q) != 0:
+                return self.__q.popleft()
+
         self.__cond.acquire()
         self.__cond.wait(timeout=self.__timeout)
         self.__cond.release()
@@ -38,6 +42,12 @@ class MsgQ(object):
                 return out_list
 
     def get_all_wait(self) -> List[Any]:
+        with self.__mutex:
+            if len(self.__q) != 0:
+                out_list = list(self.__q)
+                self.__q = deque()
+                return out_list
+
         self.__cond.acquire()
         self.__cond.wait(timeout=self.__timeout)
         self.__cond.release()
