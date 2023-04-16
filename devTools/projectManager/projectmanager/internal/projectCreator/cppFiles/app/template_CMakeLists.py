@@ -27,6 +27,7 @@ add_executable(${targetName} ${${folderName}_src})
 #   utility
 #   ${libpng_LIBRARY_DIR}/libpng16.so
 #   ${libbmp_LIBRARY_DIR}/libbmp.so
+#   libpqxx::pqxx
 #   )
 
 # Creates a folder "executables" and adds target

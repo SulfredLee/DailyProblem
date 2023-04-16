@@ -41,6 +41,12 @@ find_package(GTest CONFIG REQUIRED)
 get_target_property(GTEST_INCLUDE_DIRS GTest::gtest INTERFACE_INCLUDE_DIRECTORIES)
 message(STATUS "Gtest include: " ${GTEST_INCLUDE_DIRS})
 
+# Handle libpqxx --- c++ library for postgresql connection
+# use this after ./vcpkg install libpqxx
+# https://www.tutorialspoint.com/postgresql/postgresql_c_cpp.htm
+
+# find_package(libpqxx CONFIG REQUIRED)
+
 # Add third party library
 
 # Add subdirectory
