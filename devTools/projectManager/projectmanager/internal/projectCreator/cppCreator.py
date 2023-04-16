@@ -4,6 +4,7 @@ import projectmanager.internal.projectCreator.cppFiles.script.template_Preparevc
 import projectmanager.internal.projectCreator.cppFiles.script.template_PrepareSpacemacsTags as tpst
 import projectmanager.internal.projectCreator.cppFiles.script.template_CCMake_Debug as dtc
 import projectmanager.internal.projectCreator.cppFiles.script.template_CCMake_Release as rtc
+import projectmanager.internal.projectCreator.cppFiles.script.template_Active_Core_Dump_sh as rtacd
 import projectmanager.internal.projectCreator.cppFiles.script.template_BuildImageRunner_sh as tbir
 import projectmanager.internal.projectCreator.cppFiles.script.template_BuildImageBuilder_sh as tbib
 import projectmanager.internal.projectCreator.cppFiles.script.template_Start_CPP_Servers_sh as tscss
@@ -75,6 +76,7 @@ class cppCreator(projectCreatorBase):
                              , [Path.joinpath(project_root, "scripts", "CCMake_Debug.sh"), dtc.content_st]
                              , [Path.joinpath(project_root, "scripts", "Start_CPP_Servers.sh"), tscss.content_st]
                              , [Path.joinpath(project_root, "scripts", "CCMake_Release.sh"), rtc.content_st]
+                             , [Path.joinpath(project_root, "scripts", "Active_Core_Dump.sh"), rtacd.content_st]
                              # , [Path.joinpath(project_root, "install", ".gitkeep"), tgk.content_st]
                              , [Path.joinpath(project_sub_root, "CMakeLists.txt"), tc.content_st]
                              , [Path.joinpath(project_sub_root, "app", "Mainpage.dox"), tmd.content_st]
@@ -114,6 +116,7 @@ class cppCreator(projectCreatorBase):
                           , Path.joinpath(project_root, "scripts", "CCMake_Debug.sh")
                           , Path.joinpath(project_root, "scripts", "CCMake_Release.sh")
                           , Path.joinpath(project_root, "scripts", "Start_CPP_Servers.sh")
+                          , Path.joinpath(project_root, "scripts", "Active_Core_Dump.sh")
                           , Path.joinpath(project_root, "dockerEnv", "BuildImageRunner.sh")
                           , Path.joinpath(project_root, "dockerEnv", "BuildImageDev.sh")
                           , Path.joinpath(project_root, "dockerEnv", "dev", "start_dev_container.sh")
