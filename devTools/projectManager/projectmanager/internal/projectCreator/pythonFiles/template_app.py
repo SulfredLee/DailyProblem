@@ -10,6 +10,9 @@ from {{ project_name }}.app.{{ app_subfolder }}.routes.store import blp as Store
 from {{ project_name }}.app.{{ app_subfolder }}.routes.healthcheck import blp as HCBlueprint
 from {{ project_name }}.app.{{ app_subfolder }}.main_manager import MainManager as mm
 
+# to start the server
+# $ poetry run falsk run
+
 class Config:
     API_TITLE = "{{ project_name }} REST API"
     API_VERSION = "v1"
