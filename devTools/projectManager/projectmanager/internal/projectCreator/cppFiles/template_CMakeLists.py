@@ -56,6 +56,12 @@ message(STATUS "Gtest include: " ${GTEST_INCLUDE_DIRS})
 # message(STATUS "Boost include: " ${Boost_INCLUDE_DIRS})
 # message(STATUS "Boost libraries: " ${Boost_LIBRARIES})
 
+# Handle atomic-queue
+# https://github.com/max0x7ba/atomic_queue
+# use this after ./vcpkg install atomic-queue
+# find_path(ATOMIC_QUEUE_INCLUDE_DIRS "atomic_queue/atomic_queue.h")
+# message(STATUS "atomic-queue include: " ${ATOMIC_QUEUE_INCLUDE_DIRS})
+
 # Add third party library
 
 # Add subdirectory

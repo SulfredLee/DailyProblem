@@ -17,6 +17,7 @@ include_directories(
   )
   # ${PROJECT_SOURCE_DIR}/../ProjectB/lib/PrintHelper
   # ${PROJECT_SOURCE_DIR}/lib/utility
+  # ${ATOMIC_QUEUE_INCLUDE_DIRS}
   # ${Boost_INCLUDE_DIRS}
   # ${libpng_INCLUDE_DIR}
   # ${libbmp_INCLUDE_DIR})

@@ -186,8 +186,6 @@ class cppUpdater(projectUpdaterBase):
                 w_FH.write(j_env.from_string(template_obj[1]).render(module_name=self._module_name))
 
         # include external project to CMakeLists.txt
-        self.__append_no_duplicate(cmake_file_name=Path.joinpath(module_root, "CMakeLists.txt")
-                                   , target_cmd_list=[cmpr.Command("add_subdirectory", [cmpr.Arg(self._module_name)])])
         self.__append_no_duplicate(cmake_file_name=Path.joinpath(self._project_path, "CMakeLists.txt")
                                    , target_cmd_list=[cmpr.Command("include", [cmpr.Arg(f"external/external_{self._module_name}.cmake")])]
                                    , dock_cmd=cmpr.Comment("# Add External Project"))
