@@ -15,6 +15,7 @@ include_directories(
   )
   # ${PROJECT_SOURCE_DIR}/../ProjectB/lib/PrintHelper
   # ${PROJECT_SOURCE_DIR}/lib/utility
+  # ${Boost_INCLUDE_DIRS}
   # ${libpng_INCLUDE_DIR}
   # ${libbmp_INCLUDE_DIR})
 
@@ -25,6 +26,8 @@ add_executable(${targetName} ${${folderName}_src})
 #   ${CMAKE_INSTALL_PREFIX}/lib/libPrintHelper.so
 #   ${CMAKE_THREAD_LIBS_INIT}
 #   utility
+#   ${Boost_LIBRARIES}
+#   Boost::thread
 #   ${libpng_LIBRARY_DIR}/libpng16.so
 #   ${libbmp_LIBRARY_DIR}/libbmp.so
 #   libpqxx::pqxx

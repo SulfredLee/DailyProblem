@@ -44,8 +44,17 @@ message(STATUS "Gtest include: " ${GTEST_INCLUDE_DIRS})
 # Handle libpqxx --- c++ library for postgresql connection
 # use this after ./vcpkg install libpqxx
 # https://www.tutorialspoint.com/postgresql/postgresql_c_cpp.htm
-
 # find_package(libpqxx CONFIG REQUIRED)
+# message(STATUS "libpqxx include: " ${libpqxx_INCLUDE_DIRS})
+# message(STATUS "libpqxx libraries: " ${libpqxx_LIBRARY_DIR})
+
+# Handle boost
+# https://cmake.org/cmake/help/latest/module/FindBoost.html
+# use this after ./vcpkg install boost-thread
+# XXXXX you no need to use find package for all boost libraries, for example lockfree is the exception
+# find_package(Boost REQUIRED thread)
+# message(STATUS "Boost include: " ${Boost_INCLUDE_DIRS})
+# message(STATUS "Boost libraries: " ${Boost_LIBRARIES})
 
 # Add third party library
 
