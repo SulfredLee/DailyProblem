@@ -9,6 +9,7 @@ import projectmanager.internal.projectCreator.cppFiles.script.template_BuildImag
 import projectmanager.internal.projectCreator.cppFiles.script.template_BuildImageBuilder_sh as tbib
 import projectmanager.internal.projectCreator.cppFiles.script.template_Start_CPP_Servers_sh as tscss
 import projectmanager.internal.projectCreator.cppFiles.template_readme as tr
+import projectmanager.internal.projectCreator.cppFiles.diagrams.template_readme_puml as trpu
 import projectmanager.internal.projectCreator.cppFiles.template_gitignore as tg
 import projectmanager.internal.projectCreator.cppFiles.install.template_gitkeep as tgk
 import projectmanager.internal.projectCreator.cppFiles.app.template_Mainpage as tmd
@@ -59,6 +60,7 @@ class cppCreator(projectCreatorBase):
                           , Path.joinpath(project_sub_root, "test")
                           , Path.joinpath(project_root, "dockerEnv")
                           , Path.joinpath(project_root, "dockerEnv", "dev")
+                          , Path.joinpath(project_root, "diagrams")
                           # k8s chart folders
                           , Path.joinpath(project_root, "chart")
                           , Path.joinpath(project_root, "chart", "templates")
@@ -69,6 +71,7 @@ class cppCreator(projectCreatorBase):
         j_env = jinja2.Environment()
         # handle special tempalte files
         for template_obj in [[Path.joinpath(project_root, "README.md"), tr.content_st]
+                             , [Path.joinpath(project_root, "diagrams", "readme.puml"), trpu.content_st]
                              , [Path.joinpath(project_root, ".gitignore"), tg.content_st]
                              , [Path.joinpath(project_root, ".gitlab-ci.yml"), tgcy.content_st]
                              , [Path.joinpath(project_root, "scripts", "Preparevcpkg.sh"), tp.content_st]

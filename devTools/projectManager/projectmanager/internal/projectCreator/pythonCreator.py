@@ -21,6 +21,7 @@ import projectmanager.internal.projectCreator.pythonFiles.template_test as tt
 import projectmanager.internal.projectCreator.pythonFiles.template_gitignore as tg
 import projectmanager.internal.projectCreator.pythonFiles.template_Mainpage as tmp
 import projectmanager.internal.projectCreator.pythonFiles.template_readme_md as trm
+import projectmanager.internal.projectCreator.pythonFiles.diagrams.template_readme_puml as trpu
 import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile as td
 import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile_Runner as tdr
 import projectmanager.internal.projectCreator.pythonFiles.template_Dockerfile_Deploy as tdd
@@ -357,6 +358,7 @@ class pythonCreator(projectCreatorBase):
                                          , [Path.joinpath(project_root_path, "dockerEnv", "dev"), False]
                                          , [Path.joinpath(project_root_path, "dockerEnv", "prod"), False]
                                          , [Path.joinpath(project_root_path, "scripts"), False]
+                                         , [Path.joinpath(project_root_path, "diagrams"), False]
                                          # k8s chart folders
                                          , [Path.joinpath(project_root_path, "chart"), False]
                                          , [Path.joinpath(project_root_path, "chart", "templates"), False]
@@ -371,6 +373,7 @@ class pythonCreator(projectCreatorBase):
                                         [Path.joinpath(project_action_path, "app", "Mainpage.dox"), tmp.content_st]
                                         , [Path.joinpath(project_root_path, ".gitignore"), tg.content_st]
                                         , [Path.joinpath(project_root_path, "README.md"), trm.content_st]
+                                        , [Path.joinpath(project_root_path, "diagrams", "readme.puml"), trpu.content_st]
                                         # , [Path.joinpath(project_root_path, "RestoreUserGroup.sh"), trug.content_st]
                                         , [Path.joinpath(project_root_path, "ExportPythonEnv.sh"), tepe.content_st]
                                         , [Path.joinpath(project_root_path, ".gitlab-ci.yml"), tgcy.content_st]
