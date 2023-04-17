@@ -38,6 +38,7 @@ release/
 install/
 vcpkg/
 vcpkg
+out/
 
 # cpp tags files
 cscope.files
