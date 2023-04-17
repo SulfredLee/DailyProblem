@@ -162,7 +162,6 @@ cython_debug/
 
 # SF framework
 virtualenvs/
-out/
 
 # QC project
 data/
