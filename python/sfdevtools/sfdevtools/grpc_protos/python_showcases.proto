@@ -1,0 +1,18 @@
+
+syntax = "proto3";
+
+package python_showcases;
+
+// The python_showcases service definition.
+service Python_showcases {
+    // Unary - request and respond
+    rpc HealthCheck (Ping) returns (Pong);
+}
+
+message Ping {
+    string message = 1;
+}
+
+message Pong {
+    string message = 1;
+}
