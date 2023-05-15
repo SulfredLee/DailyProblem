@@ -1,6 +1,7 @@
 py_restful_api_project = "Python Restful API Project"
 py_grpc_project = "Python GRPC Project"
 py_general_project = "Python General Project"
+py_tensorflow_project = "Python Tensorflow Project"
 py_web_site_project = "Python Web Site Project"
 py_qc_project = "Python QC Project"
 py_add_grpc_app = "Add GRPC Project"

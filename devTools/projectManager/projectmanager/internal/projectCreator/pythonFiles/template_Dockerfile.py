@@ -4,6 +4,9 @@ content_st = """
 # FROM python:3.10.9-bullseye AS builder
 # FROM python:3.9.15-bullseye AS builder
 FROM python:3.8.16-bullseye AS builder
+# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit --- prepare nvidia container before tensorflow
+# https://www.tensorflow.org/install/docker --- tensorflow documentation
+# FROM tensorflow/tensorflow:latest-gpu AS builder
 
 ARG DOCKER_GID
 ARG DOCKER_UID

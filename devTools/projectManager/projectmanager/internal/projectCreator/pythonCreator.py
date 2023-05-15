@@ -108,6 +108,9 @@ class pythonCreator(projectCreatorBase):
         if cc.py_restful_api_project == project_type:
             self.create_restful_api_project(project_root_path=project_root_path
                                             , project_action_path=project_action_path)
+        elif cc.py_tensorflow_project == project_type:
+            self.create_tensorflow_project(project_root_path=project_root_path
+                                           , project_action_path=project_action_path)
         elif cc.py_general_project == project_type:
             self.create_general_project(project_root_path=project_root_path
                                         , project_action_path=project_action_path)
@@ -143,6 +146,21 @@ class pythonCreator(projectCreatorBase):
         subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "lean"], cwd=Path.joinpath(self._project_path, self._project_name))
+
+    def create_tensorflow_project(self, project_root_path: str, project_action_path: str):
+        # create project files
+        self.__create_project_files(project_root_path=project_root_path
+                                    , project_action_path=project_action_path
+                                    , project_type=cc.py_general_project
+                                    , file_list=[
+                                        [Path.joinpath(project_action_path, "app", "main.py"), tm.content_st]
+                                    ])
+
+        # add observability module
+        subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "scikit-learn"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "tensorflow"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "matplotlib"], cwd=Path.joinpath(self._project_path, self._project_name))
 
     def create_general_project(self, project_root_path: str, project_action_path: str):
         # create project files
