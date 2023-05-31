@@ -385,6 +385,7 @@ conan -j12 && ctest -V
 # conda cheat sheet
 ####################################################################
 `conda env create -f ~/scripts/your_py_env.yml` to import env
+conda env export | grep -v "^prefix: " > environment.yml
 conda activate py_main
 conda deactivate
 
