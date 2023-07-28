@@ -1,0 +1,7 @@
+
+version: "3.3"
+services:
+  german_learning_tools_run_env:
+    image: "german_learning_tools:runner_1.0.0"
+    env_file:
+      - ./.env

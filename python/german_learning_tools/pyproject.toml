@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "german-learning-tools"
+version = "0.1.0"
+description = ""
+authors = ["SulfredLee <sflee1112@gmail.com>"]
+readme = "README.md"
+packages = [{include = "german_learning_tools"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+sfdevtools = "^1.76.0"
+pathlib = "^1.0.1"
+requests = "^2.31.0"
+beautifulsoup4 = "^4.12.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
