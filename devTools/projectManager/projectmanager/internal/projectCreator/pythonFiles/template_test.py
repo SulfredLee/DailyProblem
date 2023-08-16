@@ -4,7 +4,7 @@ content_st = """
 # Imports
 import unittest
 from unittest.mock import Mock, create_autospec, patch
-import sfdevtools.observability.log_helper as lh
+import sfdevtoolslight.observability.log_helper as lh
 from typing import List, Dict, Tuple
 import inspect
 
@@ -32,7 +32,7 @@ class Test_{{ project_name }}(unittest.TestCase):
         \"\"\"
         if not self.__test_config[inspect.stack()[0][3]]:
             return
-        # import sfdevtools.storage.relationalDBStorage.PostgresDBCtrl as postDBCtrl
+        # import sfdevtoolslight.storage.relationalDBStorage.PostgresDBCtrl as postDBCtrl
         # mock_PostgresDBCtrl = create_autospec(postDBCtrl.PostgresDBCtrl)
         self.assertEqual("test".upper(), "TEST")
 

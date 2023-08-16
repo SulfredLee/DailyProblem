@@ -144,7 +144,7 @@ class pythonCreator(projectCreatorBase):
 
         # add observability module
         subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
-        subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "sfdevtoolslight"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "lean"], cwd=Path.joinpath(self._project_path, self._project_name))
 
     def create_tensorflow_project(self, project_root_path: str, project_action_path: str):
@@ -173,7 +173,7 @@ class pythonCreator(projectCreatorBase):
 
         # add observability module
         subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
-        subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "sfdevtoolslight"], cwd=Path.joinpath(self._project_path, self._project_name))
 
     def create_grpc_project(self, project_root_path: str, project_action_path: str, is_replace_file: bool = True):
         # create python folders
@@ -232,8 +232,8 @@ class pythonCreator(projectCreatorBase):
 
         # add observability module
         subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
-        subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
-        # grpcio-tools and grpcio will be depends on sfdevtools
+        subprocess.run(["poetry", "add", "sfdevtoolslight"], cwd=Path.joinpath(self._project_path, self._project_name))
+        # grpcio-tools and grpcio will be depends on sfdevtoolslight
         # subprocess.run(["poetry", "add", "grpcio-tools"], cwd=Path.joinpath(self._project_path, self._project_name))
         # subprocess.run(["poetry", "add", "grpcio"], cwd=Path.joinpath(self._project_path, self._project_name))
         # $ poetry run python -m grpc_tools.protoc -I protos --python_out=. --grpc_python_out=. protos/greet.proto
@@ -307,7 +307,7 @@ class pythonCreator(projectCreatorBase):
 
         # add observability module
         subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
-        subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "sfdevtoolslight"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "flask"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "flask-smorest"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "python-dotenv"], cwd=Path.joinpath(self._project_path, self._project_name))
@@ -357,7 +357,7 @@ class pythonCreator(projectCreatorBase):
 
         # add observability module
         subprocess.run(["poetry", "install"], cwd=Path.joinpath(self._project_path, self._project_name))
-        subprocess.run(["poetry", "add", "sfdevtools"], cwd=Path.joinpath(self._project_path, self._project_name))
+        subprocess.run(["poetry", "add", "sfdevtoolslight"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "flask"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "flask-smorest"], cwd=Path.joinpath(self._project_path, self._project_name))
         subprocess.run(["poetry", "add", "python-dotenv"], cwd=Path.joinpath(self._project_path, self._project_name))

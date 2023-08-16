@@ -3,7 +3,7 @@ content_st = """
 import argparse
 import logging
 
-import sfdevtools.observability.log_helper as lh
+import sfdevtoolslight.observability.log_helper as lh
 
 # Functions
 def init_argparse(description: str = "") -> argparse.Namespace:

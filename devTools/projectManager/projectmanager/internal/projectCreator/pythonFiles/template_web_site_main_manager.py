@@ -2,8 +2,8 @@ content_st = """
 import logging
 from typing import List, Dict, Tuple
 
-import sfdevtools.observability.log_helper as lh
-from sfdevtools.devTools.SingletonDoubleChecked import SDC
+import sfdevtoolslight.observability.log_helper as lh
+from sfdevtoolslight.devTools.SingletonDoubleChecked import SDC
 
 from {{ project_name }}.app.{{ app_subfolder }}.db.db import MicroBlog_DC
 

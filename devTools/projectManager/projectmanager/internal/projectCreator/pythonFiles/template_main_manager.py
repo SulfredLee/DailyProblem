@@ -3,8 +3,8 @@ import logging
 from typing import List, Dict, Tuple
 import atexit
 
-import sfdevtools.observability.log_helper as lh
-from sfdevtools.devTools.SingletonDoubleChecked import SDC
+import sfdevtoolslight.observability.log_helper as lh
+from sfdevtoolslight.devTools.SingletonDoubleChecked import SDC
 
 class MainManager(SDC):
     def __init__(self):

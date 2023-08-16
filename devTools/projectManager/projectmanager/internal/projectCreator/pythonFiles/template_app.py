@@ -3,7 +3,7 @@ import logging
 from typing import List, Dict, Tuple
 from flask import Flask
 from flask_smorest import Api
-import sfdevtools.observability.log_helper as lh
+import sfdevtoolslight.observability.log_helper as lh
 
 from {{ project_name }}.app.{{ app_subfolder }}.routes.item import blp as ItemBlueprint
 from {{ project_name }}.app.{{ app_subfolder }}.routes.store import blp as StoreBlueprint
