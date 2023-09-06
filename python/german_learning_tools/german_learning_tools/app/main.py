@@ -39,11 +39,25 @@ def Get_Verb_Table(verb_inputs: Path
                 if each_p.getText() == "Präsens":
                     verb_list = each_div.find_all("li")
                     for i in range(0,6):
-                        converted_verb_table_row.append(verb_list[i].find_all("i")[1].getText())
+                        if i < len(verb_list):
+                            all_i = verb_list[i].find_all("i")
+                            if len(all_i) == 2:
+                                converted_verb_table_row.append(all_i[1].getText())
+                            elif len(all_i) == 3:
+                                converted_verb_table_row.append(f"{all_i[1].getText()} {all_i[2].getText()}")
+                        else:
+                            converted_verb_table_row.append("N/A")
                 elif each_p.getText() == "Präteritum":
                     verb_list = each_div.find_all("li")
                     for i in range(0,6):
-                        converted_verb_table_row.append(verb_list[i].find_all("i")[1].getText())
+                        if i < len(verb_list):
+                            all_i = verb_list[i].find_all("i")
+                            if len(all_i) == 2:
+                                converted_verb_table_row.append(all_i[1].getText())
+                            elif len(all_i) == 3:
+                                converted_verb_table_row.append(f"{all_i[1].getText()} {all_i[2].getText()}")
+                        else:
+                            converted_verb_table_row.append("N/A")
                 elif each_p.getText() == "Perfekt":
                     verb_list = each_div.find_all("li")
                     for i in range(0,6):
@@ -52,6 +66,8 @@ def Get_Verb_Table(verb_inputs: Path
                             converted_verb_table_row.append(f"{all_i[1].getText()} {all_i[2].getText()}")
                         elif len(all_i) == 4:
                             converted_verb_table_row.append(f"{all_i[1].getText()} {all_i[2].getText()}{all_i[3].getText()}")
+                        elif len(all_i) == 5:
+                            converted_verb_table_row.append(f"{all_i[1].getText()} {all_i[2].getText()}{all_i[3].getText()}{all_i[4].getText()}")
                         else:
                             converted_verb_table_row.append("N/A")
 
@@ -101,7 +117,6 @@ def main() -> None:
                                                  , "german_verbs.csv")
                                 , logger=logger)
 
-    breakpoint()
     verb_table.to_csv(Path(os.path.expanduser("~"), "Downloads", "converted_german_verbs.csv"))
 
 if __name__ == "__main__":
