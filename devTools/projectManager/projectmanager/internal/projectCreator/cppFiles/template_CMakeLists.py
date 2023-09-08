@@ -24,7 +24,18 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Useful for displaying errors, warnings, and debugging
 # The flag: -D_GLIBCXX_DEBUG is useful for dangling iterator detection
 set(CMAKE_CXX_FLAGS "-Wall -fPIC -std=c++17 -g -D_GLIBCXX_DEBUG")
-message(STATUS "Root - cxx Flags: " ${CMAKE_CXX_FLAGS})
+
+message(STATUS "Root - CMAKE_C_FLAGS_DEBUG is ${CMAKE_C_FLAGS_DEBUG}")
+message(STATUS "Root - CMAKE_C_FLAGS_RELEASE is ${CMAKE_C_FLAGS_RELEASE}")
+message(STATUS "Root - CMAKE_C_FLAGS_RELWITHDEBINFO is ${CMAKE_C_FLAGS_RELWITHDEBINFO}")
+message(STATUS "Root - CMAKE_C_FLAGS_MINSIZEREL is ${CMAKE_C_FLAGS_MINSIZEREL}")
+message(STATUS "")
+message(STATUS "Root - CMAKE_CXX_FLAGS_DEBUG is ${CMAKE_CXX_FLAGS_DEBUG}")
+message(STATUS "Root - CMAKE_CXX_FLAGS_RELEASE is ${CMAKE_CXX_FLAGS_RELEASE}")
+message(STATUS "Root - CMAKE_CXX_FLAGS_RELWITHDEBINFO is ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+message(STATUS "Root - CMAKE_CXX_FLAGS_MINSIZEREL is ${CMAKE_CXX_FLAGS_MINSIZEREL}")
+message(STATUS "Root - CMAKE_CXX_FLAGS is " ${CMAKE_CXX_FLAGS})
+message(STATUS "")
 
 # Handle Preprocess Flags
 if (UNIX)
