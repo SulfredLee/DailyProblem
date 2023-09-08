@@ -22,7 +22,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Command to output information to the console
 # Useful for displaying errors, warnings, and debugging
-set(CMAKE_CXX_FLAGS "-Wall -fPIC -std=c++2a -g")
+# The flag: -D_GLIBCXX_DEBUG is useful for dangling iterator detection
+set(CMAKE_CXX_FLAGS "-Wall -fPIC -std=c++17 -g -D_GLIBCXX_DEBUG")
 message(STATUS "Root - cxx Flags: " ${CMAKE_CXX_FLAGS})
 
 # Handle Preprocess Flags
