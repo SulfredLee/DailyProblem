@@ -36,6 +36,7 @@ content_st = """
 debug/
 release/
 install/
+test_coverage/
 vcpkg/
 vcpkg
 
