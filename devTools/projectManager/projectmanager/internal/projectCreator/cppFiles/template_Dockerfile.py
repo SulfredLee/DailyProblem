@@ -28,6 +28,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # autoconf used by libpqxx
 RUN apt-get -y install build-essential vim ninja-build cmake doxygen git gdb curl zip pkg-config doxygen graphviz cscope global autoconf
 RUN apt-get -y install qt5-default
+RUN apt-get -y install lcov
 
 # install cmake from script --- in case you need a newer cmake
 # learn from: https://github.com/Rikorose/gcc-cmake/blob/master/Dockerfile
