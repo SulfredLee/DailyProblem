@@ -18,6 +18,7 @@ if [[ $? == 0 ]]; then
     docker exec -it $CONTAINER_ID bash
 else
     # using enviroment variable DISPLAY for running gui application within docker container https://stackoverflow.com/a/75336008/2358836
+    # https://github.com/async-profiler/async-profiler#profiling-java-in-a-container --- for perf in container - (--security-opt seccomp=unconfined\\)
     docker run -it -v "${PWD}/../../:/cpp/project:rw"\\
             -v "/tmp/.X11-unix:/tmp/.X11-unix"\\
             --env-file ./.env\\
