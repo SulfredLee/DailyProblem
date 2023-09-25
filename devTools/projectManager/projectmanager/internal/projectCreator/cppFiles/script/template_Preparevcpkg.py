@@ -7,4 +7,5 @@ cd ./vcpkg
 
 ./vcpkg search | grep gtest
 ./vcpkg install gtest
+./vcpkg install benchmark
 """
