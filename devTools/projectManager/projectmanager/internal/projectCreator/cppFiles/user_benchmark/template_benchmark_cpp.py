@@ -1,4 +1,9 @@
 content_st = """
+// https://stackoverflow.com/a/48110959/2358836 --- in case you get warning from google benchmark for cpu scaling
+// sudo cpupower frequency-set --governor performance
+// ./mybench
+// sudo cpupower frequency-set --governor powersave
+
 #include <benchmark/benchmark.h>
 #include <chrono>
 
