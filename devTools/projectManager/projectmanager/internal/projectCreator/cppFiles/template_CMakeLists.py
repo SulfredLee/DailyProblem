@@ -65,6 +65,10 @@ find_package(GTest CONFIG REQUIRED)
 get_target_property(GTEST_INCLUDE_DIRS GTest::gtest INTERFACE_INCLUDE_DIRECTORIES)
 message(STATUS "Gtest include: " ${GTEST_INCLUDE_DIRS})
 
+# Handle google benchmark
+find_package(benchmark CONFIG REQUIRED)
+# target_link_libraries(main PRIVATE benchmark::benchmark benchmark::benchmark_main)
+
 # Handle libpqxx --- c++ library for postgresql connection
 # use this after ./vcpkg install libpqxx
 # https://www.tutorialspoint.com/postgresql/postgresql_c_cpp.htm
@@ -91,6 +95,7 @@ message(STATUS "Gtest include: " ${GTEST_INCLUDE_DIRS})
 # Add subdirectory
 add_subdirectory(app)
 add_subdirectory(test)
+add_subdirectory(user_benchmark)
 
 # Add External Project
 """

@@ -17,6 +17,8 @@ import projectmanager.internal.projectCreator.cppFiles.app.template_Mainpage as 
 import projectmanager.internal.projectCreator.cppFiles.test.template_test_h as tth
 import projectmanager.internal.projectCreator.cppFiles.test.template_test_cpp as ttc
 import projectmanager.internal.projectCreator.cppFiles.test.template_CMakeLists as ttcm
+import projectmanager.internal.projectCreator.cppFiles.user_benchmark.template_CMakeLists as ttcm_bm
+import projectmanager.internal.projectCreator.cppFiles.user_benchmark.template_benchmark_cpp as ttc_bm
 import projectmanager.internal.projectCreator.cppFiles.template_Dockerfile as td
 import projectmanager.internal.projectCreator.cppFiles.template_Dockerfile_Run as tdr
 import projectmanager.internal.projectCreator.cppFiles.template_Doxyfile as tdf
@@ -59,6 +61,7 @@ class cppCreator(projectCreatorBase):
                           , Path.joinpath(project_sub_root, "internal")
                           , Path.joinpath(project_sub_root, "external")
                           , Path.joinpath(project_sub_root, "test")
+                          , Path.joinpath(project_sub_root, "benchmark")
                           , Path.joinpath(project_root, "dockerEnv")
                           , Path.joinpath(project_root, "dockerEnv", "dev")
                           , Path.joinpath(project_root, "diagrams")
@@ -87,6 +90,8 @@ class cppCreator(projectCreatorBase):
                              , [Path.joinpath(project_sub_root, "app", "Mainpage.dox"), tmd.content_st]
                              , [Path.joinpath(project_sub_root, "external", ".gitkeep"), tgk.content_st]
                              , [Path.joinpath(project_sub_root, "internal", ".gitkeep"), tgk.content_st]
+                             , [Path.joinpath(project_sub_root, "benchmark", "CMakeLists.txt"), ttcm_bm.content_st]
+                             , [Path.joinpath(project_sub_root, "benchmark", f"{self._project_name}_Benchmark.cpp"), ttc_bm.content_st]
                              , [Path.joinpath(project_sub_root, "test", "CMakeLists.txt"), ttcm.content_st]
                              , [Path.joinpath(project_sub_root, "test", f"{self._project_name}_Test.h"), tth.content_st]
                              , [Path.joinpath(project_sub_root, "test", f"{self._project_name}_Test.cpp"), ttc.content_st]
