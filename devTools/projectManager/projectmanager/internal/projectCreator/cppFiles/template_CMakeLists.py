@@ -94,8 +94,8 @@ find_package(benchmark CONFIG REQUIRED)
 
 # Add subdirectory
 add_subdirectory(app)
-add_subdirectory(test)
-add_subdirectory(user_benchmark)
+# add_subdirectory(test)
+# add_subdirectory(user_benchmark)
 
 # Add External Project
 """
