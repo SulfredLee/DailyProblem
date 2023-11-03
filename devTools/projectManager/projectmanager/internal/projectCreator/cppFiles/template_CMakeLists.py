@@ -25,12 +25,13 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # The flag: -D_GLIBCXX_DEBUG is useful for dangling iterator detection
 # The flag: -fprofile-arcs -ftest-coverage is useful for gcov and lcov
 # The flag: -pg is used for activating the gprof profiling
+# The flag: -D_GLIBCXX_DEBUG is used for dangling dereference checking
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fPIC -std=c++2a")
 # set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g3 -D_GLIBCXX_DEBUG -fprofile-arcs -ftest-coverage -pg")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g3 -D_GLIBCXX_DEBUG -fprofile-arcs -ftest-coverage -pg -D_GLIBCXX_DEBUG")
 message(STATUS "Root - cxx Flags: " ${CMAKE_CXX_FLAGS})
 message(STATUS "Root - cxx Flags Release: " ${CMAKE_CXX_FLAGS_RELEASE})
 message(STATUS "Root - cxx Flags Debug: " ${CMAKE_CXX_FLAGS_DEBUG})
