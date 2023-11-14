@@ -6,7 +6,7 @@ authors = ["SulfredLee <sflee1112@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-Django = "2.1.4"
+Django = "2.2.27"
 graphene-django = "2.2.0"
 django-filter = "2.0.0"
 django-graphql-jwt = "0.1.5"
