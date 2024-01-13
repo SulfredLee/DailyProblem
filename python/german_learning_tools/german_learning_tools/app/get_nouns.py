@@ -39,17 +39,28 @@ def Get_Noun_Table(noun_inputs: Path
                 all_th = each_table.find_all("th")
 
                 # check if the target table
-                is_noun_found: bool = False
-                for one_th in each_table.find_all("th"):
-                    if "Singular" in one_th.getText():
-                        is_noun_found = True
-                        break
-                if not is_noun_found:
+                is_noun_found: int = -1 # -1: not found, 1: Singular,Plural, 2: Singular,..,Plural 3: Singular,..,..,Plural
+                all_th = each_table.find_all("th")
+                if "Singular" in all_th[1].getText() and "Plural" in all_th[2].getText():
+                    is_noun_found = 1
+                elif "Singular" in all_th[1].getText() and "Plural" in all_th[3].getText():
+                    is_noun_found = 2
+                elif "Singular" in all_th[1].getText() and "Plural" in all_th[4].getText():
+                    is_noun_found = 3
+                else:
+                    logger.warn(f"not support format. skip noun: {row['noun']}")
                     continue
 
                 all_td = [each_td for each_td in each_table.find_all("td")]
                 converted_noun_table_row.append(all_td[0].getText().replace("\n", ""))
-                converted_noun_table_row.append(all_td[1].getText().replace("\n", ""))
+                if is_noun_found == 1:
+                    converted_noun_table_row.append(all_td[1].getText().replace("\n", ""))
+                elif is_noun_found == 2:
+                    converted_noun_table_row.append(all_td[2].getText().replace("\n", ""))
+                elif is_noun_found == 3:
+                    converted_noun_table_row.append(all_td[3].getText().replace("\n", ""))
+
+                # DONE, not need to look for the next table in the same page
                 break
 
             logger.info(f"done noun: {row['noun']}")
