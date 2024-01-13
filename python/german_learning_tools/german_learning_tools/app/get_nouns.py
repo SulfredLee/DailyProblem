@@ -32,9 +32,10 @@ def Get_Noun_Table(noun_inputs: Path
             soup = BeautifulSoup(response.text, "html.parser")
 
             converted_noun_table_row: List[str] = list()
+            converted_noun_table_row.append(row["level"])
+            converted_noun_table_row.append("n")
             converted_noun_table_row.append(row["noun"]) # add infinitive
             converted_noun_table_row.append(row["translate"])
-            converted_noun_table_row.append(row["level"])
             for each_table in soup.find_all("table", {"class": "wikitable"}):
                 all_th = each_table.find_all("th")
 
@@ -72,9 +73,10 @@ def Get_Noun_Table(noun_inputs: Path
 
 
     header_list: List[str] = list()
+    header_list.append("level")
+    header_list.append("type")
     header_list.append("Infinitive")
     header_list.append("translate")
-    header_list.append("level")
     header_list.append("singular")
     header_list.append("plural")
 
