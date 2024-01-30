@@ -30,8 +30,8 @@ def Get_Verb_Table(verb_inputs: Path
 
         converted_verb_table_row: List[str] = list()
         converted_verb_table_row.append(row["verb"]) # add infinitive
-        converted_verb_table_row.append(row["translate"])
-        converted_verb_table_row.append(row["level"])
+        # converted_verb_table_row.append(row["translate"])
+        # converted_verb_table_row.append(row["level"])
         for each_div in soup.find_all("div", {"class": "blue-box-wrap"}):
             if "Indikativ" not in each_div["mobile-title"]:
                 continue
@@ -76,8 +76,8 @@ def Get_Verb_Table(verb_inputs: Path
 
     header_list: List[str] = list()
     header_list.append("Infinitive")
-    header_list.append("translate")
-    header_list.append("level")
+    # header_list.append("translate")
+    # header_list.append("level")
     for i in range(0,6):
         header_list.append(f"present_{i+1}")
     for i in range(0,6):
