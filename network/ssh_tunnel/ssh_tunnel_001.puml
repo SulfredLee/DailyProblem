@@ -1,0 +1,40 @@
+@startuml ssh_tunnel_001
+' !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+' System(systemAlias, "UDP Server", "")
+' System(clientAlias, "UDP CLient", "")
+
+' Rel(clientAlias, systemAlias, "Send data", "")
+' Rel(systemAlias, clientAlias, "Reply ack", "")
+
+' https://plantuml.com/sequence-diagram
+skinparam backgroundColor #EEEBDC
+skinparam handwritten true
+
+left to right direction
+
+package "Proxy network" {
+    [proxy_ssh_port] as "proxy_user@proxy_ip_001:ssh_port"
+    [proxy_port] as "proxy_ip_002:proxy_idle_port"
+}
+
+package "PC A network" {
+    [pc_a_ssh_request_port] as "ssh_request"
+    [pc_a_ssh_port] as "pc_a_ip_001:ssh_port"
+}
+
+package "PC B network" {
+    actor user as "You"
+    [pc_b_ssh_request_port] as "ssh_request"
+    [pc_b_port] as "pc_b_ip_001:pc_b_idle_port"
+}
+
+
+[pc_a_ssh_request_port] ~~> [proxy_ssh_port] : 1. ssh connection
+[pc_b_ssh_request_port] ~~> [proxy_ssh_port] : 3. ssh connection
+[proxy_ssh_port] ~> [proxy_port] : in the point of view of the proxy server
+[pc_a_ssh_port] <--> [proxy_port] : 2. reverse tunnel
+[proxy_port] <--> [pc_b_port] : 4. forward tunnel
+[pc_b_port] <~ user : 5. final ssh request
+
+@enduml
