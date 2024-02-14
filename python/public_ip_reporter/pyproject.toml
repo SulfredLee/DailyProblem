@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "public-ip-reporter"
+version = "0.1.0"
+description = ""
+authors = ["SulfredLee <sflee1112@gmail.com>"]
+readme = "README.md"
+packages = [{include = "public_ip_reporter"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+sfdevtoolslight = "^1.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

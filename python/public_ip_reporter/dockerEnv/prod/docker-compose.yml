@@ -1,0 +1,7 @@
+
+version: "3.3"
+services:
+  public_ip_reporter_run_env:
+    image: "public_ip_reporter:runner_1.0.0"
+    env_file:
+      - ./.env
