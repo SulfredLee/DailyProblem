@@ -1,0 +1,12 @@
+[Unit]
+Description=Public ip report
+After=network-online.target
+#Requires
+
+[Service]
+User=root
+ExecStart=/home/sulfredm/anaconda3/envs/py310_public_ip/bin/python /home/sulfredm/Documents/bin/public_ip_reporter/public_ip_reporter/app/main.py -u test_from_root
+# ExecStop=/usr/bin/killall autossh
+
+[Install]
+WantedBy=multi-user.target

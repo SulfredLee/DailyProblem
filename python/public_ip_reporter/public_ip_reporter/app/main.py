@@ -25,20 +25,19 @@ def init_argparse(description: str = "") -> argparse.Namespace:
     # parser.add_argument("-a", "--action", required=True)
     # parser.add_argument("-l", "--lang", required=True)
     # parser.add_argument("-pn", "--projectName", default="")
+    parser.add_argument("-u", "--user", required=True)
     return parser.parse_args()
 
-def get_current_public_ip(logger: logging.Logger) -> Union[str, str]:
+def Get_Current_Public_Ip(logger: logging.Logger) -> Union[str, str]:
     p = subprocess.Popen(["curl", "https://ipinfo.io/ip"]
                          , stdout=subprocess.PIPE
                          , stderr=subprocess.PIPE)
     out, err = p.communicate()
-    logger.info(f"the public ip: {out}")
-    logger.error(f"other information: {err}")
 
     return [out.decode("utf-8")
             , err.decode("utf-8")]
 
-def get_old_public_ip(json_file: Path
+def Get_Old_Public_Ip(json_file: Path
                       , logger: logging.Logger) -> str:
     try:
         with open(json_file) as FH:
@@ -73,10 +72,10 @@ def main() -> None:
         ip_storage.mkdir(parents=True, exist_ok=True)
         ip_file = Path(ip_storage, "public_ip.json")
 
-        cur_public_ip, other_returns = get_current_public_ip(logger=logger)
+        cur_public_ip, other_returns = Get_Current_Public_Ip(logger=logger)
         is_new_public_ip: bool = True
         if ip_file.is_file():
-            old_public_ip = get_old_public_ip(json_file=ip_file, logger=logger)
+            old_public_ip = Get_Old_Public_Ip(json_file=ip_file, logger=logger)
             if old_public_ip == cur_public_ip:
                 is_new_public_ip = False
                 logger.info(f"same public ip found: {cur_public_ip}")
@@ -93,7 +92,7 @@ def main() -> None:
                 j_data = {"public_ip": cur_public_ip
                           , "other_message": other_returns}
                 json.dump(j_data, FH, ensure_ascii=False, indent=4)
-            webhook = DiscordWebhook(url="https://discordapp.com/api/webhooks/1207249883963068457/_s82tKlFrzKZgH-ZeDyd7yFJj3wfyJu8-8gPhWCR9AByhH_78V4wlXzKvlOdvaDwjl9T", content=cur_public_ip)
+            webhook = DiscordWebhook(url="https://discordapp.com/api/webhooks/1207249883963068457/_s82tKlFrzKZgH-ZeDyd7yFJj3wfyJu8-8gPhWCR9AByhH_78V4wlXzKvlOdvaDwjl9T", content=f"An update from: {args.user}")
             with open(ip_file, "rb") as FH:
                 webhook.add_file(file=FH.read(), filename="pip.json")
             response = webhook.execute()
