@@ -18,7 +18,7 @@ function convertTask(){
     mv "$inputFile" "${donePath}"
 }
 # ======================================== Main
-for src_type in "*.mp4" "*.mpga"; do
+for src_type in "*.mp4" "*.mpga" "*.mkv" "*.oga" "*.webm"; do
     echo "Conversion start: ${src_type}"
 
     readarray -d '' movie_list < <(find "$initialPath" -type f -name "${src_type}" -print0)
