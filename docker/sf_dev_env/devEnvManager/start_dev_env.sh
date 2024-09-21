@@ -7,7 +7,9 @@ DOCKER_NAME="sulfredlee/sf_dev_env"
 DOCKER_WORKDIR="/SoftwareDev_Docker"
 HOST_WORKDIR="${PWD}"
 DOCKER_UNAME="ubuntu" # for docker image ubuntu.24, uid 1000 is ubuntu
-# DOCKER_UNAME="sulfred" # for docker image older than ubuntu.24
+# DOCKER_UNAME="sulfred_dev" # for docker image older than ubuntu.24
+U_ID=1000 # $(id -u)
+G_ID=1000 # $(id -g)
 
 # check if container exist
 docker container list -a | grep ${DOCKER_NAME}:${DOCKER_VERSION}
@@ -30,6 +32,6 @@ else
             -v "${HOME}/.ssh:/home/${DOCKER_UNAME}/.ssh:ro"\
             --env-file ${SCRIPT_DIR}/.env\
             -e DISPLAY=$DISPLAY\
-            -u $(id -u):$(id -g)\
+            -u ${U_ID}:${G_ID}\
             ${DOCKER_NAME}:${DOCKER_VERSION} bash -c "bash"
 fi
