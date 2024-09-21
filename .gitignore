@@ -42,3 +42,6 @@ __pycache__/
 pythonEnv/
 python3Env/
 venvpy3/
+
+############# nodejs
+node_modules/
