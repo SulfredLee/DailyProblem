@@ -21,22 +21,20 @@ RUN apt-get -y install vim
 
 WORKDIR /SoftwareDev_Docker/
 
-FROM builder AS dev
 # fix bug https://github.com/Netflix/security_monkey/issues/1197 --- hunged during Geographic area
 ARG DEBIAN_FRONTEND=noninteractive
+
 
 # autoconf used by libpqxx
 RUN apt-get update && apt-get -y install build-essential vim ninja-build doxygen git gitk wget \
     gdb curl zip pkg-config doxygen graphviz meld \
     cscope global autoconf cmake lcov \
     libx11-dev libxpm-dev libxaw7-dev libjpeg-dev libpng-dev libgif-dev libtiff-dev libgnutls.*-dev libtinfo*
-RUN wget https://ftp.gnu.org/gnu/emacs/emacs-29.1.tar.xz
-RUN tar xvf emacs-29.1.tar.xz
-WORKDIR /SoftwareDev_Docker/emacs-29.1
-RUN ./configure
-RUN make
-RUN make install
 
+COPY additional_scripts/ .
+RUN ./emacs_build.sh
+
+FROM builder AS dev
 # create user to avoid using root
 ARG DOCKER_GID
 ARG DOCKER_UID
@@ -45,3 +43,10 @@ ARG DOCKER_UNAME
 
 # Create a group and user
 RUN [ $DOCKER_UNAME = "root" ] && echo "No need to create root again" || ( groupadd -g $DOCKER_GID $DOCKER_GNAME || true && useradd -rm -d /home/$DOCKER_UNAME -s /bin/bash -g $DOCKER_GNAME -G sudo -u $DOCKER_UID $DOCKER_UNAME)
+# ## for the first round
+# RUN cp -rf .spacemacs .spacemacs.env /home/$DOCKER_UNAME
+# RUN chown -R $DOCKER_UNAME:$DOCKER_UNAME /home/$DOCKER_UNAME/.spacemacs /home/$DOCKER_UNAME/.spacemacs.env
+
+## for the second round
+RUN cp -rf .spacemacs .spacemacs.env .emacs.d /home/$DOCKER_UNAME
+RUN chown -R $DOCKER_UNAME:$DOCKER_UNAME /home/$DOCKER_UNAME/.spacemacs /home/$DOCKER_UNAME/.spacemacs.env /home/$DOCKER_UNAME/.emacs.d
