@@ -1,0 +1,21 @@
+FROM ubuntu:24.04 AS builder
+
+WORKDIR /SoftwareDev_Docker/
+
+# fix bug https://github.com/Netflix/security_monkey/issues/1197 --- hunged during Geographic area
+ARG DEBIAN_FRONTEND=noninteractive
+
+
+FROM builder AS round1
+# autoconf used by libpqxx
+RUN apt-get update && apt-get -y install build-essential vim ninja-build doxygen git gitk wget emacs \
+    gdb curl zip pkg-config doxygen graphviz meld \
+    cscope global autoconf cmake lcov \
+    libx11-dev libxpm-dev libxaw7-dev libjpeg-dev libpng-dev libgif-dev libtiff-dev libgnutls.*-dev libtinfo*
+
+
+FROM round1 AS round2
+## for the second round
+COPY additional_scripts/ .
+RUN cp -rf .spacemacs .spacemacs.env .emacs.d /home/ubuntu
+RUN chown -R ubuntu:ubuntu /home/ubuntu/.spacemacs /home/ubuntu/.spacemacs.env /home/ubuntu/.emacs.d

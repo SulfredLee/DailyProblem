@@ -31,10 +31,10 @@ RUN apt-get update && apt-get -y install build-essential vim ninja-build doxygen
     cscope global autoconf cmake lcov \
     libx11-dev libxpm-dev libxaw7-dev libjpeg-dev libpng-dev libgif-dev libtiff-dev libgnutls.*-dev libtinfo*
 
-COPY additional_scripts/ .
-RUN ./emacs_build.sh
+FROM builder AS round1
+# build emacs in image
+RUN wget https://ftp.gnu.org/gnu/emacs/emacs-29.1.tar.xz && tar xvf emacs-29.1.tar.xz && cd ./emacs-29.1 && ./configure && make && make install
 
-FROM builder AS dev
 # create user to avoid using root
 ARG DOCKER_GID
 ARG DOCKER_UID
@@ -43,10 +43,9 @@ ARG DOCKER_UNAME
 
 # Create a group and user
 RUN [ $DOCKER_UNAME = "root" ] && echo "No need to create root again" || ( groupadd -g $DOCKER_GID $DOCKER_GNAME || true && useradd -rm -d /home/$DOCKER_UNAME -s /bin/bash -g $DOCKER_GNAME -G sudo -u $DOCKER_UID $DOCKER_UNAME)
-# ## for the first round
-# RUN cp -rf .spacemacs .spacemacs.env /home/$DOCKER_UNAME
-# RUN chown -R $DOCKER_UNAME:$DOCKER_UNAME /home/$DOCKER_UNAME/.spacemacs /home/$DOCKER_UNAME/.spacemacs.env
 
+FROM round1 AS round2
 ## for the second round
+COPY additional_scripts/ .
 RUN cp -rf .spacemacs .spacemacs.env .emacs.d /home/$DOCKER_UNAME
 RUN chown -R $DOCKER_UNAME:$DOCKER_UNAME /home/$DOCKER_UNAME/.spacemacs /home/$DOCKER_UNAME/.spacemacs.env /home/$DOCKER_UNAME/.emacs.d

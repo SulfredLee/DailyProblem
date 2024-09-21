@@ -2,10 +2,12 @@
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-DOCKER_VERSION="ubuntu_22_1.0"
+DOCKER_VERSION="ubuntu_24_1.0"
 DOCKER_NAME="sulfredlee/sf_dev_env"
 DOCKER_WORKDIR="/SoftwareDev_Docker"
 HOST_WORKDIR="${PWD}"
+DOCKER_UNAME="ubuntu" # for docker image ubuntu.24, uid 1000 is ubuntu
+# DOCKER_UNAME="sulfred" # for docker image older than ubuntu.24
 
 # check if container exist
 docker container list -a | grep ${DOCKER_NAME}:${DOCKER_VERSION}
@@ -25,7 +27,7 @@ else
     docker run -it -v "${HOST_WORKDIR}/:${DOCKER_WORKDIR}:rw"\
             -v "/tmp/.X11-unix:/tmp/.X11-unix"\
             -v "/sys/fs/cgroup:/sys/fs/cgroup:ro"\
-            -v "${HOME}/.ssh:/home/sulfred/.ssh:ro"\
+            -v "${HOME}/.ssh:/home/${DOCKER_UNAME}/.ssh:ro"\
             --env-file ${SCRIPT_DIR}/.env\
             -e DISPLAY=$DISPLAY\
             -u $(id -u):$(id -g)\
