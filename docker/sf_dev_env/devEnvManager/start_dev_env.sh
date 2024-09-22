@@ -2,12 +2,12 @@
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-DOCKER_VERSION="ubuntu_24_1.0"
+DOCKER_VERSION="ubuntu_24_2.0"
 DOCKER_NAME="sulfredlee/sf_dev_env"
 DOCKER_WORKDIR="/SoftwareDev_Docker"
 HOST_WORKDIR="${PWD}"
 DOCKER_UNAME="ubuntu" # for docker image ubuntu.24, uid 1000 is ubuntu
-# DOCKER_UNAME="sulfred_dev" # for docker image older than ubuntu.24
+# DOCKER_UNAME="sulfred" # for docker image older than ubuntu.24
 U_ID=1000 # $(id -u)
 G_ID=1000 # $(id -g)
 

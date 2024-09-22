@@ -1,0 +1,5 @@
+FROM sulfredlee/sf_dev_env:ubuntu_24_1.0 AS builder
+
+FROM builder AS round1
+# install nodejs, npm, pnpm
+RUN apt-get update && apt-get -y install nodejs npm && npm install -g pnpm

@@ -1,0 +1,6 @@
+FROM sulfredlee/sf_dev_env:ubuntu_22_1.0 AS builder
+
+FROM builder AS round1
+# install nodejs, npm, pnpm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && apt-get install nodejs && npm install -g pnpm
+
