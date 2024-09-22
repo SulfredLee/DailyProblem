@@ -10,6 +10,8 @@ DOCKER_UNAME="ubuntu" # for docker image ubuntu.24, uid 1000 is ubuntu
 # DOCKER_UNAME="sulfred" # for docker image older than ubuntu.24
 U_ID=1000 # $(id -u)
 G_ID=1000 # $(id -g)
+HOST_PORT=8080
+DOCKER_PORT=8080
 
 # check if container exist
 docker container list -a | grep ${DOCKER_NAME}:${DOCKER_VERSION}
@@ -30,6 +32,7 @@ else
             -v "/tmp/.X11-unix:/tmp/.X11-unix"\
             -v "/sys/fs/cgroup:/sys/fs/cgroup:ro"\
             -v "${HOME}/.ssh:/home/${DOCKER_UNAME}/.ssh:ro"\
+            -p ${HOST_PORT}:${DOCKER_PORT}\
             --env-file ${SCRIPT_DIR}/.env\
             -e DISPLAY=$DISPLAY\
             -u ${U_ID}:${G_ID}\
