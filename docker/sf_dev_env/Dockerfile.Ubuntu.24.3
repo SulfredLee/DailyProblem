@@ -1,0 +1,6 @@
+FROM sulfredlee/sf_dev_env:ubuntu_24_2.0 AS builder
+
+FROM builder AS round1
+COPY ./additional_scripts/ .
+RUN cd /home/ubuntu && cat /SoftwareDev_Docker/bashrc.conf >> .bashrc && cp -rf .spacemacs .spacemacs.env .emacs.d /root
+RUN cd && cat /SoftwareDev_Docker/bashrc.conf >> .bashrc
