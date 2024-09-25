@@ -2,7 +2,7 @@
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-DOCKER_VERSION="ubuntu_24_2.0"
+DOCKER_VERSION="ubuntu_24_4.0"
 DOCKER_NAME="sulfredlee/sf_dev_env"
 DOCKER_WORKDIR="/SoftwareDev_Docker"
 HOST_WORKDIR="${PWD}"

@@ -1,0 +1,7 @@
+FROM sulfredlee/sf_dev_env:ubuntu_24_3.0 AS builder
+
+# install anaconda
+FROM builder AS round1
+COPY ./additional_scripts/ .
+RUN ./Anaconda3-2024.06-1-Linux-x86_64.sh -b -p /root/anaconda3
+RUN mkdir /root/bin && cp ./start_conda.sh /root/bin && echo "" >> /root/.bashrc && cat bashrc.conda.conf >> /root/.bashrc
