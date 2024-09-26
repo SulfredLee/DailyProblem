@@ -54,6 +54,7 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-snippets-in-popup t)
      better-defaults
      javascript
+     typescript
      html
      c-c++
      csharp
