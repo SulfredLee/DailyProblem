@@ -575,6 +575,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (c-set-offset 'substatement-open 0)
   (c-set-offset 'case-label 4)
   (setq-default js-indent-level 2)
+  (setq-default typescript-indent-level 2)
 )
 
 
