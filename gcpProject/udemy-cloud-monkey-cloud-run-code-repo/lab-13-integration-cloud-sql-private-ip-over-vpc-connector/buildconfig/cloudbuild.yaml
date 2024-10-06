@@ -1,0 +1,36 @@
+steps:
+- id: "Build Docker Image"
+  name: 'gcr.io/cloud-builders/docker:latest'
+  dir: 'lab-13-integration-cloud-sql-private-ip-over-vpc-connector/microservices/customers'
+  args: ['build', 
+          '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/cloud-monkey-artifact-registry/lab-13-get-customers-svc-img',
+          '.']
+
+- id: "Push Docker Image To Artifact Registry"
+  name: 'gcr.io/cloud-builders/docker:latest'
+  args: ['push', '--all-tags', 'us-central1-docker.pkg.dev/${PROJECT_ID}/cloud-monkey-artifact-registry/lab-13-get-customers-svc-img']
+
+- id: "Deploy Cloud Run Service"
+  name: 'gcr.io/cloud-builders/gcloud:latest'
+  args: [
+    'run', 'deploy', 'lab-13-get-customers-svc', 
+    '--service-account' ,'sa-customers-svc@${PROJECT_ID}.iam.gserviceaccount.com',
+    '--allow-unauthenticated',
+    '--memory', '256Mi',
+    '--platform', 'managed',
+    '--image', 'us-central1-docker.pkg.dev/${PROJECT_ID}/cloud-monkey-artifact-registry/lab-13-get-customers-svc-img',
+    '--timeout', '30',
+    '--min-instances', '0',
+    '--max-instances', '1',
+    '--ingress', 'all',
+    '--region', 'us-central1',
+    '--set-env-vars', 'DB_HOST=${_DB_HOST}',
+    '--set-secrets', 'DB_USER=db-user:latest',
+    '--set-secrets', 'DB_PASSWORD=db-password:latest',
+    '--vpc-connector', 'serverless-vpc-connector'
+    ]
+timeout: 600s
+options:
+  logging: CLOUD_LOGGING_ONLY
+  dynamic_substitutions: true
+  

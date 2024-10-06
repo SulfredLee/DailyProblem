@@ -1,0 +1,18 @@
+@PROJECT_HASH = tbzuopynwq
+
+###
+
+curl --request GET \
+  --url https://lab-18-get-accountbalance-svc-{{PROJECT_HASH}}-uc.a.run.app/getaccountbalance \
+  --header 'content-type: application/json' \
+  --header 'user-agent: vscode-restclient'
+
+###
+
+curl --request GET \
+  --url https://lab-18-get-customers-svc-{{PROJECT_HASH}}-uc.a.run.app/getcustomers \
+  --header 'content-type: application/json' \
+  --header 'user-agent: vscode-restclient'
+
+
+

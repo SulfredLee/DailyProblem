@@ -1,0 +1,22 @@
+[
+  {
+    "customer_id": 13,
+    "name": "Marsha Saunders",
+    "address": "Betsy Clayton",
+    "city": "Hickory Hills",
+    "state": "Illinois",
+    "zipcode": "60457",
+    "country": "United States",
+    "entry_type": "cloudstorage"
+  },
+  {
+    "customer_id": 14,
+    "name": "Brian Davenport",
+    "address": "3715 Parrish Avenue",
+    "city": "San Antonio",
+    "state": "Texas",
+    "zipcode": "78205",
+    "country": "United States",
+    "entry_type": "cloudstorage"
+  }
+]
