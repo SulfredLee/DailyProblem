@@ -1,0 +1,41 @@
+steps:
+- id: "Build Docker Image"
+  name: 'gcr.io/cloud-builders/docker'
+  dir: 'lab-23-sidecar-sql-auth-proxy/microservices/customers'
+  args: ['build', 
+          '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/cloud-monkey-artifact-registry/lab-23-get-customers-svc-img',
+          '.']
+
+- id: "Push Docker Image To Artifact Registry"
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['push', '--all-tags', 'us-central1-docker.pkg.dev/${PROJECT_ID}/cloud-monkey-artifact-registry/lab-23-get-customers-svc-img']
+
+- id: "Create Service File"
+  name: 'bash'
+  env:
+  - 'CURRENT_PROJECT_ID=${PROJECT_ID}'
+  - 'CURRENT_PROJECT_HASH=${_PROJECT_HASH}'
+  script: |
+      #!/usr/bin/env bash
+      sed -i -e "s/PLACEHOLDER_PROJECT_ID/${CURRENT_PROJECT_ID}/" -e "s/PLACEHOLDER_PROJECT_HASH/${CURRENT_PROJECT_HASH}/" lab-23-sidecar-sql-auth-proxy/servicefiles/get-customers-svc.yaml
+
+- id: "Create Service"
+  name: 'gcr.io/cloud-builders/gcloud'
+  args: [
+    'run', 'services', 'replace', 'lab-23-sidecar-sql-auth-proxy/servicefiles/get-customers-svc.yaml', 
+    '--region' ,'us-central1'
+    ]
+
+- id: "Make Service Publicly Accessible"
+  name: 'gcr.io/cloud-builders/gcloud'
+  args: [
+    'run', 'services', 'set-iam-policy', 'lab-23-get-customers-svc', 'lab-23-sidecar-sql-auth-proxy/servicefiles/policy.yaml',
+    '--region' ,'us-central1',
+    '--quiet'
+    ]
+
+timeout: 600s
+options:
+  logging: CLOUD_LOGGING_ONLY
+  dynamic_substitutions: true
+  

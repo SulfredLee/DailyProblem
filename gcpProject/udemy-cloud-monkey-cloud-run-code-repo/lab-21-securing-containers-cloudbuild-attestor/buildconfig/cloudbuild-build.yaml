@@ -1,0 +1,16 @@
+steps:
+- id: "Build Docker Image"
+  name: 'gcr.io/cloud-builders/docker'
+  dir: 'lab-21-securing-containers-cloudbuild-attestor/microservices/customers'
+  args: ['build', 
+          '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/cloud-monkey-artifact-registry/lab-21-get-customers-svc-img',
+          '.']
+
+timeout: 600s
+images:
+ - 'us-central1-docker.pkg.dev/${PROJECT_ID}/cloud-monkey-artifact-registry/lab-21-get-customers-svc-img'
+options:
+  logging: CLOUD_LOGGING_ONLY
+  dynamic_substitutions: true
+  requestedVerifyOption: VERIFIED
+  

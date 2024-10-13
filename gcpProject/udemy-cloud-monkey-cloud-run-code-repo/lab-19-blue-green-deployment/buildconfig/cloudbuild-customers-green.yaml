@@ -1,0 +1,42 @@
+steps:
+- id: "Build Docker Image"
+  name: 'gcr.io/cloud-builders/docker:latest'
+  dir: 'lab-19-blue-green-deployment/microservices/customers'
+  args: ['build', 
+          '-t', 'us-central1-docker.pkg.dev/${PROJECT_ID}/cloud-monkey-artifact-registry/lab-19-get-customers-svc-img',
+          '.']
+
+- id: "Push Docker Image To Artifact Registry"
+  name: 'gcr.io/cloud-builders/docker:latest'
+  args: ['push', '--all-tags', 'us-central1-docker.pkg.dev/${PROJECT_ID}/cloud-monkey-artifact-registry/lab-19-get-customers-svc-img']
+
+- id: "Deploy Cloud Run Service"
+  name: 'gcr.io/cloud-builders/gcloud:latest'
+  args: [
+    'alpha', 'run', 'deploy', 'lab-19-get-customers-svc', 
+    '--service-account' ,'sa-customers-svc@${PROJECT_ID}.iam.gserviceaccount.com',
+    '--allow-unauthenticated',
+    '--memory', '256Mi',
+    '--platform', 'managed',
+    '--image', 'us-central1-docker.pkg.dev/${PROJECT_ID}/cloud-monkey-artifact-registry/lab-19-get-customers-svc-img',
+    '--timeout', '30',
+    '--min-instances', '0',
+    '--max-instances', '1',
+    '--ingress', 'all',
+    '--region', 'us-central1',
+    '--set-env-vars', 'CLOUD_SQL_CONNECTION_NAME=${PROJECT_ID}:us-central1:customers-db-instance',
+    '--set-secrets', 'DB_USER=db-user:latest',
+    '--set-secrets', 'DB_PASSWORD=db-password:latest',
+    '--set-env-vars', 'ACCOUNTBALANCE_CLOUD_RUN_SERVICE_URL=${_ACCOUNTBALANCE_CLOUD_RUN_SERVICE_URL}',
+    '--network' ,'default',
+    '--subnet', 'default',
+    '--vpc-egress', 'private-ranges-only',
+    '--add-cloudsql-instances', '${PROJECT_ID}:us-central1:customers-db-instance',
+    '--tag', 'green',
+    '--no-traffic'
+    ]
+timeout: 600s
+options:
+  logging: CLOUD_LOGGING_ONLY
+  dynamic_substitutions: true
+  

@@ -1,0 +1,81 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: lab-23-get-customers-svc
+  labels:
+    cloud.googleapis.com/location: us-central1
+  annotations:
+    run.googleapis.com/launch-stage: BETA
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+    
+spec:
+  template:
+    metadata:
+      labels:
+        run.googleapis.com/startupProbeType: Default
+      annotations:
+        run.googleapis.com/network-interfaces: '[{"network": "default", "subnetwork": "default"}]'
+        run.googleapis.com/vpc-access-egress: private-ranges-only
+        autoscaling.knative.dev/maxScale: '1'
+        run.googleapis.com/container-dependencies: "{get-cutomers-svc: [cloud-sql-auth-proxy]}"
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 5
+      serviceAccountName: sa-customers-svc@PLACEHOLDER_PROJECT_ID.iam.gserviceaccount.com
+      containers:
+      - image: us-central1-docker.pkg.dev/PLACEHOLDER_PROJECT_ID/cloud-monkey-artifact-registry/lab-23-get-customers-svc-img:latest
+        name: get-cutomers-svc
+        ports:
+        - name: http1
+          containerPort: 8080
+        env:
+        - name: CLOUD_SQL_CONNECTION_NAME
+          value: PLACEHOLDER_PROJECT_ID:us-central1:customers-db-instance
+        - name: ACCOUNTBALANCE_CLOUD_RUN_SERVICE_URL
+          value: https://lab-18-get-accountbalance-svc-PLACEHOLDER_PROJECT_HASH-uc.a.run.app
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: latest
+              name: db-user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: latest
+              name: db-password
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 256Mi
+        startupProbe:
+          timeoutSeconds: 240
+          periodSeconds: 240
+          failureThreshold: 1
+          tcpSocket:
+            port: 8080
+        volumeMounts:
+        - name: cloudsql-dir
+          mountPath: /cloudsql
+      - image: "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.6.0"
+        name: cloud-sql-auth-proxy
+        args:
+          - "--structured-logs"
+          - "--private-ip"
+          - "--unix-socket=/cloudsql"
+          - "PLACEHOLDER_PROJECT_ID:us-central1:customers-db-instance"
+        volumeMounts:
+        - name: cloudsql-dir
+          mountPath: /cloudsql
+      volumes:
+        - name: cloudsql-dir
+          emptyDir:
+            sizeLimit: 10Mi
+            medium: Memory
+
+      
+
+  traffic:
+  - percent: 100
+    latestRevision: true
+
