@@ -28,6 +28,7 @@ if [[ $? == 0 ]]; then
     docker exec -it $CONTAINER_ID bash
 else
     # using enviroment variable DISPLAY for running gui application within docker container https://stackoverflow.com/a/75336008/2358836
+    # docker run -it -w ${DOCKER_WORKDIR} -v "${HOST_WORKDIR}/:${DOCKER_WORKDIR}:rw"\ --- may be useful to add the -w argument for web app dev with hot reload
     docker run -it -v "${HOST_WORKDIR}/:${DOCKER_WORKDIR}:rw"\
             -v "/tmp/.X11-unix:/tmp/.X11-unix"\
             -v "/sys/fs/cgroup:/sys/fs/cgroup:ro"\
