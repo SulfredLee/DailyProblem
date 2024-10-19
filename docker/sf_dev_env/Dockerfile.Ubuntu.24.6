@@ -1,0 +1,24 @@
+FROM ubuntu:24.04 AS builder
+
+WORKDIR /SoftwareDev_Docker/
+
+# fix bug https://github.com/Netflix/security_monkey/issues/1197 --- hunged during Geographic area
+ARG DEBIAN_FRONTEND=noninteractive
+
+
+FROM builder AS round1
+# autoconf used by libpqxx
+RUN apt-get update && apt-get -y install build-essential vim ninja-build doxygen git gitk wget emacs \
+    gdb curl zip pkg-config doxygen graphviz meld \
+    cscope global autoconf cmake lcov \
+    libx11-dev libxpm-dev libxaw7-dev libjpeg-dev libpng-dev libgif-dev libtiff-dev libgnutls.*-dev libtinfo* \
+    nodejs npm && npm install -g pnpm
+
+
+## for the second round
+COPY additional_scripts/ .
+# for miniconda
+RUN ./Miniconda3-latest-Linux-x86_64.sh -b -p /root/miniconda3
+RUN mkdir /root/bin && cp ./start_miniconda.sh /root/bin && echo "" >> /root/.bashrc && cat bashrc.conda.conf >> /root/.bashrc
+# for spacemacs
+# RUN cp -rf .spacemacs .spacemacs.env .emacs.d /root

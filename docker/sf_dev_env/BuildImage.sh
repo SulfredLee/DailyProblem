@@ -1,10 +1,10 @@
 
 #!/bin/bash
 
-DOCKER_VERSION="ubuntu_24_5.0"
+DOCKER_VERSION="ubuntu_24_6.0"
 DOCKER_NAME="sulfredlee/sf_dev_env"
 DOCKER_BUILD_PATH="."
-DOCKER_FILE="Dockerfile.Ubuntu.24.5"
+DOCKER_FILE="Dockerfile.Ubuntu.24.6"
 DOCKER_TARGET="round1"
 
 # docker build --file ${DOCKER_FILE} \
