@@ -16,5 +16,5 @@ rm ${buildPath}/cscope.po.out
 echo "######### make GTag"
 gtags
 echo "######### make cscope"
-find . -name "*.cc" -o -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" > cscope.files
+find -L . -name "*.cc" -o -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" > cscope.files
 cscope -q -R -b -k -i cscope.files

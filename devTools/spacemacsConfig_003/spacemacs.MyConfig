@@ -620,6 +620,16 @@ before packages are loaded."
   ;; handle tern for javascript auto complete
   (add-to-list 'load-path "/home/sulfred/.emacs.d/private/tern/emacs")
   (autoload 'tern-mode "tern.el" nil t)
+
+  ;; ;; activation for tab indent for cpp
+  ;; (setq-default indent-tabs-mode t)
+  ;; (setq-default tab-width 4)
+  ;; (setq-default c-indent-tabs-mode t)
+
+  ;; ;; bind key for backspace, some environment will put backspace as C-h
+  ;; (global-set-key "\C-h" 'delete-backward-char)
+  ;; ;; bind key for help command
+  ;; (global-set-key "\C-xh" 'help-command)
 )
 
 
