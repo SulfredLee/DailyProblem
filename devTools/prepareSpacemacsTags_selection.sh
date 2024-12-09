@@ -31,11 +31,11 @@ rm ${userRoot}/cscope.po.out
 
 # make tags
 echo "######### make GTag"
-find -L ${fwRoot}/ -name "*.cc" -o -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" > gtags.files
-find -L ${buildPath}/ -name "*.cc" -o -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" >> gtags.files
+find -L ${fwRoot}/ -name "*.cc" -o -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | sort | uniq > gtags.files
+find -L ${buildPath}/ -name "*.cc" -o -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | sort | uniq >> gtags.files
 gtags
 
 echo "######### make cscope"
-find -L ${fwRoot} -name "*.cc" -o -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" > cscope.files
-find -L ${buildPath} -name "*.cc" -o -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" >> cscope.files
+find -L ${fwRoot} -name "*.cc" -o -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | sort | uniq > cscope.files
+find -L ${buildPath} -name "*.cc" -o -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | sort | uniq >> cscope.files
 cscope -q -R -b -k -i cscope.files
