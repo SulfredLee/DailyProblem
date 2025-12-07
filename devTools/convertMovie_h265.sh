@@ -35,6 +35,7 @@ function IsLowQuality {
 POSITIONAL=()
 ACTION=""
 CURRENT_DATE=`date +%Y%m%d`
+IS_FORCE="False"
 #can specify a date(YYYYMMDD) for which the script will re-generate (for T-1)
 
 # handle input arguments
@@ -45,6 +46,10 @@ do
     case $key in
         -h|--help)
             PrintHelp
+            shift # past argument
+            ;;
+        -f|--force)
+            IS_FORCE="True"
             shift # past argument
             ;;
         -a|--action)
@@ -71,7 +76,7 @@ if [ "$ACTION" = "convert" ]; then
     OUTPUT_VIDEO="h265_${INPUT_VIDEO}"
     echo "ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v hevc_nvenc ${OUTPUT_VIDEO}"
     # echo "ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v h264_nvenc -b:v 5M ${OUTPUT_VIDEO}" # h264
-    ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -c:a copy -c:v hevc_nvenc ${OUTPUT_VIDEO}
+    ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i ${INPUT_VIDEO} -map 0 -c:v hevc_nvenc -c:a copy -c:s copy ${OUTPUT_VIDEO}
 elif [ "$ACTION" = "check_status" ]; then
     ffprob ${INPUT_VIDEO}
 elif [ "$ACTION" = "gpu_usage" ]; then
@@ -84,7 +89,7 @@ elif [ "$ACTION" = "convert_recursive" ]; then
         IsLowQuality "${movie_list[$i]}"
         if [[ ${movie_list[$i]} == *"converted_"* || ${movie_list[$i]} == *"h265_"* ]]; then
            echo "conversion skip this is already converted: ${movie_list[$i]}"
-        elif (( $IS_LOW_QUALITY == 1 )); then
+        elif [[ "$IS_FORCE" == "False" && (( $IS_LOW_QUALITY == 1 )) ]]; then
            echo "Quality of the movie is too low, no need to convert"
         else
            INPUT_VIDEO="$(basename "${movie_list[$i]}")"
@@ -101,7 +106,7 @@ elif [ "$ACTION" = "convert_recursive" ]; then
 
            start_time=`date +%s`
            # ffmpeg -y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -i "${movie_list[$i]}" -c:a copy -c:v hevc_nvenc "${OUTPUT_VIDEO}"
-	   ffmpeg -y -vsync 0 -hwaccel_output_format cuda -i "${movie_list[$i]}" -c:v hevc_nvenc "${OUTPUT_VIDEO}"
+	         ffmpeg -y -vsync 0 -hwaccel_output_format cuda -i "${movie_list[$i]}" -map 0 -c:v hevc_nvenc -c:a copy -c:s copy "${OUTPUT_VIDEO}"
            if [[ $? -ne 0 ]]; then
                echo "Error found. Failed to convert ${movie_list[$i]}"
                echo "Error found. Failed to convert ${movie_list[$i]}" >> "${ERROR_LOG_FILE}"
