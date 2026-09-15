@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "microblog"
+version = "0.1.0"
+description = ""
+authors = ["SulfredLee <sflee1112@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+sfdevtools = "^1.1.0"
+flask = "^2.2.2"
+flask-smorest = "^0.40.0"
+python-dotenv = "^0.21.0"
+marshmallow = "^3.19.0"
+pymongo = "^4.3.3"
+flask-wtf = "^1.0.1"
+passlib = "^1.7.4"
+flask-bootstrap = "^3.3.7.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

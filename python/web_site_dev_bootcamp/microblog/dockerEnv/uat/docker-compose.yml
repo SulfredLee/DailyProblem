@@ -1,0 +1,7 @@
+
+version: "3.3"
+services:
+  microblog_run_env:
+    image: "microblog:runner_1.0.0"
+    env_file:
+      - ./.env

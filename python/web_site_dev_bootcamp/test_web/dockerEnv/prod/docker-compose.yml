@@ -1,0 +1,7 @@
+
+version: "3.3"
+services:
+  test_web_run_env:
+    image: "test_web:runner_1.0.0"
+    env_file:
+      - ./.env
