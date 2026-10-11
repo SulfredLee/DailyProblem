@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Optional
+from converter_logger import ConverterLogger
 
 
 class BaseNameConverter(ABC):
@@ -18,8 +19,14 @@ class BaseNameConverter(ABC):
         if not folder.is_dir():
             raise ValueError(f"Folder does not exist: {folder}")
 
-        files = folder.rglob("*.mp3") if recursive else folder.glob("*.mp3")
+        list_files = folder.rglob if recursive else folder.glob
+        files = (
+            path
+            for pattern in ("*.mp3", "*.m4a")
+            for path in list_files(pattern)
+        )
         count = 0
+        logger = ConverterLogger()
 
         for source in sorted(files):
             if not source.is_file() or source.is_symlink():
@@ -32,20 +39,19 @@ class BaseNameConverter(ABC):
             destination = source.with_name(new_name)
 
             if destination.exists() or destination.is_symlink():
-                print(f"SKIP (destination exists): {destination}")
+                logger.info(f"SKIP (destination exists): {destination}")
                 continue
 
             if dry_run:
-                print(f"PREVIEW: {source.name} -> {new_name}")
+                logger.info(f"PREVIEW: {source.name} -> {new_name}")
             else:
-                continue
                 try:
                     source.rename(destination)
-                    print(f"RENAMED: {source.name} -> {new_name}")
+                    logger.info(f"RENAMED: {source.name} -> {new_name}")
                 except OSError as error:
-                    print(f"ERROR: {source.name}: {error}")
+                    logger.error(f"ERROR: {source.name}: {error}")
                     continue
 
             count += 1
 
-        print(f"\n{count} file(s) {'matched' if dry_run else 'renamed'}.")
+        logger.info(f"{count} file(s) {'matched' if dry_run else 'renamed'}.")

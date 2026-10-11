@@ -1,4 +1,5 @@
 import argparse
+import logging
 import re
 from pathlib import Path
 from typing import Any, Optional
@@ -47,6 +48,10 @@ def get_args() -> Any:
     return parser.parse_args()
 
 def main():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(message)s",
+    )
     args = get_args()
     converter = TeaDoctorNameConverter()
 
